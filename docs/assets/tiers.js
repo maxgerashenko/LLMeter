@@ -188,6 +188,19 @@
       });
     });
 
+    // Cloud tab: every non-open-weights model in the data file
+    var cloudBody = document.getElementById("cloud-rows");
+    cloudBody.textContent = "";
+    models.filter(function (m) { return !m.open; })
+      .sort(function (a, b) { return (b.pct == null ? -1 : b.pct) - (a.pct == null ? -1 : a.pct); })
+      .forEach(function (m) {
+        cloudBody.appendChild(el("tr", null, [
+          el("td", null, [modelLink(m)]),
+          el("td", { class: "num", text: fmtPct(m.pct) }),
+          el("td", { class: "num" }, [scoreCell(m)])
+        ]));
+      });
+
     // Band list in the method section
     var bl = document.getElementById("band-list");
     TIERS.forEach(function (t) {
@@ -226,6 +239,29 @@
     legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch bar-cloud" }), "Other cloud"]));
 
   }
+
+  // Local / Cloud tabs
+  (function () {
+    var tabs = [["tab-local", "tiers"], ["tab-cloud", "panel-cloud"]];
+    function select(id) {
+      tabs.forEach(function (t) {
+        var on = t[0] === id;
+        var b = document.getElementById(t[0]);
+        b.setAttribute("aria-selected", String(on));
+        b.tabIndex = on ? 0 : -1;
+        document.getElementById(t[1]).hidden = !on;
+      });
+    }
+    tabs.forEach(function (t, i) {
+      var b = document.getElementById(t[0]);
+      b.addEventListener("click", function () { select(t[0]); });
+      b.addEventListener("keydown", function (e) {
+        if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+        var next = tabs[(i + 1) % tabs.length][0];
+        select(next); document.getElementById(next).focus();
+      });
+    });
+  })();
 
   fetch(DATA_URL)
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
