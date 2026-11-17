@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLMeter: source graph</title>
+  <meta name="description" content="Where LLMeter's sources get their information: a graph from the LLMeter website (level 0) through the sources it uses and the sources they cite.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sources.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
+      <nav class="nav">
+        <a href="./">Tiers</a>
+        <a href="#graph" aria-current="page">Source graph</a>
+        <a href="#sources">Sources</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">Sources · read <span data-read-date>2026-11-17</span></p>
+      <h1>Where our sources get their information</h1>
+      <p class="lede">
+        Level 0 is this website. Level 1 is the sources LLMeter uses, and each level below is what the level above
+        cites or draws its data from. A source cited by several others appears once.
+      </p>
+    </section>
+
+    <section id="graph" class="card">
+      <div class="card-head graph-head">
+        <div>
+          <h2>Source graph</h2>
+          <p class="muted" id="graph-summary">Loading…</p>
+        </div>
+        <label class="depth-control">
+          <span>Show levels 0 to</span>
+          <select id="depth">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </label>
+      </div>
+      <div class="graph-wrap" id="graph-scroll">
+        <div id="cy" class="cy" role="img" aria-label="Graph of LLMeter's sources and the sources they cite"></div>
+      </div>
+      <div class="legend" id="graph-legend">
+        <span class="legend-item"><span class="swatch sw-root"></span>LLMeter website</span>
+        <span class="legend-item"><span class="swatch sw-l1"></span>Our sources (level 1)</span>
+        <span class="legend-item"><span class="swatch sw-expanded"></span>Traced further</span>
+        <span class="legend-item"><span class="swatch sw-primary"></span>Primary data, nothing further to trace</span>
+        <span class="legend-item"><span class="swatch sw-stopped"></span>Not traced (reason in details)</span>
+      </div>
+      <div class="details" id="details" aria-live="polite">
+        <p class="muted">Tap a node to see what it cites, what cites it, and to open its link.</p>
+      </div>
+    </section>
+
+    <section id="sources" class="card">
+      <div class="card-head">
+        <h2>Sources we use</h2>
+        <p class="muted">The level-1 sources. The full list with notes is in <a href="https://github.com/maxgerashenko/LLMeter/blob/main/RESOURCES.md">RESOURCES.md</a>.</p>
+      </div>
+      <ol class="source-list" id="source-list"></ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        Graph data: <a href="data/source-graph.json">source-graph.json</a>, drawn with
+        <a href="https://js.cytoscape.org/">Cytoscape.js</a>.
+        LLMeter is an independent project, <a href="https://github.com/maxgerashenko/LLMeter">source on GitHub</a>.
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/dist/cytoscape.min.js"></script>
+  <script src="assets/sources.js"></script>
+</body>
+</html>

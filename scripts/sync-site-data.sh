@@ -5,5 +5,5 @@
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
 mkdir -p "$root/docs/data"
-cp "$root"/data/*.csv "$root/docs/data/"
-echo "Copied data/*.csv to docs/data/"
+cp "$root"/data/*.csv "$root"/data/*.json "$root/docs/data/"
+echo "Copied data/*.csv and data/*.json to docs/data/"
