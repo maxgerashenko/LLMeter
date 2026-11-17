@@ -172,7 +172,7 @@ The Tier 1 pick does not change.
 
 **Best pick: Qwen3.8 27B (Xhigh), 19% of Sonnet 5.5.** Terminal-Bench 4.0 5.6, FrontierCode 2.0 14.9, Apache-2.0 license. It needs about 21 GB at 4-bit with a 32K context (16.8 GB file, per LLM Sizer's worked example), so it fits a 32 GB Mac or a 24 GB graphics card. It is the strongest small model that is not in Tier 1, but at 19% it rarely finishes a long task, so use it for short, well-scoped coding only.
 
-Every other small model measured (Gemma 4 31B, Gemma 4 E4B, Granite 4.2 8B, gpt-oss-120b, Nemotron 3.5 Super VL, Qwen3.8 27B, and by inference Qwen3.5 27B and Qwen3.6 27B) scores under 20%, and most score 0 on both benchmarks. On laptops and 16 GB machines there is currently no model that does long coding tasks.
+Every other small model measured (Gemma 4 31B, Gemma 4 E4B, Granite 4.2 8B, gpt-oss-120b, Nemotron 3.5 Super VL, and by inference Qwen3.5 27B and Qwen3.6 27B) scores under 20%, and most score 0 on both benchmarks. On laptops and 16 GB machines there is currently no model that reliably does long coding tasks.
 
 ## Missing data and indirect comparisons
 
