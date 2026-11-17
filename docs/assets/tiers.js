@@ -94,6 +94,17 @@
     return el("span", { class: "tier-badge tier-" + t.id, title: t.name }, [t.id === "max" ? "Max" : "Tier " + t.label]);
   }
 
+  // "2,800B (104B active)", "753B (40B to 54B active)", "33B" for dense, "not published".
+  function fmtParams(m) {
+    if (m.totalB == null) return "not published";
+    var total = m.totalB.toLocaleString("en-US") + "B";
+    var act = m.actives.filter(function (a) { return a < 0.95 * m.totalB; });
+    if (!act.length) return total;
+    var lo = Math.min.apply(null, act), hi = Math.max.apply(null, act);
+    var r = lo === hi ? lo + "B" : lo + "B to " + hi + "B";
+    return total + " (" + r + " active)";
+  }
+
   function fmtPct(p) { return p == null ? "n/a" : Math.round(p) + "%"; }
   function fmt(v) { return v == null ? "" : String(v); }
 
@@ -131,7 +142,9 @@
         ]),
         el("td", { class: "num" }, [share]),
         el("td", { class: "num" }, [cai]),
-        el("td", null, [m ? modelLink(m, { hideSetting: true }) : el("span", { class: "muted", text: "none" })])
+        el("td", null, [m ? modelLink(m, { hideSetting: true }) : el("span", { class: "muted", text: "none" }),
+          m ? el("span", { class: "params-inline", text: fmtParams(m) }) : null]),
+        el("td", { class: "num params" + (m && m.totalB == null ? " muted" : ""), text: m ? fmtParams(m) : "" })
       ]));
     });
 
@@ -177,7 +190,7 @@
     models.slice().sort(function (a, b) { return (b.pct == null ? -1 : b.pct) - (a.pct == null ? -1 : a.pct); })
       .forEach(function (m) {
         var t = tierFor(m);
-        var params = m.totalB != null ? (m.activeB != null && m.activeB !== m.totalB ? m.totalB + " / " + m.activeB : String(m.totalB)) : "";
+        var params = m.totalB != null ? fmtParams(m) : "";
         dr.appendChild(el("tr", null, [
           el("td", null, [modelLink(m)]),
           el("td", null, [m.model !== REFERENCE && m.pct > 100 ? el("span", { class: "muted", text: "above Max" }) : tierBadge(t)]),
@@ -205,7 +218,7 @@
           pct: num(r.pct_of_sonnet_5_5),
           lcs: num(r.long_coding_score),
           totalB: num(r.aa_total_params_b) != null ? num(r.aa_total_params_b) : num(r.llm_sizer_total_params_b),
-          activeB: num(r.aa_active_params_b) != null ? num(r.aa_active_params_b) : num(r.llm_sizer_active_params_b),
+          actives: [num(r.aa_active_params_b), num(r.llm_sizer_active_params_b)].filter(function (v) { return v != null; }),
           sources: r.sources || "",
           read: r.read
         };
@@ -214,7 +227,7 @@
     })
     .catch(function (err) {
       document.getElementById("tier-rows").innerHTML =
-        '<tr><td colspan="4">Could not load the data file (' + String(err.message || err) +
+        '<tr><td colspan="5">Could not load the data file (' + String(err.message || err) +
         '). See <a href="' + DATA_URL + '">the CSV</a>.</td></tr>';
     });
 })();
