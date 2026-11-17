@@ -65,6 +65,8 @@ Scores read from Artificial Analysis on 2026-11-17. "Long-coding score" is the a
 | Mistral Large 4 (High) | yes | 40.6 | 24.7 | 15.0 | 19.9 | 38% | 1,050 / 52 |
 | Inkling 2 Small | yes | n/a | 13.1 | 25.4 | 19.2 | 36% | 594 / 17 to 24 |
 | Qwen3.8 27B (Xhigh) | yes | n/a | 5.6 | 14.9 | 10.2 | 19% | 27 dense |
+| Qwen3.6 27B (Reasoning) | yes | n/a | 0.0 | not run | n/a | about 0% (indirect) | 28 dense |
+| Qwen3.5 27B (Reasoning) | yes | n/a | not run | not run | n/a | about 0% (indirect, see below) | 28 dense |
 | Nemotron 3.5 Super VL | yes | n/a | 0.0 | 6.1 | 3.0 | 6% | 120 / 12 |
 | gpt-oss-120b (High) | yes | n/a | 0.0 | 0.0 | 0.0 | 0% | 117 / 5 |
 | Gemma 4 31B (Reasoning) | yes | n/a | 0.0 | 0.0 | 0.0 | 0% | 31 dense |
@@ -120,13 +122,36 @@ Coding Agent Index 56.3, Terminal-Bench 4.0 63.6, FrontierCode 2.0 41.7, Intelli
 - **Hardware:** 33B dense. The Q4_K_M build is 20.8 GB, so it runs on a **32 GB Mac** (26.8 GB usable) or a 24 to 32 GB graphics card, but long contexts will be tight. A 48 GB Mac or a 32 GB card leaves room for the context cache.
 - **Caveat:** its profile is very uneven. It scores well on terminal tasks but low on merge-quality repository changes, and it has no Coding Agent Index score. Treat the pick as provisional until a harness run confirms it. The more even alternative at this size, Qwen3.8 27B, scores only 19% (Terminal-Bench 4.0 5.6, FrontierCode 2.0 14.9).
 
+### Starting point: Qwen3.5 27B compared with Nanbeige4.3-33B
+
+Max asked to start from Qwen3.5 27B (released February 2026) and whether it is close to Nanbeige4.3-33B. **It is not close: Nanbeige4.3-33B is much better on long coding tasks**, although the comparison is indirect because no source runs both models on the same long-task benchmark.
+
+- **No shared benchmark.** Artificial Analysis never ran Qwen3.5 27B on Terminal-Bench 4.0 or FrontierCode 2.0, which were added after its release. The only coding-agent score it has there is the older, easier Terminal-Bench Hard: 32.6% ([model page](https://artificialanalysis.ai/models/qwen3-5-27b), read 2026-11-17). Nanbeige4.3-33B was only run on the newer tests.
+- **The chain of comparisons**, all from Artificial Analysis unless noted:
+
+| Model | Terminal-Bench Hard (older) | Terminal-Bench 2.1 | Terminal-Bench 4.0 (long tasks) |
+| --- | --- | --- | --- |
+| Qwen3.5 27B (Reasoning) | 32.6 | not run | not run |
+| Qwen3.6 27B (Reasoning) | 34.8 | 60.7 | 0.0 |
+| Gemma 4 31B (Reasoning) | 36.4 | 43.4 | 0.0 |
+| Qwen3.8 27B (Xhigh) | not run | 79.8 | 5.6 |
+| Nanbeige4.3-33B | not run | 80.9 (Nanbeige's own run) | 29.8 |
+
+  Qwen3.5 27B scores below Qwen3.6 27B and Gemma 4 31B on the one test they share, and both of those score 0 on Terminal-Bench 4.0. So Qwen3.5 27B would very likely also score at or near 0 there, against Nanbeige's 29.8. That places Qwen3.5 27B in Tier 0 and Nanbeige in Tier 1.
+- **The developers' own numbers point the same way.** Qwen reports 41.6 on Terminal-Bench 2.0 and 72.4 on SWE-bench Verified for Qwen3.5 27B ([model card](https://huggingface.co/Qwen/Qwen3.5-27B), read 2026-11-17). Nanbeige reports 80.9 on Terminal-Bench 2.1 and 23.8 on Terminal-Bench 4 (against 6.3 for Qwen3.8 27B, run in the same harness) ([model card](https://huggingface.co/Nanbeige/Nanbeige4.3-33B), read 2026-11-17). The versions differ, so these numbers are not directly comparable, but on every agentic coding test both cards share with a newer Qwen, the newer Qwen is ahead of 3.5 and Nanbeige is ahead of the newer Qwen.
+- **Hardware is about the same.** Qwen3.5 27B has 27.8B dense parameters, so a 4-bit build is about 16 to 19 GB (the same-size Qwen3.6 27B Q4_K_M is 19.4 GB in LLM Sizer's data). Nanbeige4.3-33B's Q4_K_M is 20.8 GB. Both run on a 32 GB Mac or a 24 GB card, so Nanbeige costs only about 2 to 4 GB more memory for a large step up.
+- **Confidence: medium.** The direction is clear from several independent signals, but the size of the gap on long tasks is inferred, not measured. A Terminal-Bench 4.0 run of Qwen3.5 27B would settle it.
+
+The Tier 1 pick does not change.
+
 ### Tier 0: below the bar
 
-Every small model measured (Gemma 4 31B, Gemma 4 E4B, Granite 4.2 8B, gpt-oss-120b, Nemotron 3.5 Super VL, Qwen3.8 27B) scores under 20%, and most score 0 on both benchmarks. On laptops and 16 GB machines there is currently no model that does long coding tasks.
+Every small model measured (Gemma 4 31B, Gemma 4 E4B, Granite 4.2 8B, gpt-oss-120b, Nemotron 3.5 Super VL, Qwen3.8 27B, and by inference Qwen3.5 27B and Qwen3.6 27B) scores under 20%, and most score 0 on both benchmarks. On laptops and 16 GB machines there is currently no model that does long coding tasks.
 
 ## Missing data and indirect comparisons
 
 - **METR time horizons do not cover the models compared here.** The current METR data (TH 1.1) has no Claude Sonnet 5.x and no open-weights model, so the tiers cannot be expressed as "hours of human work". The latest entry is Claude Mythos Preview (early), at a 50% horizon of about 1,045 minutes.
+- **Older models were never run on the long-task benchmarks.** Qwen3.5 27B, for example, only has a Terminal-Bench Hard score, so its tier is inferred from models it can be chained to.
 - **The Coding Agent Index covers only large models.** The smallest open model in it is DeepSeek V4.1 Flash (552 to 763B). For Tiers 2 and 1 the picks rest on Terminal-Bench 4.0 and FrontierCode 2.0 run in Artificial Analysis's own harness, not in a real coding agent, which is an indirect comparison.
 - **Harnesses differ.** In the Coding Agent Index, each model runs in its maker's agent (Claude Code, Kimi Code CLI, Opencode and so on). Part of a score difference may come from the harness, not the model.
 - **Scores were measured at full precision, through APIs.** Running the same model locally at 4-bit or 2-bit will usually score somewhat lower. No source measures long-task scores for quantized local builds.
