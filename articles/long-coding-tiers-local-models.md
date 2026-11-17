@@ -171,6 +171,42 @@ Max asked to start from Qwen3.5 27B (released February 2026) and whether it is c
 
 The Tier 1 pick does not change.
 
+### Nanbeige4.3-33B against the other models that fit the same hardware
+
+All of these run on a 32 GB Mac or a 24 to 32 GB graphics card at 4-bit. Scores are from Artificial Analysis (read 2026-11-17); "-" means not run.
+
+| Model | Params (all dense unless noted) | 4-bit file | Intelligence Index | Terminal-Bench 4.0 | FrontierCode 2.0 | Long-coding score | % of Sonnet 5.5 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| **Nanbeige4.3-33B** | 33B | 20.8 GB (Q4_K_M) | 20.4 | 29.8 | 10.7 | 20.2 | 38% |
+| Qwen3.8 27B (Xhigh) | 27B | 16.8 GB (Q4_K_M) | 20.1 | 5.6 | 14.9 | 10.2 | 19% |
+| Qwen3.6 27B (Reasoning) | 27B | 19.4 GB (Q4_K_M) | - | 0.0 | - | about 0 | about 0% |
+| Qwen3.5 27B (Reasoning) | 27B | about 16 to 19 GB | - | - | - | inferred about 0 | about 0% |
+| Gemma 4 31B (Reasoning) | 31B | 17.3 GB (Q4_0) | 4.4 | 0.0 | 0.0 | 0.0 | 0% |
+| Muse Glimmer (High) | 30B | not in LLM Sizer data | 6.3 | 0.5 | 1.5 | 1.0 | 2% |
+| Nemotron 3.5 Lightning | 31.6B | not checked | 5.5 | 0.5 | 0.0 | 0.3 | 0% |
+| North Mini Code | 30B | not checked | 3.4 | 0.5 | 0.2 | 0.4 | 1% |
+| Qwen3.6 35B-A3B (Reasoning) | 35B, 3B active | not checked | - | 0.0 | - | about 0 | about 0% |
+| Granite 4.2 30B | 30B | not checked | - | 0.0 | - | about 0 | about 0% |
+
+The developers' own numbers for Nanbeige4.3-33B against three of these (from its [model card](https://huggingface.co/Nanbeige/Nanbeige4.3-33B), read 2026-11-17, all models run by Nanbeige at highest thinking effort with the same harness per test):
+
+| Test | Nanbeige4.3-33B | Qwen3.8 27B | Muse Glimmer 30B | Gemma 4 31B |
+| --- | --- | --- | --- | --- |
+| Terminal-Bench 4 | 23.8 | 6.3 | 1.6 | 0.0 |
+| Terminal-Bench 2.1 | 80.9 | 73.0 | 61.8 | 47.2 |
+| DeepSWE | 65.5 | 42.5 | 4.4 | 2.7 |
+| SWE-Bench Pro | 60.3 | 61.7 | 51.2 | 36.9 |
+| SWE-Atlas-QnA | 50.8 | 41.9 | 17.7 | 3.3 |
+| NL2Repo | 53.0 | 48.3 | 27.4 | 33.8 |
+| SciCode | 52.6 | 46.7 | 44.9 | 45.5 |
+
+What the matrix says:
+
+- **Nanbeige leads on long terminal tasks.** Its 29.8 on Terminal-Bench 4.0 is the only double-digit score among models of this size, and Nanbeige's own run agrees in direction (23.8 vs 6.3 for Qwen3.8 27B).
+- **Qwen3.8 27B is ahead on one thing: FrontierCode 2.0** (14.9 vs 10.7), and the two are tied on the Intelligence Index. It is also smaller (16.8 GB vs 20.8 GB). Nanbeige's own table has Qwen3.8 27B ahead on SWE-Bench Pro (61.7 vs 60.3), so for repository fixes the two are close.
+- **Everything else at this size scores at or near 0** on both long-task benchmarks.
+- **Caveat: Nanbeige's own tests are self-reported** and its card compares only against models it chose, so the Artificial Analysis rows are the independent evidence. There is no Coding Agent Index score for any of these models.
+
 ### Tier 0: below the bar
 
 **Best pick: Qwen3.8 27B (Xhigh), 19% of Sonnet 5.5.** Terminal-Bench 4.0 5.6, FrontierCode 2.0 14.9, Apache-2.0 license. It needs about 21 GB at 4-bit with a 32K context (16.8 GB file, per LLM Sizer's worked example), so it fits a 32 GB Mac or a 24 GB graphics card. It is the strongest small model that is not in Tier 1, but at 19% it rarely finishes a long task, so use it for short, well-scoped coding only.
