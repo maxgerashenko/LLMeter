@@ -21,6 +21,17 @@ In practice that means the agent:
 
 The agent does not decide the project's direction. Max chooses which questions to explore; the agent does the collecting, checking, writing and publishing.
 
+## Which model does what
+
+Different parts of the work use different Claude models:
+
+| Work | Model | Examples |
+| --- | --- | --- |
+| Organizing the project and its rules | **Claude Sonnet** | Keeping `RESOURCES.md`, `data/`, `README.md` and this file tidy; repository structure; setting up and maintaining the website in `docs/`; opening pull requests |
+| Analysis | **Claude Fable** | Reading sources closely, extracting and comparing data, finding trends and contributing factors, writing articles in `articles/` |
+
+When a task mixes both, use Fable for the analysis and writing of the article, and Sonnet for the surrounding upkeep (recording sources, updating pages, keeping docs in sync).
+
 ## Repository layout
 
 | Path | What it holds | Agent's responsibility |
@@ -48,7 +59,7 @@ The agent does not decide the project's direction. Max chooses which questions t
 1. Get the topic or source from Max.
 2. Add the source to `RESOURCES.md`.
 3. Extract the relevant data into `data/`, with source references.
-4. Analyse it together with Max and write the result as an article in `articles/`.
+4. Analyse it together with Max (on Fable) and write the result as an article in `articles/`.
 5. Add or update the article's page in `docs/`.
 6. Update `README.md` if the structure or workflow changed.
 7. Open a pull request summarising what was added and which sources it relies on.
