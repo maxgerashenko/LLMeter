@@ -6,14 +6,14 @@
 
 LLMeter now compares models on **long coding tasks**: multi-step agent work in real repositories and terminals, where one task takes an agent tens of minutes and hundreds of steps. On that basis, with **Claude Sonnet 5.5** (cloud) as the top tier, the best model you can run yourself in each tier is:
 
-| Tier | Long-coding score vs. Sonnet 5.5 | Intelligence Index (Coding Agent Index) | Best local model |
-| --- | --- | --- | --- |
-| **Max** (cloud reference) | 100% | 55 (56.3) | Claude Sonnet 5.5 (not local) |
-| **Tier 4: near-frontier** | 75% or more | 46.5 (48.6) | Kimi K3.1 Pro (88%) |
-| **Tier 3: strong** | 55% to 75% | 31.7 (40.1) | GLM-5.3 (60%) |
-| **Tier 2: capable** | 40% to 55% | 28.6 | Qwen3.8-Flash-Next (50%) |
-| **Tier 1: assistant** | 20% to 40% | 20.4 | Nanbeige4.3-33B (38%) |
-| **Tier 0: below the bar** | under 20% | 20.1 | Qwen3.8 27B (19%) |
+| Tier | Long-coding score vs. Sonnet 5.5 | Intelligence Index (Coding Agent Index) | Best local model | Params (B) |
+| --- | --- | --- | --- | --- |
+| **Max** (cloud reference) | 100% | 55 (56.3) | Claude Sonnet 5.5 (not local) | not published |
+| **Tier 4: near-frontier** | 75% or more | 46.5 (48.6) | Kimi K3.1 Pro (88%) | 2,800B (104B active) |
+| **Tier 3: strong** | 55% to 75% | 31.7 (40.1) | GLM-5.3 (60%) | 753B (40B to 54B active) |
+| **Tier 2: capable** | 40% to 55% | 28.6 | Qwen3.8-Flash-Next (50%) | 180B (6.7B active) |
+| **Tier 1: assistant** | 20% to 40% | 20.4 | Nanbeige4.3-33B (38%) | 33B |
+| **Tier 0: below the bar** | under 20% | 20.1 | Qwen3.8 27B (19%) | 27B |
 
 The first number is Artificial Analysis's Intelligence Index, a general index across all its evaluations, shown to rate every model on one scale; the number in brackets is the Coding Agent Index, where the model has one. It is not the basis of the tiers: it ranks Nanbeige4.3-33B and Qwen3.8 27B as equals (20.4 vs 20.1) although Nanbeige is about twice as good on long coding tasks. The data table below gives the Intelligence Index for every model.
 
