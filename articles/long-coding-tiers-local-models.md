@@ -14,7 +14,7 @@ LLMeter now compares models on **long coding tasks**: multi-step agent work in r
 | **Tier 3: strong** | 55% to 75% | 40.1 | GLM-5.3 (60%) | One 512 GB Mac Studio M5 Ultra (MLX 4-bit build is 418 GB) |
 | **Tier 2: capable** | 40% to 55% | not scored | Qwen3.8-Flash-Next (50%) | A 128 GB machine: DGX Spark, Strix Halo mini PC, or a 128 GB Mac (100.6 GB Q4_0 file) |
 | **Tier 1: assistant** | 20% to 40% | not scored | Nanbeige4.3-33B (38%) | A 32 GB Mac or a 24 to 32 GB GPU (20.8 GB Q4_K_M file); 48 GB is more comfortable for long contexts |
-| **Tier 0: below the bar** | under 20% | not scored | none worth recommending | Laptops and 16 GB machines: the 8B models measured score 0 on both benchmarks |
+| **Tier 0: below the bar** | under 20% | not scored | Qwen3.8 27B (19%) | A 32 GB Mac or 24 GB GPU (16.8 GB Q4_K_M file, about 21 GB with 32K context); smaller 8B models score 0 |
 
 The tiers are a judgement call (see [How tiers are defined](#how-tiers-are-defined)). The picks are the highest-scoring open-weights model in each band, with ties broken by how little hardware it needs.
 
@@ -170,7 +170,9 @@ The Tier 1 pick does not change.
 
 ### Tier 0: below the bar
 
-Every small model measured (Gemma 4 31B, Gemma 4 E4B, Granite 4.2 8B, gpt-oss-120b, Nemotron 3.5 Super VL, Qwen3.8 27B, and by inference Qwen3.5 27B and Qwen3.6 27B) scores under 20%, and most score 0 on both benchmarks. On laptops and 16 GB machines there is currently no model that does long coding tasks.
+**Best pick: Qwen3.8 27B (Xhigh), 19% of Sonnet 5.5.** Terminal-Bench 4.0 5.6, FrontierCode 2.0 14.9, Apache-2.0 license. It needs about 21 GB at 4-bit with a 32K context (16.8 GB file, per LLM Sizer's worked example), so it fits a 32 GB Mac or a 24 GB graphics card. It is the strongest small model that is not in Tier 1, but at 19% it rarely finishes a long task, so use it for short, well-scoped coding only.
+
+Every other small model measured (Gemma 4 31B, Gemma 4 E4B, Granite 4.2 8B, gpt-oss-120b, Nemotron 3.5 Super VL, Qwen3.8 27B, and by inference Qwen3.5 27B and Qwen3.6 27B) scores under 20%, and most score 0 on both benchmarks. On laptops and 16 GB machines there is currently no model that does long coding tasks.
 
 ## Missing data and indirect comparisons
 
