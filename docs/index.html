@@ -34,7 +34,12 @@
       </p>
     </section>
 
-    <section id="tiers" class="card">
+    <div class="tabs" role="tablist" aria-label="Model type">
+      <button type="button" role="tab" id="tab-local" class="tab" aria-selected="true" aria-controls="panel-local">Local</button>
+      <button type="button" role="tab" id="tab-cloud" class="tab" aria-selected="false" aria-controls="panel-cloud" tabindex="-1">Cloud</button>
+    </div>
+
+    <section id="tiers" class="card" role="tabpanel" aria-labelledby="tab-local">
       <div class="card-head">
         <h2>Tier table</h2>
         <p class="muted">The leader of each tier: its share of Sonnet 5.5's long-coding score, the Artificial Analysis Intelligence Index v5.0.1 with the Coding Agent Index v2.1 in brackets, and its size (total parameters, with active parameters for mixture-of-experts models). "Explain" opens the article's reasoning for that tier; "more" shows the other models in the tier. Model names link to their source. Data file: <a href="data/long-coding-tasks-2026-11-17.csv">long-coding-tasks-2026-11-17.csv</a>.</p>
@@ -65,6 +70,19 @@
         evaluations, shown so every model is rated on one scale. It is not the basis of the tiers: it rates Nanbeige4.3-33B and
         Qwen3.8 27B almost equally, although Nanbeige is about twice as good on long coding tasks.
       </p>
+    </section>
+
+    <section id="panel-cloud" class="card" role="tabpanel" aria-labelledby="tab-cloud" hidden>
+      <div class="card-head">
+        <h2>Cloud models</h2>
+        <p class="muted">Cloud-only models in the data file, with their share of Sonnet 5.5's long-coding score. Local picks are on the Local tab.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th scope="col">Model</th><th scope="col" class="num">Share of Sonnet 5.5</th><th scope="col" class="num">Intelligence Index <span class="th-sub">(Coding Agent Index)</span></th></tr></thead>
+          <tbody id="cloud-rows"><tr><td colspan="3" class="muted">Loading data…</td></tr></tbody>
+        </table>
+      </div>
     </section>
 
     <section id="chart" class="card">
