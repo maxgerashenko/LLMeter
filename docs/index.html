@@ -38,7 +38,7 @@
     <section id="tiers" class="card">
       <div class="card-head">
         <h2>Tier table</h2>
-        <p class="muted">Share of Sonnet 5.5's long-coding score, the Artificial Analysis Intelligence Index v5.0.1 with the Coding Agent Index v2.1 in brackets, and the best model per tier.</p>
+        <p class="muted">Share of Sonnet 5.5's long-coding score, the Artificial Analysis Intelligence Index v5.0.1 with the Coding Agent Index v2.1 in brackets, the best model per tier, and its size (total parameters, with active parameters for mixture-of-experts models).</p>
       </div>
       <div class="table-scroll">
         <table class="tier-table">
@@ -48,10 +48,11 @@
               <th scope="col" class="num">Share of Sonnet 5.5</th>
               <th scope="col" class="num">Intelligence Index <span class="th-sub">(Coding Agent Index)</span></th>
               <th scope="col">Best model</th>
+              <th scope="col" class="num params">Params (B)</th>
             </tr>
           </thead>
           <tbody id="tier-rows">
-            <tr><td colspan="4" class="muted">Loading data…</td></tr>
+            <tr><td colspan="5" class="muted">Loading data…</td></tr>
           </tbody>
         </table>
       </div>
@@ -119,7 +120,7 @@
               <th scope="col" class="num">Coding Agent Index</th>
               <th scope="col" class="num">Terminal-Bench 4.0</th>
               <th scope="col" class="num">FrontierCode 2.0</th>
-              <th scope="col" class="num">Params (B)</th>
+              <th scope="col" class="num">Params</th>
             </tr>
           </thead>
           <tbody id="data-rows"></tbody>
