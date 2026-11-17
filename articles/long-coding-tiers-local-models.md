@@ -43,6 +43,16 @@ Because the Coding Agent Index does not cover small local models, the tiers use 
 
 METR time horizons were not used for the tiers, because the current METR data (Time Horizon 1.1, last updated 2026-09-08, [page](https://metr.org/time-horizons/), [raw data](https://metr.org/assets/benchmark_results_1_1.yaml)) has **no Sonnet 5.x and no open-weights model**. METR also says the page is no longer actively updated. See [Missing data](#missing-data-and-indirect-comparisons).
 
+## The best benchmark for long coding tasks
+
+**The Artificial Analysis Coding Agent Index v2.1 is the best fit**, so it is LLMeter's primary benchmark for long coding tasks wherever a model has a score. Reasons:
+
+- It runs each model inside a real coding agent (Claude Code, Kimi Code CLI, Opencode and so on) rather than a bare API loop, which is how people use these models.
+- Its tasks are long: 41 to 87 minutes and 100 to 250 steps per task for the top models.
+- It mixes repository changes graded on merge quality, terminal work and repository understanding, three attempts per task, with checks for reward hacking.
+
+Its limit is coverage: only about 29 agent and model pairs, with no model under 500B parameters. For models without a Coding Agent Index score, the tiers use the average of Terminal-Bench 4.0 and FrontierCode 2.0, two of its three parts, and say so. Where both exist the rankings agree.
+
 ## The data
 
 Scores read from Artificial Analysis on 2026-11-17. "Long-coding score" is the average of Terminal-Bench 4.0 and FrontierCode 2.0. Parameters are in billions; where Artificial Analysis and LLM Sizer disagree, both are shown.
