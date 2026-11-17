@@ -33,13 +33,33 @@ Only publicly available sources are used, such as:
 
 Every data point should keep a reference to where it came from, so results can be checked and reproduced.
 
-## Approach
+## How it works
 
-1. **Collect**: gather raw information about models from public sources.
-2. **Normalize**: clean the data into a consistent schema (units, names, dates).
-3. **Measure**: track metrics over time to quantify model progress.
-4. **Analyze**: study how factors like compute, data and architecture relate to progress.
+```
+public source  ->  analysis (written up from a chat)  ->  article  ->  web page update
+```
+
+1. **Source**: a public source about LLMs is found and added to the resources list.
+2. **Analysis**: the source is analysed in a chat, and the result is saved as an article on one aspect of LLM progress (for example compute, data, cost or benchmarks).
+3. **Publish**: the article is added to the website, which updates the public page.
+
+## Project structure
+
+The planned layout of the repository:
+
+| Path | What it holds |
+| --- | --- |
+| `RESOURCES.md` | The list of all public sources used, each with a link and a short note |
+| `articles/` | Analysis articles, one Markdown file per topic or finding |
+| `docs/` | The public website, published with GitHub Pages |
+| `data/` | Structured data collected about models (planned) |
+
+## Website
+
+The project's findings are published as a public website on GitHub Pages, built from the `docs/` folder. Each new article becomes a page on the site, so the website always reflects the latest analysis.
+
+Once Pages is turned on, the site will be at https://maxgerashenko.github.io/LLMeter/.
 
 ## Contributing
 
-Ideas, data sources and corrections are welcome. Please open an issue or a pull request, and include a source link for any data you add.
+Ideas, data sources and corrections are welcome. Add new sources to `RESOURCES.md`, put analysis in `articles/`, and include a source link for any data you add.
