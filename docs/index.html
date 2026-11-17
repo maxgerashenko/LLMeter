@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLMeter: long coding tiers</title>
+  <meta name="description" content="Intelligence tiers for long coding tasks, measured against Claude Sonnet 5.5, with the best local (open-weights) model in each tier.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
+      <nav class="nav">
+        <a href="#tiers">Tiers</a>
+        <a href="#chart">Chart</a>
+        <a href="#method">Method</a>
+        <a href="#data">Data</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">Long coding tasks · snapshot <span data-read-date>2026-11-17</span></p>
+      <h1>Best local model in each intelligence tier</h1>
+      <p class="lede">
+        Tiers are bands of a long-coding score expressed as a share of
+        <strong>Claude Sonnet 5.5</strong>, the cloud model used as the top (Max) tier.
+        Each lower tier shows the highest-scoring open-weights model you can run yourself.
+      </p>
+    </section>
+
+    <section id="tiers" class="card">
+      <div class="card-head">
+        <h2>Tier table</h2>
+        <p class="muted">Share of Sonnet 5.5's long-coding score, the Artificial Analysis Intelligence Index v5.0.1 with the Coding Agent Index v2.1 in brackets, and the best model per tier.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="tier-table">
+          <thead>
+            <tr>
+              <th scope="col">Tier</th>
+              <th scope="col" class="num">Share of Sonnet 5.5</th>
+              <th scope="col" class="num">Intelligence Index <span class="th-sub">(Coding Agent Index)</span></th>
+              <th scope="col">Best model</th>
+            </tr>
+          </thead>
+          <tbody id="tier-rows">
+            <tr><td colspan="4" class="muted">Loading data…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        <span class="pill pill-muted">not scored</span>
+        means the Artificial Analysis Coding Agent Index does not cover that model (it only includes large models),
+        not that the model scored zero. Those tiers rest on Terminal-Bench 4.0 and FrontierCode 2.0 alone.
+      </p>
+      <p class="note">
+        The <a href="https://artificialanalysis.ai/models">Intelligence Index</a> is a general index across all of Artificial Analysis's
+        evaluations, shown so every model is rated on one scale. It is not the basis of the tiers: it rates Nanbeige4.3-33B and
+        Qwen3.8 27B almost equally, although Nanbeige is about twice as good on long coding tasks.
+      </p>
+    </section>
+
+    <section id="chart" class="card">
+      <div class="card-head">
+        <h2>All models, share of Sonnet 5.5</h2>
+        <p class="muted">Long-coding score (average of Terminal-Bench 4.0 and FrontierCode 2.0) as a percentage of Sonnet 5.5's 52.7. Dashed lines are tier edges. Open-weights models are coloured by tier; cloud models are grey.</p>
+      </div>
+      <div id="bars" class="bars" role="img" aria-label="Bar chart of each model's long-coding score as a share of Sonnet 5.5"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+
+    <section id="method" class="card prose">
+      <h2>How the tiers were defined</h2>
+      <p>
+        Every model is compared on <strong>long coding tasks</strong>: multi-step agent work in real repositories and terminals,
+        where one task takes tens of minutes and hundreds of steps. The score used for tiers is the average of
+        <a href="https://artificialanalysis.ai/evaluations/terminalbench-4-0">Terminal-Bench 4.0</a> and
+        <a href="https://artificialanalysis.ai/evaluations/frontiercode-2-0">FrontierCode 2.0</a>,
+        divided by Sonnet 5.5's average. Both run on every model Artificial Analysis tests, including small open ones.
+      </p>
+      <ul class="band-list" id="band-list"></ul>
+      <p>
+        The band edges are a <strong>judgement call</strong>, placed where the data has natural gaps
+        (nothing open sits between 60% and 88%). The best model in a tier is the open-weights model with the highest long-coding score in that band.
+        Where a model also has a <a href="https://artificialanalysis.ai/agents/coding-agents">Coding Agent Index</a> score
+        (which runs each model inside a real coding agent), it agrees with this ranking for the top open models.
+      </p>
+      <p>
+        Scores were measured at full precision through APIs. A quantized local build will usually score somewhat lower.
+        Read the full analysis, hardware needs for each pick, and caveats in the article:
+        <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/long-coding-tiers-local-models.md">Long coding tasks: intelligence tiers and the best local model in each</a>
+        (<a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/long-coding-tiers-local-models.md#how-tiers-are-defined">how tiers are defined</a>,
+        <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/long-coding-tiers-local-models.md#the-picks-with-hardware">hardware</a>,
+        <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/long-coding-tiers-local-models.md#missing-data-and-indirect-comparisons">missing data</a>).
+      </p>
+    </section>
+
+    <section id="data" class="card">
+      <div class="card-head">
+        <h2>Full data</h2>
+        <p class="muted">Every model in the comparison. Model names link to their source. Data file:
+          <a href="data/long-coding-tasks-2026-11-17.csv">long-coding-tasks-2026-11-17.csv</a>.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th scope="col">Model</th>
+              <th scope="col">Tier</th>
+              <th scope="col" class="num">% of Sonnet</th>
+              <th scope="col" class="num">Intelligence Index</th>
+              <th scope="col" class="num">Coding Agent Index</th>
+              <th scope="col" class="num">Terminal-Bench 4.0</th>
+              <th scope="col" class="num">FrontierCode 2.0</th>
+              <th scope="col" class="num">Params (B)</th>
+            </tr>
+          </thead>
+          <tbody id="data-rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        Data from <a href="https://artificialanalysis.ai/">Artificial Analysis</a> and
+        <a href="https://github.com/alexgrankinukr-hash/llm-sizer-data">LLM Sizer data</a>, read <span data-read-date>2026-11-17</span>.
+        LLMeter is an independent project, <a href="https://github.com/maxgerashenko/LLMeter">source on GitHub</a>.
+      </p>
+    </div>
+  </footer>
+
+  <script src="assets/tiers.js"></script>
+</body>
+</html>
