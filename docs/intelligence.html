@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLMeter: intelligence as work time</title>
+  <meta name="description" content="How much expert work time frontier models can do on their own, and how their success rate falls from 50% to 100% reliability as tasks get longer. METR time horizons.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/intelligence.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
+      <nav class="nav">
+        <a href="./">Tiers</a>
+        <a href="intelligence.html" aria-current="page">Intelligence</a>
+        <a href="sources.html">Sources</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">METR time horizons · read <span>2026-11-17</span></p>
+      <h1>How much expert work can a model do on its own?</h1>
+      <p class="lede">
+        METR measures the <strong>time horizon</strong>: how long a task is, in hours an expert human needs for it,
+        when the AI agent finishes it 50% of the time. Below, that is mapped to a working day and week, followed by the
+        success curve from 50% up to 100%.
+      </p>
+    </section>
+
+    <section class="card" id="horizon">
+      <div class="card-head">
+        <h2>1. Expert work time at 50% success</h2>
+        <p class="muted">Each bar is the task length (in expert human time) a model completes half of the time, as published by METR. Dashed lines are plain arithmetic: one 8-hour working day and one 40-hour working week.</p>
+      </div>
+      <div class="ctl">
+        <label for="ctx">Context speed-up for a senior developer who already knows the codebase:
+          <strong id="ctx-val">1×</strong></label>
+        <input id="ctx" type="range" min="1" max="10" step="0.5" value="1">
+        <p class="note" id="ctx-note"></p>
+      </div>
+      <div id="hbars" class="hbars" role="img" aria-label="Bar chart of each model's 50% time horizon in hours of expert work"></div>
+      <div class="table-scroll"><table class="data-table" id="hr-table"></table></div>
+    </section>
+
+    <section class="card prose" id="fromsources">
+      <h2>2. How long a model works on its own, from the sources</h2>
+      <ul class="plain" id="facts"></ul>
+    </section>
+
+    <section class="card" id="curve">
+      <div class="card-head">
+        <h2>3. From 50% to 100% success: the reliability curve</h2>
+        <p class="muted">Success rate as a function of task length (expert human time, log scale). Every curve starts near 100% on very short tasks and reaches 50% at the model's time horizon. The curves are <strong>derived</strong> from METR's two published points (50% and 80%) with a logistic in log task length; they are not METR's own plotted curves.</p>
+      </div>
+      <div id="curves" class="curves"></div>
+      <div class="legend" id="curve-legend"></div>
+      <div class="table-scroll"><table class="data-table" id="rel-table"></table></div>
+      <p class="note">METR does not publish a 99% horizon: it says measuring it would need many more, very short tasks, and results would be sensitive to methodology. The 90% and 95% columns are extrapolations from the two published points. Treat them as estimates.</p>
+    </section>
+
+    <section class="card prose" id="caveats">
+      <h2>What is sourced and what is assumed</h2>
+      <p><strong>Sourced:</strong> every model's 50% and 80% horizon, release date and the doubling time, from METR's data file (METR-Horizon-v1.1). Data file here: <a href="data/metr-time-horizons-1-1.csv">metr-time-horizons-1-1.csv</a>.</p>
+      <p><strong>Derived by LLMeter:</strong> the curves, and the 90% and 95% lengths, from the two published points.</p>
+      <p><strong>Assumption, not data:</strong> the "senior developer with 8 years of experience who knows the codebase". METR's human baseliners had about 5 years of relevant experience and little or no context for the task, and METR warns that a time horizon is not "hours of work a high-context professional does in their day-to-day job". No public source gives the speed-up for a developer who knows the codebase, so the slider starts at 1× (METR's own units). If you set it to 3×, a task METR counts as 3 hours is treated as 1 hour for that developer, so the model's horizon in that developer's time shrinks to a third.</p>
+      <p><strong>Not covered:</strong> METR has no Claude Sonnet 5.x or Fable 5.x, and no open-weights model, so none of those can be placed on this page. This list is a selection of METR's entries from 2023 on, not all of them.</p>
+      <p class="muted">Sources: <a href="https://metr.org/time-horizons/">METR Time Horizons</a>, <a href="https://metr.org/assets/benchmark_results_1_1.yaml">raw data</a>, <a href="https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/">the original paper post</a>. Read 2026-11-17.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>LLMeter is an independent project, <a href="https://github.com/maxgerashenko/LLMeter">source on GitHub</a>.</p>
+    </div>
+  </footer>
+  <script src="assets/intelligence.js"></script>
+</body>
+</html>
