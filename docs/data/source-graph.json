@@ -1,0 +1,1090 @@
+{
+  "title": "LLMeter source graph",
+  "root": "llmeter",
+  "read_on": "2026-11-17",
+  "notes": "Edges point from a source to the source it cites or draws data from. Level = shortest distance from the LLMeter website (level 0). 'read' is the date a page was opened; null means the node is named by its parent but was not opened. 'status' says whether a node was expanded and, if not, why.",
+  "nodes": [
+    {
+      "id": "llmeter",
+      "title": "LLMeter website",
+      "publisher": "LLMeter",
+      "url": "https://maxgerashenko.github.io/LLMeter/",
+      "kind": "website",
+      "read": null,
+      "status": "expanded",
+      "note": "Level 0. The project's public page; every level-1 source is listed in RESOURCES.md."
+    },
+    {
+      "id": "llm-sizer",
+      "title": "LLM Sizer",
+      "publisher": "The AI Bridge (built by Alex Grankin)",
+      "url": "https://www.theaibridges.com/tools/llm-sizer",
+      "kind": "tool",
+      "read": "2026-11-17",
+      "status": "expanded",
+      "note": "Estimates which open models fit a machine (e.g. Mac Studio M5 Ultra) and how fast they run. Methodology: https://www.theaibridges.com/tools/llm-sizer/about"
+    },
+    {
+      "id": "artificial-analysis",
+      "title": "Artificial Analysis",
+      "publisher": "Artificial Analysis",
+      "url": "https://artificialanalysis.ai/",
+      "kind": "leaderboard",
+      "read": "2026-11-17",
+      "status": "expanded",
+      "note": "Independent benchmarks of model quality, price, speed and latency. Intelligence Index v5.0.1 as read. Methodology: https://artificialanalysis.ai/methodology"
+    },
+    {
+      "id": "metr-blog",
+      "title": "Measuring AI Ability to Complete Long Tasks",
+      "publisher": "METR (Kwa, West, Becker et al.), 2025-03-19",
+      "url": "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/",
+      "kind": "article",
+      "read": "2026-11-17",
+      "status": "expanded",
+      "note": "Introduces the 50% time horizon; finds it doubled about every 7 months from 2019 to 2025."
+    },
+    {
+      "id": "mba-note",
+      "title": "How Many Agents Make an Engineer",
+      "publisher": "Max Gerashenko, modernMBA repo",
+      "url": "https://github.com/maxgerashenko/modernMBA/blob/main/research/ai-developer-replacement-usa.md",
+      "kind": "report",
+      "read": "2026-11-17",
+      "status": "expanded",
+      "note": "Cost of AI coding agents on owned GPU racks vs. US engineer pay, L1 to L7."
+    },
+    {
+      "id": "llm-sizer-data",
+      "title": "llm-sizer-data (open data and formulas)",
+      "publisher": "Alex Grankin",
+      "url": "https://github.com/alexgrankinukr-hash/llm-sizer-data",
+      "kind": "dataset",
+      "read": "2026-11-17",
+      "status": "expanded",
+      "note": "machines.json, benchmarks.json, factors.json, model records, FORMULAS.md."
+    },
+    {
+      "id": "hf-hub",
+      "title": "Hugging Face Hub API (model sizes, config.json)",
+      "publisher": "Hugging Face",
+      "url": "https://huggingface.co/",
+      "kind": "dataset",
+      "read": null,
+      "status": "not expanded: aggregator of thousands of uploads; expanded only to the groups LLM Sizer names",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "apple-specs",
+      "title": "Apple Mac technical specifications and configurator",
+      "publisher": "Apple",
+      "url": "https://www.apple.com/mac/compare/",
+      "kind": "spec",
+      "read": null,
+      "status": "primary data (manufacturer spec)",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "nvidia-specs",
+      "title": "NVIDIA published system specs (DGX Spark, GB200 NVL72)",
+      "publisher": "NVIDIA",
+      "url": "https://www.nvidia.com/en-us/data-center/gb200-nvl72/",
+      "kind": "spec",
+      "read": null,
+      "status": "primary data (manufacturer spec)",
+      "note": "named in the citing source; not opened; also used by the modernMBA note for GB200 NVL72 bandwidth and GPU counts"
+    },
+    {
+      "id": "llamacpp-bench",
+      "title": "llama.cpp community Apple-silicon benchmark table",
+      "publisher": "ggml-org / llama.cpp community",
+      "url": "https://github.com/ggml-org/llama.cpp/discussions/4167",
+      "kind": "dataset",
+      "read": null,
+      "status": "expanded",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "omlx-bench",
+      "title": "oMLX community benchmark database",
+      "publisher": "oMLX",
+      "url": "https://omlx.ai/",
+      "kind": "dataset",
+      "read": null,
+      "status": "not expanded: site not opened",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "hw-reviews",
+      "title": "M5 Ultra reviews and measurements (Tom's Hardware, MacStories, Alex Ziskind, mac-llm-bench)",
+      "publisher": "",
+      "url": "",
+      "kind": "article",
+      "read": null,
+      "status": "not expanded: cited by name only, no links given",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "runtimes",
+      "title": "Local inference runtimes (MLX, mlx-lm, LM Studio, Ollama, vLLM, exo)",
+      "publisher": "",
+      "url": "https://github.com/ml-explore/mlx",
+      "kind": "code",
+      "read": null,
+      "status": "not expanded: software, not a data source",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "hf-model-publishers",
+      "title": "Model publishers' configs and model cards (e.g. Qwen, Meta Llama, Mistral, Google Gemma)",
+      "publisher": "",
+      "url": "",
+      "kind": "dataset",
+      "read": null,
+      "status": "primary data (publisher's own model files)",
+      "note": "Inferred: Hugging Face config.json files are uploaded by each model's publisher."
+    },
+    {
+      "id": "quantizers",
+      "title": "Quantized model uploads (Unsloth, Bartowski, LM Studio community, mlx-community, ggml-org)",
+      "publisher": "",
+      "url": "",
+      "kind": "dataset",
+      "read": null,
+      "status": "not expanded: each upload derives from a publisher model (see previous node)",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "llamacpp",
+      "title": "llama.cpp / ggml (inference engine used for the measurements)",
+      "publisher": "",
+      "url": "https://github.com/ggml-org/llama.cpp",
+      "kind": "code",
+      "read": null,
+      "status": "not expanded: software, not a data source",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "hle-diamond",
+      "title": "HLE-Diamond (Humanity's Last Exam subset)",
+      "publisher": "Center for AI Safety and Scale AI, 2026-09-22",
+      "url": "https://lastexam.ai/blog/hle-diamond",
+      "kind": "benchmark",
+      "read": "2026-11-17",
+      "status": "expanded",
+      "note": "Refined 1,000-question subset of HLE."
+    },
+    {
+      "id": "terminal-bench",
+      "title": "Terminal-Bench 4.0",
+      "publisher": "Stanford researchers and the Laude Institute",
+      "url": "https://www.tbench.ai/",
+      "kind": "benchmark",
+      "read": null,
+      "status": "not expanded: tasks written by contributors; dataset at https://github.com/harbor-framework/terminal-bench",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "terminal-bench-science",
+      "title": "Terminal-Bench-Science 0.1",
+      "publisher": "Stanford, Terminal-Bench and Harbor team",
+      "url": "https://terminal-bench-science.ai/",
+      "kind": "benchmark",
+      "read": null,
+      "status": "not expanded: tasks contributed by scientists",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "automationbench",
+      "title": "AutomationBench (arXiv 2604.18934)",
+      "publisher": "Zapier",
+      "url": "https://arxiv.org/abs/2604.18934",
+      "kind": "benchmark",
+      "read": null,
+      "status": "not expanded: paper not opened",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "gdp-pdf",
+      "title": "GDP.pdf (arXiv 2607.11192)",
+      "publisher": "Surge AI",
+      "url": "https://surgehq.ai/benchmarks/gdp-pdf",
+      "kind": "benchmark",
+      "read": null,
+      "status": "not expanded: paper not opened",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "frontiercode",
+      "title": "FrontierCode 2.0",
+      "publisher": "Cognition",
+      "url": "https://cognition.com/blog/frontier-code-2.0",
+      "kind": "benchmark",
+      "read": null,
+      "status": "not expanded: built with open-source repo maintainers; post not opened",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "aa-omniscience",
+      "title": "AA-Omniscience (arXiv 2511.13029)",
+      "publisher": "Artificial Analysis",
+      "url": "https://arxiv.org/abs/2511.13029",
+      "kind": "benchmark",
+      "read": null,
+      "status": "not expanded: paper not opened",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "aa-briefcase",
+      "title": "AA-Briefcase",
+      "publisher": "Artificial Analysis",
+      "url": "https://huggingface.co/datasets/ArtificialAnalysis/AA-Briefcase-Lite",
+      "kind": "benchmark",
+      "read": null,
+      "status": "primary data (Artificial Analysis's own benchmark)",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "critpt",
+      "title": "CritPt v2 (Hard Subset)",
+      "publisher": "",
+      "url": "https://artificialanalysis.ai/evaluations/critpt-v2",
+      "kind": "benchmark",
+      "read": null,
+      "status": "not expanded: Artificial Analysis gives no origin or link",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "provider-apis",
+      "title": "Model providers' API list prices and live endpoints",
+      "publisher": "",
+      "url": "https://artificialanalysis.ai/methodology/performance-benchmarking",
+      "kind": "dataset",
+      "read": "2026-11-17",
+      "status": "primary data (measured by Artificial Analysis against provider APIs)",
+      "note": "Prices are providers' listed rates; speed is measured over the past 5 days."
+    },
+    {
+      "id": "hle-paper",
+      "title": "Humanity's Last Exam (arXiv 2501.14249)",
+      "publisher": "Phan et al., CAIS and Scale AI, 2025",
+      "url": "https://arxiv.org/abs/2501.14249",
+      "kind": "paper",
+      "read": null,
+      "status": "expanded",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "hle-experts",
+      "title": "Questions written by subject-matter experts worldwide",
+      "publisher": "",
+      "url": "https://lastexam.ai/",
+      "kind": "dataset",
+      "read": null,
+      "status": "primary data (original expert-written questions)",
+      "note": "Per HLE-Diamond post: contributors and experts created and refined the questions."
+    },
+    {
+      "id": "metr-paper",
+      "title": "Measuring AI Ability to Complete Long Software Tasks (arXiv 2503.14499)",
+      "publisher": "METR, v1 2025-03-18, v4 2026-07-10",
+      "url": "https://arxiv.org/abs/2503.14499",
+      "kind": "paper",
+      "read": "2026-11-17",
+      "status": "expanded",
+      "note": "Full paper behind the blog post."
+    },
+    {
+      "id": "metr-th",
+      "title": "METR Time Horizons page and TH 1.1 data",
+      "publisher": "METR",
+      "url": "https://metr.org/time-horizons/",
+      "kind": "dataset",
+      "read": "2026-11-17",
+      "status": "expanded",
+      "note": "Current 50%/80% horizons; TH 1.1 announced 2026-01-29; raw data https://metr.org/assets/benchmark_results_1_1.yaml"
+    },
+    {
+      "id": "hcast",
+      "title": "HCAST: Human-Calibrated Autonomy Software Tasks (arXiv 2503.17354)",
+      "publisher": "METR (Rein et al.), 2025",
+      "url": "https://arxiv.org/abs/2503.17354",
+      "kind": "benchmark",
+      "read": "2026-11-17",
+      "status": "expanded",
+      "note": ""
+    },
+    {
+      "id": "re-bench",
+      "title": "RE-Bench: Evaluating frontier AI R&D capabilities (arXiv 2411.15114)",
+      "publisher": "METR, 2024-11-22",
+      "url": "https://metr.org/blog/2024-11-22-evaluating-r-d-capabilities-of-llms/",
+      "kind": "benchmark",
+      "read": "2026-11-17",
+      "status": "expanded",
+      "note": "7 ML research-engineering environments."
+    },
+    {
+      "id": "swe-bench-verified",
+      "title": "SWE-bench Verified",
+      "publisher": "OpenAI, 2024",
+      "url": "https://openai.com/index/introducing-swe-bench-verified/",
+      "kind": "benchmark",
+      "read": null,
+      "status": "expanded",
+      "note": "named in the citing source; not opened (named, not linked, in the METR post)"
+    },
+    {
+      "id": "eval-analysis",
+      "title": "METR eval-analysis-public (code and fits)",
+      "publisher": "METR",
+      "url": "https://github.com/METR/eval-analysis-public",
+      "kind": "code",
+      "read": null,
+      "status": "not expanded: analysis code",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "essays",
+      "title": "Background essays (Ngo 't-AGI', Cotra Bio Anchors, Forethought, Amodei 'Machines of Loving Grace')",
+      "publisher": "",
+      "url": "https://www.alignmentforum.org/posts/BoA3agdkAzL6HQtQP/clarifying-and-predicting-agi",
+      "kind": "essay",
+      "read": null,
+      "status": "not expanded: framing references, not data",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "swaa",
+      "title": "66 novel short software tasks (SWAA), timed with human experts",
+      "publisher": "METR",
+      "url": "https://arxiv.org/abs/2503.14499",
+      "kind": "benchmark",
+      "read": null,
+      "status": "primary data (METR's own tasks and human timings)",
+      "note": "Part of the METR paper's task suite."
+    },
+    {
+      "id": "hcast-public",
+      "title": "hcast-public (METR task examples)",
+      "publisher": "METR",
+      "url": "https://github.com/METR/hcast-public",
+      "kind": "code",
+      "read": null,
+      "status": "primary data (METR's own tasks)",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "picoctf",
+      "title": "picoCTF challenges",
+      "publisher": "Carnegie Mellon University",
+      "url": "https://picoctf.org/",
+      "kind": "dataset",
+      "read": null,
+      "status": "primary data (CTF challenges by Carnegie Mellon)",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "hackthebox",
+      "title": "HackTheBox challenges",
+      "publisher": "Hack The Box",
+      "url": "https://www.hackthebox.com/",
+      "kind": "dataset",
+      "read": null,
+      "status": "primary data (commercial CTF platform)",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "task-bounty",
+      "title": "METR task bounty (46 externally contributed tasks)",
+      "publisher": "METR",
+      "url": "https://taskdev.metr.org/introduction/",
+      "kind": "dataset",
+      "read": null,
+      "status": "primary data (contributed tasks)",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "vivaria",
+      "title": "Vivaria (METR evaluation platform)",
+      "publisher": "METR",
+      "url": "https://github.com/METR/vivaria",
+      "kind": "code",
+      "read": null,
+      "status": "not expanded: software",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "react",
+      "title": "ReAct: Synergizing Reasoning and Acting (arXiv 2210.03629)",
+      "publisher": "Yao et al., 2023",
+      "url": "https://arxiv.org/abs/2210.03629",
+      "kind": "paper",
+      "read": null,
+      "status": "expanded",
+      "note": "named in the citing source; not opened; agent scaffolds follow its design"
+    },
+    {
+      "id": "ai-rd-tasks",
+      "title": "ai-rd-tasks (RE-Bench environments)",
+      "publisher": "METR",
+      "url": "https://github.com/METR/ai-rd-tasks",
+      "kind": "code",
+      "read": null,
+      "status": "primary data (METR's own environments, built from scratch)",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "llm-foundry",
+      "title": "LLM Foundry",
+      "publisher": "MosaicML / Databricks",
+      "url": "https://github.com/mosaicml/llm-foundry",
+      "kind": "code",
+      "read": null,
+      "status": "not expanded: software",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "gpt2",
+      "title": "GPT-2 small (model used in an RE-Bench environment)",
+      "publisher": "OpenAI",
+      "url": "https://github.com/openai/gpt-2",
+      "kind": "code",
+      "read": null,
+      "status": "expanded",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "openwebtext",
+      "title": "OpenWebText corpus",
+      "publisher": "Gokaslan and Cohen, 2019",
+      "url": "https://skylion007.github.io/OpenWebTextCorpus/",
+      "kind": "dataset",
+      "read": null,
+      "status": "expanded",
+      "note": "named in the citing source; not opened; an open re-creation of GPT-2's WebText"
+    },
+    {
+      "id": "epoch-taxonomy",
+      "title": "Epoch AI taxonomy of key areas of AI R&D",
+      "publisher": "Epoch AI",
+      "url": "https://epoch.ai/",
+      "kind": "report",
+      "read": null,
+      "status": "not expanded: not linked by METR",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "gpt2-paper",
+      "title": "Language Models are Unsupervised Multitask Learners (GPT-2 paper)",
+      "publisher": "Radford et al., OpenAI, 2019",
+      "url": "https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf",
+      "kind": "paper",
+      "read": null,
+      "status": "expanded",
+      "note": "Not opened; well-known reference."
+    },
+    {
+      "id": "webtext",
+      "title": "WebText: web pages linked from Reddit posts with 3+ karma",
+      "publisher": "OpenAI",
+      "url": "",
+      "kind": "dataset",
+      "read": null,
+      "status": "primary data (scraped web pages); level-5 leaf",
+      "note": "Described in the GPT-2 paper; not opened."
+    },
+    {
+      "id": "react-benchmarks",
+      "title": "ReAct evaluation tasks (HotpotQA, FEVER, ALFWorld, WebShop)",
+      "publisher": "",
+      "url": "",
+      "kind": "benchmark",
+      "read": null,
+      "status": "expanded",
+      "note": "Named in the ReAct paper; not opened."
+    },
+    {
+      "id": "wikipedia",
+      "title": "Wikipedia (source articles for HotpotQA and FEVER)",
+      "publisher": "Wikimedia",
+      "url": "https://www.wikipedia.org/",
+      "kind": "dataset",
+      "read": null,
+      "status": "primary data; level-5 leaf",
+      "note": "Not opened."
+    },
+    {
+      "id": "swe-bench",
+      "title": "SWE-bench (arXiv 2310.06770)",
+      "publisher": "Jimenez et al., Princeton, 2023",
+      "url": "https://arxiv.org/abs/2310.06770",
+      "kind": "benchmark",
+      "read": null,
+      "status": "expanded",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "github-issues",
+      "title": "Real GitHub issues and pull requests from 12 popular Python repositories",
+      "publisher": "",
+      "url": "https://github.com/",
+      "kind": "dataset",
+      "read": null,
+      "status": "primary data (open-source project history)",
+      "note": "Not opened; as described in the SWE-bench paper."
+    },
+    {
+      "id": "mba-indep",
+      "title": "Independent memo: AI developer agents in the USA",
+      "publisher": "modernMBA repo, dated 2026-11-10",
+      "url": "https://github.com/maxgerashenko/modernMBA/blob/main/research/ai-developer-agents-independent-usa.md",
+      "kind": "report",
+      "read": "2026-11-17",
+      "status": "expanded",
+      "note": "Second memo used as a cross-check; source of the failure-based agent counts."
+    },
+    {
+      "id": "bls-oews",
+      "title": "BLS Occupational Employment and Wage Statistics, May 2025 (SOC 15-1252, 15-1253)",
+      "publisher": "US Bureau of Labor Statistics",
+      "url": "https://www.bls.gov/oes/",
+      "kind": "dataset",
+      "read": null,
+      "status": "primary data (government survey)",
+      "note": "named in the citing source; not opened; 1,717,800 developers + 187,600 QA testers in the note; 1,687,890 jobs in the memo"
+    },
+    {
+      "id": "rack-supply",
+      "title": "GB200/GB300 rack supply (Morgan Stanley via Wallstreetcn; TrendForce Aug 2026)",
+      "publisher": "",
+      "url": "",
+      "kind": "report",
+      "read": null,
+      "status": "not expanded: cited by name only, no links given",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "bnef",
+      "title": "BNEF data-center grid connections (July 2026)",
+      "publisher": "BloombergNEF",
+      "url": "https://about.bnef.com/",
+      "kind": "report",
+      "read": null,
+      "status": "not expanded: cited by name only; likely paywalled",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "google-io",
+      "title": "Google I/O 2026 token volume (3.2 quadrillion tokens/month)",
+      "publisher": "Google",
+      "url": "https://io.google/",
+      "kind": "article",
+      "read": null,
+      "status": "not expanded: cited by name only",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "anthropic-pricing",
+      "title": "Anthropic API list prices (Opus 5.5, Fable 5.1, Sonnet 5.5)",
+      "publisher": "Anthropic",
+      "url": "https://www.anthropic.com/pricing",
+      "kind": "spec",
+      "read": null,
+      "status": "primary data (vendor price list)",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "press-rack-prices",
+      "title": "Press-reported GB200/GB300 rack prices and memory price moves",
+      "publisher": "",
+      "url": "",
+      "kind": "article",
+      "read": null,
+      "status": "not expanded: cited by name only, no links given",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "us-law",
+      "title": "US legal references (WARN Act, US Copyright Office human-authorship guidance)",
+      "publisher": "",
+      "url": "https://www.copyright.gov/ai/",
+      "kind": "report",
+      "read": null,
+      "status": "primary data (law and agency guidance)",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "bls-ecec",
+      "title": "BLS Employer Costs for Employee Compensation, June 2026",
+      "publisher": "US Bureau of Labor Statistics",
+      "url": "https://www.bls.gov/ncs/ect/",
+      "kind": "dataset",
+      "read": null,
+      "status": "primary data (government survey)",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "gpu-rental",
+      "title": "GPU rental prices at specialist clouds (Nov 2026)",
+      "publisher": "",
+      "url": "",
+      "kind": "report",
+      "read": null,
+      "status": "not expanded: cited by name only",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "ai-coding-market",
+      "title": "AI coding tools market reports ($12.8B 2026; Cognition, Cursor, Claude Code revenue)",
+      "publisher": "",
+      "url": "",
+      "kind": "report",
+      "read": null,
+      "status": "not expanded: cited by name only",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "stanford-adp",
+      "title": "Stanford/ADP study of early-career employment (Brynjolfsson, Chandar, Chen 2025)",
+      "publisher": "Stanford Digital Economy Lab",
+      "url": "https://digitaleconomy.stanford.edu/",
+      "kind": "paper",
+      "read": null,
+      "status": "expanded",
+      "note": "named in the citing source; not opened"
+    },
+    {
+      "id": "adp-payroll",
+      "title": "ADP payroll records",
+      "publisher": "ADP",
+      "url": "https://www.adp.com/",
+      "kind": "dataset",
+      "read": null,
+      "status": "primary data (private payroll records, not public)",
+      "note": "As described in the study; not opened."
+    }
+  ],
+  "edges": [
+    {
+      "from": "llmeter",
+      "to": "llm-sizer",
+      "relation": "lists"
+    },
+    {
+      "from": "llmeter",
+      "to": "artificial-analysis",
+      "relation": "lists"
+    },
+    {
+      "from": "llmeter",
+      "to": "metr-blog",
+      "relation": "lists"
+    },
+    {
+      "from": "llmeter",
+      "to": "mba-note",
+      "relation": "lists"
+    },
+    {
+      "from": "llm-sizer",
+      "to": "llm-sizer-data",
+      "relation": "draws data from"
+    },
+    {
+      "from": "llm-sizer",
+      "to": "hf-hub",
+      "relation": "draws data from"
+    },
+    {
+      "from": "llm-sizer",
+      "to": "apple-specs",
+      "relation": "draws data from"
+    },
+    {
+      "from": "llm-sizer",
+      "to": "nvidia-specs",
+      "relation": "draws data from"
+    },
+    {
+      "from": "llm-sizer",
+      "to": "llamacpp-bench",
+      "relation": "draws data from"
+    },
+    {
+      "from": "llm-sizer",
+      "to": "omlx-bench",
+      "relation": "draws data from"
+    },
+    {
+      "from": "llm-sizer",
+      "to": "hw-reviews",
+      "relation": "draws data from"
+    },
+    {
+      "from": "llm-sizer",
+      "to": "runtimes",
+      "relation": "draws data from"
+    },
+    {
+      "from": "llm-sizer-data",
+      "to": "hf-hub",
+      "relation": "draws data from"
+    },
+    {
+      "from": "llm-sizer-data",
+      "to": "apple-specs",
+      "relation": "draws data from"
+    },
+    {
+      "from": "llm-sizer-data",
+      "to": "nvidia-specs",
+      "relation": "draws data from"
+    },
+    {
+      "from": "llm-sizer-data",
+      "to": "llamacpp-bench",
+      "relation": "draws data from"
+    },
+    {
+      "from": "hf-hub",
+      "to": "hf-model-publishers",
+      "relation": "hosts"
+    },
+    {
+      "from": "hf-hub",
+      "to": "quantizers",
+      "relation": "hosts"
+    },
+    {
+      "from": "quantizers",
+      "to": "hf-model-publishers",
+      "relation": "derived from"
+    },
+    {
+      "from": "llamacpp-bench",
+      "to": "llamacpp",
+      "relation": "measured with"
+    },
+    {
+      "from": "artificial-analysis",
+      "to": "hle-diamond",
+      "relation": "evaluates with"
+    },
+    {
+      "from": "artificial-analysis",
+      "to": "terminal-bench",
+      "relation": "evaluates with"
+    },
+    {
+      "from": "artificial-analysis",
+      "to": "terminal-bench-science",
+      "relation": "evaluates with"
+    },
+    {
+      "from": "artificial-analysis",
+      "to": "automationbench",
+      "relation": "evaluates with"
+    },
+    {
+      "from": "artificial-analysis",
+      "to": "gdp-pdf",
+      "relation": "evaluates with"
+    },
+    {
+      "from": "artificial-analysis",
+      "to": "frontiercode",
+      "relation": "evaluates with"
+    },
+    {
+      "from": "artificial-analysis",
+      "to": "aa-omniscience",
+      "relation": "evaluates with"
+    },
+    {
+      "from": "artificial-analysis",
+      "to": "aa-briefcase",
+      "relation": "evaluates with"
+    },
+    {
+      "from": "artificial-analysis",
+      "to": "critpt",
+      "relation": "evaluates with"
+    },
+    {
+      "from": "artificial-analysis",
+      "to": "provider-apis",
+      "relation": "measures"
+    },
+    {
+      "from": "hle-diamond",
+      "to": "hle-paper",
+      "relation": "subset of"
+    },
+    {
+      "from": "hle-paper",
+      "to": "hle-experts",
+      "relation": "collected from"
+    },
+    {
+      "from": "metr-blog",
+      "to": "metr-paper",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-blog",
+      "to": "metr-th",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-blog",
+      "to": "hcast",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-blog",
+      "to": "re-bench",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-blog",
+      "to": "swe-bench-verified",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-blog",
+      "to": "eval-analysis",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-blog",
+      "to": "essays",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-paper",
+      "to": "hcast",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-paper",
+      "to": "re-bench",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-paper",
+      "to": "swe-bench-verified",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-th",
+      "to": "hcast",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-th",
+      "to": "re-bench",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-th",
+      "to": "metr-paper",
+      "relation": "cites"
+    },
+    {
+      "from": "metr-paper",
+      "to": "swaa",
+      "relation": "introduces"
+    },
+    {
+      "from": "metr-th",
+      "to": "swaa",
+      "relation": "cites"
+    },
+    {
+      "from": "hcast",
+      "to": "hcast-public",
+      "relation": "tasks from"
+    },
+    {
+      "from": "hcast",
+      "to": "picoctf",
+      "relation": "tasks from"
+    },
+    {
+      "from": "hcast",
+      "to": "hackthebox",
+      "relation": "tasks from"
+    },
+    {
+      "from": "hcast",
+      "to": "task-bounty",
+      "relation": "tasks from"
+    },
+    {
+      "from": "hcast",
+      "to": "vivaria",
+      "relation": "run on"
+    },
+    {
+      "from": "hcast",
+      "to": "react",
+      "relation": "scaffold based on"
+    },
+    {
+      "from": "metr-blog",
+      "to": "vivaria",
+      "relation": "run on"
+    },
+    {
+      "from": "re-bench",
+      "to": "ai-rd-tasks",
+      "relation": "environments in"
+    },
+    {
+      "from": "re-bench",
+      "to": "llm-foundry",
+      "relation": "uses"
+    },
+    {
+      "from": "re-bench",
+      "to": "gpt2",
+      "relation": "uses"
+    },
+    {
+      "from": "re-bench",
+      "to": "openwebtext",
+      "relation": "uses"
+    },
+    {
+      "from": "re-bench",
+      "to": "epoch-taxonomy",
+      "relation": "coverage measured against"
+    },
+    {
+      "from": "gpt2",
+      "to": "gpt2-paper",
+      "relation": "described in"
+    },
+    {
+      "from": "openwebtext",
+      "to": "gpt2-paper",
+      "relation": "re-creates dataset from"
+    },
+    {
+      "from": "gpt2-paper",
+      "to": "webtext",
+      "relation": "trained on"
+    },
+    {
+      "from": "react",
+      "to": "react-benchmarks",
+      "relation": "evaluated on"
+    },
+    {
+      "from": "react-benchmarks",
+      "to": "wikipedia",
+      "relation": "built from"
+    },
+    {
+      "from": "swe-bench-verified",
+      "to": "swe-bench",
+      "relation": "human-validated subset of"
+    },
+    {
+      "from": "swe-bench",
+      "to": "github-issues",
+      "relation": "built from"
+    },
+    {
+      "from": "mba-note",
+      "to": "mba-indep",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-note",
+      "to": "bls-oews",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-note",
+      "to": "nvidia-specs",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-note",
+      "to": "metr-th",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-note",
+      "to": "rack-supply",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-note",
+      "to": "bnef",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-note",
+      "to": "google-io",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-note",
+      "to": "anthropic-pricing",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-note",
+      "to": "press-rack-prices",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-note",
+      "to": "us-law",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-indep",
+      "to": "bls-oews",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-indep",
+      "to": "bls-ecec",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-indep",
+      "to": "metr-th",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-indep",
+      "to": "anthropic-pricing",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-indep",
+      "to": "gpu-rental",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-indep",
+      "to": "ai-coding-market",
+      "relation": "cites"
+    },
+    {
+      "from": "mba-indep",
+      "to": "stanford-adp",
+      "relation": "cites"
+    },
+    {
+      "from": "stanford-adp",
+      "to": "adp-payroll",
+      "relation": "analyses"
+    }
+  ]
+}
