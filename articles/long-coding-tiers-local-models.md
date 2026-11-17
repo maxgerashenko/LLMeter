@@ -8,6 +8,7 @@ LLMeter now compares models on **long coding tasks**: multi-step agent work in r
 
 | Tier | Long-coding score vs. Sonnet 5.5 | Best local model | What it needs to run (4-bit unless noted) |
 | --- | --- | --- | --- |
+| Above Max (cloud, for context) | 104% | Claude Fable 5.2 (not local) | Anthropic API or Claude Code |
 | **Max** (cloud reference) | 100% | Claude Sonnet 5.5 (not local) | Anthropic API or Claude Code |
 | **Tier 4: near-frontier** | 75% or more | Kimi K3.1 Pro (88%) | Not a personal machine: about 1.5 TB at 4-bit, so four 512 GB Mac Studio M5 Ultras or an 8-GPU datacenter server; a 2-bit build (861 GB) on two 512 GB Mac Studios |
 | **Tier 3: strong** | 55% to 75% | GLM-5.3 (60%) | One 512 GB Mac Studio M5 Ultra (MLX 4-bit build is 418 GB) |
@@ -48,6 +49,8 @@ Scores read from Artificial Analysis on 2026-11-17. "Long-coding score" is the a
 
 | Model | Open weights | Coding Agent Index | Terminal-Bench 4.0 | FrontierCode 2.0 | Long-coding score | % of Sonnet 5.5 | Total / active params |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| Claude Fable 5.2 (Xhigh) | no | 58.5 | 61.6 | 47.6 | 54.6 | 104% | not published |
+| Claude Fable 5.2 (Max) | no | 55.7 | 59.6 | 48.8 | 54.2 | 103% | not published |
 | Claude Opus 5.5 (Max) | no | 58.2 | 59.6 | 46.4 | 53.0 | 101% | not published |
 | **Claude Sonnet 5.5 (Max)** | no | **56.3** | **63.6** | **41.7** | **52.7** | **100%** | not published |
 | Kimi K3.1 Pro | yes | 48.6 | 67.2 | 25.5 | 46.4 | 88% | 2,800 / 104 |
@@ -79,7 +82,7 @@ Sources: [Coding Agent Index](https://artificialanalysis.ai/agents/coding-agents
 
 **This is a judgement call, not something a source defines.** The tiers are bands of the long-coding score as a share of Sonnet 5.5's score:
 
-- **Max**: Sonnet 5.5 itself, as Max asked, even though it only runs in the cloud. Opus 5.5 and Fable 5.2 score slightly higher on the Coding Agent Index (58.2 and 58.5), so "Max" means "the cloud model we compare against", not "the best model that exists".
+- **Max**: Sonnet 5.5 itself, as Max asked, even though it only runs in the cloud. Fable 5.2 and Opus 5.5 score slightly higher (see below), so "Max" means "the cloud model we compare against", not "the best model that exists".
 - **Tier 4, near-frontier (75% or more)**: close enough to Sonnet 5.5 that it could stand in for it on most long tasks.
 - **Tier 3, strong (55% to 75%)**: finishes a little over half of what Sonnet 5.5 finishes.
 - **Tier 2, capable (40% to 55%)**: useful for long tasks with supervision.
@@ -97,6 +100,17 @@ Memory figures come from LLM Sizer ([RESOURCES #1](https://www.theaibridges.com/
 ### Max: Claude Sonnet 5.5 (cloud)
 
 Coding Agent Index 56.3, Terminal-Bench 4.0 63.6, FrontierCode 2.0 41.7, Intelligence Index 55. Released 2026-09-28. Runs only through Anthropic's API or Claude Code, at $11.40 of API cost per Coding Agent Index task as measured by Artificial Analysis.
+
+### Above Max: Claude Fable 5.2 (cloud)
+
+Released 2026-11-09, so it is newer than Sonnet 5.5. At its best setting (Xhigh) it has the top Coding Agent Index score of any model (58.5, 104% of Sonnet 5.5), with Terminal-Bench 4.0 61.6 and FrontierCode 2.0 47.6, for a long-coding score of 54.6 (104%). Its Intelligence Index at Max effort is 65, the highest on the leaderboard.
+
+Two details matter for long tasks:
+
+- **It is ahead on repository changes, not on terminal work.** Fable 5.2 beats Sonnet 5.5 on FrontierCode 2.0 (47.6 vs 41.7) but is slightly behind on Terminal-Bench 4.0 (61.6 vs 63.6).
+- **Max effort is not its best coding setting.** At Max effort its Coding Agent Index drops to 55.7 (below Sonnet), while cost rises to $44.22 per task and time to 130 minutes. Xhigh costs $15.47 and 53 minutes per task, and High scores almost the same (58.2) for $7.51 and 31 minutes. Sonnet 5.5 costs $11.40 and 87 minutes.
+
+**Effect on the baseline:** Fable 5.2 is only about 4% above Sonnet 5.5, so Sonnet stays the 100% reference, as Max asked. Every local percentage would fall by about 4% if Fable were used instead, which would not move any model to another tier.
 
 ### Tier 4: Kimi K3.1 Pro
 
@@ -161,7 +175,7 @@ Every small model measured (Gemma 4 31B, Gemma 4 E4B, Granite 4.2 8B, gpt-oss-12
 
 ## Confidence
 
-- **High:** Sonnet 5.5 sits well above every open model that fits a personal machine (the best, GLM-5.3, reaches 60%), and small models (31B and under) do not complete long coding tasks today. All three measures agree on both.
+- **High:** Fable 5.2 is slightly ahead of Sonnet 5.5, and Sonnet 5.5 sits well above every open model that fits a personal machine (the best, GLM-5.3, reaches 60%), and small models (31B and under) do not complete long coding tasks today. All three measures agree on both.
 - **Medium:** the Tier 4 and Tier 3 picks, which rest on direct harness runs.
 - **Low to medium:** the Tier 2 and Tier 1 picks, which rest on two benchmarks without a harness run, and Nanbeige4.3-33B in particular.
 
