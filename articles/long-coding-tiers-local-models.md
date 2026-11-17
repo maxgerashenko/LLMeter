@@ -1,0 +1,147 @@
+# Long coding tasks: intelligence tiers and the best local model in each
+
+*Written 2026-11-17. All data read on 2026-11-17. Data file: [data/long-coding-tasks-2026-11-17.csv](../data/long-coding-tasks-2026-11-17.csv).*
+
+## Summary
+
+LLMeter now compares models on **long coding tasks**: multi-step agent work in real repositories and terminals, where one task takes an agent tens of minutes and hundreds of steps. On that basis, with **Claude Sonnet 5.5** (cloud) as the top tier, the best model you can run yourself in each tier is:
+
+| Tier | Long-coding score vs. Sonnet 5.5 | Best local model | What it needs to run (4-bit unless noted) |
+| --- | --- | --- | --- |
+| **Max** (cloud reference) | 100% | Claude Sonnet 5.5 (not local) | Anthropic API or Claude Code |
+| **Tier 4: near-frontier** | 75% or more | Kimi K3.1 Pro (88%) | Not a personal machine: about 1.5 TB at 4-bit, so four 512 GB Mac Studio M5 Ultras or an 8-GPU datacenter server; a 2-bit build (861 GB) on two 512 GB Mac Studios |
+| **Tier 3: strong** | 55% to 75% | GLM-5.3 (60%) | One 512 GB Mac Studio M5 Ultra (MLX 4-bit build is 418 GB) |
+| **Tier 2: capable** | 40% to 55% | Qwen3.8-Flash-Next (50%) | A 128 GB machine: DGX Spark, Strix Halo mini PC, or a 128 GB Mac (100.6 GB Q4_0 file) |
+| **Tier 1: assistant** | 20% to 40% | Nanbeige4.3-33B (38%) | A 32 GB Mac or a 24 to 32 GB GPU (20.8 GB Q4_K_M file); 48 GB is more comfortable for long contexts |
+| **Tier 0: below the bar** | under 20% | none worth recommending | Laptops and 16 GB machines: the 8B models measured score 0 on both benchmarks |
+
+The tiers are a judgement call (see [How tiers are defined](#how-tiers-are-defined)). The picks are the highest-scoring open-weights model in each band, with ties broken by how little hardware it needs.
+
+Two findings stand out:
+
+- **The gap at the top is small, but the hardware gap is not.** Kimi K3.1 Pro beats Sonnet 5.5 on Terminal-Bench 4.0 (67.2 vs 63.6) and reaches 86% of Sonnet's Coding Agent Index score, but it needs datacenter-class memory. Nothing that fits one personal machine gets past about 60% of Sonnet 5.5.
+- **Most small and older open models fail long coding tasks outright.** Gemma 4 31B, gpt-oss-120b, Granite 4.2 8B and Gemma 4 E4B all score 0 on both Terminal-Bench 4.0 and FrontierCode 2.0. The one 33B exception is Nanbeige4.3-33B at 38%. These models may still be useful for completion or chat, but not for the long autonomous tasks this comparison is about.
+
+## Why long coding tasks
+
+Short benchmarks (single questions, one-function coding puzzles) are close to saturated for top models and say little about whether a model can finish real work on its own. METR's time-horizon work ([RESOURCES #3](https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/)) shows that the length of task an agent can complete is the measure that keeps separating models, and it grew from minutes to hours between 2023 and 2026. So from now on LLMeter compares models on long, agentic coding tasks first.
+
+How long are these tasks? On the Artificial Analysis Coding Agent Index, Claude Code with Sonnet 5.5 spent on average **87 minutes and 249 steps per task**; Kimi K3.1 Pro in Kimi Code CLI spent 42 minutes and 185 steps; GLM-5.3 in Opencode spent 53 minutes and 114 steps ([Artificial Analysis Coding Agents](https://artificialanalysis.ai/agents/coding-agents), read 2026-11-17). That is agent time, not expert human time, so it is not the same unit as METR's horizon.
+
+## Which measures were used
+
+Three measures, all from Artificial Analysis ([RESOURCES #2](https://artificialanalysis.ai/), read 2026-11-17):
+
+| Measure | What it is | Coverage |
+| --- | --- | --- |
+| **Coding Agent Index v2.1** ([page](https://artificialanalysis.ai/agents/coding-agents), [methodology](https://artificialanalysis.ai/methodology/coding-agents-benchmarking)) | Equal-weight average of FrontierCode-AA 2.0 (132 tasks: changes to real open-source repositories, graded on whether a maintainer would merge them), Terminal-Bench 4.1 (66 terminal tasks) and SWE-Atlas-QnA-AA (124 repository Q&A tasks). Each model runs in a real harness (Claude Code, Codex, Kimi Code CLI, Opencode and so on), 3 attempts per task. | The most direct measure, but only 29 agent and model pairs; the smallest open model in it is DeepSeek V4.1 Flash. |
+| **Terminal-Bench 4.0** ([page](https://artificialanalysis.ai/evaluations/terminalbench-4-0)) | Agentic terminal tasks across software engineering, ML, security and system administration, run by Artificial Analysis in its own harness as part of the Intelligence Index v5.0.1. | Every model in the Intelligence Index, including small open models. |
+| **FrontierCode 2.0** ([page](https://artificialanalysis.ai/evaluations/frontiercode-2-0)) | Repository changes graded for merge quality, also part of the Intelligence Index. | Same as Terminal-Bench 4.0. |
+
+Because the Coding Agent Index does not cover small local models, the tiers use a **long-coding score**: the plain average of Terminal-Bench 4.0 and FrontierCode 2.0, expressed as a percentage of Sonnet 5.5's score (63.6 and 41.7, average 52.7). Where a model also has a Coding Agent Index score, the two agree on the ranking of the top open models (Kimi K3.1 Pro, then GLM-5.3, then DeepSeek V4.1 Flash), which gives some confidence that the simpler score is a fair stand-in.
+
+METR time horizons were not used for the tiers, because the current METR data (Time Horizon 1.1, last updated 2026-09-08, [page](https://metr.org/time-horizons/), [raw data](https://metr.org/assets/benchmark_results_1_1.yaml)) has **no Sonnet 5.x and no open-weights model**. METR also says the page is no longer actively updated. See [Missing data](#missing-data-and-indirect-comparisons).
+
+## The data
+
+Scores read from Artificial Analysis on 2026-11-17. "Long-coding score" is the average of Terminal-Bench 4.0 and FrontierCode 2.0. Parameters are in billions; where Artificial Analysis and LLM Sizer disagree, both are shown.
+
+| Model | Open weights | Coding Agent Index | Terminal-Bench 4.0 | FrontierCode 2.0 | Long-coding score | % of Sonnet 5.5 | Total / active params |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Claude Opus 5.5 (Max) | no | 58.2 | 59.6 | 46.4 | 53.0 | 101% | not published |
+| **Claude Sonnet 5.5 (Max)** | no | **56.3** | **63.6** | **41.7** | **52.7** | **100%** | not published |
+| Kimi K3.1 Pro | yes | 48.6 | 67.2 | 25.5 | 46.4 | 88% | 2,800 / 104 |
+| Claude Haiku 5.5 (Max) | no | 29.6 | 32.8 | 34.9 | 33.8 | 64% | not published |
+| GLM-5.3 (Max) | yes | 40.1 | 41.9 | 21.6 | 31.8 | 60% | 753 / 40 (AA), 753 / 54 (LLM Sizer) |
+| DeepSeek V4.1 Flash 1017 (Max) | yes | 36.8 | 33.8 | 28.5 | 31.1 | 59% | 552 / 16 (AA), 763 / 25 (LLM Sizer) |
+| MiMo-V2.6-Pro | yes | n/a | 34.8 | 24.0 | 29.4 | 56% | 1,020 / 42 |
+| Qwen3.8-Flash-Next | yes | n/a | 25.3 | 27.1 | 26.2 | 50% | 180 / 6.7 |
+| GLM-5.3-Flash | yes | n/a | 32.8 | 17.6 | 25.2 | 48% | 321 / 18 |
+| Ling 3.1 Flash 1019 | yes | n/a | 32.8 | 17.0 | 24.9 | 47% | 560 to 572 / 25 |
+| MiniMax-M3.1-Flash | yes | n/a | 25.8 | 20.8 | 23.3 | 44% | 428 (AA), 221 / 26 (LLM Sizer) |
+| Step 5 Preview | yes | 35.8 | 33.3 | 12.0 | 22.6 | 43% | 600 |
+| MiMo-V2.6-Flash | yes | n/a | 22.7 | 21.6 | 22.1 | 42% | 309 |
+| Nanbeige4.3-33B | yes | n/a | 29.8 | 10.7 | 20.2 | 38% | 33 dense |
+| Mistral Large 4 (High) | yes | 40.6 | 24.7 | 15.0 | 19.9 | 38% | 1,050 / 52 |
+| Inkling 2 Small | yes | n/a | 13.1 | 25.4 | 19.2 | 36% | 594 / 17 to 24 |
+| Qwen3.8 27B (Xhigh) | yes | n/a | 5.6 | 14.9 | 10.2 | 19% | 27 dense |
+| Nemotron 3.5 Super VL | yes | n/a | 0.0 | 6.1 | 3.0 | 6% | 120 / 12 |
+| gpt-oss-120b (High) | yes | n/a | 0.0 | 0.0 | 0.0 | 0% | 117 / 5 |
+| Gemma 4 31B (Reasoning) | yes | n/a | 0.0 | 0.0 | 0.0 | 0% | 31 dense |
+| Granite 4.2 8B | yes | n/a | 0.0 | 0.0 | 0.0 | 0% | 8 |
+| Gemma 4 E4B (Reasoning) | yes | n/a | 0.0 | 0.0 | 0.0 | 0% | 8 |
+
+Sources: [Coding Agent Index](https://artificialanalysis.ai/agents/coding-agents), [Terminal-Bench 4.0](https://artificialanalysis.ai/evaluations/terminalbench-4-0), model pages under [artificialanalysis.ai/models](https://artificialanalysis.ai/models), all read 2026-11-17; parameters also from [llm-sizer-data](https://github.com/alexgrankinukr-hash/llm-sizer-data) (`models/*.json`, read 2026-11-17).
+
+## How tiers are defined
+
+**This is a judgement call, not something a source defines.** The tiers are bands of the long-coding score as a share of Sonnet 5.5's score:
+
+- **Max**: Sonnet 5.5 itself, as Max asked, even though it only runs in the cloud. Opus 5.5 and Fable 5.2 score slightly higher on the Coding Agent Index (58.2 and 58.5), so "Max" means "the cloud model we compare against", not "the best model that exists".
+- **Tier 4, near-frontier (75% or more)**: close enough to Sonnet 5.5 that it could stand in for it on most long tasks.
+- **Tier 3, strong (55% to 75%)**: finishes a little over half of what Sonnet 5.5 finishes.
+- **Tier 2, capable (40% to 55%)**: useful for long tasks with supervision.
+- **Tier 1, assistant (20% to 40%)**: finishes some long tasks; better for shorter, well-scoped ones.
+- **Tier 0, below the bar (under 20%)**: rarely finishes a long task.
+
+The band edges were chosen where the data has natural gaps: nothing open sits between 60% and 88%, and there is a clear break between the 36% to 38% group and Qwen3.8 27B at 19%. Moving an edge by a few points would move at most one or two models.
+
+**Best local model in a tier** means the open-weights model with the highest long-coding score in that band. When two are within 2 points (GLM-5.3 and DeepSeek V4.1 Flash), the Coding Agent Index breaks the tie, since it is the most direct measure of long agent work.
+
+## The picks, with hardware
+
+Memory figures come from LLM Sizer ([RESOURCES #1](https://www.theaibridges.com/tools/llm-sizer), [methodology](https://www.theaibridges.com/tools/llm-sizer/about), [data](https://github.com/alexgrankinukr-hash/llm-sizer-data), read 2026-11-17). Its rules: needed memory is the build's file size plus the context cache plus 1.5 GB plus 1% of the weights; on macOS 26 the GPU can use 84% of a 128 GB Mac, 87% of a 256 GB Mac and 464 GB of a 512 GB Mac by default. Long coding tasks build up long contexts, so each pick leaves room for the context cache.
+
+### Max: Claude Sonnet 5.5 (cloud)
+
+Coding Agent Index 56.3, Terminal-Bench 4.0 63.6, FrontierCode 2.0 41.7, Intelligence Index 55. Released 2026-09-28. Runs only through Anthropic's API or Claude Code, at $11.40 of API cost per Coding Agent Index task as measured by Artificial Analysis.
+
+### Tier 4: Kimi K3.1 Pro
+
+- **Score:** 88% of Sonnet 5.5. Coding Agent Index 48.6 (86% of Sonnet), and the best Terminal-Bench 4.0 score of any model measured (67.2). Its weak spot is FrontierCode 2.0 (25.5 vs 41.7), so it is better at terminal work than at producing merge-quality repository changes.
+- **Hardware:** 2.8 trillion parameters, 104 billion active. At 4-bit that is roughly 1.5 TB (estimate: 2,780B × 0.56 bytes, LLM Sizer's rule of thumb for Q4). That means four 512 GB Mac Studio M5 Ultras linked together, or an 8-GPU datacenter server. LLM Sizer lists only a 2-bit build (UD-Q2_K_XL, 861 GB, for Kimi K3), which needs two linked 512 GB Mac Studios with the memory limit raised. In practice this is "local" only for a lab or company, not a person.
+- **Caveat:** LLM Sizer lists "Kimi K3" (2,780B / 104B), not "K3.1 Pro". The parameter counts match, but the build sizes are for K3.
+
+### Tier 3: GLM-5.3
+
+- **Score:** 60% of Sonnet 5.5. Coding Agent Index 40.1, Terminal-Bench 4.0 41.9, FrontierCode 2.0 21.6. Open weights from Z.ai; LLM Sizer lists its license as "other", so check it before commercial use.
+- **Hardware:** 753B parameters. The MLX 4-bit build is 418 GB, which fits one **512 GB Mac Studio M5 Ultra** (464 GB usable by default) with about 40 GB left for context. A 2-bit build (254 GB) fits a 256 GB Mac Studio with the memory limit raised, at some loss of quality.
+- **Runner-up:** DeepSeek V4.1 Flash 1017 (59%, Coding Agent Index 36.8). It has about half the active parameters (25B per LLM Sizer, 16B per Artificial Analysis), so it writes roughly twice as fast on the same machine, and it was the cheapest model in the Coding Agent Index ($0.32 per task). Pick it over GLM-5.3 when speed matters more than the last few points. Its 2-bit builds are 298 to 335 GB; LLM Sizer lists no 4-bit build yet.
+
+### Tier 2: Qwen3.8-Flash-Next
+
+- **Score:** 50% of Sonnet 5.5. Terminal-Bench 4.0 25.3, FrontierCode 2.0 27.1. It is the most even of the mid-size models: its FrontierCode score is higher than GLM-5.3's.
+- **Hardware:** 180B parameters, but only 6.7B are read per token, so it is fast. The Q4_0 build is 100.6 GB, which fits a **128 GB machine**: DGX Spark, an AMD Strix Halo mini PC, or a 128 GB Mac. On a Mac, oMLX keeps the model's 51B-parameter n-gram table on the SSD, so the 4-bit model needs about 80 GB (per LLM Sizer's notes).
+- **Runner-up:** GLM-5.3-Flash (48%, 321B / 18B active). Its 4-bit builds are 157 to 204 GB, so it needs a 256 GB Mac Studio M5 Ultra.
+
+### Tier 1: Nanbeige4.3-33B
+
+- **Score:** 38% of Sonnet 5.5. Terminal-Bench 4.0 29.8, FrontierCode 2.0 10.7. Apache-2.0 license.
+- **Hardware:** 33B dense. The Q4_K_M build is 20.8 GB, so it runs on a **32 GB Mac** (26.8 GB usable) or a 24 to 32 GB graphics card, but long contexts will be tight. A 48 GB Mac or a 32 GB card leaves room for the context cache.
+- **Caveat:** its profile is very uneven. It scores well on terminal tasks but low on merge-quality repository changes, and it has no Coding Agent Index score. Treat the pick as provisional until a harness run confirms it. The more even alternative at this size, Qwen3.8 27B, scores only 19% (Terminal-Bench 4.0 5.6, FrontierCode 2.0 14.9).
+
+### Tier 0: below the bar
+
+Every small model measured (Gemma 4 31B, Gemma 4 E4B, Granite 4.2 8B, gpt-oss-120b, Nemotron 3.5 Super VL, Qwen3.8 27B) scores under 20%, and most score 0 on both benchmarks. On laptops and 16 GB machines there is currently no model that does long coding tasks.
+
+## Missing data and indirect comparisons
+
+- **METR time horizons do not cover the models compared here.** The current METR data (TH 1.1) has no Claude Sonnet 5.x and no open-weights model, so the tiers cannot be expressed as "hours of human work". The latest entry is Claude Mythos Preview (early), at a 50% horizon of about 1,045 minutes.
+- **The Coding Agent Index covers only large models.** The smallest open model in it is DeepSeek V4.1 Flash (552 to 763B). For Tiers 2 and 1 the picks rest on Terminal-Bench 4.0 and FrontierCode 2.0 run in Artificial Analysis's own harness, not in a real coding agent, which is an indirect comparison.
+- **Harnesses differ.** In the Coding Agent Index, each model runs in its maker's agent (Claude Code, Kimi Code CLI, Opencode and so on). Part of a score difference may come from the harness, not the model.
+- **Scores were measured at full precision, through APIs.** Running the same model locally at 4-bit or 2-bit will usually score somewhat lower. No source measures long-task scores for quantized local builds.
+- **Parameter counts disagree.** Artificial Analysis and LLM Sizer give different sizes for DeepSeek V4.1 Flash (552B/16B vs 763B/25B), GLM-5.3 (40B vs 54B active) and MiniMax-M3.1-Flash (428B vs 221B). LLM Sizer reads the Hugging Face config, so its numbers are used for memory.
+- **Zeros may hide small differences.** Several small models score exactly 0.0 on both benchmarks, which means "finished no tasks", not "not measured".
+- **One snapshot.** Leaderboards change weekly; every number here is from 2026-11-17.
+
+## Confidence
+
+- **High:** Sonnet 5.5 sits well above every open model that fits a personal machine (the best, GLM-5.3, reaches 60%), and small models (31B and under) do not complete long coding tasks today. All three measures agree on both.
+- **Medium:** the Tier 4 and Tier 3 picks, which rest on direct harness runs.
+- **Low to medium:** the Tier 2 and Tier 1 picks, which rest on two benchmarks without a harness run, and Nanbeige4.3-33B in particular.
+
+## Next steps
+
+- Add Coding Agent Index runs for the Tier 2 and Tier 1 picks when Artificial Analysis publishes them.
+- Watch for a METR time-horizon update that includes open-weights models, so tiers can be stated in hours of human work.
+- Re-run this comparison when a new Sonnet or a new open model family is released.
