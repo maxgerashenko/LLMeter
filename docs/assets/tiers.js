@@ -6,15 +6,16 @@
 
   var DATA_URL = "data/long-coding-tasks-2026-11-17.csv";
   var REFERENCE = "Claude Sonnet 5.5 (Max)";
+  var ARTICLE = "https://github.com/maxgerashenko/LLMeter/blob/main/articles/long-coding-tiers-local-models.md";
 
   // Tier bands, from articles/long-coding-tiers-local-models.md#how-tiers-are-defined
   var TIERS = [
-    { id: "max", label: "Max", name: "cloud reference", min: null, desc: "Claude Sonnet 5.5 itself, cloud only. The 100% reference." },
-    { id: "t4", label: "4", name: "near-frontier", min: 75, desc: "75% or more. Could stand in for Sonnet 5.5 on most long tasks." },
-    { id: "t3", label: "3", name: "strong", min: 55, desc: "55% to 75%. Finishes a little over half of what Sonnet 5.5 finishes." },
-    { id: "t2", label: "2", name: "capable", min: 40, desc: "40% to 55%. Useful for long tasks with supervision." },
-    { id: "t1", label: "1", name: "assistant", min: 20, desc: "20% to 40%. Finishes some long tasks; better for shorter, well-scoped ones." },
-    { id: "t0", label: "0", name: "below the bar", min: 0, desc: "Under 20%. Rarely finishes a long task." }
+    { id: "max", anchor: "max-claude-sonnet-55-cloud", label: "Max", name: "cloud reference", min: null, desc: "Claude Sonnet 5.5 itself, cloud only. The 100% reference." },
+    { id: "t4", anchor: "tier-4-kimi-k31-pro", label: "4", name: "near-frontier", min: 75, desc: "75% or more. Could stand in for Sonnet 5.5 on most long tasks." },
+    { id: "t3", anchor: "tier-3-glm-53", label: "3", name: "strong", min: 55, desc: "55% to 75%. Finishes a little over half of what Sonnet 5.5 finishes." },
+    { id: "t2", anchor: "tier-2-qwen38-flash-next", label: "2", name: "capable", min: 40, desc: "40% to 55%. Useful for long tasks with supervision." },
+    { id: "t1", anchor: "tier-1-nanbeige43-33b", label: "1", name: "assistant", min: 20, desc: "20% to 40%. Finishes some long tasks; better for shorter, well-scoped ones." },
+    { id: "t0", anchor: "tier-0-below-the-bar", label: "0", name: "below the bar", min: 0, desc: "Under 20%. Rarely finishes a long task." }
   ];
 
   function parseCSV(text) {
@@ -72,6 +73,7 @@
   function el(tag, attrs, children) {
     var e = document.createElement(tag);
     if (attrs) Object.keys(attrs).forEach(function (k) {
+      if (attrs[k] == null) return;
       if (k === "text") e.textContent = attrs[k];
       else if (k === "class") e.className = attrs[k];
       else e.setAttribute(k, attrs[k]);
@@ -101,7 +103,8 @@
     var act = m.actives.filter(function (a) { return a < 0.95 * m.totalB; });
     if (!act.length) return total;
     var lo = Math.min.apply(null, act), hi = Math.max.apply(null, act);
-    var r = lo === hi ? lo + "B" : lo + "B to " + hi + "B";
+    // Sources that differ by under 5% count as agreeing.
+    var r = hi - lo < 0.05 * hi ? lo + "B" : lo + "B to " + hi + "B";
     return total + " (" + r + " active)";
   }
 
@@ -119,33 +122,70 @@
       return { tier: t, model: inBand[0] || null };
     });
 
-    // Tier table
-    var body = document.getElementById("tier-rows");
-    body.textContent = "";
-    picks.forEach(function (p) {
-      var m = p.model;
-      var share = m ? el("div", { class: "share" }, [
+    // Tier table: the leader of each tier, with the other models in that tier folded under it.
+    function groupOf(m) {
+      if (m.model === REFERENCE || (!m.open && m.pct > 100)) return TIERS[0];
+      if (m.pct == null) return TIERS[TIERS.length - 1]; // not run on the long-task tests; inferred Tier 0 in the article
+      return tierFor(m);
+    }
+    function shareCell(m, t) {
+      if (m.pct == null) return el("span", { class: "muted", text: "not run" });
+      return el("div", { class: "share" }, [
         el("span", { class: "share-num", text: fmtPct(m.pct) }),
         el("span", { class: "share-track", "aria-hidden": "true" }, [
-          el("span", { class: "share-fill tier-bg-" + p.tier.id, style: "width:" + Math.min(100, m.pct) + "%" })
+          el("span", { class: "share-fill " + (m.open || m.model === REFERENCE ? "tier-bg-" + t.id : "bar-cloud"), style: "width:" + Math.min(100, m.pct) + "%" })
         ])
-      ]) : el("span", { class: "muted", text: "none" });
-      var cai = m ? el("span", { class: "score" }, [
+      ]);
+    }
+    function scoreCell(m) {
+      return el("span", { class: "score" }, [
         m.ii != null ? m.ii.toFixed(1) : "n/a",
         m.cai != null
           ? el("span", { class: "sub", text: "(" + m.cai.toFixed(1) + ")" })
           : el("span", { class: "pill pill-muted sub-pill", text: "not scored" })
-      ]) : null;
-      body.appendChild(el("tr", null, [
-        el("th", { scope: "row" }, [
-          el("div", { class: "tier-cell" }, [tierBadge(p.tier), el("span", { class: "tier-name", text: p.tier.name })])
-        ]),
-        el("td", { class: "num" }, [share]),
-        el("td", { class: "num" }, [cai]),
-        el("td", null, [m ? modelLink(m, { hideSetting: true }) : el("span", { class: "muted", text: "none" }),
-          m ? el("span", { class: "params-inline", text: fmtParams(m) }) : null]),
-        el("td", { class: "num params" + (m && m.totalB == null ? " muted" : ""), text: m ? fmtParams(m) : "" })
-      ]));
+      ]);
+    }
+    function cells(m, t, isPick) {
+      return [
+        el("td", { class: "num" }, [shareCell(m, t)]),
+        el("td", { class: "num" }, [scoreCell(m)]),
+        el("td", null, [modelLink(m, { hideSetting: isPick }), el("span", { class: "params-inline", text: fmtParams(m) })]),
+        el("td", { class: "num params" + (m.totalB == null ? " muted" : ""), text: fmtParams(m) })
+      ];
+    }
+
+    var body = document.getElementById("tier-rows");
+    body.textContent = "";
+    picks.forEach(function (p) {
+      var m = p.model, t = p.tier;
+      var others = models.filter(function (o) { return o !== m && groupOf(o) === t; })
+        .sort(function (a, b) { return (b.pct == null ? -1 : b.pct) - (a.pct == null ? -1 : a.pct) || (b.lcs || 0) - (a.lcs || 0); });
+      var subRows = [];
+      var toggle = null;
+      if (others.length) {
+        toggle = el("button", { type: "button", class: "more-toggle", "aria-expanded": "false", "aria-controls": "more-" + t.id },
+          [others.length + " more"]);
+        toggle.addEventListener("click", function () {
+          var open = toggle.getAttribute("aria-expanded") !== "true";
+          toggle.setAttribute("aria-expanded", String(open));
+          subRows.forEach(function (r) { r.hidden = !open; });
+        });
+      }
+      var tierCell = el("th", { scope: "row" }, [
+        el("div", { class: "tier-cell" }, [tierBadge(t), el("span", { class: "tier-name", text: t.name })]),
+        el("div", { class: "tier-actions" }, [
+          el("a", { class: "explain", href: ARTICLE + "#" + t.anchor, title: "Why this tier's pick, with hardware needs" }, ["Explain"]),
+          toggle
+        ])
+      ]);
+      body.appendChild(el("tr", { class: "pick-row" }, [tierCell].concat(m ? cells(m, t, true) : [el("td", { colspan: "4", class: "muted", text: "none" })])));
+      others.forEach(function (o, i) {
+        var label = o.model !== REFERENCE && !o.open && o.pct > 100 ? "above Max" : (!o.open ? "cloud, not a pick" : (o.pct == null ? "inferred" : ""));
+        var r = el("tr", { class: "sub-row" + (i === others.length - 1 ? " sub-last" : ""), id: i === 0 ? "more-" + t.id : null, hidden: "" },
+          [el("th", { scope: "row", class: "sub-tier" }, [el("span", { class: "muted", text: label })])].concat(cells(o, t, false)));
+        subRows.push(r);
+        body.appendChild(r);
+      });
     });
 
     // Band list in the method section
@@ -185,23 +225,6 @@
     });
     legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch bar-cloud" }), "Other cloud"]));
 
-    // Full data table
-    var dr = document.getElementById("data-rows");
-    models.slice().sort(function (a, b) { return (b.pct == null ? -1 : b.pct) - (a.pct == null ? -1 : a.pct); })
-      .forEach(function (m) {
-        var t = tierFor(m);
-        var params = m.totalB != null ? fmtParams(m) : "";
-        dr.appendChild(el("tr", null, [
-          el("td", null, [modelLink(m)]),
-          el("td", null, [m.model !== REFERENCE && m.pct > 100 ? el("span", { class: "muted", text: "above Max" }) : tierBadge(t)]),
-          el("td", { class: "num", text: m.pct == null ? "not run" : fmtPct(m.pct) }),
-          el("td", { class: "num", text: m.ii == null ? "not run" : fmt(m.ii) }),
-          el("td", { class: "num" }, [m.cai != null ? fmt(m.cai) : el("span", { class: "muted", text: "not scored" })]),
-          el("td", { class: "num", text: m.tb4 == null ? "not run" : fmt(m.tb4) }),
-          el("td", { class: "num", text: m.fc2 == null ? "not run" : fmt(m.fc2) }),
-          el("td", { class: "num", text: params })
-        ]));
-      });
   }
 
   fetch(DATA_URL)

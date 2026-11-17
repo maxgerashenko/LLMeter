@@ -18,7 +18,6 @@
         <a href="#tiers">Tiers</a>
         <a href="#chart">Chart</a>
         <a href="#method">Method</a>
-        <a href="#data">Data</a>
       </nav>
     </div>
   </header>
@@ -37,7 +36,7 @@
     <section id="tiers" class="card">
       <div class="card-head">
         <h2>Tier table</h2>
-        <p class="muted">Share of Sonnet 5.5's long-coding score, the Artificial Analysis Intelligence Index v5.0.1 with the Coding Agent Index v2.1 in brackets, the best model per tier, and its size (total parameters, with active parameters for mixture-of-experts models).</p>
+        <p class="muted">The leader of each tier: its share of Sonnet 5.5's long-coding score, the Artificial Analysis Intelligence Index v5.0.1 with the Coding Agent Index v2.1 in brackets, and its size (total parameters, with active parameters for mixture-of-experts models). "Explain" opens the article's reasoning for that tier; "more" shows the other models in the tier. Model names link to their source. Data file: <a href="data/long-coding-tasks-2026-11-17.csv">long-coding-tasks-2026-11-17.csv</a>.</p>
       </div>
       <div class="table-scroll">
         <table class="tier-table">
@@ -100,31 +99,6 @@
         <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/long-coding-tiers-local-models.md#the-picks-with-hardware">hardware</a>,
         <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/long-coding-tiers-local-models.md#missing-data-and-indirect-comparisons">missing data</a>).
       </p>
-    </section>
-
-    <section id="data" class="card">
-      <div class="card-head">
-        <h2>Full data</h2>
-        <p class="muted">Every model in the comparison. Model names link to their source. Data file:
-          <a href="data/long-coding-tasks-2026-11-17.csv">long-coding-tasks-2026-11-17.csv</a>.</p>
-      </div>
-      <div class="table-scroll">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th scope="col">Model</th>
-              <th scope="col">Tier</th>
-              <th scope="col" class="num">% of Sonnet</th>
-              <th scope="col" class="num">Intelligence Index</th>
-              <th scope="col" class="num">Coding Agent Index</th>
-              <th scope="col" class="num">Terminal-Bench 4.0</th>
-              <th scope="col" class="num">FrontierCode 2.0</th>
-              <th scope="col" class="num">Params</th>
-            </tr>
-          </thead>
-          <tbody id="data-rows"></tbody>
-        </table>
-      </div>
     </section>
   </main>
 
