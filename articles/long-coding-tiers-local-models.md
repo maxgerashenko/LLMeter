@@ -8,7 +8,6 @@ LLMeter now compares models on **long coding tasks**: multi-step agent work in r
 
 | Tier | Long-coding score vs. Sonnet 5.5 | Coding Agent Index (best benchmark) | Best local model | What it needs to run (4-bit unless noted) |
 | --- | --- | --- | --- | --- |
-| Above Max (cloud, for context) | 104% | 58.5 | Claude Fable 5.2 (not local) | Anthropic API or Claude Code |
 | **Max** (cloud reference) | 100% | 56.3 | Claude Sonnet 5.5 (not local) | Anthropic API or Claude Code |
 | **Tier 4: near-frontier** | 75% or more | 48.6 | Kimi K3.1 Pro (88%) | Not a personal machine: about 1.5 TB at 4-bit, so four 512 GB Mac Studio M5 Ultras or an 8-GPU datacenter server; a 2-bit build (861 GB) on two 512 GB Mac Studios |
 | **Tier 3: strong** | 55% to 75% | 40.1 | GLM-5.3 (60%) | One 512 GB Mac Studio M5 Ultra (MLX 4-bit build is 418 GB) |
