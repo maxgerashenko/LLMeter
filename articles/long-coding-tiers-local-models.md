@@ -6,14 +6,16 @@
 
 LLMeter now compares models on **long coding tasks**: multi-step agent work in real repositories and terminals, where one task takes an agent tens of minutes and hundreds of steps. On that basis, with **Claude Sonnet 5.5** (cloud) as the top tier, the best model you can run yourself in each tier is:
 
-| Tier | Long-coding score vs. Sonnet 5.5 | Coding Agent Index (best benchmark) | Best local model | What it needs to run (4-bit unless noted) |
-| --- | --- | --- | --- | --- |
-| **Max** (cloud reference) | 100% | 56.3 | Claude Sonnet 5.5 (not local) | Anthropic API or Claude Code |
-| **Tier 4: near-frontier** | 75% or more | 48.6 | Kimi K3.1 Pro (88%) | Not a personal machine: about 1.5 TB at 4-bit, so four 512 GB Mac Studio M5 Ultras or an 8-GPU datacenter server; a 2-bit build (861 GB) on two 512 GB Mac Studios |
-| **Tier 3: strong** | 55% to 75% | 40.1 | GLM-5.3 (60%) | One 512 GB Mac Studio M5 Ultra (MLX 4-bit build is 418 GB) |
-| **Tier 2: capable** | 40% to 55% | not scored | Qwen3.8-Flash-Next (50%) | A 128 GB machine: DGX Spark, Strix Halo mini PC, or a 128 GB Mac (100.6 GB Q4_0 file) |
-| **Tier 1: assistant** | 20% to 40% | not scored | Nanbeige4.3-33B (38%) | A 32 GB Mac or a 24 to 32 GB GPU (20.8 GB Q4_K_M file); 48 GB is more comfortable for long contexts |
-| **Tier 0: below the bar** | under 20% | not scored | Qwen3.8 27B (19%) | A 32 GB Mac or 24 GB GPU (16.8 GB Q4_K_M file, about 21 GB with 32K context); smaller 8B models score 0 |
+| Tier | Long-coding score vs. Sonnet 5.5 | Coding Agent Index (best benchmark) | Best local model |
+| --- | --- | --- | --- |
+| **Max** (cloud reference) | 100% | 56.3 | Claude Sonnet 5.5 (not local) |
+| **Tier 4: near-frontier** | 75% or more | 48.6 | Kimi K3.1 Pro (88%) |
+| **Tier 3: strong** | 55% to 75% | 40.1 | GLM-5.3 (60%) |
+| **Tier 2: capable** | 40% to 55% | not scored | Qwen3.8-Flash-Next (50%) |
+| **Tier 1: assistant** | 20% to 40% | not scored | Nanbeige4.3-33B (38%) |
+| **Tier 0: below the bar** | under 20% | not scored | Qwen3.8 27B (19%) |
+
+Hardware for each pick is in [The picks, with hardware](#the-picks-with-hardware).
 
 The tiers are a judgement call (see [How tiers are defined](#how-tiers-are-defined)). The picks are the highest-scoring open-weights model in each band, with ties broken by how little hardware it needs.
 
