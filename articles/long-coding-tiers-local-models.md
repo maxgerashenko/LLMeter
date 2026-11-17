@@ -6,16 +6,16 @@
 
 LLMeter now compares models on **long coding tasks**: multi-step agent work in real repositories and terminals, where one task takes an agent tens of minutes and hundreds of steps. On that basis, with **Claude Sonnet 5.5** (cloud) as the top tier, the best model you can run yourself in each tier is:
 
-| Tier | Long-coding score vs. Sonnet 5.5 | Coding Agent Index | Intelligence Index v5.0.1 | Best local model |
-| --- | --- | --- | --- | --- |
-| **Max** (cloud reference) | 100% | 56.3 | 55 | Claude Sonnet 5.5 (not local) |
-| **Tier 4: near-frontier** | 75% or more | 48.6 | 46.5 | Kimi K3.1 Pro (88%) |
-| **Tier 3: strong** | 55% to 75% | 40.1 | 31.7 | GLM-5.3 (60%) |
-| **Tier 2: capable** | 40% to 55% | not scored | 28.6 | Qwen3.8-Flash-Next (50%) |
-| **Tier 1: assistant** | 20% to 40% | not scored | 20.4 | Nanbeige4.3-33B (38%) |
-| **Tier 0: below the bar** | under 20% | not scored | 20.1 | Qwen3.8 27B (19%) |
+| Tier | Long-coding score vs. Sonnet 5.5 | Intelligence Index (Coding Agent Index) | Best local model |
+| --- | --- | --- | --- |
+| **Max** (cloud reference) | 100% | 55 (56.3) | Claude Sonnet 5.5 (not local) |
+| **Tier 4: near-frontier** | 75% or more | 46.5 (48.6) | Kimi K3.1 Pro (88%) |
+| **Tier 3: strong** | 55% to 75% | 31.7 (40.1) | GLM-5.3 (60%) |
+| **Tier 2: capable** | 40% to 55% | 28.6 | Qwen3.8-Flash-Next (50%) |
+| **Tier 1: assistant** | 20% to 40% | 20.4 | Nanbeige4.3-33B (38%) |
+| **Tier 0: below the bar** | under 20% | 20.1 | Qwen3.8 27B (19%) |
 
-The Intelligence Index is Artificial Analysis's general index across all its evaluations, not a coding test, so it is shown for rating every model on one scale. It is not the basis of the tiers: it ranks Nanbeige4.3-33B and Qwen3.8 27B as equals (20.4 vs 20.1) although Nanbeige is about twice as good on long coding tasks. The data table below gives the Intelligence Index for every model.
+The first number is Artificial Analysis's Intelligence Index, a general index across all its evaluations, shown to rate every model on one scale; the number in brackets is the Coding Agent Index, where the model has one. It is not the basis of the tiers: it ranks Nanbeige4.3-33B and Qwen3.8 27B as equals (20.4 vs 20.1) although Nanbeige is about twice as good on long coding tasks. The data table below gives the Intelligence Index for every model.
 
 Hardware for each pick is in [The picks, with hardware](#the-picks-with-hardware).
 
@@ -60,34 +60,34 @@ Its limit is coverage: only about 29 agent and model pairs, with no model under 
 
 Scores read from Artificial Analysis on 2026-11-17. "Long-coding score" is the average of Terminal-Bench 4.0 and FrontierCode 2.0. Parameters are in billions; where Artificial Analysis and LLM Sizer disagree, both are shown.
 
-| Model | Open weights | Coding Agent Index | Intelligence Index | Terminal-Bench 4.0 | FrontierCode 2.0 | Long-coding score | % of Sonnet 5.5 | Total / active params |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Claude Fable 5.2 (Xhigh) | no | 58.5 | 62.2 | 61.6 | 47.6 | 54.6 | 104% | not published |
-| Claude Fable 5.2 (Max) | no | 55.7 | 64.6 | 59.6 | 48.8 | 54.2 | 103% | not published |
-| Claude Opus 5.5 (Max) | no | 58.2 | 59 | 59.6 | 46.4 | 53.0 | 101% | not published |
-| **Claude Sonnet 5.5 (Max)** | no | **56.3** | **55** | **63.6** | **41.7** | **52.7** | **100%** | not published |
-| Kimi K3.1 Pro | yes | 48.6 | 46.5 | 67.2 | 25.5 | 46.4 | 88% | 2,800 / 104 |
-| Claude Haiku 5.5 (Max) | no | 29.6 | 36.5 | 32.8 | 34.9 | 33.8 | 64% | not published |
-| GLM-5.3 (Max) | yes | 40.1 | 31.7 | 41.9 | 21.6 | 31.8 | 60% | 753 / 40 (AA), 753 / 54 (LLM Sizer) |
-| DeepSeek V4.1 Flash 1017 (Max) | yes | 36.8 | 32.6 | 33.8 | 28.5 | 31.1 | 59% | 552 / 16 (AA), 763 / 25 (LLM Sizer) |
-| MiMo-V2.6-Pro | yes | n/a | 29.9 | 34.8 | 24.0 | 29.4 | 56% | 1,020 / 42 |
-| Qwen3.8-Flash-Next | yes | n/a | 28.6 | 25.3 | 27.1 | 26.2 | 50% | 180 / 6.7 |
-| GLM-5.3-Flash | yes | n/a | 27.8 | 32.8 | 17.6 | 25.2 | 48% | 321 / 18 |
-| Ling 3.1 Flash 1019 | yes | n/a | 29.6 | 32.8 | 17.0 | 24.9 | 47% | 560 to 572 / 25 |
-| MiniMax-M3.1-Flash | yes | n/a | 29.1 | 25.8 | 20.8 | 23.3 | 44% | 428 (AA), 221 / 26 (LLM Sizer) |
-| Step 5 Preview | yes | 35.8 | 28.5 | 33.3 | 12.0 | 22.6 | 43% | 600 |
-| MiMo-V2.6-Flash | yes | n/a | 26.7 | 22.7 | 21.6 | 22.1 | 42% | 309 |
-| Nanbeige4.3-33B | yes | n/a | 20.4 | 29.8 | 10.7 | 20.2 | 38% | 33 dense |
-| Mistral Large 4 (High) | yes | 40.6 | 26.1 | 24.7 | 15.0 | 19.9 | 38% | 1,050 / 52 |
-| Inkling 2 Small | yes | n/a | 30.6 | 13.1 | 25.4 | 19.2 | 36% | 594 / 17 to 24 |
-| Qwen3.8 27B (Xhigh) | yes | n/a | 20.1 | 5.6 | 14.9 | 10.2 | 19% | 27 dense |
-| Qwen3.6 27B (Reasoning) | yes | n/a | not scored | 0.0 | not run | n/a | about 0% (indirect) | 28 dense |
-| Qwen3.5 27B (Reasoning) | yes | n/a | not scored | not run | not run | n/a | about 0% (indirect, see below) | 28 dense |
-| Nemotron 3.5 Super VL | yes | n/a | 13.6 | 0.0 | 6.1 | 3.0 | 6% | 120 / 12 |
-| gpt-oss-120b (High) | yes | n/a | 3.8 | 0.0 | 0.0 | 0.0 | 0% | 117 / 5 |
-| Gemma 4 31B (Reasoning) | yes | n/a | 4.4 | 0.0 | 0.0 | 0.0 | 0% | 31 dense |
-| Granite 4.2 8B | yes | n/a | 5.1 | 0.0 | 0.0 | 0.0 | 0% | 8 |
-| Gemma 4 E4B (Reasoning) | yes | n/a | 4.8 | 0.0 | 0.0 | 0.0 | 0% | 8 |
+| Model | Open weights | Intelligence Index (Coding Agent Index) | Terminal-Bench 4.0 | FrontierCode 2.0 | Long-coding score | % of Sonnet 5.5 | Total / active params |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Claude Fable 5.2 (Xhigh) | no | 62.2 (58.5) | 61.6 | 47.6 | 54.6 | 104% | not published |
+| Claude Fable 5.2 (Max) | no | 64.6 (55.7) | 59.6 | 48.8 | 54.2 | 103% | not published |
+| Claude Opus 5.5 (Max) | no | 59 (58.2) | 59.6 | 46.4 | 53.0 | 101% | not published |
+| **Claude Sonnet 5.5 (Max)** | no | **55** (**56.3**) | **63.6** | **41.7** | **52.7** | **100%** | not published |
+| Kimi K3.1 Pro | yes | 46.5 (48.6) | 67.2 | 25.5 | 46.4 | 88% | 2,800 / 104 |
+| Claude Haiku 5.5 (Max) | no | 36.5 (29.6) | 32.8 | 34.9 | 33.8 | 64% | not published |
+| GLM-5.3 (Max) | yes | 31.7 (40.1) | 41.9 | 21.6 | 31.8 | 60% | 753 / 40 (AA), 753 / 54 (LLM Sizer) |
+| DeepSeek V4.1 Flash 1017 (Max) | yes | 32.6 (36.8) | 33.8 | 28.5 | 31.1 | 59% | 552 / 16 (AA), 763 / 25 (LLM Sizer) |
+| MiMo-V2.6-Pro | yes | 29.9 | 34.8 | 24.0 | 29.4 | 56% | 1,020 / 42 |
+| Qwen3.8-Flash-Next | yes | 28.6 | 25.3 | 27.1 | 26.2 | 50% | 180 / 6.7 |
+| GLM-5.3-Flash | yes | 27.8 | 32.8 | 17.6 | 25.2 | 48% | 321 / 18 |
+| Ling 3.1 Flash 1019 | yes | 29.6 | 32.8 | 17.0 | 24.9 | 47% | 560 to 572 / 25 |
+| MiniMax-M3.1-Flash | yes | 29.1 | 25.8 | 20.8 | 23.3 | 44% | 428 (AA), 221 / 26 (LLM Sizer) |
+| Step 5 Preview | yes | 28.5 (35.8) | 33.3 | 12.0 | 22.6 | 43% | 600 |
+| MiMo-V2.6-Flash | yes | 26.7 | 22.7 | 21.6 | 22.1 | 42% | 309 |
+| Nanbeige4.3-33B | yes | 20.4 | 29.8 | 10.7 | 20.2 | 38% | 33 dense |
+| Mistral Large 4 (High) | yes | 26.1 (40.6) | 24.7 | 15.0 | 19.9 | 38% | 1,050 / 52 |
+| Inkling 2 Small | yes | 30.6 | 13.1 | 25.4 | 19.2 | 36% | 594 / 17 to 24 |
+| Qwen3.8 27B (Xhigh) | yes | 20.1 | 5.6 | 14.9 | 10.2 | 19% | 27 dense |
+| Qwen3.6 27B (Reasoning) | yes | not scored | 0.0 | not run | n/a | about 0% (indirect) | 28 dense |
+| Qwen3.5 27B (Reasoning) | yes | not scored | not run | not run | n/a | about 0% (indirect, see below) | 28 dense |
+| Nemotron 3.5 Super VL | yes | 13.6 | 0.0 | 6.1 | 3.0 | 6% | 120 / 12 |
+| gpt-oss-120b (High) | yes | 3.8 | 0.0 | 0.0 | 0.0 | 0% | 117 / 5 |
+| Gemma 4 31B (Reasoning) | yes | 4.4 | 0.0 | 0.0 | 0.0 | 0% | 31 dense |
+| Granite 4.2 8B | yes | 5.1 | 0.0 | 0.0 | 0.0 | 0% | 8 |
+| Gemma 4 E4B (Reasoning) | yes | 4.8 | 0.0 | 0.0 | 0.0 | 0% | 8 |
 
 Sources: [Coding Agent Index](https://artificialanalysis.ai/agents/coding-agents), [Terminal-Bench 4.0](https://artificialanalysis.ai/evaluations/terminalbench-4-0), model pages under [artificialanalysis.ai/models](https://artificialanalysis.ai/models), all read 2026-11-17; parameters also from [llm-sizer-data](https://github.com/alexgrankinukr-hash/llm-sizer-data) (`models/*.json`, read 2026-11-17).
 
