@@ -37,7 +37,6 @@
   --g-edge: #3a4050;
 }
 
-.nav a[aria-current="page"] { color: var(--text); font-weight: 600; }
 
 .graph-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
 .depth-control { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--muted); }
