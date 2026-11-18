@@ -237,42 +237,48 @@
       bl.appendChild(el("li", null, [tierBadge(t), el("span", null, [el("strong", { text: " " + t.name + ": " }), t.desc])]));
     });
 
-    // Bar chart
-    var chartModels = models.filter(function (m) { return m.pct != null; })
-      .sort(function (a, b) { return b.pct - a.pct; });
-    var max = Math.max(110, Math.max.apply(null, chartModels.map(function (m) { return m.pct; })));
-    var bars = document.getElementById("bars");
-    var plot = el("div", { class: "plot" });
-    var edges = el("div", { class: "edges", "aria-hidden": "true" });
-    plot.appendChild(edges);
-    [75, 55, 40, 20].forEach(function (edge) {
-      edges.appendChild(el("span", { class: "edge", style: "left:" + (edge / max * 100) + "%" }, [el("span", { class: "edge-label", text: edge + "%" })]));
-    });
-    edges.appendChild(el("span", { class: "edge edge-ref", style: "left:" + (100 / max * 100) + "%" }, [el("span", { class: "edge-label", text: "Sonnet 5.5" })]));
-    chartModels.forEach(function (m) {
-      var t = tierFor(m);
-      var cls = m.open && t ? "tier-bg-" + t.id : (m.model === REFERENCE ? "tier-bg-max" : "bar-cloud");
-      var n = splitName(m.model);
-      plot.appendChild(el("div", { class: "bar-row" + (m.model === REFERENCE ? " is-ref" : "") }, [
-        el("span", { class: "bar-label" }, [el("a", { href: sourceFor(m), text: n.base }), n.setting ? el("span", { class: "setting", text: n.setting }) : null]),
-        el("span", { class: "bar-track" }, [
-          el("span", { class: "bar " + cls, style: "width:" + Math.max(0.6, m.pct / max * 100) + "%" }),
-          el("span", { class: "bar-value", style: "left:" + (m.pct / max * 100) + "%", text: fmtPct(m.pct) })
-        ])
-      ]));
-    });
-    bars.appendChild(plot);
-    var legend = document.getElementById("legend");
-    TIERS.forEach(function (t) {
-      legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + t.id }), t.id === "max" ? "Max" : "Tier " + t.label]));
-    });
-    legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch bar-cloud" }), "Other cloud"]));
+    // Bar charts: one per tab, so the Local and Cloud tabs each show only their own models
+    function renderChart(barsId, legendId, list, legendTiers, cloudLegend) {
+      var chartModels = list.filter(function (m) { return m.pct != null; })
+        .sort(function (a, b) { return b.pct - a.pct; });
+      var max = Math.max(110, Math.max.apply(null, chartModels.map(function (m) { return m.pct; })));
+      var plot = el("div", { class: "plot" });
+      var edges = el("div", { class: "edges", "aria-hidden": "true" });
+      plot.appendChild(edges);
+      [75, 55, 40, 20].forEach(function (edge) {
+        edges.appendChild(el("span", { class: "edge", style: "left:" + (edge / max * 100) + "%" }, [el("span", { class: "edge-label", text: edge + "%" })]));
+      });
+      edges.appendChild(el("span", { class: "edge edge-ref", style: "left:" + (100 / max * 100) + "%" }, [el("span", { class: "edge-label", text: "Sonnet 5.5" })]));
+      chartModels.forEach(function (m) {
+        var t = tierFor(m);
+        var cls = m.open && t ? "tier-bg-" + t.id : (m.model === REFERENCE ? "tier-bg-max" : "bar-cloud");
+        var n = splitName(m.model);
+        plot.appendChild(el("div", { class: "bar-row" + (m.model === REFERENCE ? " is-ref" : "") }, [
+          el("span", { class: "bar-label" }, [el("a", { href: sourceFor(m), text: n.base }), n.setting ? el("span", { class: "setting", text: n.setting }) : null]),
+          el("span", { class: "bar-track" }, [
+            el("span", { class: "bar " + cls, style: "width:" + Math.max(0.6, m.pct / max * 100) + "%" }),
+            el("span", { class: "bar-value", style: "left:" + (m.pct / max * 100) + "%", text: fmtPct(m.pct) })
+          ])
+        ]));
+      });
+      document.getElementById(barsId).appendChild(plot);
+      var legend = document.getElementById(legendId);
+      legendTiers.forEach(function (t) {
+        legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + t.id }), t.id === "max" ? "Max" : "Tier " + t.label]));
+      });
+      if (cloudLegend) legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch bar-cloud" }), "Other cloud"]));
+    }
+    renderChart("bars-local", "legend-local",
+      models.filter(function (m) { return m.open || m.model === REFERENCE; }), TIERS, false);
+    renderChart("bars-cloud", "legend-cloud",
+      models.filter(function (m) { return !m.open; }),
+      TIERS.filter(function (t) { return t.id === "max"; }), true);
 
   }
 
   // Local / Cloud tabs
   (function () {
-    var tabs = [["tab-local", "tiers"], ["tab-cloud", "panel-cloud"]];
+    var tabs = [["tab-local", "tiers", "chart-local"], ["tab-cloud", "panel-cloud", "chart-cloud"]];
     function select(id) {
       tabs.forEach(function (t) {
         var on = t[0] === id;
@@ -280,6 +286,7 @@
         b.setAttribute("aria-selected", String(on));
         b.tabIndex = on ? 0 : -1;
         document.getElementById(t[1]).hidden = !on;
+        document.getElementById(t[2]).hidden = !on;
       });
     }
     tabs.forEach(function (t, i) {
