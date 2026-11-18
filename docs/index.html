@@ -18,7 +18,6 @@
         <a href="#tiers">Tiers</a>
         <a href="intelligence.html">Intelligence</a>
         <a href="#chart-local">Chart</a>
-        <a href="#method">Method</a>
         <a href="sources.html">Sources</a>
       </nav>
     </div>
@@ -95,32 +94,6 @@
       </div>
       <div id="bars-cloud" class="bars" role="img" aria-label="Bar chart of each cloud model's long-coding score as a share of Sonnet 5.5"></div>
       <div class="legend" id="legend-cloud"></div>
-    </section>
-
-    <section id="method" class="card prose">
-      <h2>How the tiers were defined</h2>
-      <p>
-        Every model is compared on <strong>long coding tasks</strong>: multi-step agent work in real repositories and terminals,
-        where one task takes tens of minutes and hundreds of steps. The score used for tiers is the average of
-        <a href="https://artificialanalysis.ai/evaluations/terminalbench-4-0">Terminal-Bench 4.0</a> and
-        <a href="https://artificialanalysis.ai/evaluations/frontiercode-2-0">FrontierCode 2.0</a>,
-        divided by Sonnet 5.5's average. Both run on every model Artificial Analysis tests, including small open ones.
-      </p>
-      <ul class="band-list" id="band-list"></ul>
-      <p>
-        The band edges are a <strong>judgement call</strong>, placed where the data has natural gaps
-        (nothing open sits between 60% and 88%). The best model in a tier is the open-weights model with the highest long-coding score in that band.
-        Where a model also has a <a href="https://artificialanalysis.ai/agents/coding-agents">Coding Agent Index</a> score
-        (which runs each model inside a real coding agent), it agrees with this ranking for the top open models.
-      </p>
-      <p>
-        Scores were measured at full precision through APIs. A quantized local build will usually score somewhat lower.
-        Read the full analysis, hardware needs for each pick, and caveats in the article:
-        <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/long-coding-tiers-local-models.md">Long coding tasks: intelligence tiers and the best local model in each</a>
-        (<a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/long-coding-tiers-local-models.md#how-tiers-are-defined">how tiers are defined</a>,
-        <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/long-coding-tiers-local-models.md#the-picks-with-hardware">hardware</a>,
-        <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/long-coding-tiers-local-models.md#missing-data-and-indirect-comparisons">missing data</a>).
-      </p>
     </section>
   </main>
 
