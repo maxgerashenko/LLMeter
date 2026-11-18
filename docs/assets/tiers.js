@@ -177,7 +177,7 @@
     body.textContent = "";
     picks.forEach(function (p) {
       var m = p.model, t = p.tier;
-      var others = models.filter(function (o) { return o !== m && groupOf(o) === t; })
+      var others = models.filter(function (o) { return o !== m && o.open && groupOf(o) === t; }) // cloud models are not alternatives to a local pick
         .sort(function (a, b) { return (b.pct == null ? -1 : b.pct) - (a.pct == null ? -1 : a.pct) || (b.lcs || 0) - (a.lcs || 0); });
       // The whole tier row opens and closes its detail: the article's reasoning for the tier,
       // then the other models in that tier.
@@ -210,7 +210,7 @@
       subRows.push(explainRow);
       body.appendChild(explainRow);
       others.forEach(function (o, i) {
-        var label = o.model !== REFERENCE && !o.open && o.pct > 100 ? "above Max" : (!o.open ? "cloud, not a pick" : (o.pct == null ? "inferred" : ""));
+        var label = o.pct == null ? "inferred" : "";
         var r = el("tr", { class: "sub-row" + (i === others.length - 1 ? " sub-last" : ""), hidden: "" },
           [el("th", { scope: "row", class: "sub-tier" }, [el("span", { class: "muted", text: label })])].concat(cells(o, t, false)));
         subRows.push(r);
