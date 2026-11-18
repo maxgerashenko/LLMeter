@@ -69,3 +69,13 @@ date,model_id,runtime,runtime_version,thinking,parallel,context_tokens,task_id,t
 2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q08,5,12,0.125,310.3,707,3460,11.2,,6.6,,finished,"MacBook Pro, 64 GB",
 2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q09,0,45,0.0,626.5,,6424,,,6.6,,error,"MacBook Pro, 64 GB",not a model result: the model was unloaded by mistake during this task; to be run again
 2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q10,0,45,0.0,474.9,,4832,,,6.6,,error,"MacBook Pro, 64 GB",not a model result: the model was unloaded by mistake during this task; to be run again
+2026-11-18,M10,LM Studio,0.4.28+2,on,4,419430,q01,0,12,0.0,900.2,,5719,,,5.7,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M10,LM Studio,0.4.28+2,on,4,419430,q02,0,15,0.0,900.0,,5766,,,5.7,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M10,LM Studio,0.4.28+2,on,4,419430,q03,0,18,0.0,900.2,,5742,,,5.7,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M10,LM Studio,0.4.28+2,on,4,419430,q04,0,14,0.0,900.2,,5770,,,5.7,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M10,LM Studio,0.4.28+2,on,4,419430,q05,12,12,1.0,374.7,963,2602,6.9,,5.7,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M10,LM Studio,0.4.28+2,on,4,419430,q06,0,76,0.0,900.2,,6395,,,5.7,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M10,LM Studio,0.4.28+2,on,4,419430,q07,0,27,0.0,901.1,,6413,,,5.7,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M10,LM Studio,0.4.28+2,on,4,419430,q08,0,12,0.0,900.2,,6414,,,5.7,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M10,LM Studio,0.4.28+2,on,4,419430,q09,0,45,0.0,900.0,,7347,,,5.7,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M10,LM Studio,0.4.28+2,on,4,419430,q10,0,45,0.0,900.0,,9946,,,5.7,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
