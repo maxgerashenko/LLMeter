@@ -1,0 +1,6 @@
+rack_id,name,chip,gpu_cores,bandwidth_gbs,max_memory_gb,llama_cpp_q4_0_tg,spec_source,read
+m5-ultra,Mac Studio M5 Ultra,"M5 Ultra, 36-core CPU",80,1228,512,179.10,https://www.apple.com/mac-studio/specs/; https://github.com/ggml-org/llama.cpp/discussions/4167,2026-11-18
+m5-max,Mac Studio M5 Max,"M5 Max, 18-core CPU",40,614,128,119.92,https://www.apple.com/mac-studio/specs/; https://github.com/ggml-org/llama.cpp/discussions/4167,2026-11-18
+m5-pro,Mac mini M5 Pro,"M5 Pro, 18-core CPU",20,307,64,66.33,https://www.apple.com/mac-mini/specs/; https://github.com/ggml-org/llama.cpp/discussions/4167,2026-11-18
+m1-ultra,Mac Studio M1 Ultra,"M1 Ultra, 20-core CPU",64,800,128,83.73,https://support.apple.com/kb/SP865; https://github.com/ggml-org/llama.cpp/discussions/4167,2026-11-18
+dgx-spark,NVIDIA DGX Spark,"GB10 Grace Blackwell",,273,128,,https://docs.nvidia.com/dgx/dgx-spark/hardware.html,2026-11-18
