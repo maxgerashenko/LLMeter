@@ -7,6 +7,9 @@
   var RACKS_URL = "data/racks-2026-11-18.csv";
   var MAIN_RACK = "m5-ultra-512";
   var ALT_RACK = "m5-ultra-256";
+  // Single machines that can be the minimum setup, smallest memory first; a model fits if its size plus OVERHEAD_GB (context, OS) is within memory
+  var SMALL_RACKS = ["mbp-m5-pro-24", "m5-ultra-96"];
+  var OVERHEAD_GB = 4;
   var TIERS = [
     { id: "max", label: "Max" }, { id: "t4", label: "Tier 4" }, { id: "t3", label: "Tier 3" },
     { id: "t2", label: "Tier 2" }, { id: "t1", label: "Tier 1" }, { id: "t0", label: "Tier 0" }
@@ -83,6 +86,7 @@
 
   // "4× M5 Ultra 512 GB" for M5 Ultra racks, else the machine's name
   function rackLabel(r, k) {
+    if (k.id === "mbp-m5-pro-24") return "MacBook Pro M5 Pro " + k.mem + " GB";
     if (/^m5-ultra/.test(k.id)) return (r.macs || 1) + "× M5 Ultra " + k.mem + " GB";
     return k.name;
   }
@@ -133,6 +137,10 @@
       bars.appendChild(barRow(el("span", { class: "rk-label" }, [badge(t.id), el("a", { class: "tb-model", href: r.source, text: name }), cfg]), r, scale, r.status === "cloud" ? "is-ref" : null));
       // Smallest M5 Ultra rack that holds the model: least total memory, then fewest Macs
       var cands = t.id === "max" ? [] : [[r, main], [onRack(t.id, ALT_RACK), alt]].filter(function (c) { return c[0] && c[0].macs; });
+      SMALL_RACKS.forEach(function (id) {
+        var k = rackById[id];
+        if (k && t.id !== "max" && r.size + OVERHEAD_GB <= k.mem) cands.push([{ macs: 1, size: r.size, source: r.source, status: "measured" }, k]);
+      });
       cands.sort(function (x, y) { return (x[0].macs * x[1].mem - y[0].macs * y[1].mem) || (x[0].macs - y[0].macs); });
       var minC = cands[0];
       body.appendChild(el("tr", null, [
@@ -186,7 +194,7 @@
         el("th", { scope: "row" }, [el("a", { href: firstUrl(k.src), text: k.name })]),
         el("td", { text: k.chip }),
         el("td", { class: "num", text: k.gpu == null ? "Blackwell GPU" : String(k.gpu) }),
-        el("td", { class: "num", text: k.bw >= 1000 ? (k.bw / 1000).toFixed(1) + " TB/s" : k.bw + " GB/s" }),
+        el("td", { class: "num", text: k.bw == null ? "n/a" : k.bw >= 1000 ? (k.bw / 1000).toFixed(1) + " TB/s" : k.bw + " GB/s" }),
         el("td", { class: "num", text: k.mem + " GB" + (/^m5-ultra/.test(k.id) ? " per Mac" : "") }),
         el("td", { class: "num" }, [el("a", { href: k.priceSrc, title: k.priceNote, class: "rk-price-cell" },
           [(/^approx/.test(k.priceNote) ? "≈" : "") + "$" + k.price.toLocaleString("en-US") + (/^m5-ultra/.test(k.id) ? " per Mac" : k.id === "m1-ultra" ? " (2022)" : "")])])
