@@ -158,8 +158,9 @@
         var list = [MAIN_RACK, ALT_RACK].map(function (id) { return onRack(t.id, id); })
           .filter(function (r) { return r && r.status !== "no_fit"; })
           .map(function (r) { var k = rackById[r.rack]; return { r: r, k: k, total: (r.macs || 1) * k.price, ok: r.status !== "untested" }; });
-        var usable = list.filter(function (o) { return o.ok; }).sort(function (a, b) { return a.total - b.total; });
-        return { t: t, best: usable[0], other: list.filter(function (o) { return o !== usable[0]; })[0] };
+        // Smallest Mac memory that fits (256 GB before 512 GB), then the lower total
+        var usable = list.slice().sort(function (a, b) { return a.k.mem - b.k.mem || a.total - b.total; });
+        return { t: t, best: usable[0], other: usable[1] };
       });
       var top = Math.max.apply(null, opts.map(function (o) { return o.best ? o.best.total : 0; }));
       function money(n) { return n >= 10000 ? "$" + Math.round(n / 1000) + "k" : "$" + (n / 1000).toFixed(1) + "k"; }
@@ -177,12 +178,12 @@
         }
         var b = o.best, r = b.r, name = baseName(r.model), equip = rackLabel(r, b.k);
         pb.appendChild(el("div", { class: "rk-row" }, [
-          el("span", { class: "rk-label" }, [badge(t.id), el("span", { class: "rk-equip", text: equip })]),
-          el("span", { class: "rk-track", title: sum(b) }, [el("span", { class: "rk-bar tier-bg-" + t.id, style: "width:" + Math.max(0.8, b.total / top * 100) + "%" })]),
+          el("span", { class: "rk-label" }, [badge(t.id), el("span", { class: "rk-equip", text: equip + (b.ok ? "" : "*") })]),
+          el("span", { class: "rk-track", title: sum(b) }, [el("span", { class: "rk-bar tier-bg-" + t.id + (b.ok ? "" : " rk-est"), style: "width:" + Math.max(0.8, b.total / top * 100) + "%" })]),
           el("a", { class: "rk-value", href: b.k.priceSrc, title: sum(b) + " · " + b.k.priceNote }, [money(b.total)])]));
         var alt = o.other ? rackLabel(o.other.r, o.other.k) + " " + money(o.other.total) + (o.other.ok ? "" : " (no published run)") : "–";
         pr.appendChild(el("tr", null, [el("th", { scope: "row" }, [badge(t.id)]), el("td", { text: name }),
-          el("td", null, [equip]),
+          el("td", null, [equip + (b.ok ? "" : "*")]),
           el("td", { class: "num" }, [el("a", { href: b.k.priceSrc, title: sum(b), class: "rk-price-cell", text: money(b.total) })]),
           el("td", { class: "rk-alt-col muted", text: alt })]));
       });
