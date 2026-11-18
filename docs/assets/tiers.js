@@ -159,13 +159,9 @@
     function iiCell(m) {
       return m.ii != null ? el("span", { class: "score", text: m.ii.toFixed(1) }) : el("span", { class: "muted", text: "n/a" });
     }
-    function caiCell(m) {
-      return m.cai != null ? el("span", { class: "score", text: m.cai.toFixed(1) }) : el("span", { class: "pill pill-muted", text: "not scored" });
-    }
     function cells(m, t, isPick) {
       return [
         el("td", { class: "score-col" }, [iiCell(m)]),
-        el("td", { class: "score-col" }, [caiCell(m)]),
         el("td", null, [modelLink(m, { hideSetting: isPick }), el("span", { class: "params-inline", text: fmtParams(m) }), el("span", { class: "disk-inline" }, [diskInline(m)])]),
         el("td", { class: "num params" + (m.totalB == null ? " muted" : ""), text: fmtParams(m) }),
         el("td", { class: "num disk-col" }, [diskCell(m)])
@@ -185,7 +181,7 @@
       var row = el("tr", { class: "pick-row", tabindex: "0", role: "button", "aria-expanded": "false", "aria-controls": detailId,
         title: "Show why this tier's pick" + (others.length ? " and the other " + others.length + " model" + (others.length === 1 ? "" : "s") + " in the tier" : "") },
         [el("th", { scope: "row" }, [el("div", { class: "tier-cell" }, [tierBadge(t), el("span", { class: "row-chevron", "aria-hidden": "true" })])])]
-          .concat(m ? cells(m, t, true) : [el("td", { colspan: "5", class: "muted", text: "none" })]));
+          .concat(m ? cells(m, t, true) : [el("td", { colspan: "4", class: "muted", text: "none" })]));
       function toggle() {
         var open = row.getAttribute("aria-expanded") !== "true";
         row.setAttribute("aria-expanded", String(open));
@@ -201,7 +197,7 @@
       });
       body.appendChild(row);
       var explainRow = el("tr", { class: "sub-row explain-row" + (others.length ? "" : " sub-last"), id: detailId, hidden: "" }, [
-        el("td", { colspan: "6" }, [
+        el("td", { colspan: "5" }, [
           el("a", { class: "explain", href: ARTICLE + "#" + t.anchor }, ["Why this tier's pick, with hardware needs"]),
           others.length ? el("span", { class: "muted explain-count", text: " · " + others.length + " other model" + (others.length === 1 ? "" : "s") + " in this tier" }) : null
         ])
@@ -334,7 +330,7 @@
     })
     .catch(function (err) {
       document.getElementById("tier-rows").innerHTML =
-        '<tr><td colspan="6">Could not load the data file (' + String(err.message || err) +
+        '<tr><td colspan="5">Could not load the data file (' + String(err.message || err) +
         '). See <a href="' + DATA_URL + '">the CSV</a>.</td></tr>';
     });
 })();
