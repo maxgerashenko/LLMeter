@@ -64,3 +64,7 @@ Once Pages is turned on, the site will be at https://maxgerashenko.github.io/LLM
 ## Contributing
 
 Ideas, data sources and corrections are welcome. Add new sources to `RESOURCES.md`, put analysis in `articles/`, and include a source link for any data you add.
+
+### Previewing a pull request
+
+Every pull request that changes `docs/`, `data/` or `scripts/` runs the **PR preview** workflow (`.github/workflows/pr-preview.yml`). It posts one comment on the PR with live preview links for that commit (served by raw.githack.com straight from the PR's files), attaches desktop and phone screenshots of each page to the workflow run, and warns if `docs/data` was not synced from `data/`. The live site is only deployed from `main`.
