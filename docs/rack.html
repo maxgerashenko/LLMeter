@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLMeter: speed on local racks</title>
+  <meta name="description" content="Generation speed in tokens per second of each tier's best local model on Mac Studio M5 Ultra, M5 Max, MacBook Pro M5 Pro, Mac Studio M1 Ultra and NVIDIA DGX Spark, against Claude Sonnet 5.5 in the cloud.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/rack.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
+      <nav class="nav">
+        <a href="./">Tiers</a>
+        <a href="intelligence.html">Intelligence</a>
+        <a href="rack.html" aria-current="page">Rack</a>
+        <a href="sources.html">Sources</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="top-gap"></div>
+
+    <div class="tabs" role="tablist" aria-label="Rack">
+      <button type="button" role="tab" id="tab-rack" class="tab" aria-selected="true" aria-controls="panel-rack">M5 Ultra rack</button>
+      <button type="button" role="tab" id="tab-rack-all" class="tab" aria-selected="false" aria-controls="panel-rack-all" tabindex="-1">All</button>
+    </div>
+
+    <section id="panel-rack" class="card" role="tabpanel" aria-labelledby="tab-rack">
+      <div class="card-head">
+        <h2 id="rack-title">Tier table on Mac Studio M5 Ultra</h2>
+        <p class="muted" id="rack-sub">Generation speed in tokens per second, one request at a time, 4-bit builds.</p>
+      </div>
+      <div id="rack-bars" class="rk-bars" role="img" aria-label="Bar chart of each tier's best local model's tokens per second on the Mac Studio M5 Ultra"></div>
+      <div class="table-scroll">
+        <table class="tier-table rk-table">
+          <thead>
+            <tr>
+              <th scope="col">Tier</th>
+              <th scope="col">Best model</th>
+              <th scope="col" class="num rk-size-col">4-bit size</th>
+              <th scope="col" class="rk-cfg-col">512 GB Macs <span class="th-sub">tokens/sec</span></th>
+              <th scope="col" class="rk-cfg-col">256 GB Macs <span class="th-sub">tokens/sec</span></th>
+            </tr>
+          </thead>
+          <tbody id="rack-rows">
+            <tr><td colspan="5" class="muted">Loading data…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="panel-rack-all" class="card" role="tabpanel" aria-labelledby="tab-rack-all" hidden>
+      <div class="card-head">
+        <h2>Top model of each tier, on every rack</h2>
+        <p class="muted">Tokens per second for each tier's best local model on a rack of M5 Ultras (512 GB or 256 GB Macs, as many as the model needs) and on four single machines, with Claude Sonnet 5.5's cloud API speed on top for scale.</p>
+      </div>
+      <div id="rack-groups" class="rk-groups"></div>
+      <div id="rack-specs" class="rk-specs">
+        <div class="card-head">
+          <h3>The racks</h3>
+          <p class="muted">Generation speed is mostly limited by memory bandwidth; memory size decides what fits.</p>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table rk-spec-table">
+            <thead>
+              <tr>
+                <th scope="col">Rack</th>
+                <th scope="col">Chip</th>
+                <th scope="col" class="num">GPU cores</th>
+                <th scope="col" class="num">Bandwidth</th>
+                <th scope="col" class="num">Max memory</th>
+                <th scope="col" class="num">Price (US)</th>
+              </tr>
+            </thead>
+            <tbody id="spec-rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="card prose">
+      <h2>Measured and estimated</h2>
+      <p><strong>Measured</strong> numbers are single-request generation speeds from public reviews and benchmark reports, without speculative decoding. Each one links to its source. Engines and quants differ between reports, so treat differences under about 15% as noise.</p>
+      <p><strong>Estimates</strong> (striped bars, “≈ … est.”) fill cells where no run was found, and always start from a measured number. For the M1 Ultra, a measured M5 Ultra speed is scaled by the two chips' speeds in <a href="https://github.com/ggml-org/llama.cpp/discussions/4167">llama.cpp's Apple Silicon benchmark</a> (83.73 vs 179.10 tokens/sec). For Nanbeige4.3-33B, a dense model, Qwen3.8 27B's measured speed on the same rack is scaled by file size. GLM-5.3 on one M5 Ultra is <a href="https://llmcheck.net/models/glm-53-on-m5-ultra/">LLMCheck's estimate</a>.</p>
+      <p><strong>Racks of several M5 Ultras</strong> split the model across Macs over Thunderbolt 5 with RDMA (tensor parallelism in MLX). The anchor is <a href="https://machinelearning.apple.com/research/mlx-distributed-inference">Apple's measurement</a> of Muse Spark Open (816B total, 42B active, 493 GB at 4-bit): 24.99 tokens/sec on 2 Macs and 36.73 on 4. GLM-5.3 has a similar shape, so 2× 256 GB is estimated at the same 25. Kimi K3.1 Pro on 4× 512 GB is the 4-Mac figure scaled by active parameters (42B / 104B). Kimi needs 7 Macs with 256 GB; no run that large is published.</p>
+      <p><strong>Prices</strong> are US prices for the configuration shown (most memory, base storage), taken from Apple, NVIDIA or retailer listings in November 2026; a rack's price is the number of Macs times the price of one. The MacBook Pro price is approximate and the M1 Ultra, now discontinued, shows its 2022 launch price. Hover a price for its configuration and click it for the source.</p>
+      <p><strong>Doesn't fit</strong> means the 4-bit build is larger than the rack's maximum memory. Sonnet 5.5 is the median API output speed from <a href="https://artificialanalysis.ai/models/claude-sonnet-5-5">Artificial Analysis</a>; it runs on Anthropic's servers, not a rack.</p>
+      <p class="muted">Data files: <a href="data/rack-speed-2026-11-18.csv">rack-speed-2026-11-18.csv</a>, <a href="data/racks-2026-11-18.csv">racks-2026-11-18.csv</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Speeds read 2026-11-18. LLMeter is an independent project, <a href="https://github.com/maxgerashenko/LLMeter">source on GitHub</a>.</p>
+    </div>
+  </footer>
+
+  <script src="assets/rack.js"></script>
+</body>
+</html>

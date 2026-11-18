@@ -1,0 +1,55 @@
+.nav a[aria-current="page"] { color: var(--text); font-weight: 600; }
+
+/* Horizontal bars: label | track | value */
+.rk-bars { display: grid; gap: 10px; margin: 4px 0 22px; }
+.rk-row { display: grid; grid-template-columns: 280px 1fr 76px; align-items: center; gap: 12px; }
+.rk-label { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rk-label .tier-badge { min-width: 52px; padding: 2px 8px; font-size: 12px; }
+.rk-row.is-ref .tb-model { font-weight: 700; }
+.rk-track { position: relative; height: 16px; border-radius: 4px; background: var(--track); overflow: hidden; display: block; }
+.rk-bar { display: block; height: 100%; border-radius: 4px; }
+.rk-est { background-image: repeating-linear-gradient(135deg, transparent 0 4px, color-mix(in srgb, var(--surface) 55%, transparent) 4px 7px); }
+.rk-nofit { background: transparent; border: 1px dashed var(--line-strong); display: flex; align-items: center; padding: 0 8px; font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.rk-swatch-nofit { border: 1px dashed var(--line-strong); }
+.rk-value { font-size: 13px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; color: var(--text); white-space: nowrap; }
+.rk-value.est, .rk-num.est { font-weight: 500; font-style: italic; color: var(--muted); }
+.rk-est-tag { font-size: 11px; }
+.rk-num { color: var(--text); font-weight: 600; }
+
+/* Table */
+.rk-table .rk-how { color: var(--muted); font-size: 13px; }
+.rk-table .rk-how:hover { color: var(--accent); }
+.rk-inline { display: none; }
+
+/* All racks: one group per tier */
+.rk-groups { display: grid; gap: 18px; }
+.rk-group { display: grid; gap: 7px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.rk-group:last-of-type { border-bottom: 0; }
+.rk-group-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; margin-bottom: 2px; }
+.rk-group-head .tier-badge { min-width: 52px; padding: 2px 8px; font-size: 12px; }
+.rk-group-model { font-weight: 600; }
+.rk-group-size { font-size: 12.5px; }
+.rk-group .rk-row { grid-template-columns: 240px 1fr 76px; }
+.rk-rack { color: var(--muted); font-size: 13px; }
+.rk-rack.is-main { color: var(--text); font-weight: 600; }
+.rk-spec-table td, .rk-spec-table th { white-space: nowrap; }
+
+@media (max-width: 640px) {
+  .rk-row, .rk-group .rk-row { grid-template-columns: 1fr 64px; gap: 4px 8px; }
+  .rk-row .rk-label { grid-column: 1 / -1; font-size: 13px; }
+  .rk-table .rk-size-col, .rk-table .rk-how-col { display: none; }
+  .rk-inline { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+}
+.rk-cfg { font-size: 11.5px; color: var(--muted); border: 1px solid var(--line-strong); border-radius: 999px; padding: 0 6px; flex: none; }
+.rk-cfg-col { white-space: nowrap; }
+.rk-cfg-n { display: block; font-size: 12px; color: var(--muted); }
+.rk-sub { display: block; }
+@media (max-width: 640px) {
+  .rk-table .rk-cfg-col { white-space: normal; font-size: 13px; }
+}
+.rk-price { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 999px; background: var(--track); color: var(--muted); font-size: 11px; font-weight: 500; white-space: nowrap; }
+.rk-price:hover { color: var(--accent); text-decoration: none; }
+.rk-cfg-n .rk-price { margin-left: 0; }
+.rk-price-cell { color: var(--text); }
+.rk-specs { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); }
+.rk-specs h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
