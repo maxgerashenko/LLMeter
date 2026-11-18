@@ -223,13 +223,17 @@
     picks.forEach(function (p) {
       var m = p.model, t = p.tier;
       if (!m || m.pct == null) return;
-      var label = (t.id === "max" ? "Max" : "Tier " + t.label) + " - " + splitName(m.model).base;
       tb.appendChild(el("div", { class: "tb-row" }, [
-        el("span", { class: "tb-label" }, [el("a", { href: sourceFor(m), text: label })]),
+        el("span", { class: "tb-label" }, [
+          tierBadge(t),
+          el("span", { class: "tb-name", text: t.name }),
+          el("a", { class: "tb-model", href: sourceFor(m), text: splitName(m.model).base })
+        ]),
         el("span", { class: "tb-track" }, [
           el("span", { class: "tb-bar tier-bg-" + t.id, style: "width:" + Math.max(0.6, Math.min(100, m.pct)) + "%" })
         ]),
-        el("span", { class: "tb-value", text: fmtPct(m.pct) })
+        el("span", { class: "tb-value", text: fmtPct(m.pct) }),
+        el("a", { class: "explain tb-explain", href: ARTICLE + "#" + t.anchor, title: "Why this tier's pick, with hardware needs" }, ["Explain"])
       ]));
     });
 
