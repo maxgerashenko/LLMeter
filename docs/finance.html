@@ -45,22 +45,21 @@
     <div class="wrap header-inner">
       <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
       <nav class="nav">
-        <a href="./">Tiers</a>
-        <a href="rack.html">Rack</a>
-        <a href="runs.html">Runs</a>
-        <a href="intelligence.html">Intelligence</a>
-        <a href="finance.html" aria-current="page">Finance</a>
-        <a href="sources.html">Sources</a>
+        <a href="./" data-section="local">Local</a>
+        <a href="intelligence.html" data-section="cloud">Cloud</a>
+        <a href="finance.html#gdp" data-section="finance">Finance</a>
+        <a href="sources.html" data-section="sources" class="nav-minor">Sources</a>
       </nav>
     </div>
   </header>
+  <script src="assets/nav.js"></script>
 
   <main class="wrap">
     <div class="top-gap"></div>
 
-    <div class="tabs" role="tablist" aria-label="Finance">
+    <div class="tabs tabs-in-menu" role="tablist" aria-label="Finance">
       <button type="button" role="tab" id="tab-anthropic-s1" class="tab" aria-selected="true" aria-controls="panel-anthropic-s1">Anthropic S-1</button>
-      <button type="button" role="tab" id="tab-economy" class="tab" aria-selected="false" tabindex="-1" aria-controls="panel-economy">Economy</button>
+      <button type="button" role="tab" id="tab-economy" class="tab" aria-selected="false" tabindex="-1" aria-controls="panel-economy">GDP</button>
       <button type="button" role="tab" id="tab-software" class="tab" aria-selected="false" tabindex="-1" aria-controls="panel-software">Software</button>
     </div>
 

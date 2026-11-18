@@ -253,8 +253,8 @@
         select(next); document.getElementById(next).focus();
       });
     });
-    // The header's "Chart" link (#panel-all) opens the All tab
-    function fromHash() { if (location.hash === "#panel-all") { select("tab-all"); document.getElementById("panel-all").scrollIntoView(); } else if (location.hash === "#tiers") select("tab-local"); }
+    // The menu's Top Tier (#top) and All Tier (#all) links switch the tab
+    function fromHash() { select(/^#(all|panel-all)$/.test(location.hash) ? "tab-all" : "tab-local"); }
     window.addEventListener("hashchange", fromHash);
     fromHash();
   })();

@@ -1,6 +1,6 @@
 // Finance page tabs: one tab per filing or topic. Add a [tab id, panel id, hash] row for each new tab.
 (function () {
-  var tabs = [["tab-anthropic-s1", "panel-anthropic-s1", "#anthropic-s1"], ["tab-economy", "panel-economy", "#economy"], ["tab-software", "panel-software", "#software-take"]];
+  var tabs = [["tab-anthropic-s1", "panel-anthropic-s1", /^#anthropic-s1$/], ["tab-economy", "panel-economy", /^#(economy|gdp)$/], ["tab-software", "panel-software", /^#(software|software-take)$/]];
   function select(id) {
     tabs.forEach(function (t) {
       var on = t[0] === id, b = document.getElementById(t[0]);
@@ -20,7 +20,7 @@
     });
   });
   function fromHash() {
-    tabs.forEach(function (t) { if (location.hash === t[2]) select(t[0]); });
+    tabs.forEach(function (t) { if (t[2].test(location.hash)) select(t[0]); });
   }
   window.addEventListener("hashchange", fromHash);
   fromHash();
