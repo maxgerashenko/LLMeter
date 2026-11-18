@@ -41,23 +41,17 @@
           <thead>
             <tr>
               <th scope="col">Tier</th>
-              <th scope="col" class="num">Share of Sonnet 5.5</th>
-              <th scope="col" class="num">Intelligence Index <span class="th-sub">(Coding Agent Index)</span></th>
+              <th scope="col" class="score-col"><span class="th-long">Intelligence Index</span><span class="th-short" aria-hidden="true">Intel.</span></th>
               <th scope="col">Best model</th>
               <th scope="col" class="num params">Params (B)</th>
               <th scope="col" class="num disk-col">Size on disk <span class="th-sub">(4-bit / full)</span></th>
             </tr>
           </thead>
           <tbody id="tier-rows">
-            <tr><td colspan="6" class="muted">Loading data…</td></tr>
+            <tr><td colspan="5" class="muted">Loading data…</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="note">
-        <span class="pill pill-muted">not scored</span>
-        means the Artificial Analysis Coding Agent Index does not cover that model (it only includes large models),
-        not that the model scored zero. Those tiers rest on Terminal-Bench 4.0 and FrontierCode 2.0 alone.
-      </p>
       <p class="note">
         The <a href="https://artificialanalysis.ai/models">Intelligence Index</a> is a general index across all of Artificial Analysis's
         evaluations, shown so every model is rated on one scale. It is not the basis of the tiers: it rates Nanbeige4.3-33B and

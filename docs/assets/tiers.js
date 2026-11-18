@@ -156,27 +156,12 @@
       if (m.pct == null) return TIERS[TIERS.length - 1]; // not run on the long-task tests; inferred Tier 0 in the article
       return tierFor(m);
     }
-    function shareCell(m, t) {
-      if (m.pct == null) return el("span", { class: "muted", text: "not run" });
-      return el("div", { class: "share" }, [
-        el("span", { class: "share-num", text: fmtPct(m.pct) }),
-        el("span", { class: "share-track", "aria-hidden": "true" }, [
-          el("span", { class: "share-fill " + (m.open || m.model === REFERENCE ? "tier-bg-" + t.id : "bar-cloud"), style: "width:" + Math.min(100, m.pct) + "%" })
-        ])
-      ]);
-    }
-    function scoreCell(m) {
-      return el("span", { class: "score" }, [
-        m.ii != null ? m.ii.toFixed(1) : "n/a",
-        m.cai != null
-          ? el("span", { class: "sub", text: "(" + m.cai.toFixed(1) + ")" })
-          : el("span", { class: "pill pill-muted sub-pill", text: "not scored" })
-      ]);
+    function iiCell(m) {
+      return m.ii != null ? el("span", { class: "score", text: m.ii.toFixed(1) }) : el("span", { class: "muted", text: "n/a" });
     }
     function cells(m, t, isPick) {
       return [
-        el("td", { class: "num" }, [shareCell(m, t)]),
-        el("td", { class: "num" }, [scoreCell(m)]),
+        el("td", { class: "score-col" }, [iiCell(m)]),
         el("td", null, [modelLink(m, { hideSetting: isPick }), el("span", { class: "params-inline", text: fmtParams(m) }), el("span", { class: "disk-inline" }, [diskInline(m)])]),
         el("td", { class: "num params" + (m.totalB == null ? " muted" : ""), text: fmtParams(m) }),
         el("td", { class: "num disk-col" }, [diskCell(m)])
@@ -187,30 +172,41 @@
     body.textContent = "";
     picks.forEach(function (p) {
       var m = p.model, t = p.tier;
-      var others = models.filter(function (o) { return o !== m && groupOf(o) === t; })
+      var others = models.filter(function (o) { return o !== m && o.open && groupOf(o) === t; }) // cloud models are not alternatives to a local pick
         .sort(function (a, b) { return (b.pct == null ? -1 : b.pct) - (a.pct == null ? -1 : a.pct) || (b.lcs || 0) - (a.lcs || 0); });
+      // The whole tier row opens and closes its detail: the article's reasoning for the tier,
+      // then the other models in that tier.
       var subRows = [];
-      var toggle = null;
-      if (others.length) {
-        toggle = el("button", { type: "button", class: "more-toggle", "aria-expanded": "false", "aria-controls": "more-" + t.id },
-          [others.length + " more"]);
-        toggle.addEventListener("click", function () {
-          var open = toggle.getAttribute("aria-expanded") !== "true";
-          toggle.setAttribute("aria-expanded", String(open));
-          subRows.forEach(function (r) { r.hidden = !open; });
-        });
+      var detailId = "more-" + t.id;
+      var row = el("tr", { class: "pick-row", tabindex: "0", role: "button", "aria-expanded": "false", "aria-controls": detailId,
+        title: "Show why this tier's pick" + (others.length ? " and the other " + others.length + " model" + (others.length === 1 ? "" : "s") + " in the tier" : "") },
+        [el("th", { scope: "row" }, [el("div", { class: "tier-cell" }, [tierBadge(t), el("span", { class: "row-chevron", "aria-hidden": "true" })])])]
+          .concat(m ? cells(m, t, true) : [el("td", { colspan: "4", class: "muted", text: "none" })]));
+      function toggle() {
+        var open = row.getAttribute("aria-expanded") !== "true";
+        row.setAttribute("aria-expanded", String(open));
+        subRows.forEach(function (r) { r.hidden = !open; });
       }
-      var tierCell = el("th", { scope: "row" }, [
-        el("div", { class: "tier-cell" }, [tierBadge(t)]),
-        el("div", { class: "tier-actions" }, [
-          el("a", { class: "explain", href: ARTICLE + "#" + t.anchor, title: "Why this tier's pick, with hardware needs" }, ["Explain"]),
-          toggle
+      row.addEventListener("click", function (e) {
+        if (e.target.closest("a, button")) return; // model links keep working
+        toggle();
+      });
+      row.addEventListener("keydown", function (e) {
+        if (e.target !== row) return;
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
+      });
+      body.appendChild(row);
+      var explainRow = el("tr", { class: "sub-row explain-row" + (others.length ? "" : " sub-last"), id: detailId, hidden: "" }, [
+        el("td", { colspan: "5" }, [
+          el("a", { class: "explain", href: ARTICLE + "#" + t.anchor }, ["Why this tier's pick, with hardware needs"]),
+          others.length ? el("span", { class: "muted explain-count", text: " · " + others.length + " other model" + (others.length === 1 ? "" : "s") + " in this tier" }) : null
         ])
       ]);
-      body.appendChild(el("tr", { class: "pick-row" }, [tierCell].concat(m ? cells(m, t, true) : [el("td", { colspan: "5", class: "muted", text: "none" })])));
+      subRows.push(explainRow);
+      body.appendChild(explainRow);
       others.forEach(function (o, i) {
-        var label = o.model !== REFERENCE && !o.open && o.pct > 100 ? "above Max" : (!o.open ? "cloud, not a pick" : (o.pct == null ? "inferred" : ""));
-        var r = el("tr", { class: "sub-row" + (i === others.length - 1 ? " sub-last" : ""), id: i === 0 ? "more-" + t.id : null, hidden: "" },
+        var label = o.pct == null ? "inferred" : "";
+        var r = el("tr", { class: "sub-row" + (i === others.length - 1 ? " sub-last" : ""), hidden: "" },
           [el("th", { scope: "row", class: "sub-tier" }, [el("span", { class: "muted", text: label })])].concat(cells(o, t, false)));
         subRows.push(r);
         body.appendChild(r);
@@ -334,7 +330,7 @@
     })
     .catch(function (err) {
       document.getElementById("tier-rows").innerHTML =
-        '<tr><td colspan="6">Could not load the data file (' + String(err.message || err) +
+        '<tr><td colspan="5">Could not load the data file (' + String(err.message || err) +
         '). See <a href="' + DATA_URL + '">the CSV</a>.</td></tr>';
     });
 })();
