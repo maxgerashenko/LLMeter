@@ -9,7 +9,7 @@
       ["Rack", "rack.html", "rack"],
       ["Runs", "runs.html", "runs"]
     ],
-    cloud: [["Intelligence", "intelligence.html", "intelligence"], ["All", "cloud.html", "cloud"]],
+    cloud: [["All", "cloud.html", "cloud"], ["Intelligence", "intelligence.html", "intelligence"]],
     finance: [
       ["GDP", "finance.html#gdp", "finance"],
       ["Software", "finance.html#software", "finance"],
