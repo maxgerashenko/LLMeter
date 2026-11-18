@@ -16,20 +16,19 @@
     <div class="wrap header-inner">
       <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
       <nav class="nav">
-        <a href="./" aria-current="page">Tiers</a>
-        <a href="rack.html">Rack</a>
-        <a href="runs.html">Runs</a>
-        <a href="intelligence.html">Intelligence</a>
-        <a href="finance.html">Finance</a>
-        <a href="sources.html">Sources</a>
+        <a href="./" data-section="local">Local</a>
+        <a href="intelligence.html" data-section="cloud">Cloud</a>
+        <a href="finance.html#gdp" data-section="finance">Finance</a>
+        <a href="sources.html" data-section="sources" class="nav-minor">Sources</a>
       </nav>
     </div>
   </header>
+  <script src="assets/nav.js"></script>
 
   <main class="wrap">
     <div class="top-gap"></div>
 
-    <div class="tabs" role="tablist" aria-label="Model type">
+    <div class="tabs tabs-in-menu" role="tablist" aria-label="Model type">
       <button type="button" role="tab" id="tab-local" class="tab" aria-selected="true" aria-controls="panel-local">TOP</button>
       <button type="button" role="tab" id="tab-all" class="tab" aria-selected="false" aria-controls="panel-all" tabindex="-1">All</button>
     </div>
