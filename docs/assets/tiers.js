@@ -273,7 +273,7 @@
 
   }
 
-  // Local Tiers / All tabs
+  // TOP / All tabs
   (function () {
     var tabs = [["tab-local", "tiers"], ["tab-all", "panel-all"]];
     function select(id) {
