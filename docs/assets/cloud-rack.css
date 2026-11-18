@@ -1,0 +1,25 @@
+.cr-table th.sortable button { all: unset; cursor: pointer; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; }
+.cr-table th.sortable button:hover { color: var(--accent); }
+.cr-table th[aria-sort="ascending"] button::after { content: " ▲"; font-size: 9px; }
+.cr-table th[aria-sort="descending"] button::after { content: " ▼"; font-size: 9px; }
+.cr-table td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cr-table td.est, .cr-table td .est { font-style: italic; color: var(--muted); }
+.cr-table .cr-name { font-weight: 600; white-space: normal; min-width: 170px; }
+.cr-table .cr-vendor { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
+.cr-table .cr-unit { font-size: 11px; color: var(--muted); }
+.cr-table .cr-nofit { color: var(--muted); font-size: 12.5px; }
+.cr-table .cr-basis-row td { white-space: normal; font-size: 12px; color: var(--muted); padding-top: 0; line-height: 1.5; }
+.cr-table .cr-basis-row a { color: var(--muted); text-decoration: underline; }
+.cr-table .cr-basis-row a:hover { color: var(--accent); }
+.cr-table tr.cr-main td { border-bottom: 0; }
+@media (max-width: 640px) {
+  .cr-table th, .cr-table td { padding: 9px 7px; }
+  .cr-table .cr-name { min-width: 132px; }
+}
+.cr-h3 { margin: 22px 0 8px; font-size: 16px; font-weight: 600; }
+.cr-basis-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+.cr-basis-list strong { color: var(--text); }
+.cr-basis-list a { color: var(--muted); text-decoration: underline; }
+.cr-basis-list a:hover { color: var(--accent); }
+.cr-table thead th { white-space: normal; vertical-align: bottom; }
+.cr-table th, .cr-table td { padding-left: 8px; padding-right: 8px; }
