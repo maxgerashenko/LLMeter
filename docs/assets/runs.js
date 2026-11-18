@@ -135,21 +135,24 @@
           el("div", { cls: "rb-value", text: metric === "score" ? fmt(r.score, 1) : fmt(r.tok, 1) })
         ]));
       });
-      var ran = {}; state.runs.filter(function (r) { return r.rt === rt.name; }).forEach(function (r) { ran[r.id] = 1; });
-      var todo = state.planned.filter(function (m) { return rt.planned(m) && !ran[m.id]; });
-      if (!runs.length && !todo.length) list.appendChild(el("p", { cls: "muted", text: "No runs in " + rt.name + " yet." }));
-      if (todo.length) {
-        list.appendChild(el("div", { cls: "rb-group", text: "Not run yet" }));
-        todo.forEach(function (m) {
-          list.appendChild(el("div", { cls: "rb-row is-planned" }, [
-            label({ model: m.model, quant: [m.format, m.quant].filter(Boolean).join(" "), runtime: "", thinking: "" }),
-            el("div", { cls: "rb-track" }),
-            el("div", { cls: "rb-value", text: "–" })
-          ]));
-        });
-      }
+      if (!runs.length) list.appendChild(el("p", { cls: "muted", text: "No runs in " + rt.name + " yet." }));
       box.appendChild(panel);
     });
+    // Third section: planned models with no run in any runtime.
+    var ranAny = {}; state.runs.forEach(function (r) { ranAny[r.id] = 1; });
+    var todo = state.planned.filter(function (m) { return !ranAny[m.id]; });
+    if (todo.length) {
+      var tp = el("div", { cls: "rb-panel", role: "group", "aria-label": "Not run yet" }, [el("h3", { cls: "rb-title", text: "Not run yet" })]);
+      var tl = el("div", { cls: "rbars" }); tp.appendChild(tl);
+      todo.forEach(function (m) {
+        tl.appendChild(el("div", { cls: "rb-row is-planned" }, [
+          label({ model: m.model, quant: [m.format, m.quant].filter(Boolean).join(" "), runtime: "", thinking: "" }),
+          el("div", { cls: "rb-track" }),
+          el("div", { cls: "rb-value", text: "–" })
+        ]));
+      });
+      box.appendChild(tp);
+    }
     box.setAttribute("aria-label", metric === "score"
       ? "Two horizontal bar charts, one per runtime, of each run's suite score, 0 to 100"
       : "Two horizontal bar charts, one per runtime, of each run's generation speed in tokens per second");
