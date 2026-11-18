@@ -252,21 +252,7 @@ section[hidden] { display: none; }
 }
 @media (min-width: 641px) { .tier-table .share-track { width: 90px; } }
 
-/* Tier summary chart: teal shades, darkest for the top tier */
-:root {
-  --teal-max: #134e4a; --teal-t4: #115e59; --teal-t3: #0f766e;
-  --teal-t2: #0d9488; --teal-t1: #14b8a6; --teal-t0: #5eead4;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --teal-max: #99f6e4; --teal-t4: #5eead4; --teal-t3: #2dd4bf;
-    --teal-t2: #14b8a6; --teal-t1: #0d9488; --teal-t0: #0f766e;
-  }
-}
-:root[data-theme="dark"] {
-  --teal-max: #99f6e4; --teal-t4: #5eead4; --teal-t3: #2dd4bf;
-  --teal-t2: #14b8a6; --teal-t1: #0d9488; --teal-t0: #0f766e;
-}
+/* Tier summary chart: bars use the tier colours (.tier-bg-*) */
 .tier-bars { display: grid; gap: 10px; margin: 4px 0 22px; }
 .tb-row { display: grid; grid-template-columns: 260px 1fr 44px; align-items: center; gap: 12px; }
 .tb-label { font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -275,12 +261,6 @@ section[hidden] { display: none; }
 .tb-track { height: 16px; border-radius: 4px; background: var(--track); overflow: hidden; }
 .tb-bar { display: block; height: 100%; border-radius: 4px; }
 .tb-value { font-size: 13px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
-.teal-max { background: var(--teal-max); }
-.teal-t4 { background: var(--teal-t4); }
-.teal-t3 { background: var(--teal-t3); }
-.teal-t2 { background: var(--teal-t2); }
-.teal-t1 { background: var(--teal-t1); }
-.teal-t0 { background: var(--teal-t0); }
 @media (max-width: 640px) {
   .tb-row { grid-template-columns: 1fr 40px; gap: 4px 8px; }
   .tb-label { grid-column: 1 / -1; font-size: 13px; }

@@ -217,7 +217,7 @@
       });
     });
 
-    // Tier summary chart: one teal bar per tier leader, "Tier N - model" then its share
+    // Tier summary chart: one bar per tier leader, in its tier colour, "Tier N - model" then its share
     var tb = document.getElementById("tier-bars");
     tb.textContent = "";
     picks.forEach(function (p) {
@@ -227,7 +227,7 @@
       tb.appendChild(el("div", { class: "tb-row" }, [
         el("span", { class: "tb-label" }, [el("a", { href: sourceFor(m), text: label })]),
         el("span", { class: "tb-track" }, [
-          el("span", { class: "tb-bar teal-" + t.id, style: "width:" + Math.max(0.6, Math.min(100, m.pct)) + "%" })
+          el("span", { class: "tb-bar tier-bg-" + t.id, style: "width:" + Math.max(0.6, Math.min(100, m.pct)) + "%" })
         ]),
         el("span", { class: "tb-value", text: fmtPct(m.pct) })
       ]));
