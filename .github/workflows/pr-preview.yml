@@ -83,7 +83,7 @@ jobs:
               `- [Intelligence](${base}/intelligence.html)`,
               `- [Rack](${base}/rack.html)`,
               `- [Runs](${base}/runs.html)`,
-              `- [S-1](${base}/anthropic.html)`,
+              `- [Finance](${base}/finance.html)`,
               `- [Sources](${base}/sources.html)`,
               '',
               `Desktop and phone screenshots, and the whole site folder, are attached to [this run](${run}) under **Artifacts**.`,
