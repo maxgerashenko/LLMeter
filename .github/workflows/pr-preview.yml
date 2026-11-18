@@ -81,6 +81,7 @@ jobs:
               '',
               `- [Tiers (home)](${base}/index.html)`,
               `- [Intelligence](${base}/intelligence.html)`,
+              `- [Rack](${base}/rack.html)`,
               `- [Runs](${base}/runs.html)`,
               `- [Sources](${base}/sources.html)`,
               '',
