@@ -29,7 +29,7 @@
   function fmtTok(v) { return v >= 1000 ? (v / 1000).toFixed(v >= 100000 ? 0 : 1).replace(/\.0$/, "") + "k" : String(v); }
   function fmtPrice(v) { return v >= 1e6 ? "$" + (v / 1e6).toFixed(2).replace(/0$/, "").replace(/\.0$/, "") + "M" : "$" + Math.round(v / 1000) + "k"; }
 
-  var rows = [], sortKey = "memory_gb", dir = -1;
+  var rows = [], sortKey = "price_usd", dir = 1;
   var tbody = document.getElementById("cr-rows");
 
   function cmp(a, b) {
@@ -50,6 +50,8 @@
       var fits = r.tok_s_status !== "no_fit";
       var tr = el("tr", { class: "cr-main" }, [
         el("th", { scope: "row", class: "cr-name" }, [r.name, el("span", { class: "cr-vendor", text: r.gpus + " GPUs · " + r.vendor })]),
+        r.price_usd == null ? el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "no public price" })])
+          : el("td", { class: "num" + (r.price_status === "estimate" ? " est" : "") }, [(r.price_status === "estimate" ? "≈" : "") + fmtPrice(r.price_usd) + est(r.price_status)]),
         el("td", { class: "num", text: fmt(r.memory_gb) }),
         el("td", { class: "num", text: String(r.bandwidth_tbs) }),
         fits ? el("td", { class: "num est" }, [fmt(r.agents_low) + " est."])
@@ -57,9 +59,7 @@
         fits ? el("td", { class: "num" + (r.tok_s_status === "estimate" ? " est" : "") }, [fmtTok(r.tok_s) + est(r.tok_s_status)])
              : el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "doesn't fit" })]),
         fits ? el("td", { class: "num est" }, [fmtTok(Math.round(r.per_agent)) + " est."])
-             : el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "doesn't fit" })]),
-        r.price_usd == null ? el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "no public price" })])
-          : el("td", { class: "num" + (r.price_status === "estimate" ? " est" : "") }, [(r.price_status === "estimate" ? "≈" : "") + fmtPrice(r.price_usd) + est(r.price_status)])
+             : el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "doesn't fit" })])
       ]);
       tbody.appendChild(tr);
     });
