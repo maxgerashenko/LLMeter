@@ -113,7 +113,7 @@ Memory warning: the KV cache grows with context and with parallel slots. Full-at
 
 `date, model_id, runtime, runtime_version, thinking, parallel, context_tokens, task_id, tests_passed, tests_total, score, wall_seconds, prompt_tokens, output_tokens, gen_tok_per_s, prompt_tok_per_s, load_seconds, peak_mem_gb, end_reason, hardware, notes`
 
-`score` is the task score from 0 to 1 as the grader reports it. `hardware` names the machine and its memory, for example `MacBook Pro, 64 GB`. The Runs page groups rows into one run per date, model, runtime, thinking setting and parallel count, and computes the run score with the suite weights.
+`score` is the task score from 0 to 1 as the grader reports it. `hardware` names the machine and its memory, for example `MacBook Pro M5 Pro, 64 GB`. The Runs page groups rows into one run per date, model, runtime, thinking setting and parallel count, and computes the run score with the suite weights.
 
 `end_reason` is one of: finished, truncated, timeout, error.
 
