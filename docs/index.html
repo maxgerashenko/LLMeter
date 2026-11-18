@@ -17,7 +17,7 @@
       <nav class="nav">
         <a href="#tiers">Tiers</a>
         <a href="intelligence.html">Intelligence</a>
-        <a href="#chart-local">Chart</a>
+        <a href="#panel-all">Chart</a>
         <a href="sources.html">Sources</a>
       </nav>
     </div>
@@ -28,7 +28,7 @@
 
     <div class="tabs" role="tablist" aria-label="Model type">
       <button type="button" role="tab" id="tab-local" class="tab" aria-selected="true" aria-controls="panel-local">Local</button>
-      <button type="button" role="tab" id="tab-cloud" class="tab" aria-selected="false" aria-controls="panel-cloud" tabindex="-1">Cloud</button>
+      <button type="button" role="tab" id="tab-all" class="tab" aria-selected="false" aria-controls="panel-all" tabindex="-1">All</button>
     </div>
 
     <section id="tiers" class="card" role="tabpanel" aria-labelledby="tab-local">
@@ -66,35 +66,13 @@
       </p>
     </section>
 
-    <section id="panel-cloud" class="card" role="tabpanel" aria-labelledby="tab-cloud" hidden>
+    <section id="panel-all" class="card" role="tabpanel" aria-labelledby="tab-all" hidden>
       <div class="card-head">
-        <h2>Cloud models</h2>
-        <p class="muted">Cloud-only models in the data file, with their share of Sonnet 5.5's long-coding score. Size on disk is n/a: their weights are not released. Local picks are on the Local tab.</p>
+        <h2>All models, share of Sonnet 5.5</h2>
+        <p class="muted">Long-coding score (average of Terminal-Bench 4.0 and FrontierCode 2.0) as a percentage of Sonnet 5.5's 52.7, for every model in the data file. Dashed lines are tier edges. Open-weights models are coloured by tier; cloud-only models are grey.</p>
       </div>
-      <div class="table-scroll">
-        <table class="data-table">
-          <thead><tr><th scope="col">Model</th><th scope="col" class="num">Share of Sonnet 5.5</th><th scope="col" class="num">Intelligence Index <span class="th-sub">(Coding Agent Index)</span></th><th scope="col" class="num">Size on disk</th></tr></thead>
-          <tbody id="cloud-rows"><tr><td colspan="4" class="muted">Loading data…</td></tr></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="chart-local" class="card">
-      <div class="card-head">
-        <h2>Local models, share of Sonnet 5.5</h2>
-        <p class="muted">Long-coding score (average of Terminal-Bench 4.0 and FrontierCode 2.0) as a percentage of Sonnet 5.5's 52.7, for open-weights models, with Sonnet 5.5 as the reference. Dashed lines are tier edges; bars are coloured by tier.</p>
-      </div>
-      <div id="bars-local" class="bars" role="img" aria-label="Bar chart of each open-weights model's long-coding score as a share of Sonnet 5.5"></div>
-      <div class="legend" id="legend-local"></div>
-    </section>
-
-    <section id="chart-cloud" class="card" hidden>
-      <div class="card-head">
-        <h2>Cloud models, share of Sonnet 5.5</h2>
-        <p class="muted">Long-coding score (average of Terminal-Bench 4.0 and FrontierCode 2.0) as a percentage of Sonnet 5.5's 52.7, for cloud-only models. Dashed lines are tier edges.</p>
-      </div>
-      <div id="bars-cloud" class="bars" role="img" aria-label="Bar chart of each cloud model's long-coding score as a share of Sonnet 5.5"></div>
-      <div class="legend" id="legend-cloud"></div>
+      <div id="bars-all" class="bars" role="img" aria-label="Bar chart of each model's long-coding score as a share of Sonnet 5.5"></div>
+      <div class="legend" id="legend-all"></div>
     </section>
   </main>
 
