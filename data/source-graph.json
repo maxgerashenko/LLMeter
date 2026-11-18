@@ -55,6 +55,16 @@
       "note": "Cost of AI coding agents on owned GPU racks vs. US engineer pay, L1 to L7."
     },
     {
+      "id": "anthropic-s1",
+      "title": "Anthropic, PBC Form S-1 (filed 2026-10-26)",
+      "publisher": "Anthropic, PBC, filed with the U.S. Securities and Exchange Commission",
+      "url": "https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm",
+      "kind": "report",
+      "read": "2026-11-18",
+      "status": "primary data (the company's own financial statements; 2023 to 2025 audited, 2026 interim periods unaudited)",
+      "note": "IPO registration statement: revenue, compute and infrastructure spending, commitments, customers and model release facts. The amended filing (S-1/A) was not read."
+    },
+    {
       "id": "llm-sizer-data",
       "title": "llm-sizer-data (open data and formulas)",
       "publisher": "Alex Grankin",
@@ -684,6 +694,11 @@
     {
       "from": "llmeter",
       "to": "mba-note",
+      "relation": "lists"
+    },
+    {
+      "from": "llmeter",
+      "to": "anthropic-s1",
       "relation": "lists"
     },
     {

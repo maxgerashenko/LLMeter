@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLMeter: what Anthropic's S-1 says about the cost of the frontier</title>
+  <meta name="description" content="Revenue, compute spending and compute commitments from Anthropic's IPO filing of 2026-10-26, and what they say about the cost of building frontier models.">
+  <script src="assets/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .data-table td.wrap-cell, .data-table th.wrap-cell { white-space: normal; min-width: 220px; }
+    .data-table .derived td, .data-table .derived th { color: var(--muted); font-style: italic; }
+    .prose ul { max-width: 760px; padding-left: 20px; }
+    .prose li { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
+      <nav class="nav">
+        <a href="./">Tiers</a>
+        <a href="rack.html">Rack</a>
+        <a href="runs.html">Runs</a>
+        <a href="intelligence.html">Intelligence</a>
+        <a href="anthropic.html" aria-current="page">S-1</a>
+        <a href="sources.html">Sources</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">Anthropic Form S-1 · filed 2026-10-26 · read <span>2026-11-18</span></p>
+      <h1>What does the frontier cost, and what does it earn?</h1>
+      <p class="lede">
+        Anthropic's IPO filing is the first set of audited accounts from a frontier lab. In six quarters,
+        <strong>revenue per dollar of compute rose from $0.40 to $2.08</strong>, at least
+        <strong>73% of compute went to something other than serving customers</strong>, and the company signed
+        about <strong>$853 billion</strong> of commitments, almost all for compute.
+      </p>
+    </section>
+
+    <section class="card" id="quarters">
+      <div class="card-head">
+        <h2>1. Revenue against the compute bill, by quarter</h2>
+        <p class="muted">Millions of US dollars, unaudited, from the filing's quarterly table (p. 157). Rows in italics are calculated by LLMeter.</p>
+      </div>
+      <div class="table-scroll"><table class="data-table">
+        <thead><tr><th></th><th class="num">Q1 2025</th><th class="num">Q2 2025</th><th class="num">Q3 2025</th><th class="num">Q4 2025</th><th class="num">Q1 2026</th><th class="num">Q2 2026</th></tr></thead>
+        <tbody>
+          <tr><th>Revenue</th><td class="num">376</td><td class="num">787</td><td class="num">1,382</td><td class="num">2,040</td><td class="num">4,731</td><td class="num">11,555</td></tr>
+          <tr><th>Compute and infrastructure</th><td class="num">944</td><td class="num">1,390</td><td class="num">2,047</td><td class="num">2,945</td><td class="num">3,387</td><td class="num">5,558</td></tr>
+          <tr><th>Operating income (loss)</th><td class="num">(935)</td><td class="num">(1,200)</td><td class="num">(3,089)</td><td class="num">(2,836)</td><td class="num">(1,667)</td><td class="num">974</td></tr>
+          <tr class="derived"><th>Compute as a share of revenue</th><td class="num">251%</td><td class="num">177%</td><td class="num">148%</td><td class="num">144%</td><td class="num">72%</td><td class="num">48%</td></tr>
+          <tr class="derived"><th>Revenue per dollar of compute</th><td class="num">$0.40</td><td class="num">$0.57</td><td class="num">$0.68</td><td class="num">$0.69</td><td class="num">$1.40</td><td class="num">$2.08</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">The Q3 2025 loss includes a $1.5 billion copyright settlement. Compute is contracted 12 to 18 months ahead and expensed when it comes online, so part of the improvement is demand growing into capacity already bought. The company warns that margins may fall again when the next large blocks arrive.</p>
+      <p class="note">Q3 2026 revenue is blank in this filing. It states that the quarter was 86 times Q4 2024 revenue of $197 million, which gives about <strong>$16.9 billion</strong>, up about 47% on Q2 2026 after 132% and 144% in the two quarters before.</p>
+    </section>
+
+    <section class="card" id="split">
+      <div class="card-head">
+        <h2>2. Most compute is not spent serving customers</h2>
+        <p class="muted">Millions of US dollars. The filing reports no gross margin, but Note 8 (p. F-39) regroups expenses by function and says cost of revenue is mostly compute for customer-serving workloads.</p>
+      </div>
+      <div class="table-scroll"><table class="data-table">
+        <thead><tr><th></th><th class="num">2023</th><th class="num">2024</th><th class="num">2025</th><th class="num">H1 2025</th><th class="num">H1 2026</th></tr></thead>
+        <tbody>
+          <tr><th>Revenue</th><td class="num">41</td><td class="num">386</td><td class="num">4,585</td><td class="num">1,163</td><td class="num">16,286</td></tr>
+          <tr><th>Compute and infrastructure</th><td class="num">433</td><td class="num">2,522</td><td class="num">7,326</td><td class="num">2,334</td><td class="num">8,945</td></tr>
+          <tr><th>Cost of revenue</th><td class="num">26</td><td class="num">752</td><td class="num">2,773</td><td class="num">1,019</td><td class="num">2,380</td></tr>
+          <tr><th>Research and development</th><td class="num">422</td><td class="num">2,275</td><td class="num">6,338</td><td class="num">1,850</td><td class="num">9,741</td></tr>
+          <tr class="derived"><th>Gross margin</th><td class="num">37%</td><td class="num">-95%</td><td class="num">40%</td><td class="num">12%</td><td class="num">85%</td></tr>
+          <tr class="derived"><th>Compute outside cost of revenue, at least</th><td class="num">407</td><td class="num">1,770</td><td class="num">4,553</td><td class="num">1,315</td><td class="num">6,565</td></tr>
+          <tr class="derived"><th>...as a share of all compute</th><td class="num">94%</td><td class="num">70%</td><td class="num">62%</td><td class="num">56%</td><td class="num">73%</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">2023 to 2025 are audited; the half years are not. "Compute outside cost of revenue" covers research, training the next models, Anthropic's own use of Claude, and free access, so it is not a pure training figure. It is a lower bound because cost of revenue also holds some staff and overhead costs.</p>
+      <p class="note">Serving is the small part: at most $2.4 billion to serve $16.3 billion of revenue in the first half of 2026. The training cycle is the large part, and it recurs: model versions released in the previous six months produced over 80% of Q3 2026 revenue (p. 143).</p>
+    </section>
+
+    <section class="card" id="commitments">
+      <div class="card-head">
+        <h2>3. Compute commitments</h2>
+        <p class="muted">The filing leaves its own total blank. These are the parts it discloses.</p>
+      </div>
+      <div class="table-scroll"><table class="data-table">
+        <thead><tr><th>Item</th><th class="num">Amount</th><th>Where in the filing</th></tr></thead>
+        <tbody>
+          <tr><th>Non-cancelable purchase commitments at 2026-06-30</th><td class="num">$265.6 billion</td><td>Note 13, p. F-58</td></tr>
+          <tr><th>Leases signed but not yet started at 2026-06-30</th><td class="num">$321.4 billion</td><td>Note 7, p. F-35</td></tr>
+          <tr><th>New commitments, July 1 to October 26, 2026</th><td class="num">about $245 billion</td><td>Note 17, p. F-65</td></tr>
+          <tr><th>New short-term commitments, same period</th><td class="num">about $21 billion</td><td>Note 17, p. F-65</td></tr>
+          <tr class="derived"><th>Sum</th><td class="num">about $853 billion</td><td>LLMeter's addition</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Not in the sum: further Google TPU compute for 2028 to 2031, estimated at $125 billion to $150 billion, and an AMD agreement expected to exceed $20 billion. At the end of 2025 the first two lines were $54.6 billion and $50.2 billion. The sum is about twelve and a half years of revenue at the Q3 2026 rate.</p>
+      <div class="table-scroll"><table class="data-table">
+        <thead><tr><th>Counterparty</th><th class="num">Amount</th><th>Period</th><th>Hardware</th></tr></thead>
+        <tbody>
+          <tr><th>Broadcom (equipment leases)</th><td class="num">$161.2 billion, before interest</td><td>five-year leases</td><td>Google TPUs</td></tr>
+          <tr><th>SpaceXAI</th><td class="num">up to $120.5 billion</td><td>into 2029</td><td>NVIDIA GPUs</td></tr>
+          <tr><th>Google</th><td class="num">at least $114.5 billion</td><td>April 2026 to July 2033</td><td>TPUs and cloud</td></tr>
+          <tr><th>Amazon</th><td class="num">at least $110.0 billion</td><td>May 2026 to April 2036</td><td>Trainium and cloud</td></tr>
+          <tr><th>Microsoft</th><td class="num">at least $44.9 billion</td><td>November 2026 to May 2033</td><td>NVIDIA GPUs</td></tr>
+          <tr><th>Nscale</th><td class="num">up to $44.6 billion</td><td>into 2033</td><td>NVIDIA GPUs</td></tr>
+          <tr><th>Lambda</th><td class="num">about $41.3 billion</td><td>into 2034</td><td>NVIDIA GPUs</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Reported on pp. 170 to 171. The SpaceXAI agreement runs at about $3.1 billion a month once all capacity is delivered, expected in December 2026. Against all of this the company held $131.7 billion of cash and short-term investments at June 30, 2026.</p>
+    </section>
+
+    <section class="card" id="models">
+      <div class="card-head">
+        <h2>4. What the filing says about the models</h2>
+        <p class="muted">The company's own statements. None was independently measured, and the benchmarks are not ones LLMeter tracks, so do not compare them with the other pages.</p>
+      </div>
+      <div class="table-scroll"><table class="data-table">
+        <thead><tr><th>Fact</th><th>Value</th><th>Page</th></tr></thead>
+        <tbody>
+          <tr><th class="wrap-cell">Customer cost per task, Opus 5.5 against Opus 5</th><td class="wrap-cell">about 40% lower</td><td>195</td></tr>
+          <tr><th class="wrap-cell">Customer cost per task, Fable 5.1 against Fable 5</th><td class="wrap-cell">about 25% lower, up to 45% for complex agentic work</td><td>195</td></tr>
+          <tr><th class="wrap-cell">ExploitBench: Opus 4.8, Mythos 5, Opus 5.5</th><td class="wrap-cell">40%, 78%, 91% within about four months</td><td>189</td></tr>
+          <tr><th class="wrap-cell">Internal benchmark, open-ended engineering problems</th><td class="wrap-cell">about 90% in September 2026, up about 50 points in nine months</td><td>183</td></tr>
+          <tr><th class="wrap-cell">Share of Anthropic's own code written by Claude</th><td class="wrap-cell">over 90% in September 2026</td><td>183</td></tr>
+          <tr><th class="wrap-cell">Chip families used for training and serving</th><td class="wrap-cell">AWS Trainium, Google TPU, NVIDIA GPU, AMD GPU</td><td>135</td></tr>
+          <tr><th class="wrap-cell">Time between contracting compute and using it</th><td class="wrap-cell">typically 12 to 18 months</td><td>134</td></tr>
+          <tr><th class="wrap-cell">Staff</th><td class="wrap-cell">about 940 at end of 2024, about 5,300 at 2026-09-30</td><td>63</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="card prose" id="reading">
+      <h2>How to read this</h2>
+      <ul>
+        <li><strong>The $80.7 billion net loss for the first half of 2026 is mostly accounting.</strong> $72.4 billion of it is the rising value of convertible notes that are owed in shares, not cash. The operating loss was $693 million, and Q2 2026 made an operating profit of $974 million.</li>
+        <li><strong>Compute efficiency is now measurable.</strong> Confidence: high for the direction, medium for the size, because part of the improvement is timing.</li>
+        <li><strong>The cost of the frontier is the training cycle, not serving.</strong> Confidence: medium. The split is the company's own allocation and a lower bound.</li>
+        <li><strong>Progress is being bought forward.</strong> Confidence: medium. The $853 billion is LLMeter's sum of the disclosed parts, and most of it is payable whether or not the capacity is used.</li>
+      </ul>
+      <p><strong>Sourced:</strong> every number not in italics, from the filing. <strong>Derived by LLMeter:</strong> the ratios, the gross margin, the Q3 2026 revenue and the commitment sum. All of it, with page references, is in <a href="data/anthropic-s1-2026-10-26.csv">anthropic-s1-2026-10-26.csv</a>.</p>
+      <p><strong>Not covered:</strong> this first version of the filing leaves Q3 2026 revenue, run-rate revenue, the total commitment figure and the offering price blank. The amended filing has not been read. The filing gives dollars only: no gigawatts, chip counts, model sizes or training-run costs.</p>
+      <p>Full write-up: <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/anthropic-s1-compute-economics.md">What Anthropic's S-1 says about the cost of the frontier</a>.</p>
+      <p class="muted">Source: <a href="https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm">Anthropic, PBC, Form S-1</a>, filed 2026-10-26, read 2026-11-18.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>LLMeter is an independent project, <a href="https://github.com/maxgerashenko/LLMeter">source on GitHub</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -21,6 +21,7 @@ graph LR
     artificial_analysis["Artificial Analysis"]
     metr_blog["Measuring AI Ability to Complete Long Tasks"]
     mba_note["How Many Agents Make an Engineer"]
+    anthropic_s1["Anthropic, PBC Form S-1 (filed 2026-10-26)"]
   end
   subgraph L2["Level 2"]
     llm_sizer_data["llm-sizer-data (open data and formulas)"]
@@ -95,6 +96,7 @@ graph LR
   llmeter --> artificial_analysis
   llmeter --> metr_blog
   llmeter --> mba_note
+  llmeter --> anthropic_s1
   llm_sizer --> llm_sizer_data
   llm_sizer --> hf_hub
   llm_sizer --> apple_specs
@@ -180,6 +182,7 @@ graph LR
   class artificial_analysis expanded
   class metr_blog expanded
   class mba_note expanded
+  class anthropic_s1 primary
   class llm_sizer_data expanded
   class hf_hub stopped
   class apple_specs primary
@@ -254,7 +257,7 @@ graph LR
 | --- | --- | --- | --- | --- |
 | [LLMeter website](https://maxgerashenko.github.io/LLMeter/) | LLMeter | - | not opened | expanded |
 
-### Level 1 (4)
+### Level 1 (5)
 
 | Source | Publisher | Reached from | Read | Status |
 | --- | --- | --- | --- | --- |
@@ -262,6 +265,7 @@ graph LR
 | [Artificial Analysis](https://artificialanalysis.ai/) | Artificial Analysis | LLMeter website | 2026-11-17 | expanded |
 | [Measuring AI Ability to Complete Long Tasks](https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/) | METR (Kwa, West, Becker et al.), 2025-03-19 | LLMeter website | 2026-11-17 | expanded |
 | [How Many Agents Make an Engineer](https://github.com/maxgerashenko/modernMBA/blob/main/research/ai-developer-replacement-usa.md) | Max Gerashenko, modernMBA repo | LLMeter website | 2026-11-17 | expanded |
+| [Anthropic, PBC Form S-1 (filed 2026-10-26)](https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm) | Anthropic, PBC, filed with the U.S. Securities and Exchange Commission | LLMeter website | 2026-11-18 | primary data (the company's own financial statements; 2023 to 2025 audited, 2026 interim periods unaudited) |
 
 ### Level 2 (34)
 
