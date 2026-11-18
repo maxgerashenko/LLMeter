@@ -13,6 +13,7 @@
   <style>
     .data-table td.wrap-cell, .data-table th.wrap-cell { white-space: normal; min-width: 220px; }
     .data-table .derived td, .data-table .derived th { color: var(--muted); font-style: italic; }
+    .prose h3 { font-size: 15px; margin: 18px 0 4px; }
     .prose ul { max-width: 760px; padding-left: 20px; }
     .prose li { margin: 8px 0; }
     .panels { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; margin: 0 0 14px; }
@@ -207,14 +208,23 @@
 
     <section class="card prose" id="reading">
       <h2>How to read this</h2>
+      <h3>Four things to take away</h3>
       <ul>
-        <li><strong>The $80.7 billion net loss for the first half of 2026 is mostly accounting.</strong> $72.4 billion of it is the rising value of convertible notes that are owed in shares, not cash. The operating loss was $693 million, and Q2 2026 made an operating profit of $974 million.</li>
-        <li><strong>Compute efficiency is now measurable.</strong> Confidence: high for the direction, medium for the size, because part of the improvement is timing.</li>
-        <li><strong>The cost of the frontier is the training cycle, not serving.</strong> Confidence: medium. The split is the company's own allocation and a lower bound.</li>
-        <li><strong>Progress is being bought forward.</strong> Confidence: medium. The $853 billion is LLMeter's sum of the disclosed parts, and most of it is payable whether or not the capacity is used.</li>
+        <li><strong>The $80.7B net loss is mostly not cash.</strong> $72.4B of it is the rising value of convertible notes that are owed in shares. The operating loss for the first half of 2026 was $0.7B, and Q2 2026 made an operating profit of $974M.</li>
+        <li><strong>Revenue per dollar of compute is rising fast.</strong> The direction is clear. The size is less certain, because part of the gain is timing: compute is bought 12 to 18 months ahead.</li>
+        <li><strong>Training, not serving, is the big cost.</strong> The split is the company's own allocation and a lower bound.</li>
+        <li><strong>Most of the commitments are payable whether or not the capacity is used.</strong> The $853B is LLMeter's sum of the parts the filing discloses.</li>
       </ul>
-      <p><strong>Sourced:</strong> every number not in italics, from the filing. <strong>Derived by LLMeter:</strong> the ratios, the gross margin, the Q3 2026 revenue and the commitment sum. All of it, with page references, is in <a href="data/anthropic-s1-2026-10-26.csv">anthropic-s1-2026-10-26.csv</a>.</p>
-      <p><strong>Not covered:</strong> this first version of the filing leaves Q3 2026 revenue, run-rate revenue, the total commitment figure and the offering price blank. The amended filing has not been read. The filing gives dollars only: no gigawatts, chip counts, model sizes or training-run costs.</p>
+      <h3>Where the numbers come from</h3>
+      <ul>
+        <li><strong>As printed in the filing:</strong> every number not in italics and not marked *.</li>
+        <li><strong>Calculated by LLMeter:</strong> numbers in italics or marked *: the ratios, gross margins, unit economics, Q3 2026 revenue and the commitment sum. All of them, with page references, are in <a href="data/anthropic-s1-2026-10-26.csv">anthropic-s1-2026-10-26.csv</a>.</li>
+      </ul>
+      <h3>What is missing</h3>
+      <ul>
+        <li>This first version of the filing leaves Q3 2026 revenue, run-rate revenue, the total commitment figure and the offering price blank. The amended filing has not been read.</li>
+        <li>It gives dollars only: no gigawatts, chip counts, model sizes or training-run costs.</li>
+      </ul>
       <p>Full write-up: <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/anthropic-s1-compute-economics.md">What Anthropic's S-1 says about the cost of the frontier</a>.</p>
       <p class="muted">Source: <a href="https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm">Anthropic, PBC, Form S-1</a>, filed 2026-10-26, read 2026-11-18.</p>
     </section>
