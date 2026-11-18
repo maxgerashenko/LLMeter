@@ -117,7 +117,6 @@ th.num { text-align: right; }
 .bar-cloud { background: var(--cloud); }
 
 .score { font-weight: 600; font-size: 15px; }
-.score .sub { font-weight: 400; color: var(--muted); margin-left: 4px; }
 
 .model { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .model-link { font-weight: 600; color: var(--text); }
@@ -173,8 +172,6 @@ th.num { text-align: right; }
 @media (max-width: 640px) {
   .edge-label { display: none; }
   .edge-ref .edge-label { display: block; left: auto; right: 4px; }
-  .score { display: inline-flex; flex-direction: column; align-items: flex-start; }
-  .score .sub { margin-left: 0; }
   .sub-pill { margin: 2px 0 0; }
 }
 .bar-track { margin-right: 40px; }
@@ -252,4 +249,13 @@ section[hidden] { display: none; }
 @media (max-width: 640px) {
   .tb-row { grid-template-columns: 1fr 40px 48px; gap: 4px 8px; }
   .tb-label { grid-column: 1 / -1; font-size: 13px; }
+}
+
+/* Intelligence Index and Coding Agent Index columns: short headers on phones */
+.th-short { display: none; }
+@media (max-width: 640px) {
+  .tier-table .th-long { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tier-table .th-short { display: inline; }
+  .tier-table .row-chevron { display: none; }
+  .tier-table .score-col .pill { font-size: 11px; padding: 2px 6px; white-space: nowrap; }
 }
