@@ -52,7 +52,7 @@
         el("th", { scope: "row", class: "cr-name" }, [r.name, el("span", { class: "cr-vendor", text: r.gpus + " GPUs · " + r.vendor })]),
         el("td", { class: "num", text: fmt(r.memory_gb) }),
         el("td", { class: "num", text: String(r.bandwidth_tbs) }),
-        fits ? el("td", { class: "num est" }, [fmt(r.agents_low) + "–" + fmt(r.agents_high) + " est."])
+        fits ? el("td", { class: "num est" }, [fmt(r.agents_low) + " est."])
              : el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "doesn't fit" })]),
         fits ? el("td", { class: "num" + (r.tok_s_status === "estimate" ? " est" : "") }, [fmtTok(r.tok_s) + est(r.tok_s_status)])
              : el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "doesn't fit" })]),
@@ -83,7 +83,7 @@
       return r;
     });
     document.getElementById("cr-basis").innerHTML =
-      "<p><strong>How the figures are made.</strong> <em>Tokens/sec</em> is total decode throughput on DeepSeek-R1 (FP8, 8k in / 1k out) at 65 tokens/sec per user. GB200 NVL72 and H200 are measured (InferenceX data); the rest are scaled from H200 by HBM bandwidth. <em>Coding agents</em> is the number of concurrent 128k-token sessions: memory left after the 671 GB of weights divided by 40 GB (low) or 9 GB (high) of KV cache per agent, capped at tokens/sec divided by 65. The range reflects the KV cache size of the model, not a measurement. Memory and bandwidth are vendor specs summed over GPUs.</p>";
+      "<p><strong>How the figures are made.</strong> <em>Tokens/sec</em> is total decode throughput on DeepSeek-R1 (FP8, 8k in / 1k out) at 65 tokens/sec per user. GB200 NVL72 and H200 are measured (InferenceX data); the rest are scaled from H200 by HBM bandwidth. <em>Coding agents</em> is the number of concurrent 128k-token sessions: memory left after the 671 GB of weights divided by 40 GB of KV cache per agent with a full 128k-token context, capped at tokens/sec divided by 65. This is the hard case, every agent running full context; a model with a compact KV cache (such as DeepSeek-R1's, about 9 GB) fits up to about 4x more. It is an estimate, not a measurement. Memory and bandwidth are vendor specs summed over GPUs.</p>";
     render();
   }).catch(function () { tbody.innerHTML = '<tr><td colspan="6" class="muted">Could not load data.</td></tr>'; });
 })();
