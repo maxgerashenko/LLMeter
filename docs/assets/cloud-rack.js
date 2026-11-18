@@ -56,6 +56,8 @@
              : el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "doesn't fit" })]),
         fits ? el("td", { class: "num" + (r.tok_s_status === "estimate" ? " est" : "") }, [fmtTok(r.tok_s) + est(r.tok_s_status)])
              : el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "doesn't fit" })]),
+        fits ? el("td", { class: "num est" }, [fmtTok(Math.round(r.per_agent)) + " est."])
+             : el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "doesn't fit" })]),
         r.price_usd == null ? el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "no public price" })])
           : el("td", { class: "num" + (r.price_status === "estimate" ? " est" : "") }, [(r.price_status === "estimate" ? "≈" : "") + fmtPrice(r.price_usd) + est(r.price_status)])
       ]);
@@ -80,10 +82,11 @@
   fetch(URL_).then(function (r) { return r.text(); }).then(function (t) {
     rows = parseCSV(t).map(function (r) {
       ["gpus", "memory_gb", "bandwidth_tbs", "agents_low", "agents_high", "tok_s", "price_usd"].forEach(function (k) { r[k] = n(r[k]); });
+      r.per_agent = r.tok_s != null && r.agents_low ? r.tok_s / r.agents_low : null;
       return r;
     });
     document.getElementById("cr-basis").innerHTML =
-      "<p><strong>How the figures are made.</strong> <em>Tokens/sec</em> is total decode throughput on DeepSeek-R1 (FP8, 8k in / 1k out) at 65 tokens/sec per user. GB200 NVL72 and H200 are measured (InferenceX data); the rest are scaled from H200 by HBM bandwidth. <em>Coding agents</em> is the number of concurrent 128k-token sessions: memory left after the 671 GB of weights divided by 40 GB of KV cache per agent with a full 128k-token context, capped at tokens/sec divided by 65. This is the hard case, every agent running full context; a model with a compact KV cache (such as DeepSeek-R1's, about 9 GB) fits up to about 4x more. It is an estimate, not a measurement. Memory and bandwidth are vendor specs summed over GPUs.</p>";
+      "<p><strong>How the figures are made.</strong> <em>Tokens/sec</em> is total decode throughput on DeepSeek-R1 (FP8, 8k in / 1k out) at 65 tokens/sec per user. GB200 NVL72 and H200 are measured (InferenceX data); the rest are scaled from H200 by HBM bandwidth. <em>Coding agents</em> is the number of concurrent 128k-token sessions: memory left after the 671 GB of weights divided by 40 GB of KV cache per agent with a full 128k-token context, capped at tokens/sec divided by 65. This is the hard case, every agent running full context; a model with a compact KV cache (such as DeepSeek-R1's, about 9 GB) fits up to about 4x more. <em>Tokens/sec per agent</em> is the total divided by that agent count, so it is the speed each agent could get if the rack were shared evenly and every agent decoded all the time. It is an upper bound: in measured data a single stream tops out around 65 to 133 tokens/sec per user at these loads, and agents spend much of their time waiting on tools. The large values show that memory, not speed, limits how many agents fit. All of it is an estimate, not a measurement. Memory and bandwidth are vendor specs summed over GPUs.</p>";
     render();
-  }).catch(function () { tbody.innerHTML = '<tr><td colspan="6" class="muted">Could not load data.</td></tr>'; });
+  }).catch(function () { tbody.innerHTML = '<tr><td colspan="7" class="muted">Could not load data.</td></tr>'; });
 })();

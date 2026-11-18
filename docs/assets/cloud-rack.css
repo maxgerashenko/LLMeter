@@ -21,3 +21,5 @@
 .cr-basis-list strong { color: var(--text); }
 .cr-basis-list a { color: var(--muted); text-decoration: underline; }
 .cr-basis-list a:hover { color: var(--accent); }
+.cr-table thead th { white-space: normal; vertical-align: bottom; }
+.cr-table th, .cr-table td { padding-left: 8px; padding-right: 8px; }
