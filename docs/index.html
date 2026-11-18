@@ -17,7 +17,7 @@
       <nav class="nav">
         <a href="#tiers">Tiers</a>
         <a href="intelligence.html">Intelligence</a>
-        <a href="#chart">Chart</a>
+        <a href="#chart-local">Chart</a>
         <a href="#method">Method</a>
         <a href="sources.html">Sources</a>
       </nav>
@@ -79,13 +79,22 @@
       </div>
     </section>
 
-    <section id="chart" class="card">
+    <section id="chart-local" class="card">
       <div class="card-head">
-        <h2>All models, share of Sonnet 5.5</h2>
-        <p class="muted">Long-coding score (average of Terminal-Bench 4.0 and FrontierCode 2.0) as a percentage of Sonnet 5.5's 52.7. Dashed lines are tier edges. Open-weights models are coloured by tier; cloud models are grey.</p>
+        <h2>Local models, share of Sonnet 5.5</h2>
+        <p class="muted">Long-coding score (average of Terminal-Bench 4.0 and FrontierCode 2.0) as a percentage of Sonnet 5.5's 52.7, for open-weights models, with Sonnet 5.5 as the reference. Dashed lines are tier edges; bars are coloured by tier.</p>
       </div>
-      <div id="bars" class="bars" role="img" aria-label="Bar chart of each model's long-coding score as a share of Sonnet 5.5"></div>
-      <div class="legend" id="legend"></div>
+      <div id="bars-local" class="bars" role="img" aria-label="Bar chart of each open-weights model's long-coding score as a share of Sonnet 5.5"></div>
+      <div class="legend" id="legend-local"></div>
+    </section>
+
+    <section id="chart-cloud" class="card" hidden>
+      <div class="card-head">
+        <h2>Cloud models, share of Sonnet 5.5</h2>
+        <p class="muted">Long-coding score (average of Terminal-Bench 4.0 and FrontierCode 2.0) as a percentage of Sonnet 5.5's 52.7, for cloud-only models. Dashed lines are tier edges.</p>
+      </div>
+      <div id="bars-cloud" class="bars" role="img" aria-label="Bar chart of each cloud model's long-coding score as a share of Sonnet 5.5"></div>
+      <div class="legend" id="legend-cloud"></div>
     </section>
 
     <section id="method" class="card prose">
