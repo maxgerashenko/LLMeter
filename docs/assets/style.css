@@ -249,3 +249,17 @@ section[hidden] { display: none; }
   .disk-inline { display: block; font-size: 12px; color: var(--muted); }
 }
 @media (min-width: 641px) { .tier-table .share-track { width: 90px; } }
+
+/* Tier summary chart: bars use the tier colours (.tier-bg-*) */
+.tier-bars { display: grid; gap: 10px; margin: 4px 0 22px; }
+.tb-row { display: grid; grid-template-columns: 260px 1fr 44px; align-items: center; gap: 12px; }
+.tb-label { font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tb-label a { color: var(--text); }
+.tb-label a:hover { color: var(--accent); }
+.tb-track { height: 16px; border-radius: 4px; background: var(--track); overflow: hidden; }
+.tb-bar { display: block; height: 100%; border-radius: 4px; }
+.tb-value { font-size: 13px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) {
+  .tb-row { grid-template-columns: 1fr 40px; gap: 4px 8px; }
+  .tb-label { grid-column: 1 / -1; font-size: 13px; }
+}

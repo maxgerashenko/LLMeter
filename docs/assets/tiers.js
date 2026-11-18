@@ -217,6 +217,22 @@
       });
     });
 
+    // Tier summary chart: one bar per tier leader, in its tier colour, "Tier N - model" then its share
+    var tb = document.getElementById("tier-bars");
+    tb.textContent = "";
+    picks.forEach(function (p) {
+      var m = p.model, t = p.tier;
+      if (!m || m.pct == null) return;
+      var label = (t.id === "max" ? "Max" : "Tier " + t.label) + " - " + splitName(m.model).base;
+      tb.appendChild(el("div", { class: "tb-row" }, [
+        el("span", { class: "tb-label" }, [el("a", { href: sourceFor(m), text: label })]),
+        el("span", { class: "tb-track" }, [
+          el("span", { class: "tb-bar tier-bg-" + t.id, style: "width:" + Math.max(0.6, Math.min(100, m.pct)) + "%" })
+        ]),
+        el("span", { class: "tb-value", text: fmtPct(m.pct) })
+      ]));
+    });
+
     // Cloud tab: every non-open-weights model in the data file
     var cloudBody = document.getElementById("cloud-rows");
     cloudBody.textContent = "";
