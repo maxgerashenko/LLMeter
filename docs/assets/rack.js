@@ -76,7 +76,7 @@
         el("span", { class: "rk-bar tier-bg-" + r.tier + (r.status === "estimate" ? " rk-est" : ""), style: "width:" + w + "%" })
       ]);
       value = el("a", { class: "rk-value" + (r.status === "estimate" ? " est" : ""), href: r.source, title: title(r) },
-        [fmtTok(r), r.status === "estimate" ? el("span", { class: "rk-est-tag", text: " est." }) : null]);
+        [fmtTok(r), el("span", { class: "rk-unit", text: " tok/s" }), r.status === "estimate" ? el("span", { class: "rk-est-tag", text: " est." }) : null]);
     }
     return el("div", { class: "rk-row" + (cls ? " " + cls : "") }, [label, track, value]);
   }
@@ -114,7 +114,7 @@
     var scale = Math.max.apply(null, speeds.filter(function (r) { return r.tok != null; }).map(function (r) { return r.tok; }));
 
     var alt = rackById[ALT_RACK];
-    document.getElementById("rack-title").textContent = "Tier table on a rack of Mac Studio M5 Ultras";
+    document.getElementById("rack-title").textContent = "Mac Studio M5 Ultra";
     document.getElementById("rack-sub").textContent = "Each tier's best local model at 4-bit on as many Mac Studio M5 Ultras (" + main.gpu + "-core GPU, " +
       (main.bw / 1000).toFixed(1) + " TB/s each) as it needs, linked over Thunderbolt 5. Bars use " + main.mem + " GB Macs; the table also shows " + alt.mem +
       " GB Macs. Tokens per second, one request at a time. The Max line is Claude Sonnet 5.5's cloud API speed.";

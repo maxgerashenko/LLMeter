@@ -2,7 +2,7 @@
 
 /* Horizontal bars: label | track | value */
 .rk-bars { display: grid; gap: 10px; margin: 4px 0 22px; }
-.rk-row { display: grid; grid-template-columns: 280px 1fr 76px; align-items: center; gap: 12px; }
+.rk-row { display: grid; grid-template-columns: 280px 1fr 118px; align-items: center; gap: 12px; }
 .rk-label { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rk-label .tier-badge { min-width: 52px; padding: 2px 8px; font-size: 12px; }
 .rk-row.is-ref .tb-model { font-weight: 700; }
@@ -14,6 +14,7 @@
 .rk-value { font-size: 13px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; color: var(--text); white-space: nowrap; }
 .rk-value.est, .rk-num.est { font-weight: 500; font-style: italic; color: var(--muted); }
 .rk-est-tag { font-size: 11px; }
+.rk-unit { font-size: 11px; font-weight: 500; color: var(--muted); }
 .rk-num { color: var(--text); font-weight: 600; }
 
 /* Table */
@@ -29,13 +30,13 @@
 .rk-group-head .tier-badge { min-width: 52px; padding: 2px 8px; font-size: 12px; }
 .rk-group-model { font-weight: 600; }
 .rk-group-size { font-size: 12.5px; }
-.rk-group .rk-row { grid-template-columns: 240px 1fr 76px; }
+.rk-group .rk-row { grid-template-columns: 240px 1fr 118px; }
 .rk-rack { color: var(--muted); font-size: 13px; }
 .rk-rack.is-main { color: var(--text); font-weight: 600; }
 .rk-spec-table td, .rk-spec-table th { white-space: nowrap; }
 
 @media (max-width: 640px) {
-  .rk-row, .rk-group .rk-row { grid-template-columns: 1fr 64px; gap: 4px 8px; }
+  .rk-row, .rk-group .rk-row { grid-template-columns: 1fr 104px; gap: 4px 8px; }
   .rk-row .rk-label { grid-column: 1 / -1; font-size: 13px; }
   .rk-table .rk-size-col, .rk-table .rk-how-col { display: none; }
   .rk-inline { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
