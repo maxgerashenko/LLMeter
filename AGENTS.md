@@ -42,6 +42,8 @@ When a task mixes both, use Fable for the analysis and writing of the article, a
 | `data/` | Structured data collected about models | Add facts with a source reference for each one |
 | `tasks/` | Frozen test suites for local model runs (`tasks/local-coding-v1`) | Never edit a frozen suite; a change is a new version folder |
 | `articles/` | Analysis articles, one Markdown file per topic | Write up the result of each analysis |
+| `sources/` | Saved copies of public source text that could not be fetched by link | Save the text exactly as read; never edit it |
+| `prompts/` | The prompts Max wrote in the chat behind an article | Save them as typed, one file per article, and link the file from the article |
 | `docs/` | Public website on GitHub Pages | Publish each new or changed article |
 
 ## Rules
