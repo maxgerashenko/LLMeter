@@ -16,6 +16,7 @@
     .prose h3 { font-size: 15px; margin: 18px 0 4px; }
     .prose ul { max-width: 760px; padding-left: 20px; }
     .prose li { margin: 8px 0; }
+    #panels { background: transparent; border-color: transparent; }
     .panels { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; margin: 0 0 14px; }
     .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; min-width: 0; }
     .panel .p-label { font-size: 12px; font-weight: 600; letter-spacing: .02em; color: var(--muted); text-transform: uppercase; margin: 0; }
@@ -58,20 +59,9 @@
     <div id="panel-anthropic-s1" role="tabpanel" aria-labelledby="tab-anthropic-s1">
     <section class="hero">
       <p class="eyebrow">Anthropic Form S-1 · filed 2026-10-26 · read <span>2026-11-18</span></p>
-      <h1>What does the frontier cost, and what does it earn?</h1>
-      <p class="lede">
-        Anthropic's IPO filing is the first set of audited accounts from a frontier lab. In six quarters,
-        <strong>revenue per dollar of compute rose from $0.40 to $2.08</strong>, at least
-        <strong>73% of compute went to something other than serving customers</strong>, and the company signed
-        about <strong>$853 billion</strong> of commitments, almost all for compute.
-      </p>
     </section>
 
     <section class="card" id="panels">
-      <div class="card-head">
-        <h2>The main numbers</h2>
-        <p class="muted">Figures marked * are calculated by LLMeter from reported numbers; the rest are as printed in the filing. USD, unaudited.</p>
-      </div>
       <div class="panels">
         <div class="panel derived"><p class="p-label">Gross margin, first half 2026</p><p class="p-value">85%</p><p class="p-note">(Revenue $16,286M &minus; cost of revenue $2,380M) / revenue. The filing prints no gross margin.</p><p class="p-src">Note 8, p. F-39</p></div>
         <div class="panel derived"><p class="p-label">Gross margin after R&amp;D, first half 2026</p><p class="p-value">26%</p><p class="p-note">(Revenue $16,286M &minus; cost of revenue $2,380M &minus; research and development $9,741M) / revenue. R&amp;D includes training compute.</p><p class="p-src">Note 8, p. F-39</p></div>
