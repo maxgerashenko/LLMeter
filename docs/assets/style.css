@@ -134,13 +134,14 @@ th.num { text-align: right; }
 
 /* Bar chart */
 .bars { margin-top: 6px; }
-.plot { --label-w: 210px; --gap: 12px; position: relative; padding-top: 22px; }
+.plot { --label-w: 290px; --gap: 12px; position: relative; padding-top: 22px; }
 .edges { position: absolute; top: 0; bottom: 0; left: calc(var(--label-w) + var(--gap)); right: 0; pointer-events: none; }
 .bar-row { display: grid; grid-template-columns: var(--label-w) 1fr; align-items: center; gap: var(--gap); height: 26px; position: relative; z-index: 1; }
 .bar-row.is-ref .bar-label a { font-weight: 700; }
 .bar-label { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .bar-label a { color: var(--text); }
 .bar-label .setting { margin-left: 5px; }
+.bar-tag { min-width: 52px; margin-right: 8px; padding: 1px 0; font-size: 11px; text-align: center; box-sizing: border-box; display: inline-block; }
 .bar-track { position: relative; height: 14px; }
 .bar { display: block; height: 100%; border-radius: 3px; }
 .bar-value { position: absolute; top: -2px; margin-left: 6px; font-size: 12px; color: var(--muted); white-space: nowrap; }
@@ -170,7 +171,7 @@ th.num { text-align: right; }
   .tier-name { display: none; }
   .tier-table th, .tier-table td { padding: 12px 6px; }
   .tier-table thead th { white-space: normal; }
-  .plot { --label-w: 112px; --gap: 8px; }
+  .plot { --label-w: 160px; --gap: 8px; }
   .bar-label .setting { display: none; }
 }
 .th-sub { display: block; font-weight: 500; text-transform: none; letter-spacing: 0; }

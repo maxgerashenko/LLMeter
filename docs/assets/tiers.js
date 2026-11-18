@@ -233,6 +233,12 @@
       ]));
     });
 
+    // Tier tag in front of each bar label: the tier badge, or a "Cloud" pill for cloud-only models
+    function chartTag(m, t) {
+      if (m.model === REFERENCE) return el("span", { class: "tier-badge bar-tag tier-max" }, ["Max"]);
+      if (m.open && t) return el("span", { class: "tier-badge bar-tag tier-" + t.id, title: t.name }, [t.id === "max" ? "Max" : "Tier " + t.label]);
+      return el("span", { class: "pill pill-cloud bar-tag" }, ["Cloud"]);
+    }
     // Bar chart on the All tab: every model, open-weights coloured by tier, cloud grey
     function renderChart(barsId, legendId, list, legendTiers, cloudLegend) {
       var chartModels = list.filter(function (m) { return m.pct != null; })
@@ -250,7 +256,7 @@
         var cls = m.open && t ? "tier-bg-" + t.id : (m.model === REFERENCE ? "tier-bg-max" : "bar-cloud");
         var n = splitName(m.model);
         plot.appendChild(el("div", { class: "bar-row" + (m.model === REFERENCE ? " is-ref" : "") }, [
-          el("span", { class: "bar-label" }, [el("a", { href: sourceFor(m), text: n.base }), n.setting ? el("span", { class: "setting", text: n.setting }) : null]),
+          el("span", { class: "bar-label" }, [chartTag(m, t), el("a", { href: sourceFor(m), text: n.base }), n.setting ? el("span", { class: "setting", text: n.setting }) : null]),
           el("span", { class: "bar-track" }, [
             el("span", { class: "bar " + cls, style: "width:" + Math.max(0.6, m.pct / max * 100) + "%" }),
             el("span", { class: "bar-value", style: "left:" + (m.pct / max * 100) + "%", text: fmtPct(m.pct) })
