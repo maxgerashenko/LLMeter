@@ -247,12 +247,6 @@
         ]));
       });
 
-    // Band list in the method section
-    var bl = document.getElementById("band-list");
-    TIERS.forEach(function (t) {
-      bl.appendChild(el("li", null, [tierBadge(t), el("span", null, [el("strong", { text: " " + t.name + ": " }), t.desc])]));
-    });
-
     // Bar charts: one per tab, so the Local and Cloud tabs each show only their own models
     function renderChart(barsId, legendId, list, legendTiers, cloudLegend) {
       var chartModels = list.filter(function (m) { return m.pct != null; })

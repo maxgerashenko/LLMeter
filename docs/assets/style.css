@@ -155,8 +155,6 @@ th.num { text-align: right; }
 .swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
 
 .prose p { margin: 10px 0; max-width: 760px; }
-.band-list { list-style: none; padding: 0; margin: 14px 0; display: grid; gap: 8px; }
-.band-list li { display: flex; gap: 10px; align-items: baseline; font-size: 14px; }
 
 .data-table { font-size: 13.5px; }
 .data-table td, .data-table th { padding: 9px 10px; white-space: nowrap; }
