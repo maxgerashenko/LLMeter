@@ -1,0 +1,105 @@
+# Preview the website in docs/ for every pull request, without touching the
+# live site. GitHub Pages only serves main, so this does three things instead:
+#   1. Checks that docs/data/ matches data/ (run scripts/sync-site-data.sh if not).
+#   2. Takes desktop and phone screenshots of each page and attaches them,
+#      together with the whole site folder, to the workflow run.
+#   3. Posts (and keeps updating) one PR comment with a live preview link.
+#      The link uses raw.githack.com, a free proxy that serves files from a
+#      public GitHub repo with the right content types, so the pages and their
+#      CSV data load like on the real site. It needs no account or secrets.
+name: PR preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "docs/**"
+      - "data/**"
+      - "scripts/**"
+      - ".github/workflows/pr-preview.yml"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Check that docs/data is in sync with data/
+        id: sync
+        run: |
+          ./scripts/sync-site-data.sh
+          if git diff --quiet -- docs/data; then
+            echo "in_sync=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "in_sync=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::docs/data is out of date. Run scripts/sync-site-data.sh and commit docs/data."
+            git checkout -- docs/data
+          fi
+
+      - name: Take screenshots
+        run: |
+          npm install --no-save --silent playwright@1.48.2
+          npx playwright install --with-deps chromium > /dev/null
+          python3 -m http.server 8000 --directory docs > /dev/null 2>&1 &
+          sleep 1
+          node scripts/preview-screenshots.mjs http://localhost:8000 preview-screenshots
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: preview-screenshots
+          retention-days: 14
+
+      - name: Upload site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: docs
+          retention-days: 14
+
+      - name: Comment with preview link
+        uses: actions/github-script@v7
+        env:
+          IN_SYNC: ${{ steps.sync.outputs.in_sync }}
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const sha = pr.head.sha;
+            const repo = pr.head.repo.full_name;
+            const base = `https://raw.githack.com/${repo}/${sha}/docs`;
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const marker = '<!-- llmeter-pr-preview -->';
+            const lines = [
+              marker,
+              `### Site preview for ${sha.slice(0, 7)}`,
+              '',
+              `- [Tiers (home)](${base}/index.html)`,
+              `- [Intelligence](${base}/intelligence.html)`,
+              `- [Sources](${base}/sources.html)`,
+              '',
+              `Desktop and phone screenshots, and the whole site folder, are attached to [this run](${run}) under **Artifacts**.`,
+            ];
+            if (process.env.IN_SYNC !== 'true') {
+              lines.push('', '> **Warning:** `docs/data` does not match `data/`. Run `scripts/sync-site-data.sh` and commit `docs/data`, or the live site will show old data.');
+            }
+            lines.push('', '_The preview is served by raw.githack.com from this commit, so it updates with each push. It does not change the live site._');
+            const body = lines.join('\n');
+            const { owner, repo: name } = context.repo;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo: name, issue_number: pr.number });
+            const old = comments.find(c => c.body && c.body.includes(marker));
+            if (old) {
+              await github.rest.issues.updateComment({ owner, repo: name, comment_id: old.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo: name, issue_number: pr.number, body });
+            }
