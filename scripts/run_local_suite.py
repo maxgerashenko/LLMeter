@@ -311,7 +311,7 @@ def main():
     parser.add_argument("--tasks", default="", help="comma-separated task ids (default: all)")
     parser.add_argument("--results", default=str(ROOT / "data" / "local-runtime-results.csv"),
                         help="CSV to append to")
-    parser.add_argument("--hardware", default="MacBook Pro, 64 GB")
+    parser.add_argument("--hardware", default="MacBook Pro M5 Pro, 64 GB")
     parser.add_argument("--runs-dir", default=str(ROOT / "data" / "local-runs"))
     args = parser.parse_args()
 
