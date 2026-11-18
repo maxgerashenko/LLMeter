@@ -22,7 +22,7 @@
     ["q09", "Version-constraint solver with backtracking"],
     ["q10", "Unified-diff applier with offsets and fuzz"]
   ];
-  var DEFAULT_HW = "MacBook Pro, 64 GB";
+  var DEFAULT_HW = "MacBook Pro M5 Pro, 64 GB";
   var metric = "score";
   var state = { runs: [], planned: [] };
 
