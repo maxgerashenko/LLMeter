@@ -32,6 +32,7 @@
 
     <div class="tabs" role="tablist" aria-label="Rack">
       <button type="button" role="tab" id="tab-rack" class="tab" aria-selected="true" aria-controls="panel-rack">M5 Ultra rack</button>
+      <button type="button" role="tab" id="tab-rack-price" class="tab" aria-selected="false" aria-controls="panel-rack-price" tabindex="-1">Price</button>
       <button type="button" role="tab" id="tab-rack-all" class="tab" aria-selected="false" aria-controls="panel-rack-all" tabindex="-1">All</button>
     </div>
 
@@ -57,6 +58,29 @@
           </tbody>
         </table>
       </div>
+    </section>
+
+    <section id="panel-rack-price" class="card" role="tabpanel" aria-labelledby="tab-rack-price" hidden>
+      <div class="card-head">
+        <h2>What each tier costs in Mac Studio M5 Ultras</h2>
+        <p class="muted">Hardware price of the cheapest M5 Ultra rack that runs each tier's best local model at 4-bit: the number of Macs times the price of one. Bar length and the figure at the end are the total in US dollars. Cloud has no hardware price.</p>
+      </div>
+      <div id="price-bars" class="rk-bars" role="img" aria-label="Bar chart of the hardware price of the M5 Ultra rack each tier's best local model needs"></div>
+      <div class="table-scroll">
+        <table class="tier-table rk-table rk-price-table">
+          <thead>
+            <tr>
+              <th scope="col">Tier</th>
+              <th scope="col">Best model</th>
+              <th scope="col">Rack</th>
+              <th scope="col" class="num">Total</th>
+              <th scope="col" class="rk-alt-col">Other option</th>
+            </tr>
+          </thead>
+          <tbody id="price-rows"></tbody>
+        </table>
+      </div>
+      <p class="muted rk-price-note">Prices per Mac: 512 GB $22,299 (<a href="https://macrumors.com/2026/10/28/mac-studio-m5-ultra-512gb-ram/">MacRumors</a>), 256 GB $10,799 (<a href="https://aicybr.com/blog/mac-studio-m5-max-m5-ultra-2026-price-specs-mac-mini-m6-comparison">AICYBR</a>, base price plus the memory upgrade). Racks with no published run are not chosen; the other option is shown for comparison. Hover a total for the sum, click it for the source.</p>
     </section>
 
     <section id="panel-rack-all" class="card" role="tabpanel" aria-labelledby="tab-rack-all" hidden>

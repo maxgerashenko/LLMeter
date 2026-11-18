@@ -149,6 +149,45 @@
       ]));
     });
 
+    // Price tab: cheapest M5 Ultra rack that fits, per tier
+    (function () {
+      var pb = document.getElementById("price-bars"), pr = document.getElementById("price-rows");
+      pb.textContent = ""; pr.textContent = "";
+      var opts = TIERS.map(function (t) {
+        if (t.id === "max") return { t: t, cloud: true };
+        var list = [MAIN_RACK, ALT_RACK].map(function (id) { return onRack(t.id, id); })
+          .filter(function (r) { return r && r.status !== "no_fit"; })
+          .map(function (r) { var k = rackById[r.rack]; return { r: r, k: k, total: (r.macs || 1) * k.price, ok: r.status !== "untested" }; });
+        var usable = list.filter(function (o) { return o.ok; }).sort(function (a, b) { return a.total - b.total; });
+        return { t: t, best: usable[0], other: list.filter(function (o) { return o !== usable[0]; })[0] };
+      });
+      var top = Math.max.apply(null, opts.map(function (o) { return o.best ? o.best.total : 0; }));
+      function money(n) { return n >= 10000 ? "$" + Math.round(n / 1000) + "k" : "$" + (n / 1000).toFixed(1) + "k"; }
+      function sum(o) { return o.r.macs + " × $" + o.k.price.toLocaleString("en-US") + " = $" + o.total.toLocaleString("en-US"); }
+      opts.forEach(function (o) {
+        var t = o.t;
+        if (o.cloud) {
+          pb.appendChild(el("div", { class: "rk-row is-ref" }, [
+            el("span", { class: "rk-label" }, [badge("max"), el("span", { class: "tb-model", text: "Claude Sonnet 5.5" })]),
+            el("span", { class: "rk-track rk-nofit", title: "Cloud API, billed per token; no hardware to buy" }, [el("span", { text: "cloud · no hardware" })]),
+            el("span", { class: "rk-value muted", text: "n/a" })]));
+          pr.appendChild(el("tr", null, [el("th", { scope: "row" }, [badge("max")]), el("td", { text: "Claude Sonnet 5.5" }),
+            el("td", { class: "muted", text: "Anthropic API" }), el("td", { class: "num muted", text: "n/a" }), el("td", { class: "rk-alt-col muted", text: "–" })]));
+          return;
+        }
+        var b = o.best, r = b.r, name = baseName(r.model), equip = rackLabel(r, b.k);
+        pb.appendChild(el("div", { class: "rk-row" }, [
+          el("span", { class: "rk-label" }, [badge(t.id), el("span", { class: "rk-equip", text: equip }), el("span", { class: "rk-cfg", text: name })]),
+          el("span", { class: "rk-track", title: sum(b) }, [el("span", { class: "rk-bar tier-bg-" + t.id, style: "width:" + Math.max(0.8, b.total / top * 100) + "%" })]),
+          el("a", { class: "rk-value", href: b.k.priceSrc, title: sum(b) + " · " + b.k.priceNote }, [money(b.total)])]));
+        var alt = o.other ? rackLabel(o.other.r, o.other.k) + " " + money(o.other.total) + (o.other.ok ? "" : " (no published run)") : "–";
+        pr.appendChild(el("tr", null, [el("th", { scope: "row" }, [badge(t.id)]), el("td", { text: name }),
+          el("td", null, [equip]),
+          el("td", { class: "num" }, [el("a", { href: b.k.priceSrc, title: sum(b), class: "rk-price-cell", text: money(b.total) })]),
+          el("td", { class: "rk-alt-col muted", text: alt })]));
+      });
+    })();
+
     // All racks: one group per tier, one bar per rack
     var groups = document.getElementById("rack-groups");
     groups.textContent = "";
@@ -198,7 +237,7 @@
 
   // Tabs
   (function () {
-    var tabs = [["tab-rack", "panel-rack"], ["tab-rack-all", "panel-rack-all"]];
+    var tabs = [["tab-rack", "panel-rack"], ["tab-rack-price", "panel-rack-price"], ["tab-rack-all", "panel-rack-all"]];
     function select(id) {
       tabs.forEach(function (t) {
         var on = t[0] === id, b = document.getElementById(t[0]);
@@ -216,7 +255,7 @@
         select(next); document.getElementById(next).focus();
       });
     });
-    function fromHash() { if (location.hash === "#all") select("tab-rack-all"); }
+    function fromHash() { if (location.hash === "#all") select("tab-rack-all"); else if (location.hash === "#price") select("tab-rack-price"); }
     window.addEventListener("hashchange", fromHash);
     fromHash();
   })();

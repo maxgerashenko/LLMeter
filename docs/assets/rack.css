@@ -53,3 +53,12 @@
 .rk-price-cell { color: var(--text); }
 .rk-specs { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); }
 .rk-specs h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+
+/* Price tab */
+.rk-equip { font-weight: 600; white-space: nowrap; }
+.rk-price-note { margin: 14px 0 0; font-size: 13px; }
+.rk-price-table .rk-alt-col { font-size: 13px; }
+@media (max-width: 640px) {
+  .rk-price-table .rk-alt-col { display: none; }
+  .rk-label .rk-cfg { overflow: hidden; text-overflow: ellipsis; }
+}
