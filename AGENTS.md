@@ -40,6 +40,7 @@ When a task mixes both, use Fable for the analysis and writing of the article, a
 | `AGENTS.md` | This file | Update when the agent's role or rules change |
 | `RESOURCES.md` | Every public source used, with a link and a short note | Add each new source before using it |
 | `data/` | Structured data collected about models | Add facts with a source reference for each one |
+| `tasks/` | Frozen test suites for local model runs (`tasks/local-coding-v1`) | Never edit a frozen suite; a change is a new version folder |
 | `articles/` | Analysis articles, one Markdown file per topic | Write up the result of each analysis |
 | `docs/` | Public website on GitHub Pages | Publish each new or changed article |
 

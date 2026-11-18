@@ -54,6 +54,7 @@ The planned layout of the repository:
 | `articles/` | Analysis articles, one Markdown file per topic or finding |
 | `docs/` | The public website, published with GitHub Pages |
 | `data/` | Structured data collected about models (planned) |
+| `tasks/` | Frozen test suites for running local models ourselves. `tasks/local-coding-v1` is ten coding tasks with hidden tests and a grader |
 
 ## Website
 
