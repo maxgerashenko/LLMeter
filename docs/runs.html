@@ -74,6 +74,7 @@
       <p class="note">
         Suite: <strong>local-coding-v1</strong>, ten short Python tasks with hidden tests and partial credit (easy weight 1, medium 2, hard 3).
         Score is the weighted share of hidden tests passed, 0 to 100. Tokens/sec is the average generation speed across the run's tasks.
+        Limits per task: 4,000 output tokens and 5 minutes with thinking off; 12,000 tokens (thinking included) and 15 minutes with thinking on. An answer cut off at a limit scores 0, so a low thinking-on score can mean the model spent its budget on thinking, not that its answer was wrong.
         Results are read from <a href="https://github.com/maxgerashenko/LLMeter/blob/main/data/local-runtime-results.csv">data/local-runtime-results.csv</a> (one row per task) and the model list from <a href="https://github.com/maxgerashenko/LLMeter/blob/main/data/local-test-models.csv">data/local-test-models.csv</a>;
         a row marked <em>planned</em> has not been run yet and has no numbers.
       </p>

@@ -1,0 +1,3 @@
+__pycache__/
+# Raw replies and server logs of local runs; the scores are in data/local-runtime-results-*.csv
+data/local-runs/
