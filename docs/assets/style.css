@@ -97,7 +97,6 @@ th.num { text-align: right; }
 
 .tier-table td, .tier-table th { padding: 14px 10px; }
 .tier-cell { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
-.tier-name { color: var(--muted); font-size: 13px; }
 .tier-badge {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 58px; padding: 3px 9px; border-radius: 999px;
@@ -167,7 +166,6 @@ th.num { text-align: right; }
   .card { padding: 16px; }
   .table-scroll { margin: 0 -16px; padding: 0 16px; }
   .share-track { display: none; }
-  .tier-name { display: none; }
   .tier-table th, .tier-table td { padding: 12px 6px; }
   .tier-table thead th { white-space: normal; }
   .plot { --label-w: 112px; --gap: 8px; }
@@ -255,7 +253,6 @@ section[hidden] { display: none; }
 .tb-row { display: grid; grid-template-columns: 330px 1fr 44px 52px; align-items: center; gap: 12px; }
 .tb-label { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13.5px; white-space: nowrap; }
 .tb-label .tier-badge { min-width: 52px; padding: 2px 8px; font-size: 12px; }
-.tb-name { color: var(--muted); font-size: 13px; }
 .tb-model { color: var(--text); overflow: hidden; text-overflow: ellipsis; }
 .tb-model:hover { color: var(--accent); }
 .tb-explain { font-size: 12.5px; font-weight: 500; text-align: right; }

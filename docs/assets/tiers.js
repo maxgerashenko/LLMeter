@@ -10,12 +10,12 @@
 
   // Tier bands, from articles/long-coding-tiers-local-models.md#how-tiers-are-defined
   var TIERS = [
-    { id: "max", anchor: "max-claude-sonnet-55-cloud", label: "Max", name: "", min: null, desc: "Claude Sonnet 5.5 itself, cloud only. The 100% reference." },
-    { id: "t4", anchor: "tier-4-kimi-k31-pro", label: "4", name: "near-frontier", min: 75, desc: "75% or more. Could stand in for Sonnet 5.5 on most long tasks." },
-    { id: "t3", anchor: "tier-3-glm-53", label: "3", name: "strong", min: 55, desc: "55% to 75%. Finishes a little over half of what Sonnet 5.5 finishes." },
-    { id: "t2", anchor: "tier-2-qwen38-flash-next", label: "2", name: "capable", min: 40, desc: "40% to 55%. Useful for long tasks with supervision." },
-    { id: "t1", anchor: "tier-1-nanbeige43-33b", label: "1", name: "assistant", min: 20, desc: "20% to 40%. Finishes some long tasks; better for shorter, well-scoped ones." },
-    { id: "t0", anchor: "tier-0-below-the-bar", label: "0", name: "below the bar", min: 0, desc: "Under 20%. Rarely finishes a long task." }
+    { id: "max", anchor: "max-claude-sonnet-55-cloud", label: "Max", min: null, desc: "Claude Sonnet 5.5 itself, cloud only. The 100% reference." },
+    { id: "t4", anchor: "tier-4-kimi-k31-pro", label: "4", min: 75, desc: "75% or more. Could stand in for Sonnet 5.5 on most long tasks." },
+    { id: "t3", anchor: "tier-3-glm-53", label: "3", min: 55, desc: "55% to 75%. Finishes a little over half of what Sonnet 5.5 finishes." },
+    { id: "t2", anchor: "tier-2-qwen38-flash-next", label: "2", min: 40, desc: "40% to 55%. Useful for long tasks with supervision." },
+    { id: "t1", anchor: "tier-1-nanbeige43-33b", label: "1", min: 20, desc: "20% to 40%. Finishes some long tasks; better for shorter, well-scoped ones." },
+    { id: "t0", anchor: "tier-0-below-the-bar", label: "0", min: 0, desc: "Under 20%. Rarely finishes a long task." }
   ];
 
   function parseCSV(text) {
@@ -93,7 +93,7 @@
 
   function tierBadge(t) {
     if (!t) return el("span", { class: "muted", text: "n/a" });
-    return el("span", { class: "tier-badge tier-" + t.id, title: t.name || null }, [t.id === "max" ? "Max" : "Tier " + t.label]);
+    return el("span", { class: "tier-badge tier-" + t.id, title: t.desc }, [t.id === "max" ? "Max" : "Tier " + t.label]);
   }
 
   // "2,800B (104B active)", "753B (40B to 54B active)", "33B" for dense, "not published".
@@ -201,7 +201,7 @@
         });
       }
       var tierCell = el("th", { scope: "row" }, [
-        el("div", { class: "tier-cell" }, [tierBadge(t), t.name ? el("span", { class: "tier-name", text: t.name }) : null]),
+        el("div", { class: "tier-cell" }, [tierBadge(t)]),
         el("div", { class: "tier-actions" }, [
           el("a", { class: "explain", href: ARTICLE + "#" + t.anchor, title: "Why this tier's pick, with hardware needs" }, ["Explain"]),
           toggle
@@ -226,9 +226,7 @@
       tb.appendChild(el("div", { class: "tb-row" }, [
         el("span", { class: "tb-label" }, [
           tierBadge(t),
-          // The Max row is the reference itself: badge only, no tier or model name
-          t.id === "max" ? null : el("span", { class: "tb-name", text: t.name }),
-          t.id === "max" ? null : el("a", { class: "tb-model", href: sourceFor(m), text: splitName(m.model).base })
+          el("a", { class: "tb-model", href: sourceFor(m), text: splitName(m.model).base })
         ]),
         el("span", { class: "tb-track" }, [
           el("span", { class: "tb-bar tier-bg-" + t.id, style: "width:" + Math.max(0.6, Math.min(100, m.pct)) + "%" })
