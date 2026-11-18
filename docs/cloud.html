@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLMeter: cloud, all models by Intelligence Index</title>
+  <meta name="description" content="Every model ranked by the Artificial Analysis Intelligence Index, as a horizontal bar chart.">
+  <script src="assets/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+    <style>
+    @media (max-width: 640px) {
+      .plot { --label-w: 178px; --gap: 8px; }
+      .bar-tag { display: none; }
+      .bar-label .setting { display: inline; margin-left: 4px; }
+      .bar-label { font-size: 12.5px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
+      <nav class="nav">
+        <a href="./" data-section="local">Local</a>
+        <a href="cloud.html" data-section="cloud">Cloud</a>
+        <a href="finance.html#gdp" data-section="finance">Finance</a>
+        <a href="sources.html" data-section="sources" class="nav-minor">Sources</a>
+      </nav>
+    </div>
+  </header>
+  <script src="assets/nav.js"></script>
+
+  <main class="wrap">
+    <div class="top-gap"></div>
+    <section class="card">
+      <div class="card-head">
+        <h2>All models by Artificial Analysis Intelligence Index</h2>
+        <p class="muted">One bar per model in the data file, sorted by the <a href="https://artificialanalysis.ai/models">Intelligence Index</a> (v5.0.1, 0 to 100). Bars use the long-coding tier colours; cloud-only models are grey.</p>
+      </div>
+      <div id="bars-ii" class="bars" role="img" aria-label="Bar chart of each model's Artificial Analysis Intelligence Index, sorted high to low"><p class="muted">Loading data…</p></div>
+      <div class="legend" id="legend-ii"></div>
+      <p class="note">Models without a published Intelligence Index are left out. The index is a general measure across many evaluations; the tiers come from long coding tasks, so a model's colour can differ from its rank here.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        Data from <a href="https://artificialanalysis.ai/">Artificial Analysis</a>, read <span id="read-date">2026-11-17</span>.
+        LLMeter is an independent project, <a href="https://github.com/maxgerashenko/LLMeter">source on GitHub</a>.
+      </p>
+    </div>
+  </footer>
+  <script src="assets/cloud.js"></script>
+</body>
+</html>

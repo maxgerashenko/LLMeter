@@ -9,14 +9,14 @@
       ["Rack", "rack.html", "rack"],
       ["Runs", "runs.html", "runs"]
     ],
-    cloud: [["Intelligence", "intelligence.html", "intelligence"]],
+    cloud: [["All", "cloud.html", "cloud"], ["Intelligence", "intelligence.html", "intelligence"]],
     finance: [
       ["GDP", "finance.html#gdp", "finance"],
       ["Software", "finance.html#software", "finance"],
       ["Anthropic S-1", "finance.html#anthropic-s1", "finance"]
     ]
   };
-  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", intelligence: "cloud", finance: "finance", sources: "sources" };
+  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", intelligence: "cloud", cloud: "cloud", finance: "finance", sources: "sources" };
 
   var page = (location.pathname.split("/").pop() || "index.html").replace(/\.html$/, "") || "index";
   var section = PAGE_SECTION[page];
