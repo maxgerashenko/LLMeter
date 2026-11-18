@@ -1,6 +1,6 @@
 # Local runtime coding test: quick standard suite
 
-Status: run rules v0.4, written 2026-11-18 (v0.4: 15-minute wall time for thinking-on runs, streamed replies, context at 80% of the maximum). The tasks themselves are in a separate, frozen folder: [tasks/local-coding-v1](../tasks/local-coding-v1/README.md) (suite version 1.0.0, with starter files, hidden tests, reference solutions and a grader). First runs: 2026-11-18 (TensorFold: M01 and M02, thinking off and on). Runs are made with `scripts/run_local_suite.py`. Results go to `data/local-runtime-results.csv` (one file for all runs, one row per task, a date on every row; the site's Runs page reads it); models to test are in [local-test-models.csv](local-test-models.csv).
+Status: run rules v0.4, written 2026-11-18 (v0.4: 15-minute wall time for thinking-on runs, streamed replies, context at 80% of the maximum). The tasks themselves are in a separate, frozen folder: [tasks/local-coding-v1](../tasks/local-coding-v1/README.md) (suite version 1.0.0, with starter files, hidden tests, reference solutions and a grader). First runs: 2026-11-18 (TensorFold: M01 and M02, thinking off and on; LM Studio: M02, M08 and M09). Runs are made with `scripts/run_local_suite.py`. Results go to `data/local-runtime-results.csv` (one file for all runs, one row per task, a date on every row; the site's Runs page reads it); models to test are in [local-test-models.csv](local-test-models.csv).
 
 ## Scope
 
@@ -119,7 +119,9 @@ Memory warning: the KV cache grows with context and with parallel slots. Full-at
 
 ## Open items
 
-- Run the LM Studio models. The runner (`scripts/run_local_suite.py`) supports LM Studio, but its thinking switch there is not verified yet.
+- LM Studio, thinking off: not available. Checked on 2026-11-18 with Qwen3.8 27B in LM Studio 0.4.28: none of the request settings tried (`reasoning.effort`, `chat_template_kwargs.enable_thinking`, `enable_thinking`, `/no_think` in the prompt, `thinking_budget`) reduced the reasoning text. So in LM Studio a model with a thinking mode is run with thinking on only, and a model without one (Qwen3-Coder, Qwen3-Next) is recorded as thinking off. A thinking-off comparison between the two runtimes is therefore not possible yet.
+- LM Studio, parallel requests: with 4 requests in flight each one gets about a quarter of the speed (about 7 tokens per second for Qwen3.8 27B), so thinking-on tasks hit the 15-minute limit before the answer. Run thinking-on again with 1 request at a time before comparing it with the TensorFold thinking-on run.
+- LM Studio models still to run: Qwen3.6 35B A3B (both builds), Qwen3-Next 80B (did not load at 80% context: memory guardrail), Nanbeige4.3 33B; and tasks q09 and q10 of GLM-4.7 Flash, which were lost to an operator mistake.
 - Measure peak memory for the whole model (the `peak_mem_gb` column is empty so far) and prompt speed (`prompt_tok_per_s`).
 - Download Nemotron 3.5 Lightning in LM Studio so M01 runs in both runtimes.
 - Add TensorFold (version 1.2.0 engine) to `RESOURCES.md` with a source link; there is no public link yet.

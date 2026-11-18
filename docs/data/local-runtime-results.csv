@@ -39,3 +39,33 @@ date,model_id,runtime,runtime_version,thinking,parallel,context_tokens,task_id,t
 2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q08,0,12,0.0,272.7,725,12000,44.0,,4.0,,truncated,"MacBook Pro, 64 GB",no answer file
 2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q09,0,45,0.0,272.7,877,12000,44.0,,4.0,,truncated,"MacBook Pro, 64 GB",no answer file
 2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q10,0,45,0.0,185.1,906,12000,64.8,,4.0,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M08,LM Studio,0.4.28+2,off,4,209715,q01,9,12,0.5714,7.7,370,218,28.3,,3.9,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M08,LM Studio,0.4.28+2,off,4,209715,q02,12,15,0.7857,31.5,834,996,31.6,,3.9,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M08,LM Studio,0.4.28+2,off,4,209715,q03,18,18,1.0,24.6,933,787,32.0,,3.9,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M08,LM Studio,0.4.28+2,off,4,209715,q04,13,14,0.9091,37.1,1195,1185,31.9,,3.9,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M08,LM Studio,0.4.28+2,off,4,209715,q05,12,12,1.0,17.6,790,580,33.0,,3.9,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M08,LM Studio,0.4.28+2,off,4,209715,q06,0,76,0.0,85.1,858,3999,47.0,,3.9,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M08,LM Studio,0.4.28+2,off,4,209715,q07,1,27,0.037,51.1,640,1760,34.4,,3.9,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M08,LM Studio,0.4.28+2,off,4,209715,q08,9,12,0.625,9.8,710,322,32.9,,3.9,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M08,LM Studio,0.4.28+2,off,4,209715,q09,18,45,0.4,47.3,870,1703,36.0,,3.9,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M08,LM Studio,0.4.28+2,off,4,209715,q10,5,45,0.1111,49.5,892,1916,38.7,,3.9,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M02,LM Studio,0.4.28+2,on,4,209715,q01,0,12,0.0,900.1,,6425,,,5.0,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M02,LM Studio,0.4.28+2,on,4,209715,q02,0,15,0.0,900.3,,6458,,,5.0,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M02,LM Studio,0.4.28+2,on,4,209715,q03,0,18,0.0,900.0,,6444,,,5.0,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M02,LM Studio,0.4.28+2,on,4,209715,q04,0,14,0.0,900.1,,6474,,,5.0,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M02,LM Studio,0.4.28+2,on,4,209715,q05,12,12,1.0,273.2,887,2358,8.6,,5.0,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M02,LM Studio,0.4.28+2,on,4,209715,q06,0,76,0.0,900.1,,6450,,,5.0,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M02,LM Studio,0.4.28+2,on,4,209715,q07,0,27,0.0,900.1,,6559,,,5.0,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M02,LM Studio,0.4.28+2,on,4,209715,q08,0,12,0.0,900.1,,6614,,,5.0,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M02,LM Studio,0.4.28+2,on,4,209715,q09,0,45,0.0,900.1,,6987,,,5.0,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M02,LM Studio,0.4.28+2,on,4,209715,q10,0,45,0.0,887.2,962,11999,13.5,,5.0,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q01,3,12,0.0,265.8,367,3989,15.0,,6.6,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q02,15,15,1.0,147.5,831,2677,18.1,,6.6,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q03,18,18,1.0,471.1,926,6159,13.1,,6.6,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q04,10,14,0.6364,226.2,1183,3563,15.8,,6.6,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q05,12,12,1.0,482.4,765,5362,11.1,,6.6,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q06,0,76,0.0,900.1,,8819,,,6.6,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q07,0,27,0.0,900.0,,8703,,,6.6,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q08,5,12,0.125,310.3,707,3460,11.2,,6.6,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q09,0,45,0.0,626.5,,6424,,,6.6,,error,"MacBook Pro, 64 GB",not a model result: the model was unloaded by mistake during this task; to be run again
+2026-11-18,M09,LM Studio,0.4.28+2,on,4,162201,q10,0,45,0.0,474.9,,4832,,,6.6,,error,"MacBook Pro, 64 GB",not a model result: the model was unloaded by mistake during this task; to be run again
