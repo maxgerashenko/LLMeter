@@ -7,6 +7,9 @@
   var RACKS_URL = "data/racks-2026-11-18.csv";
   var MAIN_RACK = "m5-ultra-512";
   var ALT_RACK = "m5-ultra-256";
+  // Single machines that can be the minimum setup, smallest memory first; a model fits if its size plus OVERHEAD_GB (context, OS) is within memory
+  var SMALL_RACKS = ["mbp-m5-pro-24", "m5-ultra-96"];
+  var OVERHEAD_GB = 4;
   var TIERS = [
     { id: "max", label: "Max" }, { id: "t4", label: "Tier 4" }, { id: "t3", label: "Tier 3" },
     { id: "t2", label: "Tier 2" }, { id: "t1", label: "Tier 1" }, { id: "t0", label: "Tier 0" }
@@ -83,6 +86,7 @@
 
   // "4× M5 Ultra 512 GB" for M5 Ultra racks, else the machine's name
   function rackLabel(r, k) {
+    if (k.id === "mbp-m5-pro-24") return "MacBook Pro M5 Pro " + k.mem + " GB";
     if (/^m5-ultra/.test(k.id)) return (r.macs || 1) + "× M5 Ultra " + k.mem + " GB";
     return k.name;
   }
@@ -116,8 +120,7 @@
     var alt = rackById[ALT_RACK];
     document.getElementById("rack-title").textContent = "Mac Studio M5 Ultra";
     document.getElementById("rack-sub").textContent = "Each tier's best local model at 4-bit on as many Mac Studio M5 Ultras (" + main.gpu + "-core GPU, " +
-      (main.bw / 1000).toFixed(1) + " TB/s each) as it needs, linked over Thunderbolt 5. Bars use " + main.mem + " GB Macs; the table also shows " + alt.mem +
-      " GB Macs. Tokens per second, one request at a time. The Max line is Claude Sonnet 5.5's cloud API speed.";
+      (main.bw / 1000).toFixed(1) + " TB/s each) as it needs, linked over Thunderbolt 5. Bars show tokens per second on " + main.mem + " GB Macs, one request at a time; the table gives the smallest M5 Ultra setup that fits each model and its price. The Max line is Claude Sonnet 5.5's cloud API speed.";
 
     function onRack(tierId, rackId) {
       return speeds.filter(function (r) { return r.tier === tierId && (r.rack === rackId || (tierId === "max" && r.status === "cloud")); })[0];
@@ -130,22 +133,25 @@
       var r = onRack(t.id, MAIN_RACK);
       if (!r) return;
       var name = baseName(r.model);
-      var cfg = r.status === "cloud" ? null : el("span", { class: "rk-cfg", text: rackLabel(r, main).replace(/ M5 Ultra.*/, "") + " · " + priceText(r, main) });
+      var cfg = r.status === "cloud" ? null : el("span", { class: "rk-cfg", text: rackLabel(r, main).replace(/ M5 Ultra.*/, "") });
       bars.appendChild(barRow(el("span", { class: "rk-label" }, [badge(t.id), el("a", { class: "tb-model", href: r.source, text: name }), cfg]), r, scale, r.status === "cloud" ? "is-ref" : null));
-      var r2 = t.id === "max" ? null : onRack(t.id, ALT_RACK);
-      function cfgCell(x, k) {
-        if (!x) return el("td", { class: "rk-cfg-col muted", text: "cloud" });
-        return el("td", { class: "rk-cfg-col" }, [el("span", { class: "rk-cfg-n" }, [rackLabel(x, k) + " ", x.status === "untested" ? null : priceTag(x, k)]),
-          el("a", { class: "rk-num rk-sub" + (x.status === "estimate" ? " est" : ""), href: x.source, title: title(x) }, [cellText(x)])]);
-      }
+      // Smallest M5 Ultra rack that holds the model: least total memory, then fewest Macs
+      var cands = t.id === "max" ? [] : [[r, main], [onRack(t.id, ALT_RACK), alt]].filter(function (c) { return c[0] && c[0].macs; });
+      SMALL_RACKS.forEach(function (id) {
+        var k = rackById[id];
+        if (k && t.id !== "max" && r.size + OVERHEAD_GB <= k.mem) cands.push([{ macs: 1, size: r.size, source: r.source, status: "measured" }, k]);
+      });
+      cands.sort(function (x, y) { return (x[0].macs * x[1].mem - y[0].macs * y[1].mem) || (x[0].macs - y[0].macs); });
+      var minC = cands[0];
       body.appendChild(el("tr", null, [
         el("th", { scope: "row" }, [badge(t.id)]),
         el("td", null, [el("span", { class: "model" }, [el("span", { class: "model-link", text: name }),
           r.status === "cloud" ? el("span", { class: "pill pill-cloud", text: "cloud" }) : null]),
           el("span", { class: "rk-inline", text: r.size ? fmtGB(r.size) + " at 4-bit" : "Cloud reference" })]),
         el("td", { class: "num rk-size-col" }, [r.size ? fmtGB(r.size) : el("span", { class: "muted", text: "n/a" })]),
-        r.status === "cloud" ? el("td", { class: "rk-cfg-col" }, [el("span", { class: "rk-cfg-n", text: "Anthropic API" }), el("a", { class: "rk-num rk-sub", href: r.source, title: title(r) }, [cellText(r)])]) : cfgCell(r, main),
-        cfgCell(r2, alt)
+        minC ? el("td", { class: "rk-cfg-col" }, [rackLabel(minC[0], minC[1]), el("span", { class: "rk-cfg-n", text: (minC[0].macs * minC[1].mem).toLocaleString("en-US") + " GB in total" })])
+             : el("td", { class: "rk-cfg-col muted", text: "cloud (Anthropic API)" }),
+        minC ? el("td", { class: "num rk-cfg-col" }, [priceTag(minC[0], minC[1])]) : el("td", { class: "num rk-cfg-col muted", text: "n/a" })
       ]));
     });
 
@@ -188,7 +194,7 @@
         el("th", { scope: "row" }, [el("a", { href: firstUrl(k.src), text: k.name })]),
         el("td", { text: k.chip }),
         el("td", { class: "num", text: k.gpu == null ? "Blackwell GPU" : String(k.gpu) }),
-        el("td", { class: "num", text: k.bw >= 1000 ? (k.bw / 1000).toFixed(1) + " TB/s" : k.bw + " GB/s" }),
+        el("td", { class: "num", text: k.bw == null ? "n/a" : k.bw >= 1000 ? (k.bw / 1000).toFixed(1) + " TB/s" : k.bw + " GB/s" }),
         el("td", { class: "num", text: k.mem + " GB" + (/^m5-ultra/.test(k.id) ? " per Mac" : "") }),
         el("td", { class: "num" }, [el("a", { href: k.priceSrc, title: k.priceNote, class: "rk-price-cell" },
           [(/^approx/.test(k.priceNote) ? "≈" : "") + "$" + k.price.toLocaleString("en-US") + (/^m5-ultra/.test(k.id) ? " per Mac" : k.id === "m1-ultra" ? " (2022)" : "")])])
