@@ -182,7 +182,9 @@ class LMStudio:
         self.api_model = LMSTUDIO_IDENTIFIER
 
     def version(self):
-        return sh([LMS, "version"]).stdout.strip().splitlines()[-1] if sh([LMS, "version"]).stdout.strip() else ""
+        # The app's version; `lms version` prints only the CLI's commit.
+        return sh(["defaults", "read", "/Applications/LM Studio.app/Contents/Info",
+                   "CFBundleShortVersionString"]).stdout.strip()
 
     def check_isolation(self):
         problems = []

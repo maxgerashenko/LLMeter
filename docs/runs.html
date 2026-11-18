@@ -82,7 +82,7 @@
     <section class="card" id="tasks-card" aria-labelledby="runs-tasks-h" hidden>
       <div class="card-head">
         <h2 id="runs-tasks-h">Result per task</h2>
-        <p class="muted">One column per run, best first. Each cell is the share of the hidden tests gained over the starter files, with the tests passed under it. An answer cut off at the token limit ("truncated") or the time limit ("timeout") scores 0.</p>
+        <p class="muted">One column per run, best first. Each cell is the share of the hidden tests gained over the starter files, with the tests passed under it. An answer cut off at the token limit ("truncated") or the time limit ("timeout") scores 0. "error" means the run itself was interrupted, so that cell is not a result of the model and the task will be run again.</p>
       </div>
       <div class="table-scroll"><table class="data-table task-table" id="task-table"></table></div>
     </section>
