@@ -233,21 +233,7 @@
       ]));
     });
 
-    // Cloud tab: every non-open-weights model in the data file
-    var cloudBody = document.getElementById("cloud-rows");
-    cloudBody.textContent = "";
-    models.filter(function (m) { return !m.open; })
-      .sort(function (a, b) { return (b.pct == null ? -1 : b.pct) - (a.pct == null ? -1 : a.pct); })
-      .forEach(function (m) {
-        cloudBody.appendChild(el("tr", null, [
-          el("td", null, [modelLink(m)]),
-          el("td", { class: "num", text: fmtPct(m.pct) }),
-          el("td", { class: "num" }, [scoreCell(m)]),
-          el("td", { class: "num" }, [diskCell(m)])
-        ]));
-      });
-
-    // Bar charts: one per tab, so the Local and Cloud tabs each show only their own models
+    // Bar chart on the All tab: every model, open-weights coloured by tier, cloud grey
     function renderChart(barsId, legendId, list, legendTiers, cloudLegend) {
       var chartModels = list.filter(function (m) { return m.pct != null; })
         .sort(function (a, b) { return b.pct - a.pct; });
@@ -276,19 +262,15 @@
       legendTiers.forEach(function (t) {
         legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + t.id }), t.id === "max" ? "Max" : "Tier " + t.label]));
       });
-      if (cloudLegend) legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch bar-cloud" }), "Other cloud"]));
+      if (cloudLegend) legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch bar-cloud" }), "Cloud"]));
     }
-    renderChart("bars-local", "legend-local",
-      models.filter(function (m) { return m.open || m.model === REFERENCE; }), TIERS, false);
-    renderChart("bars-cloud", "legend-cloud",
-      models.filter(function (m) { return !m.open; }),
-      TIERS.filter(function (t) { return t.id === "max"; }), true);
+    renderChart("bars-all", "legend-all", models, TIERS, true);
 
   }
 
-  // Local / Cloud tabs
+  // Local / All tabs
   (function () {
-    var tabs = [["tab-local", "tiers", "chart-local"], ["tab-cloud", "panel-cloud", "chart-cloud"]];
+    var tabs = [["tab-local", "tiers"], ["tab-all", "panel-all"]];
     function select(id) {
       tabs.forEach(function (t) {
         var on = t[0] === id;
@@ -296,7 +278,6 @@
         b.setAttribute("aria-selected", String(on));
         b.tabIndex = on ? 0 : -1;
         document.getElementById(t[1]).hidden = !on;
-        document.getElementById(t[2]).hidden = !on;
       });
     }
     tabs.forEach(function (t, i) {
@@ -308,6 +289,10 @@
         select(next); document.getElementById(next).focus();
       });
     });
+    // The header's "Chart" link (#panel-all) opens the All tab
+    function fromHash() { if (location.hash === "#panel-all") { select("tab-all"); document.getElementById("panel-all").scrollIntoView(); } else if (location.hash === "#tiers") select("tab-local"); }
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
   })();
 
   fetch(DATA_URL)
