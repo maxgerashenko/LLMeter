@@ -1,6 +1,6 @@
 # Local runtime coding test: quick standard suite
 
-Status: run rules v0.3, written 2026-11-18. The tasks themselves are in a separate, frozen folder: [tasks/local-coding-v1](../tasks/local-coding-v1/README.md) (suite version 1.0.0, with starter files, hidden tests, reference solutions and a grader). No model has been run yet. Results go to `data/local-runtime-results-<date>.csv`; models to test are in [local-test-models.csv](local-test-models.csv).
+Status: run rules v0.3, written 2026-11-18. The tasks themselves are in a separate, frozen folder: [tasks/local-coding-v1](../tasks/local-coding-v1/README.md) (suite version 1.0.0, with starter files, hidden tests, reference solutions and a grader). No model has been run yet. Results go to `data/local-runtime-results.csv` (one file for all runs, one row per task, a date on every row; the site's Runs page reads it); models to test are in [local-test-models.csv](local-test-models.csv).
 
 ## Scope
 
@@ -108,7 +108,9 @@ Memory warning: the KV cache grows with context and with parallel slots. Full-at
 
 ## Result file columns
 
-`date, model_id, runtime, runtime_version, thinking, parallel, context_tokens, task_id, tests_passed, tests_total, score, wall_seconds, prompt_tokens, output_tokens, gen_tok_per_s, prompt_tok_per_s, load_seconds, peak_mem_gb, end_reason, notes`
+`date, model_id, runtime, runtime_version, thinking, parallel, context_tokens, task_id, tests_passed, tests_total, score, wall_seconds, prompt_tokens, output_tokens, gen_tok_per_s, prompt_tok_per_s, load_seconds, peak_mem_gb, end_reason, hardware, notes`
+
+`score` is the task score from 0 to 1 as the grader reports it. `hardware` names the machine and its memory, for example `MacBook Pro, 64 GB`. The Runs page groups rows into one run per date, model, runtime, thinking setting and parallel count, and computes the run score with the suite weights.
 
 `end_reason` is one of: finished, truncated, timeout, error.
 

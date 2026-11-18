@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLMeter: local model runs</title>
+  <meta name="description" content="Results of running open-weights models locally on the LLMeter coding suite: score, speed and run details per model, quant, runtime and machine.">
+  <script src="assets/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/runs.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
+      <nav class="nav">
+        <a href="./">Tiers</a>
+        <a href="intelligence.html">Intelligence</a>
+        <a href="rack.html">Rack</a>
+        <a href="runs.html" aria-current="page">Runs</a>
+        <a href="sources.html">Sources</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="top-gap"></div>
+
+    <section class="card" aria-labelledby="runs-chart-h">
+      <div class="card-head">
+        <h2 id="runs-chart-h">Local model runs</h2>
+        <p class="muted" id="runs-summary">Loading runs…</p>
+      </div>
+      <div class="tabs runs-metric" role="tablist" aria-label="Chart metric">
+        <button type="button" role="tab" class="tab" data-metric="score" aria-selected="true">Score</button>
+        <button type="button" role="tab" class="tab" data-metric="speed" aria-selected="false" tabindex="-1">Tokens/sec</button>
+      </div>
+      <div id="runs-bars" class="rbars" role="img" aria-label="Horizontal bar chart of local run results"></div>
+      <div class="legend" id="runs-legend"></div>
+    </section>
+
+    <section class="card" aria-labelledby="runs-table-h">
+      <div class="card-head">
+        <h2 id="runs-table-h">Run details</h2>
+        <p class="muted">One row per run: model build, runtime and machine, then the suite score (0 to 100, with the easy, medium and hard parts), generation speed and wall time.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table runs-table">
+          <thead>
+            <tr>
+              <th scope="col">Model</th>
+              <th scope="col">Quant</th>
+              <th scope="col">Runtime</th>
+              <th scope="col">Thinking</th>
+              <th scope="col">Hardware</th>
+              <th scope="col" class="num">Score</th>
+              <th scope="col" class="num">Easy / Med / Hard</th>
+              <th scope="col" class="num">Tok/s</th>
+              <th scope="col" class="num">Time</th>
+              <th scope="col" class="num">Parallel</th>
+              <th scope="col">Date</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="runs-rows">
+            <tr><td colspan="12" class="muted">Loading data…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        Suite: <strong>local-coding-v1</strong>, ten short Python tasks with hidden tests and partial credit (easy weight 1, medium 2, hard 3).
+        Score is the weighted share of hidden tests passed, 0 to 100. Tokens/sec is the average generation speed across the run's tasks.
+        Results are read from <a href="https://github.com/maxgerashenko/LLMeter/blob/main/data/local-runtime-results.csv">data/local-runtime-results.csv</a> (one row per task) and the model list from <a href="https://github.com/maxgerashenko/LLMeter/blob/main/data/local-test-models.csv">data/local-test-models.csv</a>;
+        a row marked <em>planned</em> has not been run yet and has no numbers.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>LLMeter is an independent project, <a href="https://github.com/maxgerashenko/LLMeter">source on GitHub</a>.</p>
+    </div>
+  </footer>
+  <script src="assets/runs.js"></script>
+</body>
+</html>

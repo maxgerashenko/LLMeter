@@ -82,6 +82,7 @@ jobs:
               `- [Tiers (home)](${base}/index.html)`,
               `- [Intelligence](${base}/intelligence.html)`,
               `- [Rack](${base}/rack.html)`,
+              `- [Runs](${base}/runs.html)`,
               `- [Sources](${base}/sources.html)`,
               '',
               `Desktop and phone screenshots, and the whole site folder, are attached to [this run](${run}) under **Artifacts**.`,
