@@ -177,7 +177,7 @@
         }
         var b = o.best, r = b.r, name = baseName(r.model), equip = rackLabel(r, b.k);
         pb.appendChild(el("div", { class: "rk-row" }, [
-          el("span", { class: "rk-label" }, [badge(t.id), el("span", { class: "rk-equip", text: equip }), el("span", { class: "rk-cfg", text: name })]),
+          el("span", { class: "rk-label" }, [badge(t.id), el("span", { class: "rk-equip", text: equip })]),
           el("span", { class: "rk-track", title: sum(b) }, [el("span", { class: "rk-bar tier-bg-" + t.id, style: "width:" + Math.max(0.8, b.total / top * 100) + "%" })]),
           el("a", { class: "rk-value", href: b.k.priceSrc, title: sum(b) + " · " + b.k.priceNote }, [money(b.total)])]));
         var alt = o.other ? rackLabel(o.other.r, o.other.k) + " " + money(o.other.total) + (o.other.ok ? "" : " (no published run)") : "–";
