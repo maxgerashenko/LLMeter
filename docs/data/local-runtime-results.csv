@@ -1,1 +1,41 @@
 date,model_id,runtime,runtime_version,thinking,parallel,context_tokens,task_id,tests_passed,tests_total,score,wall_seconds,prompt_tokens,output_tokens,gen_tok_per_s,prompt_tok_per_s,load_seconds,peak_mem_gb,end_reason,hardware,notes
+2026-11-18,M02,TensorFold,1.2.9,off,1,209715,q01,0,12,0.0,30.0,397,501,16.7,,14.1,,finished,"MacBook Pro, 64 GB",no file block in answer
+2026-11-18,M02,TensorFold,1.2.9,off,1,209715,q02,14,15,0.9286,54.7,891,907,16.6,,14.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M02,TensorFold,1.2.9,off,1,209715,q03,18,18,1.0,87.5,995,1388,15.9,,14.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M02,TensorFold,1.2.9,off,1,209715,q04,0,14,0.0,40.6,1271,621,15.3,,14.1,,finished,"MacBook Pro, 64 GB",no file block in answer
+2026-11-18,M02,TensorFold,1.2.9,off,1,209715,q05,12,12,1.0,128.5,847,2063,16.1,,14.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M02,TensorFold,1.2.9,off,1,209715,q06,71,76,0.9342,,887,1980,,,14.1,,finished,"MacBook Pro, 64 GB",wall time not valid: the Mac slept during this task
+2026-11-18,M02,TensorFold,1.2.9,off,1,209715,q07,20,27,0.7407,135.3,661,2221,16.4,,14.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M02,TensorFold,1.2.9,off,1,209715,q08,4,12,0.0,22.6,742,341,15.1,,14.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M02,TensorFold,1.2.9,off,1,209715,q09,45,45,1.0,113.5,899,1769,15.6,,14.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M02,TensorFold,1.2.9,off,1,209715,q10,0,45,0.0,253.0,922,4000,15.8,,14.1,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M02,TensorFold,1.2.9,on,1,209715,q01,12,12,1.0,253.4,437,4068,16.1,,14.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M02,TensorFold,1.2.9,on,1,209715,q02,0,15,0.0,809.3,931,12000,14.8,,14.1,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M02,TensorFold,1.2.9,on,1,209715,q03,0,18,0.0,900.0,,7063,,,14.1,,timeout,"MacBook Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M02,TensorFold,1.2.9,on,1,209715,q04,0,14,0.0,786.3,1311,12000,15.3,,14.1,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M02,TensorFold,1.2.9,on,1,209715,q05,12,12,1.0,426.9,887,6424,15.0,,14.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M02,TensorFold,1.2.9,on,1,209715,q06,0,76,0.0,792.9,927,12000,15.1,,14.1,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M02,TensorFold,1.2.9,on,1,209715,q07,0,27,0.0,783.1,701,12000,15.3,,14.1,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M02,TensorFold,1.2.9,on,1,209715,q08,0,12,0.0,793.2,782,12000,15.1,,14.1,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M02,TensorFold,1.2.9,on,1,209715,q09,0,45,0.0,789.8,939,12000,15.2,,14.1,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M02,TensorFold,1.2.9,on,1,209715,q10,0,45,0.0,797.5,962,12000,15.0,,14.1,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M01,TensorFold,1.2.9,off,4,209715,q01,9,12,0.5714,5.5,380,201,36.5,,10.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M01,TensorFold,1.2.9,off,4,209715,q02,15,15,1.0,24.4,855,1104,45.2,,10.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M01,TensorFold,1.2.9,off,4,209715,q03,2,18,0.0,17.9,969,795,44.4,,10.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M01,TensorFold,1.2.9,off,4,209715,q04,13,14,0.9091,28.5,1242,1297,45.5,,10.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M01,TensorFold,1.2.9,off,4,209715,q05,3,12,0.0,11.6,826,571,49.2,,10.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M01,TensorFold,1.2.9,off,4,209715,q06,0,76,0.0,60.1,868,4000,66.6,,10.1,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M01,TensorFold,1.2.9,off,4,209715,q07,0,27,0.0,53.8,653,3373,62.7,,10.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M01,TensorFold,1.2.9,off,4,209715,q08,3,12,0.0,6.4,725,268,41.9,,10.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M01,TensorFold,1.2.9,off,4,209715,q09,0,45,0.0,1.0,877,31,31.0,,10.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M01,TensorFold,1.2.9,off,4,209715,q10,7,45,0.1556,21.8,906,1292,59.3,,10.1,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q01,12,12,1.0,62.1,380,3057,49.2,,4.0,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q02,15,15,1.0,135.1,855,6650,49.2,,4.0,,finished,"MacBook Pro, 64 GB",
+2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q03,0,18,0.0,258.0,969,12000,46.5,,4.0,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q04,0,14,0.0,258.0,1242,12000,46.5,,4.0,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q05,0,12,0.0,102.1,826,4926,48.2,,4.0,,finished,"MacBook Pro, 64 GB",answer does not import: cannot import name 'line_price' from 'pricing'
+2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q06,0,76,0.0,283.7,868,12000,42.3,,4.0,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q07,0,27,0.0,287.0,653,12000,41.8,,4.0,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q08,0,12,0.0,272.7,725,12000,44.0,,4.0,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q09,0,45,0.0,272.7,877,12000,44.0,,4.0,,truncated,"MacBook Pro, 64 GB",no answer file
+2026-11-18,M01,TensorFold,1.2.9,on,4,209715,q10,0,45,0.0,185.1,906,12000,64.8,,4.0,,truncated,"MacBook Pro, 64 GB",no answer file

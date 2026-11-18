@@ -1,6 +1,6 @@
 # Local runtime coding test: quick standard suite
 
-Status: run rules v0.3, written 2026-11-18. The tasks themselves are in a separate, frozen folder: [tasks/local-coding-v1](../tasks/local-coding-v1/README.md) (suite version 1.0.0, with starter files, hidden tests, reference solutions and a grader). No model has been run yet. Results go to `data/local-runtime-results.csv` (one file for all runs, one row per task, a date on every row; the site's Runs page reads it); models to test are in [local-test-models.csv](local-test-models.csv).
+Status: run rules v0.4, written 2026-11-18 (v0.4: 15-minute wall time for thinking-on runs, streamed replies, context at 80% of the maximum). The tasks themselves are in a separate, frozen folder: [tasks/local-coding-v1](../tasks/local-coding-v1/README.md) (suite version 1.0.0, with starter files, hidden tests, reference solutions and a grader). First runs: 2026-11-18 (TensorFold: M01 and M02, thinking off and on). Runs are made with `scripts/run_local_suite.py`. Results go to `data/local-runtime-results.csv` (one file for all runs, one row per task, a date on every row; the site's Runs page reads it); models to test are in [local-test-models.csv](local-test-models.csv).
 
 ## Scope
 
@@ -18,7 +18,10 @@ Run the same short, hard-enough coding suite on every local model, in LM Studio 
 - Three difficulty levels. Easy tasks catch broken setups (wrong chat template, truncated output). Hard tasks separate the best models: a hard task is one where mid-size models usually pass only part of the hidden tests.
 - Hidden tests give **partial credit**: score = share of hidden tests gained over the starter files, not pass or fail. This keeps small differences visible.
 - One attempt per task by default, temperature 0.2, fixed seed where the runtime supports it. Re-run only close pairs (under 5 points apart) with 3 attempts.
-- Limits per task: 4,000 output tokens with thinking off; 12,000 tokens (thinking included) with thinking on; 5 minutes wall time. A truncated or timed-out answer scores 0 for that task.
+- Limits per task, thinking off: 4,000 output tokens and 5 minutes wall time.
+- Limits per task, thinking on: 12,000 output tokens (thinking included) and 15 minutes wall time. The longer wall time was set on 2026-11-18, after the first thinking run: at about 16 tokens per second, 5 minutes allow only about 4,800 tokens, so every task timed out before the answer started. 15 minutes allow about 14,400 tokens, enough for the whole token budget.
+- A truncated or timed-out answer scores 0 for that task. Replies are read as a stream, so the text and token count produced before a timeout are still saved with the run.
+- Thinking-on and thinking-off scores are measured under different limits. Compare a model with another model in the same thinking mode; when comparing the two modes of one model, state both limits.
 
 ## Tasks
 
@@ -44,10 +47,10 @@ Total weight 23 (easy 2, medium 6, hard 15). A task's score is the share of hidd
 | | Thinking off | Thinking on |
 | --- | --- | --- |
 | Output cap per task | 4,000 tokens | 12,000 tokens |
-| Wall-time cap per task | 5 minutes | 5 minutes |
-| Worst case, 10 tasks, 1 slot | 50 minutes | 50 minutes |
-| Worst case, 10 tasks, 4 slots | about 15 minutes | about 15 minutes |
-| Target for a typical run, 4 slots | under 10 minutes | under 15 minutes |
+| Wall-time cap per task | 5 minutes | 15 minutes |
+| Worst case, 10 tasks, 1 slot | 50 minutes | 150 minutes |
+| Worst case, 10 tasks, 4 slots | about 15 minutes | about 45 minutes |
+| Target for a typical run, 4 slots | under 10 minutes | under 30 minutes |
 
 Typical running time is roughly total output tokens divided by (tokens per second × slots). The targets are estimates until the first runs measure real speeds.
 
@@ -91,7 +94,7 @@ Each run must see an otherwise empty machine:
 
 | Setting | LM Studio | TensorFold |
 | --- | --- | --- |
-| Context | model's maximum (`max_context_tokens` in the CSV) | `--context <max_context_tokens>` |
+| Context | 80% of the model's maximum (`max_context_tokens` in the CSV) | `--context <80% of max_context_tokens>` |
 | Temperature, top_p, top_k | 0.2, 0.95, 40 | `--temperature 0.2 --top-p 0.95 --top-k 40` |
 | Thinking | model's reasoning toggle in the chat template | `--thinking` / `--no-thinking` |
 | Parallel | Max concurrent predictions (set in model load options) | `--parallel N` |
@@ -100,9 +103,9 @@ Each run must see an otherwise empty machine:
 
 Both apps expose an OpenAI-compatible chat API, so one runner script can send the same requests to either (LM Studio default `http://localhost:1234/v1`; TensorFold port set with `--port`).
 
-## Context: maximum for each model
+## Context: 80% of the maximum for each model
 
-Every model loads with its own maximum context, read from its `config.json` (`max_context_tokens` in [local-test-models.csv](local-test-models.csv): 262,144 for most Qwen models and Nemotron, 202,752 for GLM-4.7 Flash, 131,072 for Llama 3.1, 524,288 for Nanbeige). The test prompts are short, so only the reserved cache size changes, not the answers.
+Context comes first, parallel requests second: every model loads with 80% of its maximum context (209,715 tokens for a 262,144-token model), and then with as many parallel requests as still fit in memory (4, then 2, then 1). In the first runs Qwen3.8 27B fitted only 1 request at this context; Nemotron 3.5 Lightning fitted 4. The maximum is read from its `config.json` (`max_context_tokens` in [local-test-models.csv](local-test-models.csv): 262,144 for most Qwen models and Nemotron, 202,752 for GLM-4.7 Flash, 131,072 for Llama 3.1, 524,288 for Nanbeige). The test prompts are short, so only the reserved cache size changes, not the answers.
 
 Memory warning: the KV cache grows with context and with parallel slots. Full-attention models such as Llama 3.1 70B need about 43 GB of KV cache at 131,072 tokens, on top of 37 GB of weights, which does not fit in 64 GB if it is fully reserved. GGUF models in LM Studio reserve the whole cache at load. If a model fails to load or memory pressure appears at maximum context, lower the context in steps (halve it), and write the context actually used into the results file. The `max_parallel_64gb` column is a first guess and must be confirmed at the maximum context.
 
@@ -116,7 +119,8 @@ Memory warning: the KV cache grows with context and with parallel slots. Full-at
 
 ## Open items
 
-- Write the runner script that sends the prompts to LM Studio and TensorFold, saves the replies and records speed and memory (not started). Prompts and grading already work: `python3 tasks/local-coding-v1/grade.py`.
+- Run the LM Studio models. The runner (`scripts/run_local_suite.py`) supports LM Studio, but its thinking switch there is not verified yet.
+- Measure peak memory for the whole model (the `peak_mem_gb` column is empty so far) and prompt speed (`prompt_tok_per_s`).
 - Download Nemotron 3.5 Lightning in LM Studio so M01 runs in both runtimes.
 - Add TensorFold (version 1.2.0 engine) to `RESOURCES.md` with a source link; there is no public link yet.
 - Confirm that LM Studio and TensorFold weights are byte-identical for M02 (compare file hashes).
