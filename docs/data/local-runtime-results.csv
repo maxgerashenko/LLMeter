@@ -1,0 +1,1 @@
+date,model_id,runtime,runtime_version,thinking,parallel,context_tokens,task_id,tests_passed,tests_total,score,wall_seconds,prompt_tokens,output_tokens,gen_tok_per_s,prompt_tok_per_s,load_seconds,peak_mem_gb,end_reason,hardware,notes

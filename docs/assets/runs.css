@@ -1,0 +1,35 @@
+.nav a[aria-current="page"] { color: var(--text); font-weight: 600; }
+.runs-metric { margin-bottom: 14px; }
+.runs-metric .tab { padding: 6px 12px; font-size: 14px; }
+
+/* Horizontal result bars */
+.rbars { display: grid; gap: 8px; margin: 4px 0 6px; }
+.rb-row { display: grid; grid-template-columns: 300px 1fr 64px; align-items: center; gap: 12px; }
+.rb-label { min-width: 0; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rb-label .rb-model { font-weight: 600; color: var(--text); }
+.rb-label .setting { margin-left: 6px; }
+.rb-track { height: 16px; border-radius: 4px; background: var(--track); overflow: hidden; }
+.rb-bar { display: block; height: 100%; border-radius: 4px; background: var(--t4); }
+.rb-bar.think-on { background: var(--t2); }
+.rb-value { font-size: 13px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.rb-row.is-planned .rb-value { font-weight: 500; color: var(--muted); }
+.rb-row.is-planned .rb-track { background: repeating-linear-gradient(135deg, var(--track) 0 6px, transparent 6px 12px); }
+.rb-group { margin: 10px 0 2px; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+.runs-table td.model-cell { white-space: normal; min-width: 180px; }
+.runs-table .sub { display: block; font-size: 12px; color: var(--muted); }
+.status { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 500; }
+.status-done { background: color-mix(in srgb, var(--t1) 18%, transparent); color: var(--text); }
+.status-planned { background: var(--track); color: var(--muted); }
+.status-failed { background: color-mix(in srgb, var(--amber) 22%, transparent); color: var(--text); }
+
+@media (max-width: 640px) {
+  .rb-row { grid-template-columns: 1fr 56px; gap: 4px 8px; }
+  .rb-label { grid-column: 1 / -1; font-size: 13px; }
+  .rb-label .setting { display: inline; }
+}
+.swatch.rb-bar { height: 10px; background: var(--t4); }
+.swatch.rb-bar.think-on { background: var(--t2); }
+.swatch-planned { border: 1px solid var(--line-strong); background: repeating-linear-gradient(135deg, var(--track) 0 2px, transparent 2px 4px); }
+.runs-table tr.is-planned td { color: var(--muted); }
+.runs-table tr.is-planned strong { color: var(--text); font-weight: 500; }
