@@ -24,6 +24,18 @@
     --g-edge: #3a4050;
   }
 }
+/* Chosen with the theme switch (theme.js); same values as above. */
+:root[data-theme="dark"] {
+  --g-root: #f3f4f6;
+  --g-l1: #4f46e5;
+  --g-expanded: #172554;
+  --g-expanded-line: #60a5fa;
+  --g-primary: #052e16;
+  --g-primary-line: #4ade80;
+  --g-stopped: #1c202a;
+  --g-stopped-line: #6b7280;
+  --g-edge: #3a4050;
+}
 
 .nav a[aria-current="page"] { color: var(--text); font-weight: 600; }
 

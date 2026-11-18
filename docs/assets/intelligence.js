@@ -3,7 +3,8 @@
   "use strict";
   var URL = "data/metr-time-horizons-1-1.csv";
   var CURVE_MODELS = ["Claude Mythos Preview (early)", "Claude Opus 4.6", "Gemini 3.1 Pro", "GPT-5.4", "Claude Opus 4.5", "Claude 4 Opus"];
-  var COLORS = ["#4f46e5", "#2563eb", "#0891b2", "#0d9488", "#d97706", "#9ca3af"];
+  // Theme tokens from style.css, so the curves follow light and dark mode.
+  var COLORS = ["var(--t4)", "var(--t3)", "var(--t2)", "var(--t1)", "var(--amber)", "var(--t0)"];
   var NS = "http://www.w3.org/2000/svg";
 
   function parse(text) {
@@ -118,8 +119,8 @@
         var tt = Math.exp(Math.log(xmin) + j / 120 * (Math.log(m.p50) - Math.log(xmin)));
         d += (j ? "L" : "M") + X(tt).toFixed(1) + " " + Y(successAt(m, tt)).toFixed(1);
       }
-      s.appendChild(svg("path", { d: d, stroke: COLORS[i] }));
-      s.appendChild(svg("circle", { cx: X(m.p50), cy: Y(0.5), r: 3.5, fill: COLORS[i] }));
+      s.appendChild(svg("path", { d: d, style: "stroke:" + COLORS[i] }));
+      s.appendChild(svg("circle", { cx: X(m.p50), cy: Y(0.5), r: 3.5, style: "fill:" + COLORS[i] }));
       legend.appendChild(el("span", { "class": "legend-item" }, [el("span", { "class": "swatch", style: "background:" + COLORS[i] }), document.createTextNode(m.model)]));
     });
     document.getElementById("curves").appendChild(s);

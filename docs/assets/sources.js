@@ -295,6 +295,7 @@
     var onTheme = function () { if (cy) cy.style(style()); };
     if (mq.addEventListener) mq.addEventListener("change", onTheme);
   }
+  document.addEventListener("themechange", function () { if (cy) cy.style(style()); });
 
   fetch("data/source-graph.json")
     .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
