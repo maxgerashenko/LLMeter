@@ -28,7 +28,7 @@
     <div class="top-gap"></div>
 
     <div class="tabs" role="tablist" aria-label="Rack">
-      <button type="button" role="tab" id="tab-rack" class="tab" aria-selected="true" aria-controls="panel-rack">M5 Ultra</button>
+      <button type="button" role="tab" id="tab-rack" class="tab" aria-selected="true" aria-controls="panel-rack">M5 Ultra rack</button>
       <button type="button" role="tab" id="tab-rack-all" class="tab" aria-selected="false" aria-controls="panel-rack-all" tabindex="-1">All</button>
     </div>
 
@@ -44,9 +44,9 @@
             <tr>
               <th scope="col">Tier</th>
               <th scope="col">Best model</th>
-              <th scope="col" class="num">Tokens/sec</th>
               <th scope="col" class="num rk-size-col">4-bit size</th>
-              <th scope="col" class="rk-how-col">How</th>
+              <th scope="col" class="rk-cfg-col">512 GB Macs <span class="th-sub">tokens/sec</span></th>
+              <th scope="col" class="rk-cfg-col">256 GB Macs <span class="th-sub">tokens/sec</span></th>
             </tr>
           </thead>
           <tbody id="rack-rows">
@@ -59,7 +59,7 @@
     <section id="panel-rack-all" class="card" role="tabpanel" aria-labelledby="tab-rack-all" hidden>
       <div class="card-head">
         <h2>Top model of each tier, on every rack</h2>
-        <p class="muted">Tokens per second for each tier's best local model on five machines, with Claude Sonnet 5.5's cloud API speed on top for scale.</p>
+        <p class="muted">Tokens per second for each tier's best local model on a rack of M5 Ultras (512 GB or 256 GB Macs, as many as the model needs) and on four single machines, with Claude Sonnet 5.5's cloud API speed on top for scale.</p>
       </div>
       <div id="rack-groups" class="rk-groups"></div>
     </section>
@@ -88,7 +88,8 @@
     <section class="card prose">
       <h2>Measured and estimated</h2>
       <p><strong>Measured</strong> numbers are single-request generation speeds from public reviews and benchmark reports, without speculative decoding. Each one links to its source. Engines and quants differ between reports, so treat differences under about 15% as noise.</p>
-      <p><strong>Estimates</strong> (striped bars, “≈ … est.”) fill cells where no run was found, and always start from a measured number. For the M1 Ultra, a measured M5 Ultra speed is scaled by the two chips' speeds in <a href="https://github.com/ggml-org/llama.cpp/discussions/4167">llama.cpp's Apple Silicon benchmark</a> (83.73 vs 179.10 tokens/sec). For Nanbeige4.3-33B, a dense model, Qwen3.8 27B's measured speed on the same rack is scaled by file size. GLM-5.3 on the M5 Ultra is <a href="https://llmcheck.net/models/glm-53-on-m5-ultra/">LLMCheck's estimate</a>.</p>
+      <p><strong>Estimates</strong> (striped bars, “≈ … est.”) fill cells where no run was found, and always start from a measured number. For the M1 Ultra, a measured M5 Ultra speed is scaled by the two chips' speeds in <a href="https://github.com/ggml-org/llama.cpp/discussions/4167">llama.cpp's Apple Silicon benchmark</a> (83.73 vs 179.10 tokens/sec). For Nanbeige4.3-33B, a dense model, Qwen3.8 27B's measured speed on the same rack is scaled by file size. GLM-5.3 on one M5 Ultra is <a href="https://llmcheck.net/models/glm-53-on-m5-ultra/">LLMCheck's estimate</a>.</p>
+      <p><strong>Racks of several M5 Ultras</strong> split the model across Macs over Thunderbolt 5 with RDMA (tensor parallelism in MLX). The anchor is <a href="https://machinelearning.apple.com/research/mlx-distributed-inference">Apple's measurement</a> of Muse Spark Open (816B total, 42B active, 493 GB at 4-bit): 24.99 tokens/sec on 2 Macs and 36.73 on 4. GLM-5.3 has a similar shape, so 2× 256 GB is estimated at the same 25. Kimi K3.1 Pro on 4× 512 GB is the 4-Mac figure scaled by active parameters (42B / 104B). Kimi needs 7 Macs with 256 GB; no run that large is published.</p>
       <p><strong>Doesn't fit</strong> means the 4-bit build is larger than the rack's maximum memory. Sonnet 5.5 is the median API output speed from <a href="https://artificialanalysis.ai/models/claude-sonnet-5-5">Artificial Analysis</a>; it runs on Anthropic's servers, not a rack.</p>
       <p class="muted">Data files: <a href="data/rack-speed-2026-11-18.csv">rack-speed-2026-11-18.csv</a>, <a href="data/racks-2026-11-18.csv">racks-2026-11-18.csv</a>.</p>
     </section>

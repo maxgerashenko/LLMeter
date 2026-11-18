@@ -5,7 +5,8 @@
 
   var SPEED_URL = "data/rack-speed-2026-11-18.csv";
   var RACKS_URL = "data/racks-2026-11-18.csv";
-  var MAIN_RACK = "m5-ultra";
+  var MAIN_RACK = "m5-ultra-512";
+  var ALT_RACK = "m5-ultra-256";
   var TIERS = [
     { id: "max", label: "Max" }, { id: "t4", label: "Tier 4" }, { id: "t3", label: "Tier 3" },
     { id: "t2", label: "Tier 2" }, { id: "t1", label: "Tier 1" }, { id: "t0", label: "Tier 0" }
@@ -59,15 +60,15 @@
   function fmtGB(v) { return v >= 100 ? Math.round(v).toLocaleString("en-US") + " GB" : v.toFixed(1) + " GB"; }
   function fmtTok(r) { return (r.status === "estimate" ? "≈" : "") + (r.tok >= 100 ? Math.round(r.tok) : r.tok.toFixed(1)); }
   function title(r) {
-    return [r.status === "estimate" ? "Estimate" : r.status === "measured" ? "Measured" : r.status === "cloud" ? "Cloud API" : "Doesn't fit",
+    return [r.status === "estimate" ? "Estimate" : r.status === "measured" ? "Measured" : r.status === "cloud" ? "Cloud API" : r.status === "untested" ? "No published run" : "Doesn't fit",
       r.quant, r.engine, r.setup, r.note].filter(Boolean).join(" · ");
   }
 
   // One bar row: label | track with bar (or "doesn't fit") | value
   function barRow(label, r, scale, cls) {
     var track, value;
-    if (r.status === "no_fit") {
-      track = el("span", { class: "rk-track rk-nofit", title: title(r) }, [el("span", { text: "doesn't fit · needs " + fmtGB(r.size) })]);
+    if (r.status === "no_fit" || r.status === "untested") {
+      track = el("span", { class: "rk-track rk-nofit", title: title(r) }, [el("span", { text: r.status === "untested" ? "no published run at this size" : "doesn't fit · needs " + fmtGB(r.size) })]);
       value = el("span", { class: "rk-value muted", text: "–" });
     } else {
       var w = Math.max(0.8, Math.min(100, r.tok / scale * 100));
@@ -80,6 +81,17 @@
     return el("div", { class: "rk-row" + (cls ? " " + cls : "") }, [label, track, value]);
   }
 
+  // "4× M5 Ultra 512 GB" for M5 Ultra racks, else the machine's name
+  function rackLabel(r, k) {
+    if (/^m5-ultra/.test(k.id)) return (r.macs || 1) + "× M5 Ultra " + k.mem + " GB";
+    return k.name;
+  }
+  function cellText(r) {
+    if (r.status === "no_fit") return "doesn't fit";
+    if (r.status === "untested") return "no data";
+    return fmtTok(r) + (r.status === "estimate" ? " est." : "");
+  }
+
   function render(speeds, racks) {
     var rackById = {};
     racks.forEach(function (k) { rackById[k.id] = k; });
@@ -87,9 +99,11 @@
     var ref = speeds.filter(function (r) { return r.status === "cloud"; })[0];
     var scale = Math.max.apply(null, speeds.filter(function (r) { return r.tok != null; }).map(function (r) { return r.tok; }));
 
-    document.getElementById("rack-title").textContent = "Tier table on " + main.name + " (" + main.gpu + "-core GPU, " + main.mem + " GB)";
-    document.getElementById("rack-sub").textContent = "Generation speed in tokens per second for each tier's best local model, one request at a time, 4-bit builds, on the " +
-      main.chip.replace(/,.*/, "") + " with " + (main.bw / 1000).toFixed(1) + " TB/s memory bandwidth. The Max line is Claude Sonnet 5.5's cloud API speed.";
+    var alt = rackById[ALT_RACK];
+    document.getElementById("rack-title").textContent = "Tier table on a rack of Mac Studio M5 Ultras";
+    document.getElementById("rack-sub").textContent = "Each tier's best local model at 4-bit on as many Mac Studio M5 Ultras (" + main.gpu + "-core GPU, " +
+      (main.bw / 1000).toFixed(1) + " TB/s each) as it needs, linked over Thunderbolt 5. Bars use " + main.mem + " GB Macs; the table also shows " + alt.mem +
+      " GB Macs. Tokens per second, one request at a time. The Max line is Claude Sonnet 5.5's cloud API speed.";
 
     function onRack(tierId, rackId) {
       return speeds.filter(function (r) { return r.tier === tierId && (r.rack === rackId || (tierId === "max" && r.status === "cloud")); })[0];
@@ -102,19 +116,22 @@
       var r = onRack(t.id, MAIN_RACK);
       if (!r) return;
       var name = baseName(r.model);
-      bars.appendChild(barRow(el("span", { class: "rk-label" }, [badge(t.id), el("a", { class: "tb-model", href: r.source, text: name })]), r, scale, r.status === "cloud" ? "is-ref" : null));
-      var how = r.status === "no_fit" ? "Doesn't fit in " + main.mem + " GB"
-        : r.status === "cloud" ? "Artificial Analysis, API median"
-        : (r.status === "estimate" ? "Estimate" : "Measured") + (r.engine ? ", " + r.engine : "");
+      var cfg = r.status === "cloud" ? null : el("span", { class: "rk-cfg", text: rackLabel(r, main).replace(/ M5 Ultra.*/, "") });
+      bars.appendChild(barRow(el("span", { class: "rk-label" }, [badge(t.id), el("a", { class: "tb-model", href: r.source, text: name }), cfg]), r, scale, r.status === "cloud" ? "is-ref" : null));
+      var r2 = t.id === "max" ? null : onRack(t.id, ALT_RACK);
+      function cfgCell(x, k) {
+        if (!x) return el("td", { class: "rk-cfg-col muted", text: "cloud" });
+        return el("td", { class: "rk-cfg-col" }, [el("span", { class: "rk-cfg-n", text: rackLabel(x, k) }),
+          el("a", { class: "rk-num rk-sub" + (x.status === "estimate" ? " est" : ""), href: x.source, title: title(x) }, [cellText(x)])]);
+      }
       body.appendChild(el("tr", null, [
         el("th", { scope: "row" }, [badge(t.id)]),
         el("td", null, [el("span", { class: "model" }, [el("span", { class: "model-link", text: name }),
           r.status === "cloud" ? el("span", { class: "pill pill-cloud", text: "cloud" }) : null]),
-          el("span", { class: "rk-inline", text: how + (r.size ? " · " + fmtGB(r.size) + " 4-bit" : "") })]),
-        el("td", { class: "num" }, [r.tok == null ? el("span", { class: "muted", text: "doesn't fit" })
-          : el("a", { class: "rk-num" + (r.status === "estimate" ? " est" : ""), href: r.source, title: title(r) }, [fmtTok(r) + (r.status === "estimate" ? " est." : "")])]),
+          el("span", { class: "rk-inline", text: r.size ? fmtGB(r.size) + " at 4-bit" : "Cloud reference" })]),
         el("td", { class: "num rk-size-col" }, [r.size ? fmtGB(r.size) : el("span", { class: "muted", text: "n/a" })]),
-        el("td", { class: "rk-how-col" }, [el("a", { href: r.source, title: title(r), class: "rk-how" }, [how])])
+        r.status === "cloud" ? el("td", { class: "rk-cfg-col" }, [el("span", { class: "rk-cfg-n", text: "Anthropic API" }), el("a", { class: "rk-num rk-sub", href: r.source, title: title(r) }, [cellText(r)])]) : cfgCell(r, main),
+        cfgCell(r2, alt)
       ]));
     });
 
@@ -133,15 +150,15 @@
         return;
       }
       rows.forEach(function (r) {
-        var lab = r.status === "cloud" ? "Cloud API" : rackById[r.rack].name;
-        g.appendChild(barRow(el("span", { class: "rk-label rk-rack" + (r.rack === MAIN_RACK ? " is-main" : ""), text: lab }), r, scale));
+        var lab = r.status === "cloud" ? "Cloud API" : rackLabel(r, rackById[r.rack]);
+        g.appendChild(barRow(el("span", { class: "rk-label rk-rack" + (/^m5-ultra/.test(r.rack) ? " is-main" : ""), text: lab }), r, scale));
       });
       groups.appendChild(g);
     });
     groups.appendChild(el("div", { class: "legend" }, [
       el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-t2" }), "Measured"]),
       el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-t2 rk-est" }), "Estimate"]),
-      el("span", { class: "legend-item" }, [el("span", { class: "swatch rk-swatch-nofit" }), "Doesn't fit in memory"])
+      el("span", { class: "legend-item" }, [el("span", { class: "swatch rk-swatch-nofit" }), "Doesn't fit, or no published run"])
     ]));
 
     // Rack specs
@@ -153,7 +170,7 @@
         el("td", { text: k.chip }),
         el("td", { class: "num", text: k.gpu == null ? "Blackwell GPU" : String(k.gpu) }),
         el("td", { class: "num", text: k.bw >= 1000 ? (k.bw / 1000).toFixed(1) + " TB/s" : k.bw + " GB/s" }),
-        el("td", { class: "num", text: k.mem + " GB" })
+        el("td", { class: "num", text: k.mem + " GB" + (/^m5-ultra/.test(k.id) ? " per Mac" : "") })
       ]));
     });
   }
@@ -188,7 +205,7 @@
   })).then(function (texts) {
     var speeds = parseCSV(texts[0]).map(function (r) {
       return { tier: r.tier, model: r.model, rack: r.rack_id, status: r.status, tok: num(r.tok_s), size: num(r.model_size_gb),
-        quant: r.quant, engine: r.engine, setup: r.setup, source: firstUrl(r.source), note: r.note };
+        macs: num(r.macs), quant: r.quant, engine: r.engine, setup: r.setup, source: firstUrl(r.source), note: r.note };
     });
     var racks = parseCSV(texts[1]).map(function (r) {
       return { id: r.rack_id, name: r.name, chip: r.chip, gpu: num(r.gpu_cores), bw: num(r.bandwidth_gbs), mem: num(r.max_memory_gb), src: r.spec_source };
