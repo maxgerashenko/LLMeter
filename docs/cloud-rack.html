@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLMeter: cloud racks</title>
+  <meta name="description" content="Datacenter racks and 8-GPU servers compared by memory, bandwidth, how many coding agents they can serve, tokens per second and price.">
+  <script src="assets/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/cloud-rack.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
+      <nav class="nav">
+        <a href="./" data-section="local">Local</a>
+        <a href="cloud.html" data-section="cloud">Cloud</a>
+        <a href="finance.html#gdp" data-section="finance">Finance</a>
+        <a href="sources.html" data-section="sources" class="nav-minor">Sources</a>
+      </nav>
+    </div>
+  </header>
+  <script src="assets/nav.js"></script>
+
+  <main class="wrap">
+    <div class="top-gap"></div>
+    <section class="card">
+      <div class="card-head">
+        <h2>Cloud racks</h2>
+        <p class="muted">Datacenter racks and 8-GPU servers. Click a column heading to sort. Numbers in italics with “est.” are estimates; the basis and sources for every figure are listed below the table.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table cr-table">
+          <thead>
+            <tr>
+              <th scope="col" class="sortable" data-key="name" aria-sort="none"><button type="button">Name</button></th>
+              <th scope="col" class="num sortable" data-key="memory_gb" aria-sort="none"><button type="button">Memory (GB)</button></th>
+              <th scope="col" class="num sortable" data-key="bandwidth_tbs" aria-sort="none"><button type="button">Bandwidth (TB/s)</button></th>
+              <th scope="col" class="num sortable" data-key="agents_low" aria-sort="none"><button type="button">Coding agents</button></th>
+              <th scope="col" class="num sortable" data-key="tok_s" aria-sort="none"><button type="button">Tokens/sec</button></th>
+              <th scope="col" class="num sortable" data-key="price_usd" aria-sort="none"><button type="button">Price</button></th>
+            </tr>
+          </thead>
+          <tbody id="cr-rows"><tr><td colspan="6" class="muted">Loading data…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="note" id="cr-basis"></div>
+      <h3 class="cr-h3">Basis and sources</h3>
+      <ul class="cr-basis-list" id="cr-basis-list"></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        Specs and prices from the sources linked in each row, read 2026-11-18. Prices are street or analyst figures, not vendor list prices, unless marked otherwise.
+        LLMeter is an independent project, <a href="https://github.com/maxgerashenko/LLMeter">source on GitHub</a>.
+      </p>
+    </div>
+  </footer>
+  <script src="assets/cloud-rack.js"></script>
+</body>
+</html>
