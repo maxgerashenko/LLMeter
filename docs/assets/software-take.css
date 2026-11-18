@@ -1,0 +1,33 @@
+#panel-software {
+  --s-accent: #2D5170; --s-warm: #8F4331; --s-good: #33654A; --s-soft: #DEE7EE; --s-warm-soft: #F1E1DA;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) #panel-software { --s-accent: #77AED4; --s-warm: #D4855F; --s-good: #71BE93; --s-soft: #182B3A; --s-warm-soft: #2D1E18; }
+}
+:root[data-theme="dark"] #panel-software { --s-accent: #77AED4; --s-warm: #D4855F; --s-good: #71BE93; --s-soft: #182B3A; --s-warm-soft: #2D1E18; }
+#panel-software .panel .p-value { color: var(--s-accent); }
+#panel-software .panel.warm .p-value { color: var(--s-warm); }
+#panel-software .panel.good .p-value { color: var(--s-good); }
+#panel-software .s-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+#panel-software .s-table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+#panel-software .s-table th, #panel-software .s-table td { padding: 8px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; vertical-align: middle; }
+#panel-software .s-table th { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .02em; }
+#panel-software .s-table th:first-child, #panel-software .s-table td:first-child { text-align: left; }
+#panel-software .s-table td.note { text-align: left; white-space: normal; min-width: 200px; color: var(--muted); }
+#panel-software .s-table tr.total td, #panel-software .s-table tr.total th { font-weight: 700; border-top: 2px solid var(--s-accent); }
+#panel-software .s-table tr.base td { background: var(--s-soft); font-weight: 600; }
+#panel-software .s-table .neg { color: var(--s-warm); }
+#panel-software .s-table td.neg { background: var(--s-warm-soft); }
+#panel-software .s-bars { min-width: 150px; }
+#panel-software .s-bar { display: block; height: 7px; border-radius: 2px; margin: 2px 0; min-width: 2px; }
+#panel-software .s-bar.pay { background: var(--s-accent); opacity: .35; }
+#panel-software .s-bar.cost { background: var(--s-accent); }
+#panel-software .s-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12.5px; color: var(--muted); margin: 0 0 8px; }
+#panel-software .s-legend i { display: inline-block; width: 12px; height: 7px; border-radius: 2px; margin-right: 6px; background: var(--s-accent); }
+#panel-software .s-legend i.pay { opacity: .35; }
+#panel-software .s-src { font-size: 13px; color: var(--muted); margin: 14px 0 0; }
+#panel-software .s-sub { font-size: 14px; font-weight: 600; margin: 16px 0 6px; }
+@media (max-width: 440px) { #panel-software .s-table { font-size: 12.5px; } #panel-software .s-table th, #panel-software .s-table td { padding: 7px 6px; } }
+#panel-software #sw-panels .panels { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1040px) { #panel-software #sw-panels .panels { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1041px) { #panel-software #sw-panels .p-label { white-space: nowrap; font-size: 10.5px; letter-spacing: 0; } }

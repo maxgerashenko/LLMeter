@@ -1,6 +1,6 @@
 // Finance page tabs: one tab per filing or topic. Add a [tab id, panel id, hash] row for each new tab.
 (function () {
-  var tabs = [["tab-anthropic-s1", "panel-anthropic-s1", "#anthropic-s1"], ["tab-economy", "panel-economy", "#economy"]];
+  var tabs = [["tab-anthropic-s1", "panel-anthropic-s1", "#anthropic-s1"], ["tab-economy", "panel-economy", "#economy"], ["tab-software", "panel-software", "#software-take"]];
   function select(id) {
     tabs.forEach(function (t) {
       var on = t[0] === id, b = document.getElementById(t[0]);
