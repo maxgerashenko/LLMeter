@@ -166,7 +166,7 @@
     }
     function cells(m, t, isPick) {
       return [
-        el("td", { class: "num" }, [scoreCell(m)]),
+        el("td", { class: "score-col" }, [scoreCell(m)]),
         el("td", null, [modelLink(m, { hideSetting: isPick }), el("span", { class: "params-inline", text: fmtParams(m) }), el("span", { class: "disk-inline" }, [diskInline(m)])]),
         el("td", { class: "num params" + (m.totalB == null ? " muted" : ""), text: fmtParams(m) }),
         el("td", { class: "num disk-col" }, [diskCell(m)])

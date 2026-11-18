@@ -173,7 +173,8 @@ th.num { text-align: right; }
 @media (max-width: 640px) {
   .edge-label { display: none; }
   .edge-ref .edge-label { display: block; left: auto; right: 4px; }
-  .score { display: inline-flex; flex-direction: column; align-items: flex-end; }
+  .score { display: inline-flex; flex-direction: column; align-items: flex-start; }
+  .score .sub { margin-left: 0; }
   .sub-pill { margin: 2px 0 0; }
 }
 .bar-track { margin-right: 40px; }
