@@ -205,6 +205,13 @@ th.num { text-align: right; }
   .brand { gap: 5px; font-size: 13.5px; }
   .theme-toggle { width: 28px; height: 28px; }
 }
+/* Narrow phones: the six menu links get their own row under the logo */
+@media (max-width: 440px) {
+  .header-inner { flex-wrap: wrap; height: auto; padding-top: 8px; padding-bottom: 6px; row-gap: 4px; }
+  .nav { order: 3; flex: 1 0 100%; justify-content: space-between; margin-left: 0; font-size: 13px; gap: 4px; }
+  .theme-toggle { margin-left: auto; }
+}
+@media (max-width: 400px) { .nav { font-size: 12px; } }
 .th-sub { display: block; font-weight: 500; text-transform: none; letter-spacing: 0; }
 .sub-pill { margin-left: 6px; font-weight: 500; }
 .bars { overflow: hidden; }
