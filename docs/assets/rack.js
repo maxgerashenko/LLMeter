@@ -86,6 +86,20 @@
     if (/^m5-ultra/.test(k.id)) return (r.macs || 1) + "× M5 Ultra " + k.mem + " GB";
     return k.name;
   }
+  // Price of the whole rack: number of Macs × price per machine. "$89k", "$5.4k"
+  function priceText(r, k) {
+    if (k.price == null) return "";
+    var t = (r && r.macs || 1) * k.price;
+    var s = t >= 10000 ? "$" + Math.round(t / 1000) + "k" : "$" + (t / 1000).toFixed(1) + "k";
+    if (k.id === "m1-ultra") return s + " (2022)";
+    return (/^approx/.test(k.priceNote) ? "≈" : "") + s;
+  }
+  function priceTag(r, k) {
+    var t = priceText(r, k);
+    if (!t) return null;
+    var macs = r && r.macs || 1;
+    return el("a", { class: "rk-price", href: k.priceSrc, title: (macs > 1 ? macs + " × $" + k.price.toLocaleString("en-US") + " " : "$" + k.price.toLocaleString("en-US") + " ") + k.priceNote }, [t]);
+  }
   function cellText(r) {
     if (r.status === "no_fit") return "doesn't fit";
     if (r.status === "untested") return "no data";
@@ -116,12 +130,12 @@
       var r = onRack(t.id, MAIN_RACK);
       if (!r) return;
       var name = baseName(r.model);
-      var cfg = r.status === "cloud" ? null : el("span", { class: "rk-cfg", text: rackLabel(r, main).replace(/ M5 Ultra.*/, "") });
+      var cfg = r.status === "cloud" ? null : el("span", { class: "rk-cfg", text: rackLabel(r, main).replace(/ M5 Ultra.*/, "") + " · " + priceText(r, main) });
       bars.appendChild(barRow(el("span", { class: "rk-label" }, [badge(t.id), el("a", { class: "tb-model", href: r.source, text: name }), cfg]), r, scale, r.status === "cloud" ? "is-ref" : null));
       var r2 = t.id === "max" ? null : onRack(t.id, ALT_RACK);
       function cfgCell(x, k) {
         if (!x) return el("td", { class: "rk-cfg-col muted", text: "cloud" });
-        return el("td", { class: "rk-cfg-col" }, [el("span", { class: "rk-cfg-n", text: rackLabel(x, k) }),
+        return el("td", { class: "rk-cfg-col" }, [el("span", { class: "rk-cfg-n" }, [rackLabel(x, k) + " ", x.status === "untested" ? null : priceTag(x, k)]),
           el("a", { class: "rk-num rk-sub" + (x.status === "estimate" ? " est" : ""), href: x.source, title: title(x) }, [cellText(x)])]);
       }
       body.appendChild(el("tr", null, [
@@ -140,6 +154,10 @@
     groups.textContent = "";
     TIERS.forEach(function (t) {
       var rows = t.id === "max" ? [ref] : racks.map(function (k) { return onRack(t.id, k.id); }).filter(Boolean);
+      // Fastest rack first; racks with no number (doesn't fit, no run) at the bottom, in rack order
+      rows = rows.map(function (r, i) { return { r: r, i: i }; })
+        .sort(function (x, y) { return ((y.r.tok == null ? -1 : y.r.tok) - (x.r.tok == null ? -1 : x.r.tok)) || x.i - y.i; })
+        .map(function (x) { return x.r; });
       if (!rows.length || !rows[0]) return;
       var g = el("div", { class: "rk-group" }, [el("div", { class: "rk-group-head" }, [badge(t.id), el("span", { class: "rk-group-model", text: baseName(rows[0].model) }),
         t.id === "max" ? el("span", { class: "pill pill-cloud", text: "cloud" }) : el("span", { class: "muted rk-group-size", text: fmtGB(rows[0].size) + " at 4-bit" })])]);
@@ -151,7 +169,8 @@
       }
       rows.forEach(function (r) {
         var lab = r.status === "cloud" ? "Cloud API" : rackLabel(r, rackById[r.rack]);
-        g.appendChild(barRow(el("span", { class: "rk-label rk-rack" + (/^m5-ultra/.test(r.rack) ? " is-main" : ""), text: lab }), r, scale));
+        var k = rackById[r.rack];
+        g.appendChild(barRow(el("span", { class: "rk-label rk-rack" + (/^m5-ultra/.test(r.rack) ? " is-main" : "") }, [lab, k && r.status !== "untested" ? priceTag(r, k) : null]), r, scale));
       });
       groups.appendChild(g);
     });
@@ -170,7 +189,9 @@
         el("td", { text: k.chip }),
         el("td", { class: "num", text: k.gpu == null ? "Blackwell GPU" : String(k.gpu) }),
         el("td", { class: "num", text: k.bw >= 1000 ? (k.bw / 1000).toFixed(1) + " TB/s" : k.bw + " GB/s" }),
-        el("td", { class: "num", text: k.mem + " GB" + (/^m5-ultra/.test(k.id) ? " per Mac" : "") })
+        el("td", { class: "num", text: k.mem + " GB" + (/^m5-ultra/.test(k.id) ? " per Mac" : "") }),
+        el("td", { class: "num" }, [el("a", { href: k.priceSrc, title: k.priceNote, class: "rk-price-cell" },
+          [(/^approx/.test(k.priceNote) ? "≈" : "") + "$" + k.price.toLocaleString("en-US") + (/^m5-ultra/.test(k.id) ? " per Mac" : k.id === "m1-ultra" ? " (2022)" : "")])])
       ]));
     });
   }
@@ -208,7 +229,8 @@
         macs: num(r.macs), quant: r.quant, engine: r.engine, setup: r.setup, source: firstUrl(r.source), note: r.note };
     });
     var racks = parseCSV(texts[1]).map(function (r) {
-      return { id: r.rack_id, name: r.name, chip: r.chip, gpu: num(r.gpu_cores), bw: num(r.bandwidth_gbs), mem: num(r.max_memory_gb), src: r.spec_source };
+      return { id: r.rack_id, name: r.name, chip: r.chip, gpu: num(r.gpu_cores), bw: num(r.bandwidth_gbs), mem: num(r.max_memory_gb), src: r.spec_source,
+        price: num(r.price_usd), priceNote: r.price_note, priceSrc: firstUrl(r.price_source) };
     });
     render(speeds, racks);
   }).catch(function (err) {

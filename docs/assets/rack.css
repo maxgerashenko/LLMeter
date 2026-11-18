@@ -29,7 +29,7 @@
 .rk-group-head .tier-badge { min-width: 52px; padding: 2px 8px; font-size: 12px; }
 .rk-group-model { font-weight: 600; }
 .rk-group-size { font-size: 12.5px; }
-.rk-group .rk-row { grid-template-columns: 200px 1fr 76px; }
+.rk-group .rk-row { grid-template-columns: 240px 1fr 76px; }
 .rk-rack { color: var(--muted); font-size: 13px; }
 .rk-rack.is-main { color: var(--text); font-weight: 600; }
 .rk-spec-table td, .rk-spec-table th { white-space: nowrap; }
@@ -47,3 +47,9 @@
 @media (max-width: 640px) {
   .rk-table .rk-cfg-col { white-space: normal; font-size: 13px; }
 }
+.rk-price { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 999px; background: var(--track); color: var(--muted); font-size: 11px; font-weight: 500; white-space: nowrap; }
+.rk-price:hover { color: var(--accent); text-decoration: none; }
+.rk-cfg-n .rk-price { margin-left: 0; }
+.rk-price-cell { color: var(--text); }
+.rk-specs { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); }
+.rk-specs h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
