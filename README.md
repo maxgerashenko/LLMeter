@@ -52,6 +52,7 @@ The planned layout of the repository:
 | `RESOURCES.md` | The list of all public sources used, each with a link and a short note |
 | `SOURCE_GRAPH.md` | Graph of where those sources get their information, up to 5 levels deep (data in `data/source-graph.json`) |
 | `articles/` | Analysis articles, one Markdown file per topic or finding |
+| `sources/` | Saved copies of source text that could not be fetched by link, exactly as read |
 | `prompts/` | The prompts Max wrote in the chat behind an article, saved as typed, one file per article |
 | `docs/` | The public website, published with GitHub Pages |
 | `data/` | Structured data collected about models (planned) |

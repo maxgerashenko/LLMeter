@@ -2,7 +2,7 @@
 
 The prompts Max wrote in the chat on 2026-11-18 that produced [the Anthropic S-1 article](../articles/anthropic-s1-compute-economics.md). They are copied as typed, in order, so the report can be reproduced or questioned.
 
-The agent's replies are not saved here; the article, the data file and the site page are their result. Terminal output and file attachments that Max pasted are summarised in brackets rather than copied.
+The agent's replies are not saved here; the article, the data file and the site page are their result. Terminal output and file attachments are summarised in brackets rather than copied. The pasted filing text is kept in its own file.
 
 ## The prompts
 
@@ -16,7 +16,7 @@ The agent's replies are not saved here; the article, the data file and the site 
 
 5. *[File attachment, twice.]* `anthropic-s1.htm`. Both times the file was the SEC's "Your Request Originates from an Undeclared Automated Tool" block page, not the filing.
 
-6. *[Pasted text.]* The full text of Anthropic, PBC's Form S-1 as filed on 2026-10-26, copied from the SEC's EDGAR page: cover page through signatures, including the financial statements (pages F-1 to F-65). It is not reproduced here. The filing is at <https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm> ([RESOURCES #5](../RESOURCES.md)).
+6. *[Pasted text.]* The full text of Anthropic, PBC's Form S-1 as filed on 2026-10-26, copied from the SEC's EDGAR page: cover page through signatures, including the financial statements (pages F-1 to F-65). The whole paste is saved, exactly as sent, in [sources/anthropic-s1-2026-10-26.txt](../sources/anthropic-s1-2026-10-26.txt). The filing itself is at <https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm> ([RESOURCES #5](../RESOURCES.md)).
 
 7. > is ti full?
 
@@ -35,6 +35,11 @@ The agent's replies are not saved here; the article, the data file and the site 
 9. > how can move this source and and comcution to my LLMETER
 
 10. > need to save all promt of rehte repoerin in file too
+
+11. > the entire
+    > As filed with the Securities and Exchange Commission on October 26, 2026. Registration No. 333-
+
+    *[Taken to mean: save the entire pasted filing text too.]*
 
 ## What the first prompt was taken to mean
 
