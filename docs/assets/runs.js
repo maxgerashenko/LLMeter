@@ -89,7 +89,7 @@
       function lvl(k) { return lv[k][1] ? 100 * lv[k][0] / lv[k][1] : null; }
       return {
         model: m.model || f.model_id, id: f.model_id, quant: [m.format, m.quant].filter(Boolean).join(" "),
-        runtime: f.runtime + (f.runtime_version ? " " + f.runtime_version : ""), thinking: f.thinking || "–",
+        rt: f.runtime, runtime: f.runtime + (f.runtime_version ? " " + f.runtime_version : ""), thinking: f.thinking || "–",
         hardware: f.hardware || DEFAULT_HW, parallel: f.parallel, date: f.date,
         // Missing tasks count as 0, so a partial run cannot score above a full one.
         score: tasks ? 100 * ws / 23 : null, easy: lvl("easy"), medium: lvl("medium"), hard: lvl("hard"),
@@ -107,36 +107,52 @@
     ]);
   }
 
+  // The chart is split in two, one panel per runtime, so the same model can be compared
+  // across runtimes on a shared scale. Panels are always shown, even with no run in them.
+  var RUNTIMES = [
+    { name: "LM Studio", planned: function (m) { return !!m.lmstudio; } },
+    { name: "TensorFold", planned: function (m) { return /^(installed|loads)/.test(m.tensorfold || ""); } }
+  ];
+
   function drawBars() {
     var box = document.getElementById("runs-bars"); box.textContent = "";
     var key = metric === "score" ? "score" : "tok";
-    var runs = state.runs.filter(function (r) { return r[key] != null; })
-      .sort(function (a, b) { return b[key] - a[key]; });
-    var max = metric === "score" ? 100 : Math.max.apply(null, runs.map(function (r) { return r.tok; }).concat([1]));
-    runs.forEach(function (r) {
-      var pct = Math.max(0, Math.min(100, 100 * r[key] / max));
-      box.appendChild(el("div", { cls: "rb-row" }, [
-        label(r),
-        el("div", { cls: "rb-track" }, [el("span", { cls: "rb-bar" + (r.think ? " think-on" : ""), style: "width:" + pct.toFixed(1) + "%" })]),
-        el("div", { cls: "rb-value", text: metric === "score" ? fmt(r.score, 1) : fmt(r.tok, 1) })
-      ]));
-    });
-    var ran = {}; state.runs.forEach(function (r) { ran[r.id] = 1; });
-    var todo = state.planned.filter(function (m) { return !ran[m.id]; });
-    if (todo.length) {
-      box.appendChild(el("div", { cls: "rb-group", text: "Not run yet" }));
-      todo.forEach(function (m) {
-        box.appendChild(el("div", { cls: "rb-row is-planned" }, [
-          label({ model: m.model, quant: [m.format, m.quant].filter(Boolean).join(" "), runtime: m.lmstudio ? "LM Studio" : "", thinking: "" }),
-          el("div", { cls: "rb-track" }),
-          el("div", { cls: "rb-value", text: "–" })
+    var all = state.runs.filter(function (r) { return r[key] != null; });
+    // One scale for both panels so bar lengths compare across runtimes.
+    var max = metric === "score" ? 100 : Math.max.apply(null, all.map(function (r) { return r.tok; }).concat([1]));
+    RUNTIMES.forEach(function (rt) {
+      var runs = all.filter(function (r) { return r.rt === rt.name; }).sort(function (a, b) { return b[key] - a[key]; });
+      var panel = el("div", { cls: "rb-panel", role: "group", "aria-label": rt.name }, [
+        el("h3", { cls: "rb-title", text: rt.name })
+      ]);
+      var list = el("div", { cls: "rbars" });
+      panel.appendChild(list);
+      runs.forEach(function (r) {
+        var pct = Math.max(0, Math.min(100, 100 * r[key] / max));
+        list.appendChild(el("div", { cls: "rb-row" }, [
+          label(Object.assign({}, r, { runtime: "" })),
+          el("div", { cls: "rb-track" }, [el("span", { cls: "rb-bar" + (r.think ? " think-on" : ""), style: "width:" + pct.toFixed(1) + "%" })]),
+          el("div", { cls: "rb-value", text: metric === "score" ? fmt(r.score, 1) : fmt(r.tok, 1) })
         ]));
       });
-    }
-    var bars = document.getElementById("runs-bars");
-    bars.setAttribute("aria-label", metric === "score"
-      ? "Horizontal bar chart of each run's suite score, 0 to 100"
-      : "Horizontal bar chart of each run's generation speed in tokens per second");
+      var ran = {}; state.runs.filter(function (r) { return r.rt === rt.name; }).forEach(function (r) { ran[r.id] = 1; });
+      var todo = state.planned.filter(function (m) { return rt.planned(m) && !ran[m.id]; });
+      if (!runs.length && !todo.length) list.appendChild(el("p", { cls: "muted", text: "No runs in " + rt.name + " yet." }));
+      if (todo.length) {
+        list.appendChild(el("div", { cls: "rb-group", text: "Not run yet" }));
+        todo.forEach(function (m) {
+          list.appendChild(el("div", { cls: "rb-row is-planned" }, [
+            label({ model: m.model, quant: [m.format, m.quant].filter(Boolean).join(" "), runtime: "", thinking: "" }),
+            el("div", { cls: "rb-track" }),
+            el("div", { cls: "rb-value", text: "–" })
+          ]));
+        });
+      }
+      box.appendChild(panel);
+    });
+    box.setAttribute("aria-label", metric === "score"
+      ? "Two horizontal bar charts, one per runtime, of each run's suite score, 0 to 100"
+      : "Two horizontal bar charts, one per runtime, of each run's generation speed in tokens per second");
   }
 
   function td(text, cls) { return el("td", { cls: cls || "", text: text }); }

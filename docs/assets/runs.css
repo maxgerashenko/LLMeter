@@ -1,7 +1,14 @@
 .runs-metric { margin-bottom: 14px; }
 .runs-metric .tab { padding: 6px 12px; font-size: 14px; }
 
-/* Horizontal result bars */
+/* Horizontal result bars, one panel per runtime */
+.rb-split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.rb-panel { min-width: 0; }
+.rb-title { margin: 0 0 8px; font-size: 15px; font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--line-strong); }
+.rb-split .rb-row { grid-template-columns: 1fr 52px; gap: 4px 8px; }
+.rb-split .rb-label { grid-column: 1 / -1; }
+.rb-split .rb-label .setting { display: inline; }
+@media (max-width: 860px) { .rb-split { grid-template-columns: 1fr; gap: 22px; } }
 .rbars { display: grid; gap: 8px; margin: 4px 0 6px; }
 .rb-row { display: grid; grid-template-columns: 300px 1fr 64px; align-items: center; gap: 12px; }
 .rb-label { min-width: 0; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
