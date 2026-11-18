@@ -60,36 +60,36 @@ Its limit is coverage: only about 29 agent and model pairs, with no model under 
 
 Scores read from Artificial Analysis on 2026-11-17. "Long-coding score" is the average of Terminal-Bench 4.0 and FrontierCode 2.0. Parameters are in billions; where Artificial Analysis and LLM Sizer disagree, both are shown.
 
-| Model | Open weights | Intelligence Index (Coding Agent Index) | Terminal-Bench 4.0 | FrontierCode 2.0 | Long-coding score | % of Sonnet 5.5 | Total / active params |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Claude Fable 5.2 (Xhigh) | no | 62.2 (58.5) | 61.6 | 47.6 | 54.6 | 104% | not published |
-| Claude Fable 5.2 (Max) | no | 64.6 (55.7) | 59.6 | 48.8 | 54.2 | 103% | not published |
-| Claude Opus 5.5 (Max) | no | 59 (58.2) | 59.6 | 46.4 | 53.0 | 101% | not published |
-| **Claude Sonnet 5.5 (Max)** | no | **55** (**56.3**) | **63.6** | **41.7** | **52.7** | **100%** | not published |
-| Kimi K3.1 Pro | yes | 46.5 (48.6) | 67.2 | 25.5 | 46.4 | 88% | 2,800 / 104 |
-| Claude Haiku 5.5 (Max) | no | 36.5 (29.6) | 32.8 | 34.9 | 33.8 | 64% | not published |
-| GLM-5.3 (Max) | yes | 31.7 (40.1) | 41.9 | 21.6 | 31.8 | 60% | 753 / 40 (AA), 753 / 54 (LLM Sizer) |
-| DeepSeek V4.1 Flash 1017 (Max) | yes | 32.6 (36.8) | 33.8 | 28.5 | 31.1 | 59% | 552 / 16 (AA), 763 / 25 (LLM Sizer) |
-| MiMo-V2.6-Pro | yes | 29.9 | 34.8 | 24.0 | 29.4 | 56% | 1,020 / 42 |
-| Qwen3.8-Flash-Next | yes | 28.6 | 25.3 | 27.1 | 26.2 | 50% | 180 / 6.7 |
-| GLM-5.3-Flash | yes | 27.8 | 32.8 | 17.6 | 25.2 | 48% | 321 / 18 |
-| Ling 3.1 Flash 1019 | yes | 29.6 | 32.8 | 17.0 | 24.9 | 47% | 560 to 572 / 25 |
-| MiniMax-M3.1-Flash | yes | 29.1 | 25.8 | 20.8 | 23.3 | 44% | 428 (AA), 221 / 26 (LLM Sizer) |
-| Step 5 Preview | yes | 28.5 (35.8) | 33.3 | 12.0 | 22.6 | 43% | 600 |
-| MiMo-V2.6-Flash | yes | 26.7 | 22.7 | 21.6 | 22.1 | 42% | 309 |
-| Nanbeige4.3-33B | yes | 20.4 | 29.8 | 10.7 | 20.2 | 38% | 33 dense |
-| Mistral Large 4 (High) | yes | 26.1 (40.6) | 24.7 | 15.0 | 19.9 | 38% | 1,050 / 52 |
-| Inkling 2 Small | yes | 30.6 | 13.1 | 25.4 | 19.2 | 36% | 594 / 17 to 24 |
-| Qwen3.8 27B (Xhigh) | yes | 20.1 | 5.6 | 14.9 | 10.2 | 19% | 27 dense |
-| Qwen3.6 27B (Reasoning) | yes | not scored | 0.0 | not run | n/a | about 0% (indirect) | 28 dense |
-| Qwen3.5 27B (Reasoning) | yes | not scored | not run | not run | n/a | about 0% (indirect, see below) | 28 dense |
-| Nemotron 3.5 Super VL | yes | 13.6 | 0.0 | 6.1 | 3.0 | 6% | 120 / 12 |
-| gpt-oss-120b (High) | yes | 3.8 | 0.0 | 0.0 | 0.0 | 0% | 117 / 5 |
-| Gemma 4 31B (Reasoning) | yes | 4.4 | 0.0 | 0.0 | 0.0 | 0% | 31 dense |
-| Granite 4.2 8B | yes | 5.1 | 0.0 | 0.0 | 0.0 | 0% | 8 |
-| Gemma 4 E4B (Reasoning) | yes | 4.8 | 0.0 | 0.0 | 0.0 | 0% | 8 |
+| Model | Open weights | Intelligence Index (Coding Agent Index) | Terminal-Bench 4.0 | FrontierCode 2.0 | Long-coding score | % of Sonnet 5.5 | Total / active params | Size on disk, GB: 4-bit / full |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Claude Fable 5.2 (Xhigh) | no | 62.2 (58.5) | 61.6 | 47.6 | 54.6 | 104% | not published | n/a (weights not released) |
+| Claude Fable 5.2 (Max) | no | 64.6 (55.7) | 59.6 | 48.8 | 54.2 | 103% | not published | n/a (weights not released) |
+| Claude Opus 5.5 (Max) | no | 59 (58.2) | 59.6 | 46.4 | 53.0 | 101% | not published | n/a (weights not released) |
+| **Claude Sonnet 5.5 (Max)** | no | **55** (**56.3**) | **63.6** | **41.7** | **52.7** | **100%** | not published | n/a (weights not released) |
+| Kimi K3.1 Pro | yes | 46.5 (48.6) | 67.2 | 25.5 | 46.4 | 88% | 2,800 / 104 | 1,509 (UD-Q4_K_XL) / 1,561 (FP4) |
+| Claude Haiku 5.5 (Max) | no | 36.5 (29.6) | 32.8 | 34.9 | 33.8 | 64% | not published | n/a (weights not released) |
+| GLM-5.3 (Max) | yes | 31.7 (40.1) | 41.9 | 21.6 | 31.8 | 60% | 753 / 40 (AA), 753 / 54 (LLM Sizer) | 467 (UD-Q4_K_XL) / 756 (FP8) |
+| DeepSeek V4.1 Flash 1017 (Max) | yes | 32.6 (36.8) | 33.8 | 28.5 | 31.1 | 59% | 552 / 16 (AA), 763 / 25 (LLM Sizer) | 501 (UD-Q4_K_XL) / 510 (FP8) |
+| MiMo-V2.6-Pro | yes | 29.9 | 34.8 | 24.0 | 29.4 | 56% | 1,020 / 42 | 554 (MXFP4) / 568 (FP8) |
+| Qwen3.8-Flash-Next | yes | 28.6 | 25.3 | 27.1 | 26.2 | 50% | 180 / 6.7 | 119 (Q4_K_M) / 360 (BF16) |
+| GLM-5.3-Flash | yes | 27.8 | 32.8 | 17.6 | 25.2 | 48% | 321 / 18 | 200 (UD-Q4_K_XL) / 328 (FP8) |
+| Ling 3.1 Flash 1019 | yes | 29.6 | 32.8 | 17.0 | 24.9 | 47% | 560 to 572 / 25 | 358 (Q4_K_M) / 574 (FP8) |
+| MiniMax-M3.1-Flash | yes | 29.1 | 25.8 | 20.8 | 23.3 | 44% | 428 (AA), 221 / 26 (LLM Sizer) | ≈132 (4-bit est.) / 250 (FP8) |
+| Step 5 Preview | yes | 28.5 (35.8) | 33.3 | 12.0 | 22.6 | 43% | 600 | ≈360 (4-bit est.) / ≈1,200 (BF16 est.) |
+| MiMo-V2.6-Flash | yes | 26.7 | 22.7 | 21.6 | 22.1 | 42% | 309 | 167 (MXFP4) / 175 (FP8) |
+| Nanbeige4.3-33B | yes | 20.4 | 29.8 | 10.7 | 20.2 | 38% | 33 dense | 20.8 (Q4_K_M) / 66.2 (BF16) |
+| Mistral Large 4 (High) | yes | 26.1 (40.6) | 24.7 | 15.0 | 19.9 | 38% | 1,050 / 52 | ≈630 (4-bit est.) / ≈2,100 (BF16 est.) |
+| Inkling 2 Small | yes | 30.6 | 13.1 | 25.4 | 19.2 | 36% | 594 / 17 to 24 | 369 (Q4_K_M) / 394 (BF16) |
+| Qwen3.8 27B (Xhigh) | yes | 20.1 | 5.6 | 14.9 | 10.2 | 19% | 27 dense | 16.8 (Q4_K_M) / 55.6 (BF16) |
+| Qwen3.6 27B (Reasoning) | yes | not scored | 0.0 | not run | n/a | about 0% (indirect) | 28 dense | 19.4 (Q4_K_M) / 55.6 (BF16) |
+| Qwen3.5 27B (Reasoning) | yes | not scored | not run | not run | n/a | about 0% (indirect, see below) | 28 dense | ≈16.7 (4-bit est.) / ≈55.6 (BF16 est.) |
+| Nemotron 3.5 Super VL | yes | 13.6 | 0.0 | 6.1 | 3.0 | 6% | 120 / 12 | ≈72.0 (4-bit est.) / ≈240 (BF16 est.) |
+| gpt-oss-120b (High) | yes | 3.8 | 0.0 | 0.0 | 0.0 | 0% | 117 / 5 | 62.8 (Q4_K_M) / 130 (FP4) |
+| Gemma 4 31B (Reasoning) | yes | 4.4 | 0.0 | 0.0 | 0.0 | 0% | 31 dense | 18.7 (Q4_K_M) / 62.5 (BF16) |
+| Granite 4.2 8B | yes | 5.1 | 0.0 | 0.0 | 0.0 | 0% | 8 | ≈4.8 (4-bit est.) / ≈16.0 (BF16 est.) |
+| Gemma 4 E4B (Reasoning) | yes | 4.8 | 0.0 | 0.0 | 0.0 | 0% | 8 | 5.3 (Q4_K_M) / 16.0 (BF16) |
 
-Sources: [Coding Agent Index](https://artificialanalysis.ai/agents/coding-agents), [Terminal-Bench 4.0](https://artificialanalysis.ai/evaluations/terminalbench-4-0), model pages under [artificialanalysis.ai/models](https://artificialanalysis.ai/models), all read 2026-11-17; parameters also from [llm-sizer-data](https://github.com/alexgrankinukr-hash/llm-sizer-data) (`models/*.json`, read 2026-11-17).
+Sources: [Coding Agent Index](https://artificialanalysis.ai/agents/coding-agents), [Terminal-Bench 4.0](https://artificialanalysis.ai/evaluations/terminalbench-4-0), model pages under [artificialanalysis.ai/models](https://artificialanalysis.ai/models), all read 2026-11-17; parameters also from [llm-sizer-data](https://github.com/alexgrankinukr-hash/llm-sizer-data) (`models/*.json`, read 2026-11-17). Disk sizes are Hugging Face file sizes as listed by LLM Sizer (decimal GB): the 4-bit build is LLM Sizer's default Q4 file (GGUF), "full" is the developer's own release in its native precision. Sizes marked "≈ … est." are not published there and are estimated from total parameters (0.6 GB per billion at 4-bit, 2 GB per billion in BF16); Kimi K3.1 Pro uses Kimi K3's files (same parameter count). Per-model build names and source links are in the data file.
 
 ## How tiers are defined
 
