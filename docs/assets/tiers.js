@@ -150,19 +150,14 @@
       return { tier: t, model: inBand[0] || null };
     });
 
-    // Tier table: the leader of each tier, with the other models in that tier folded under it.
-    function groupOf(m) {
-      if (m.model === REFERENCE || (!m.open && m.pct > 100)) return TIERS[0];
-      if (m.pct == null) return TIERS[TIERS.length - 1]; // not run on the long-task tests; inferred Tier 0 in the article
-      return tierFor(m);
-    }
+    // Tier table: the leader of each tier.
     function iiCell(m) {
       return m.ii != null ? el("span", { class: "score", text: m.ii.toFixed(1) }) : el("span", { class: "muted", text: "n/a" });
     }
-    function cells(m, t, isPick) {
+    function cells(m) {
       return [
         el("td", { class: "score-col" }, [iiCell(m)]),
-        el("td", null, [modelLink(m, { hideSetting: isPick }), el("span", { class: "params-inline", text: fmtParams(m) }), el("span", { class: "disk-inline" }, [diskInline(m)])]),
+        el("td", null, [modelLink(m, { hideSetting: true }), el("span", { class: "params-inline", text: fmtParams(m) }), el("span", { class: "disk-inline" }, [diskInline(m)])]),
         el("td", { class: "num params" + (m.totalB == null ? " muted" : ""), text: fmtParams(m) }),
         el("td", { class: "num disk-col" }, [diskCell(m)])
       ];
@@ -172,45 +167,9 @@
     body.textContent = "";
     picks.forEach(function (p) {
       var m = p.model, t = p.tier;
-      var others = models.filter(function (o) { return o !== m && o.open && groupOf(o) === t; }) // cloud models are not alternatives to a local pick
-        .sort(function (a, b) { return (b.pct == null ? -1 : b.pct) - (a.pct == null ? -1 : a.pct) || (b.lcs || 0) - (a.lcs || 0); });
-      // The whole tier row opens and closes its detail: the article's reasoning for the tier,
-      // then the other models in that tier.
-      var subRows = [];
-      var detailId = "more-" + t.id;
-      var row = el("tr", { class: "pick-row", tabindex: "0", role: "button", "aria-expanded": "false", "aria-controls": detailId,
-        title: "Show why this tier's pick" + (others.length ? " and the other " + others.length + " model" + (others.length === 1 ? "" : "s") + " in the tier" : "") },
-        [el("th", { scope: "row" }, [el("div", { class: "tier-cell" }, [tierBadge(t), el("span", { class: "row-chevron", "aria-hidden": "true" })])])]
-          .concat(m ? cells(m, t, true) : [el("td", { colspan: "4", class: "muted", text: "none" })]));
-      function toggle() {
-        var open = row.getAttribute("aria-expanded") !== "true";
-        row.setAttribute("aria-expanded", String(open));
-        subRows.forEach(function (r) { r.hidden = !open; });
-      }
-      row.addEventListener("click", function (e) {
-        if (e.target.closest("a, button")) return; // model links keep working
-        toggle();
-      });
-      row.addEventListener("keydown", function (e) {
-        if (e.target !== row) return;
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
-      });
-      body.appendChild(row);
-      var explainRow = el("tr", { class: "sub-row explain-row" + (others.length ? "" : " sub-last"), id: detailId, hidden: "" }, [
-        el("td", { colspan: "5" }, [
-          el("a", { class: "explain", href: ARTICLE + "#" + t.anchor }, ["Why this tier's pick, with hardware needs"]),
-          others.length ? el("span", { class: "muted explain-count", text: " · " + others.length + " other model" + (others.length === 1 ? "" : "s") + " in this tier" }) : null
-        ])
-      ]);
-      subRows.push(explainRow);
-      body.appendChild(explainRow);
-      others.forEach(function (o, i) {
-        var label = o.pct == null ? "inferred" : "";
-        var r = el("tr", { class: "sub-row" + (i === others.length - 1 ? " sub-last" : ""), hidden: "" },
-          [el("th", { scope: "row", class: "sub-tier" }, [el("span", { class: "muted", text: label })])].concat(cells(o, t, false)));
-        subRows.push(r);
-        body.appendChild(r);
-      });
+      body.appendChild(el("tr", null,
+        [el("th", { scope: "row" }, [el("div", { class: "tier-cell" }, [tierBadge(t)])])]
+          .concat(m ? cells(m) : [el("td", { colspan: "4", class: "muted", text: "none" })])));
     });
 
     // Tier summary chart: one bar per tier leader, in its tier colour, "Tier N - model" then its share
