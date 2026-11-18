@@ -23,12 +23,12 @@ The agent does not decide the project's direction. Max chooses which questions t
 
 ## Which model does what
 
-Different parts of the work use different Claude models:
+Different parts of the work use different models:
 
 | Work | Model | Examples |
 | --- | --- | --- |
-| Organizing the project and its rules | **Claude Sonnet** | Keeping `RESOURCES.md`, `data/`, `README.md` and this file tidy; repository structure; setting up and maintaining the website in `docs/`; opening pull requests |
-| Analysis | **Claude Fable** | Reading sources closely, extracting and comparing data, finding trends and contributing factors, writing articles in `articles/` |
+| Organizing the project and its rules | **Sonnet** | Keeping `RESOURCES.md`, `data/`, `README.md` and this file tidy; repository structure; setting up and maintaining the website in `docs/`; opening pull requests |
+| Analysis | **Fable** | Reading sources closely, extracting and comparing data, finding trends and contributing factors, writing articles in `articles/` |
 
 When a task mixes both, use Fable for the analysis and writing of the article, and Sonnet for the surrounding upkeep (recording sources, updating pages, keeping docs in sync).
 
