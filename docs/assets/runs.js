@@ -9,6 +9,19 @@
   var WEIGHTS = { q01: 1, q02: 1, q03: 2, q04: 2, q05: 2, q06: 3, q07: 3, q08: 3, q09: 3, q10: 3 };
   var LEVEL = { q01: "easy", q02: "easy", q03: "medium", q04: "medium", q05: "medium",
                 q06: "hard", q07: "hard", q08: "hard", q09: "hard", q10: "hard" };
+  // Task titles of the same suite (tasks/local-coding-v1/README.md).
+  var TASKS = [
+    ["q01", "Fix a function that merges date intervals"],
+    ["q02", "Add a CSV-row constructor in the existing style"],
+    ["q03", "Find and fix three seeded bugs"],
+    ["q04", "Move and rename an API across four files"],
+    ["q05", "Fix a root cause two calls from the symptom"],
+    ["q06", "Expression evaluator with exact error positions"],
+    ["q07", "Priority scheduler with a speed bound"],
+    ["q08", "Fix an asyncio limiter"],
+    ["q09", "Version-constraint solver with backtracking"],
+    ["q10", "Unified-diff applier with offsets and fuzz"]
+  ];
   var DEFAULT_HW = "MacBook Pro, 64 GB";
   var metric = "score";
   var state = { runs: [], planned: [] };
@@ -61,10 +74,10 @@
     return order.map(function (key) {
       var rows = groups[key], f = rows[0], m = byId[f.model_id] || {};
       var w = 0, ws = 0, lv = { easy: [0, 0], medium: [0, 0], hard: [0, 0] }, tok = [], time = 0, hasTime = false, mem = null;
-      var bad = 0, seen = {};
+      var bad = 0, seen = {}, byTask = {};
       rows.forEach(function (r) {
         var id = r.task_id.toLowerCase(), wt = WEIGHTS[id], sc = num(r.score);
-        if (!wt || seen[id]) return; seen[id] = 1;
+        if (!wt || seen[id]) return; seen[id] = 1; byTask[id] = r;
         sc = sc == null ? 0 : (sc > 1 ? sc / 100 : sc);
         w += wt; ws += wt * sc; lv[LEVEL[id]][0] += wt * sc; lv[LEVEL[id]][1] += wt;
         var t = num(r.gen_tok_per_s); if (t != null) tok.push(t);
@@ -82,7 +95,7 @@
         score: tasks ? 100 * ws / 23 : null, easy: lvl("easy"), medium: lvl("medium"), hard: lvl("hard"),
         tok: tok.length ? tok.reduce(function (a, b) { return a + b; }, 0) / tok.length : null,
         time: hasTime ? time : null, mem: mem, tasks: tasks, bad: bad, think: thinkingOn(f.thinking),
-        status: tasks < 10 ? "partial" : "done"
+        status: tasks < 10 ? "partial" : "done", byTask: byTask
       };
     });
   }
@@ -155,6 +168,36 @@
     if (!body.children.length) body.appendChild(el("tr", {}, [el("td", { colspan: "12", cls: "muted", text: "No runs and no planned models." })]));
   }
 
+  // Result per task: one column per run (best first), one row per task.
+  function drawTasks() {
+    var table = document.getElementById("task-table"), card = document.getElementById("tasks-card");
+    var runs = state.runs.slice().sort(function (a, b) { return (b.score || 0) - (a.score || 0); });
+    table.textContent = "";
+    card.hidden = !runs.length;
+    if (!runs.length) return;
+    table.appendChild(el("thead", {}, [el("tr", {}, [el("th", { scope: "col", text: "Task" })].concat(runs.map(function (r) {
+      return el("th", { scope: "col", cls: "num" }, [r.model,
+        el("span", { cls: "sub", text: r.runtime.split(/[;(]/)[0].trim() + ", thinking " + r.thinking })]);
+    })))]));
+    var body = el("tbody");
+    TASKS.forEach(function (t) {
+      body.appendChild(el("tr", {}, [el("th", { scope: "row", cls: "task-name" }, [
+        t[0] + " ", el("span", { cls: "pill level", text: LEVEL[t[0]] }), el("span", { cls: "sub task-title", text: t[1] })
+      ])].concat(runs.map(function (run) {
+        var r = run.byTask[t[0]];
+        if (!r) return el("td", { cls: "num task-cell zero", text: "–" });
+        var sc = num(r.score) || 0; if (sc > 1) sc /= 100;
+        var cut = r.end_reason && r.end_reason !== "finished";
+        // Notes that describe the measurement, not the answer, stay out of the cell.
+        var note = /^(wall time|output_tokens)/.test(r.notes || "") ? "" : r.notes;
+        var under = cut ? el("span", { cls: "sub reason", text: r.end_reason })
+          : el("span", { cls: "sub", text: r.tests_passed + " of " + r.tests_total + " tests" + (note ? ", " + note : "") });
+        return el("td", { cls: "num task-cell" + (sc ? "" : " zero") }, [el("span", { cls: "pct", text: Math.round(sc * 100) + "%" }), under]);
+      }))));
+    });
+    table.appendChild(body);
+  }
+
   function drawLegend() {
     var lg = document.getElementById("runs-legend"); lg.textContent = "";
     [["rb-bar", "Thinking off"], ["rb-bar think-on", "Thinking on"]].forEach(function (x) {
@@ -175,7 +218,7 @@
       (metric === "score" ? "Bars show the suite score, 0 to 100." : "Bars show generation speed in tokens per second.");
   }
 
-  function draw() { drawBars(); drawTable(); drawLegend(); summary(); }
+  function draw() { drawBars(); drawTable(); drawTasks(); drawLegend(); summary(); }
 
   function setupTabs() {
     var tabs = document.querySelectorAll(".runs-metric .tab");

@@ -32,3 +32,20 @@
 .swatch-planned { border: 1px solid var(--line-strong); background: repeating-linear-gradient(135deg, var(--track) 0 2px, transparent 2px 4px); }
 .runs-table tr.is-planned td { color: var(--muted); }
 .runs-table tr.is-planned strong { color: var(--text); font-weight: 500; }
+
+/* Result per task */
+.task-table td, .task-table th { vertical-align: top; }
+.task-table thead th { white-space: normal; vertical-align: bottom; text-transform: none; letter-spacing: 0; font-size: 12.5px; min-width: 96px; }
+.task-table .sub { display: block; font-size: 12px; font-weight: 400; color: var(--muted); white-space: normal; }
+.task-table th.task-name { white-space: normal; font-weight: 500; }
+.task-cell { font-variant-numeric: tabular-nums; }
+.task-cell .pct { font-weight: 600; }
+.task-cell.zero .pct { color: var(--muted); font-weight: 500; }
+.task-cell .sub.reason { color: var(--amber); }
+.level { font-size: 11px; padding: 1px 7px; background: var(--track); color: var(--muted); }
+@media (max-width: 640px) {
+  .task-table td, .task-table th { padding: 9px 5px; }
+  .task-table thead th { min-width: 76px; font-size: 11.5px; }
+  .task-table thead th:first-child { min-width: 0; }
+  .task-title { display: none !important; }
+}
