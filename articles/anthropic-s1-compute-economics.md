@@ -1,6 +1,6 @@
 # What Anthropic's S-1 says about the cost of the frontier
 
-*Written 2026-11-18. Source read on 2026-11-18. Data file: [data/anthropic-s1-2026-10-26.csv](../data/anthropic-s1-2026-10-26.csv).*
+*Written 2026-11-18. Source read on 2026-11-18. Data file: [data/anthropic-s1-2026-10-26.csv](../data/anthropic-s1-2026-10-26.csv). Prompts: [prompts/anthropic-s1-2026-11-18.md](../prompts/anthropic-s1-2026-11-18.md).*
 
 ## Summary
 
