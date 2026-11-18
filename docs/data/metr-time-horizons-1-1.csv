@@ -1,0 +1,20 @@
+model_id,model,developer,release_date,p50_minutes,p80_minutes,source,read
+claude_3_opus_inspect,Claude 3 Opus,Anthropic,2024-03-04,4,0.6,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+gpt_4,GPT-4,OpenAI,2023-03-14,4,0.9,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+claude_3_5_sonnet_20240620_inspect,Claude 3.5 Sonnet (June 2024),Anthropic,2024-06-20,11.4,1.7,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+claude_3_5_sonnet_20241022_inspect,Claude 3.5 Sonnet (Oct 2024),Anthropic,2024-10-22,20.5,2.6,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+o1_inspect,o1,OpenAI,2024-12-05,38.8,7.1,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+claude_3_7_sonnet_inspect,Claude 3.7 Sonnet,Anthropic,2025-02-24,60.4,12.1,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+o3_inspect,o3,OpenAI,2025-04-16,119.7,30,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+claude_4_opus_inspect,Claude 4 Opus,Anthropic,2025-05-22,100.4,20.4,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+claude_4_1_opus_inspect,Claude 4.1 Opus,Anthropic,2025-08-05,100.5,23.5,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+gpt_5_2025_08_07_inspect,GPT-5,OpenAI,2025-08-07,203,38.3,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+gpt_5_1_codex_max_inspect,GPT-5.1-Codex-Max,OpenAI,2025-11-19,223.7,50.6,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+gemini_3_pro,Gemini 3 Pro,Google,2025-11-18,224.3,54.1,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+claude_opus_4_5_inspect,Claude Opus 4.5,Anthropic,2025-11-24,293,49.4,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+gpt_5_2,GPT-5.2,OpenAI,2025-12-11,352.2,66,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+claude_opus_4_6_inspect,Claude Opus 4.6,Anthropic,2026-02-05,718.8,69.9,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+gpt_5_3_codex,GPT-5.3-Codex,OpenAI,2026-02-05,349.5,54.7,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+gemini_3_1_pro,Gemini 3.1 Pro,Google,2026-02-19,384.1,89.8,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+gpt_5_4,GPT-5.4,OpenAI,2026-03-05,341.7,53.9,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
+claude_mythos_preview_early_inspect,Claude Mythos Preview (early),Anthropic,2026-04-07,1044.8,185.9,https://metr.org/assets/benchmark_results_1_1.yaml (METR-Horizon-v1.1; page https://metr.org/time-horizons/ last updated 2026-09-08),2026-11-17
