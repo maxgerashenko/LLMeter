@@ -108,6 +108,34 @@
     return total + " (" + r + " active)";
   }
 
+  // On-disk size: the 4-bit build, with the native (full-precision) release under it.
+  // Estimates (no file size published) are marked with "≈" and "est.".
+  function fmtGB(v) { return v >= 100 ? Math.round(v).toLocaleString("en-US") : v.toFixed(1); }
+  function diskCell(m) {
+    if (!m.open) return el("span", { class: "muted", title: "Weights not released, so there is no file to download", text: "n/a" });
+    if (m.disk4 == null) return el("span", { class: "muted", text: "not listed" });
+    var est4 = /^estimate/.test(m.disk4Build), estN = /^estimate/.test(m.diskNatFmt);
+    var main = el("a", { href: (m.disk4Src.match(/https?:\/\/[^\s)]+/) || ["#"])[0], class: "disk-main" + (est4 ? " est" : ""),
+      title: (est4 ? "Estimate: " : "") + m.disk4Src + (m.diskNote ? ". " + m.diskNote : "") },
+      [(est4 ? "≈" : "") + fmtGB(m.disk4) + " GB"]);
+    var b4 = est4 ? "4-bit, est." : m.disk4Build.replace(/ \((GGUF|MLX)\)$/, " $1");
+    var bits = [main, el("span", { class: "sub disk-build", text: b4 })];
+    if (m.diskNat != null) {
+      bits.push(el("span", { class: "sub disk-native" + (estN ? " est" : ""), title: m.diskNatSrc },
+        [(estN ? "≈" : "") + fmtGB(m.diskNat) + " GB " + (estN ? "BF16 est." : m.diskNatFmt)]));
+    }
+    return el("span", { class: "disk" }, bits);
+  }
+
+  // One-line version for phones, where the disk column is folded under the model name.
+  function diskInline(m) {
+    if (!m.open || m.disk4 == null) return null;
+    var est4 = /^estimate/.test(m.disk4Build), estN = /^estimate/.test(m.diskNatFmt);
+    var t = "Disk: " + (est4 ? "≈" : "") + fmtGB(m.disk4) + " GB 4-bit" + (est4 ? " est." : "");
+    if (m.diskNat != null) t += " · " + (estN ? "≈" : "") + fmtGB(m.diskNat) + " GB " + (estN ? "BF16 est." : m.diskNatFmt);
+    return t;
+  }
+
   function fmtPct(p) { return p == null ? "n/a" : Math.round(p) + "%"; }
   function fmt(v) { return v == null ? "" : String(v); }
 
@@ -149,8 +177,9 @@
       return [
         el("td", { class: "num" }, [shareCell(m, t)]),
         el("td", { class: "num" }, [scoreCell(m)]),
-        el("td", null, [modelLink(m, { hideSetting: isPick }), el("span", { class: "params-inline", text: fmtParams(m) })]),
-        el("td", { class: "num params" + (m.totalB == null ? " muted" : ""), text: fmtParams(m) })
+        el("td", null, [modelLink(m, { hideSetting: isPick }), el("span", { class: "params-inline", text: fmtParams(m) }), el("span", { class: "disk-inline" }, [diskInline(m)])]),
+        el("td", { class: "num params" + (m.totalB == null ? " muted" : ""), text: fmtParams(m) }),
+        el("td", { class: "num disk-col" }, [diskCell(m)])
       ];
     }
 
@@ -178,7 +207,7 @@
           toggle
         ])
       ]);
-      body.appendChild(el("tr", { class: "pick-row" }, [tierCell].concat(m ? cells(m, t, true) : [el("td", { colspan: "4", class: "muted", text: "none" })])));
+      body.appendChild(el("tr", { class: "pick-row" }, [tierCell].concat(m ? cells(m, t, true) : [el("td", { colspan: "5", class: "muted", text: "none" })])));
       others.forEach(function (o, i) {
         var label = o.model !== REFERENCE && !o.open && o.pct > 100 ? "above Max" : (!o.open ? "cloud, not a pick" : (o.pct == null ? "inferred" : ""));
         var r = el("tr", { class: "sub-row" + (i === others.length - 1 ? " sub-last" : ""), id: i === 0 ? "more-" + t.id : null, hidden: "" },
@@ -197,7 +226,8 @@
         cloudBody.appendChild(el("tr", null, [
           el("td", null, [modelLink(m)]),
           el("td", { class: "num", text: fmtPct(m.pct) }),
-          el("td", { class: "num" }, [scoreCell(m)])
+          el("td", { class: "num" }, [scoreCell(m)]),
+          el("td", { class: "num" }, [diskCell(m)])
         ]));
       });
 
@@ -278,6 +308,13 @@
           lcs: num(r.long_coding_score),
           totalB: num(r.aa_total_params_b) != null ? num(r.aa_total_params_b) : num(r.llm_sizer_total_params_b),
           actives: [num(r.aa_active_params_b), num(r.llm_sizer_active_params_b)].filter(function (v) { return v != null; }),
+          disk4: num(r.disk_4bit_gb),
+          disk4Build: r.disk_4bit_build || "",
+          disk4Src: r.disk_4bit_source || "",
+          diskNat: num(r.disk_native_gb),
+          diskNatFmt: r.disk_native_format || "",
+          diskNatSrc: r.disk_native_source || "",
+          diskNote: r.disk_size_note || "",
           sources: r.sources || "",
           read: r.read
         };
@@ -286,7 +323,7 @@
     })
     .catch(function (err) {
       document.getElementById("tier-rows").innerHTML =
-        '<tr><td colspan="5">Could not load the data file (' + String(err.message || err) +
+        '<tr><td colspan="6">Could not load the data file (' + String(err.message || err) +
         '). See <a href="' + DATA_URL + '">the CSV</a>.</td></tr>';
     });
 })();
