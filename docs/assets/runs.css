@@ -89,3 +89,5 @@
 .seg .tab[aria-checked="true"] { background: var(--track); color: var(--text); font-weight: 600; border-color: var(--muted); }
 .runs-settings { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 16px; margin-left: auto; }
 .runs-settings .priority-switch { margin: 0 0 8px; }
+.rb-label .tier-badge { min-width: 52px; padding: 2px 8px; font-size: 12px; margin-right: 8px; vertical-align: 1px; }
+.tier-none { background: transparent; color: var(--muted); border: 1px solid var(--border, currentColor); font-weight: 500; }
