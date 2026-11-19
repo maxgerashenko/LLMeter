@@ -6,19 +6,19 @@
 .rb-panel { min-width: 0; }
 .rb-panel { border-top: 1px solid var(--line-strong); padding: 10px 0 0; }
 .rb-title { margin: 0 0 8px; font-size: 15px; font-weight: 600; }
-.rb-split .rb-row { grid-template-columns: 1fr 52px; gap: 4px 8px; }
+.rb-split .rb-row { grid-template-columns: 1fr 84px; gap: 4px 8px; }
 .rb-split .rb-label { grid-column: 1 / -1; }
 .rb-split .rb-label .setting { display: inline; }
 
 .rbars { display: grid; gap: 8px; margin: 4px 0 6px; }
-.rb-row { display: grid; grid-template-columns: 300px 1fr 64px; align-items: center; gap: 12px; }
+.rb-row { display: grid; grid-template-columns: 300px 1fr 90px; align-items: center; gap: 12px; }
 .rb-label { min-width: 0; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rb-label .rb-model { font-weight: 600; color: var(--text); }
 .rb-label .setting { margin-left: 6px; }
 .rb-track { height: 16px; border-radius: 4px; background: var(--track); overflow: hidden; }
 .rb-bar { display: block; height: 100%; border-radius: 4px; background: var(--t4); }
 .rb-bar.think-on { background: var(--t2); }
-.rb-value { font-size: 13px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.rb-value { font-size: 13px; font-weight: 600; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .rb-row.is-planned .rb-value { font-weight: 500; color: var(--muted); }
 .rb-row.is-planned .rb-track { background: repeating-linear-gradient(135deg, var(--track) 0 6px, transparent 6px 12px); }
 .rb-group { margin: 10px 0 2px; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
@@ -31,7 +31,7 @@
 .status-failed { background: color-mix(in srgb, var(--amber) 22%, transparent); color: var(--text); }
 
 @media (max-width: 640px) {
-  .rb-row { grid-template-columns: 1fr 56px; gap: 4px 8px; }
+  .rb-row { grid-template-columns: 1fr 84px; gap: 4px 8px; }
   .rb-label { grid-column: 1 / -1; font-size: 13px; }
   .rb-label .setting { display: inline; }
 }

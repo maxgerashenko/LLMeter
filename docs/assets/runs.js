@@ -23,7 +23,7 @@
     ["q10", "Unified-diff applier with offsets and fuzz"]
   ];
   var DEFAULT_HW = "MacBook Pro M5 Pro, 64 GB";
-  var metric = "score";
+  var metric = "speed";
   var state = { runs: [], planned: [] };
 
   // CSV with quoted fields.
@@ -132,7 +132,7 @@
         list.appendChild(el("div", { cls: "rb-row" }, [
           label(Object.assign({}, r, { runtime: "" })),
           el("div", { cls: "rb-track" }, [el("span", { cls: "rb-bar" + (r.think ? " think-on" : ""), style: "width:" + pct.toFixed(1) + "%" })]),
-          el("div", { cls: "rb-value", text: metric === "score" ? fmt(r.score, 1) : fmt(r.tok, 1) })
+          el("div", { cls: "rb-value", text: metric === "score" ? fmt(r.score, 1) + " points" : fmt(r.tok, 1) + " t/s" })
         ]));
       });
       if (!runs.length) list.appendChild(el("p", { cls: "muted", text: "No runs in " + rt.name + " yet." }));
@@ -155,7 +155,7 @@
     }
     box.setAttribute("aria-label", metric === "score"
       ? "Two horizontal bar charts, one per runtime, of each run's suite score, 0 to 100"
-      : "Two horizontal bar charts, one per runtime, of each run's generation speed in tokens per second");
+      : "Two horizontal bar charts, one per runtime, of each run's decoding speed in tokens per second");
   }
 
   function td(text, cls) { return el("td", { cls: cls || "", text: text }); }
@@ -234,7 +234,7 @@
       ? done + (done === 1 ? " run" : " runs") + " of the local coding suite, best first. "
       : "No runs recorded yet. ") +
       (left ? left + " planned " + (left === 1 ? "model has" : "models have") + " not been run. " : "") +
-      (metric === "score" ? "Bars show the suite score, 0 to 100." : "Bars show generation speed in tokens per second.");
+      (metric === "score" ? "Bars show the suite score, 0 to 100." : "Bars show decoding speed in tokens per second (t/s).");
   }
 
   function draw() { drawBars(); drawTable(); drawTasks(); drawLegend(); summary(); }
