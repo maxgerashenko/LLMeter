@@ -33,6 +33,7 @@
 #panel-economy .sw { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-right: 8px; vertical-align: -1px; }
 #panel-economy .trio { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.1fr) minmax(0, 1fr); gap: 20px; align-items: center; }
 #panel-economy .pfig { margin: 0; display: grid; gap: 8px; justify-items: center; min-width: 0; }
+#panel-economy .trio .pfig { align-self: start; }
 #panel-economy .pfig figcaption { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 #panel-economy .trio .pie { max-width: 280px; }
 #panel-economy .glegend { display: grid; gap: 4px; font-size: 12.5px; font-weight: 600; }
@@ -40,7 +41,7 @@
 #panel-economy .glegend i { display: inline-block; width: 22px; height: 0; border-top: 4px solid var(--text); border-radius: 2px; flex: none; }
 #panel-economy .glegend i.gl-dash { border-top: 4px dotted var(--muted); }
 @media (max-width: 980px) { #panel-economy .trio { grid-template-columns: 1fr 1fr; } #panel-economy .trio .tcell { grid-column: 1 / -1; order: 3; } #panel-economy .dual { min-width: 540px; } }
-@media (max-width: 520px) { #panel-economy .trio .pie { max-width: 200px; } }
+@media (max-width: 520px) { #panel-economy .trio .pie { max-width: 200px; } #panel-economy .trio .pfig figcaption { min-height: 2.5em; line-height: 1.25; text-align: center; } }
 #panel-economy .dual td, #panel-economy .dual th { padding: 6px 6px; }
 #panel-economy .dual td.xnm, #panel-economy .dual th.xnm { text-align: center; }
 #panel-economy .dual td.xnm { font-size: 13px; }
@@ -83,3 +84,7 @@
 #panel-economy .trio.wide-table .pie { max-width: 260px; }
 #panel-economy .trio.wide-table .dual { min-width: 620px; }
 #panel-economy .xbar { grid-template-columns: minmax(0, 8.6em) 1fr 2.8em; }
+#panel-economy .trio .pfig { align-self: stretch; grid-template-rows: auto 1fr; align-content: start; }
+#panel-economy .trio .pbody { display: grid; gap: 8px; justify-items: center; align-content: center; min-width: 0; width: 100%; }
+@media (max-width: 980px) { #panel-economy .trio .pfig { align-self: start; } }
+@media (min-width: 981px) { #panel-economy .trio:not(.wide-table) .pbody { position: relative; } #panel-economy .trio:not(.wide-table) .pbody .glegend { position: absolute; top: 100%; left: 0; right: 0; margin-top: 8px; } }
