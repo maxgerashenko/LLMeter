@@ -1,6 +1,7 @@
 // Builds the Research page from two data files copied into docs/data/ by scripts/sync-site-data.sh:
-// the techniques file (data/llm-techniques-*.csv) feeds the Speed and Quality tabs, and the
-// build-choices file (data/llm-user-choices-*.csv) feeds the Build choices tab.
+// the techniques file (data/llm-techniques-*.csv) feeds the Speed and Quality tabs of techniques.html
+// (the Research section), and the build-choices file (data/llm-user-choices-*.csv) feeds research.html
+// (Local > Research).
 // No numbers are typed here: only the tier band edges, which are the article's definitions.
 (function () {
   "use strict";
@@ -208,14 +209,14 @@
     });
   }
 
-  // Tabs: Speed, Quality and Build choices. The hash picks the tab (#speed, #quality, #choices),
-  // and a hash that names a table row (#speed-..., #quality-..., #choice-...) opens its tab too.
-  var TABS = ["speed", "quality", "choices"];
+  // The Research section's page (techniques.html) holds the Speed and Quality tabs, picked from the
+  // site menu by hash (#speed, #quality). A hash that names a table row (#speed-..., #quality-...)
+  // opens its tab too. The Local build-choices page (research.html) has no tabs.
+  var TABS = ["speed", "quality"].filter(function (t) { return document.getElementById("tab-" + t); });
+  function has(view) { return !!document.getElementById("rs-rows-" + view); }
   function tabForHash() {
-    var h = location.hash.slice(1);
-    if (TABS.indexOf(h) >= 0) return h;
-    var m = /^(speed|quality|choice)-/.exec(h);
-    return m ? (m[1] === "choice" ? "choices" : m[1]) : (h === "details" ? "choices" : TABS[0]);
+    var m = /^#(speed|quality)(-|$)/.exec(location.hash);
+    return m && TABS.indexOf(m[1]) >= 0 ? m[1] : TABS[0];
   }
   function showTab(name) {
     TABS.forEach(function (t) {
@@ -231,23 +232,14 @@
     var target = document.getElementById(location.hash.slice(1));
     if (target) target.scrollIntoView();
   }
-  TABS.forEach(function (t, i) {
-    var tab = document.getElementById("tab-" + t);
-    tab.addEventListener("click", function () {
-      showTab(t);
-      history.replaceState(null, "", "#" + t);
+  if (TABS.length) {
+    window.addEventListener("hashchange", function () {
+      var rowLink = /^#(speed|quality)-/.test(location.hash);
+      showTab(tabForHash());
+      if (rowLink) jumpToRow(); else window.scrollTo(0, 0);
     });
-    tab.addEventListener("keydown", function (e) {
-      var step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-      if (!step) return;
-      var next = TABS[(i + step + TABS.length) % TABS.length];
-      showTab(next);
-      history.replaceState(null, "", "#" + next);
-      document.getElementById("tab-" + next).focus();
-    });
-  });
-  window.addEventListener("hashchange", function () { showTab(tabForHash()); jumpToRow(); });
-  showTab(tabForHash());
+    showTab(tabForHash());
+  }
 
   function load(url, views, build) {
     return fetch(url)
@@ -267,8 +259,8 @@
   }
 
   Promise.all([
-    load(TECHNIQUES_URL, ["speed", "quality"], techniqueItems),
-    load(CHOICES_URL, ["choices"], choiceItems)
+    has("speed") ? load(TECHNIQUES_URL, ["speed", "quality"], techniqueItems) : null,
+    has("choices") ? load(CHOICES_URL, ["choices"], choiceItems) : null
   ]).then(function (res) {
     var rows = res[0] || res[1];
     if (rows && rows[0] && rows[0].read) document.getElementById("rs-read").textContent = rows[0].read;

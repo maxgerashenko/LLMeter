@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLMeter: LLM techniques ranked by effect on speed and quality</title>
+  <meta name="description" content="What makes LLMs faster and better, ranked by measured effect: speculative decoding, quantization, text diffusion, attention and caching for speed; reasoning training, agent harness, chain of thought and distillation for quality, each with its source.">
+  <!-- seo:start -->
+  <link rel="canonical" href="https://maxgerashenko.github.io/LLMeter/techniques.html">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#4f46e5">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="LLMeter">
+  <meta property="og:title" content="LLMeter: LLM techniques ranked by effect on speed and quality">
+  <meta property="og:description" content="What makes LLMs faster and better, ranked by measured effect: speculative decoding, quantization, text diffusion, attention and caching for speed; reasoning training, agent harness, chain of thought and distillation for quality, each with its source.">
+  <meta property="og:url" content="https://maxgerashenko.github.io/LLMeter/techniques.html">
+  <meta property="og:image" content="https://maxgerashenko.github.io/LLMeter/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="LLMeter: measuring LLM progress on long coding tasks">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LLMeter: LLM techniques ranked by effect on speed and quality">
+  <meta name="twitter:description" content="What makes LLMs faster and better, ranked by measured effect: speculative decoding, quantization, text diffusion, attention and caching for speed; reasoning training, agent harness, chain of thought and distillation for quality, each with its source.">
+  <meta name="twitter:image" content="https://maxgerashenko.github.io/LLMeter/assets/og.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"LLMeter: LLM techniques ranked by effect on speed and quality","description":"What makes LLMs faster and better, ranked by measured effect: speculative decoding, quantization, text diffusion, attention and caching for speed; reasoning training, agent harness, chain of thought and distillation for quality, each with its source.","url":"https://maxgerashenko.github.io/LLMeter/techniques.html","isPartOf":{"@type":"WebSite","name":"LLMeter","url":"https://maxgerashenko.github.io/LLMeter/"}}</script>
+  <!-- seo:end -->
+  <script src="assets/analytics.js" defer></script>
+  <script src="assets/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/research.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
+      <nav class="nav">
+        <a href="./" data-section="local">Local</a>
+        <a href="cloud.html" data-section="cloud">Cloud</a>
+        <a href="finance.html#gdp" data-section="finance">Finance</a>
+        <a href="techniques.html#speed" data-section="research">Research</a>
+        <a href="sources.html" data-section="sources" class="nav-minor">Sources</a>
+      </nav>
+    </div>
+  </header>
+  <script src="assets/nav.js"></script>
+
+  <main class="wrap">
+    <h1 class="sr-only">LLM techniques ranked by measured effect on speed and quality</h1>
+        <div class="top-gap"></div>
+
+    <div class="tabs tabs-in-menu" role="tablist" aria-label="Research">
+      <button type="button" role="tab" id="tab-speed" class="tab" aria-selected="true" aria-controls="panel-speed">Speed</button>
+      <button type="button" role="tab" id="tab-quality" class="tab" aria-selected="false" tabindex="-1" aria-controls="panel-quality">Quality</button>
+    </div>
+
+    <div id="panel-speed" role="tabpanel" aria-labelledby="tab-speed">
+      <section class="card">
+        <div class="card-head">
+          <h2>Techniques that change speed, ranked by measured effect</h2>
+          <p class="muted">Each bar is the largest measured effect of one technique on generation speed or waiting time, as a percentage. A 2x speedup is written as +100% and 3x as +200%. The prompt caching bar is a shorter wait, and the thinking bar is a slowdown, placed by its size. Dashed lines are the tier edges at 5%, 30% and 100%. Each number comes from a different source, model and test, so the bars rank the size of the effect, not the techniques against each other.</p>
+        </div>
+        <div id="rs-bars-speed" class="bars rs-bars" role="img" aria-label="Bar chart of the largest measured effect of each technique on speed, as a percentage"></div>
+        <div class="legend" id="rs-legend-speed"></div>
+      </section>
+
+      <section class="card" id="details-speed">
+        <div class="card-head">
+          <h2>Details and sources</h2>
+          <p class="muted">Every technique with its tier, the measured effect, what the percentage measures, the baseline and the result, the kind of evidence and where the number comes from, one row per technique, ordered by tier.</p>
+        </div>
+        <div class="table-scroll">
+          <table class="rs-table rs-table-tech">
+            <thead>
+              <tr>
+                <th scope="col">Tier</th>
+                <th scope="col">Technique</th>
+                <th scope="col">Effect</th>
+                <th scope="col">What the % measures</th>
+                <th scope="col">Baseline to result</th>
+                <th scope="col">Evidence</th>
+                <th scope="col">Source</th>
+              </tr>
+            </thead>
+            <tbody id="rs-rows-speed">
+              <tr><td colspan="7" class="muted">Loading data…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card prose">
+        <h2>What this shows</h2>
+        <ul class="rs-list">
+          <li><strong>Predicting several tokens at once is worth 2x to 3.6x.</strong> In speculative decoding a small draft model, or extra prediction heads, guesses several tokens that the large model then checks in one pass. The original method gives identical outputs.</li>
+          <li><strong>Diffusion models are the outlier.</strong> The 10x figure is the developer's own comparison against other companies' models, so quality is not held equal.</li>
+          <li><strong>Attention and memory engineering give 2x to 6x each.</strong> FlashAttention, paged KV-cache memory with continuous batching and latent attention all attack the same bottleneck: memory traffic, not arithmetic.</li>
+          <li><strong>Quantization speedups depend on hardware.</strong> The 2022 result was 3.25x to 4.5x. A 2024 study on current GPUs found 1.08x to 3.09x, largest on the biggest model.</li>
+          <li><strong>These gains stack only partly.</strong> They compete for the same headroom, and no source read here measures the full stack, so the percentages must not be multiplied together.</li>
+        </ul>
+        <p class="muted">From the article <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/llm-performance-techniques.md#ranking-2-speed">What makes LLMs better, faster and cheaper: the techniques, ranked by measured effect</a>. Data file: <a href="data/llm-techniques-2026-11-19.csv">llm-techniques-2026-11-19.csv</a>.</p>
+      </section>
+    </div>
+
+    <div id="panel-quality" role="tabpanel" aria-labelledby="tab-quality" hidden>
+      <section class="card">
+        <div class="card-head">
+          <h2>Techniques that change quality, ranked by measured effect</h2>
+          <p class="muted">Each bar is the largest measured effect of one technique on a benchmark score, as a percentage: the relative change in the score, so a rise from 39.2 to 79.8 is +104%. Bars with a minus sign are quality costs, placed by their size. Relative gains flatter low baselines, so the table shows the baseline and the result. Dashed lines are the tier edges at 5%, 30% and 100%. Each number comes from a different source, model and test, so the bars rank the size of the effect, not the techniques against each other.</p>
+        </div>
+        <div id="rs-bars-quality" class="bars rs-bars" role="img" aria-label="Bar chart of the largest measured effect of each technique on quality, as a percentage"></div>
+        <div class="legend" id="rs-legend-quality"></div>
+      </section>
+
+      <section class="card" id="details-quality">
+        <div class="card-head">
+          <h2>Details and sources</h2>
+          <p class="muted">Every technique with its tier, the measured effect, what the percentage measures, the baseline and the result, the kind of evidence and where the number comes from, one row per technique, ordered by tier. Smaller measurements of the same technique are listed under its largest one.</p>
+        </div>
+        <div class="table-scroll">
+          <table class="rs-table rs-table-tech">
+            <thead>
+              <tr>
+                <th scope="col">Tier</th>
+                <th scope="col">Technique</th>
+                <th scope="col">Effect</th>
+                <th scope="col">What the % measures</th>
+                <th scope="col">Baseline to result</th>
+                <th scope="col">Evidence</th>
+                <th scope="col">Source</th>
+              </tr>
+            </thead>
+            <tbody id="rs-rows-quality">
+              <tr><td colspan="7" class="muted">Loading data…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card prose">
+        <h2>What this shows</h2>
+        <ul class="rs-list">
+          <li><strong>Reasoning is the largest single lever of the last two years.</strong> The cleanest measurement is one base model with reasoning training added: its AIME 2024 score doubles, while general knowledge (MMLU) moves by about 3%.</li>
+          <li><strong>The harness matters as much as the model on agent tasks.</strong> With the model held fixed, a better agent interface raised the share of SWE-bench Lite tasks resolved from 11.0% to 18.0%.</li>
+          <li><strong>Distillation moves most of the gain into a small model.</strong> A 32B model distilled from a reasoning model reaches 91% of its score with under 5% of its parameters.</li>
+          <li><strong>Efficiency techniques are nearly free in quality.</strong> Quantizing to 8 or 4 bits keeps 96% to 101% of the full-precision score.</li>
+          <li><strong>Thinking is not always a gain.</strong> In LLMeter's local runs, turning thinking on for two small models under fixed token and time limits lowered the score by 24% to 64%.</li>
+        </ul>
+        <p class="muted">From the article <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/llm-performance-techniques.md#ranking-1-quality">What makes LLMs better, faster and cheaper: the techniques, ranked by measured effect</a>. Data file: <a href="data/llm-techniques-2026-11-19.csv">llm-techniques-2026-11-19.csv</a>.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Sources read <span id="rs-read">2026-11-19</span>. LLMeter is an independent project, <a href="https://github.com/maxgerashenko/LLMeter">source on GitHub</a>.</p>
+    </div>
+  </footer>
+
+  <script src="assets/research.js"></script>
+</body>
+</html>

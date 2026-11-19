@@ -14,7 +14,6 @@
 .rs-more { font-size: 12.5px; font-weight: 500; text-align: right; white-space: nowrap; }
 
 /* Speed and Quality: longer names and values than the build choices */
-.rs-tabs { margin-top: 18px; }
 .rs-plot-speed, .rs-plot-quality { --label-w: 400px; --value-w: 128px; }
 .rs-plot-speed .rs-row, .rs-plot-quality .rs-row { min-height: 32px; }
 .rs-plot-speed .rs-label, .rs-plot-quality .rs-label { white-space: normal; line-height: 1.25; font-size: 13px; }

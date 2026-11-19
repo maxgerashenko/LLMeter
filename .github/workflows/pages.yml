@@ -101,6 +101,7 @@ jobs:
               `- [Intelligence](${base}/intelligence.html)`,
               `- [Rack](${base}/rack.html)`,
               `- [Runs](${base}/runs.html)`,
+              `- [Research](${base}/techniques.html)`,
               `- [Finance](${base}/finance.html)`,
               `- [Sources](${base}/sources.html)`,
               '',
