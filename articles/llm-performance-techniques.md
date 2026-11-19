@@ -4,7 +4,7 @@
 
 ## Summary
 
-This article lists the techniques that change how well a large language model performs, from open-weight models (where the methods are published) to closed frontier models (where mostly only the results are), and puts a percentage on each one. It covers 45 measured effects across about 25 techniques, from 33 public sources plus LLMeter's own data.
+This article lists the techniques that change how well a large language model performs, from open-weight models (where the methods are published) to closed frontier models (where mostly only the results are), and puts a percentage on each one. It covers 45 measured effects across about 25 techniques, from 35 public sources plus LLMeter's own data.
 
 "Performance" means three different things, and a percentage only makes sense inside one of them. So there are three rankings, each from the largest effect down:
 
@@ -27,6 +27,8 @@ Five findings stand out:
 - **Brute force at answer time has steep diminishing returns.** o3 went from 75.7% to 87.5% on ARC-AGI (+16%) for about 172x the compute.
 - **Thinking is not always a gain.** In LLMeter's own local runs, turning thinking on for two small models under fixed token and time limits lowered the score by 24% to 64% and took 8x to 9x longer, because the models spent the budget thinking and were cut off.
 - **Open models show their methods; closed ones mostly do not.** The four highest-scoring open-weight models in LLMeter's long-coding data are all sparse mixtures of experts using 3% to 5% of their weights per token, and all four ship in 8-bit or 4-bit weights as the native format. For closed frontier models, only the reasoning settings and API features are public.
+
+For the choices that are yours when you download and run a model (bits, QAT, dense or MoE, thinking, runtime), see [What you control when you pick a build of one model](#what-you-control-when-you-pick-a-build-of-one-model).
 
 Read the percentages with care. Each one comes from a different paper, model and benchmark, so a +218% and a +104% in the same table are not a contest between the two techniques. The "Evidence" column says how clean each number is (see [How to read the numbers](#how-to-read-the-numbers)).
 
@@ -156,6 +158,34 @@ Open-weight developers publish their methods. Closed frontier developers publish
 
 So for closed models this article can rank only what is visible from outside: reasoning settings, caching prices and benchmark steps between releases. The rankings above lean on open models and academic papers for everything else.
 
+## What you control when you pick a build of one model
+
+Most of the techniques above are fixed by the developer. But one model name usually comes in many builds and can be run with many settings, and those choices are yours. This table lists them with the effect of each. Data file: [data/llm-user-choices-2026-11-19.csv](../data/llm-user-choices-2026-11-19.csv).
+
+| Choice | Options | What it changes | Effect | Evidence | Source |
+| --- | --- | --- | --- | --- | --- |
+| **Weight precision (bits)** | 16-bit, 8-bit, 6-bit, 5-bit, 4-bit, 3-bit and lower | Memory, speed; small quality loss | 16-bit to 4-bit (Q4_K_M): size 14.96 to 4.58 GiB (-69%), generation 29.2 to 71.9 tok/s (+147%). 16-bit to 8-bit: -47% size, +75% speed. Quality kept: 96% to 101% at 8-bit and 4-bit | measured (Llama 3.1 8B; Llama 3.1 8B to 405B) | [llama.cpp quantize README](https://github.com/ggml-org/llama.cpp/blob/master/tools/quantize/README.md), ["Give Me BF16 or Give Me Death"?](https://arxiv.org/abs/2411.02355) |
+| **How the low-bit build was made** | Plain post-training quantization, calibrated (importance matrix, GPTQ, AWQ), or quantization-aware training (QAT) by the developer | Quality at the same size | QAT: 54% less perplexity loss at 4-bit, same memory as any 4-bit build (Gemma 3 27B: 54 GB to 14.1 GB) | developer claim | [Gemma 3 QAT (Google)](https://developers.googleblog.com/en/gemma-3-quantized-aware-trained-state-of-the-art-ai-to-consumer-gpus/) |
+| **Dense or mixture-of-experts variant** | Dense model, or MoE with few active parameters (for example 30B with 3B active) | Speed at similar memory; quality differs by model | On one MacBook Pro M5 Pro at 4-bit: MoE models with 3B active ran at 32 to 48 tok/s, the dense 27B at 16 tok/s (2x to 3x) | LLMeter runs (different models) | [LLMeter local runs](../data/local-runtime-results.csv) |
+| **Size tier of the same family** | Smaller or larger model of one family, including distilled versions | Quality against memory and speed | DeepSeek-R1 distills on AIME 2024: 1.5B 28.9, 7B 55.5, 14B 69.7, 32B 72.6, full model 79.8 | measured | [DeepSeek-R1 model card](https://github.com/deepseek-ai/DeepSeek-R1) |
+| **Thinking on or off, or effort level** | Off, on, or low to maximum effort | Quality on hard tasks; tokens and time | Gains up to +104% on hard math for a model trained for it. On two small local models under fixed limits: score -24% to -64%, 6x to 8x the tokens, 8x to 9x the time | measured; LLMeter runs | [DeepSeek-R1 model card](https://github.com/deepseek-ai/DeepSeek-R1), [LLMeter local runs](../data/local-runtime-results.csv) |
+| **Runtime** | LM Studio, TensorFold, llama.cpp, vLLM and others | Speed, which models load at all | Same Qwen3.8 27B 4-bit build: 16.7 tok/s in LM Studio, 15.2 in TensorFold (10% apart), same score. Several MoE models were not served by one of the two runtimes | LLMeter runs | [LLMeter local runs](../data/local-runtime-results.csv) |
+| **File format** | MLX (Apple), GGUF (llama.cpp), safetensors (GPU servers) | Which runtime and hardware can use it; speed | Not measured here: all LLMeter runs so far use MLX builds | not measured |  |
+| **Parallel requests** | 1 to 4 or more at once | Total throughput against speed of each request; memory | Qwen3.8 27B: 16.7 to 11.1 tok/s per request at 4 in flight (-34%); Nanbeige4.3 33B: 13.6 to 6.9 (-49%). Each slot adds KV cache memory | LLMeter runs | [LLMeter local runs](../data/local-runtime-results.csv) |
+| **Context length loaded** | From a few thousand tokens to the model maximum | Memory (KV cache), not answer quality on short prompts | Qwen3-Next 80B was refused at every context tried on a 64 GB Mac by the memory estimate (58.5 GiB) although its weights are about 40 GiB | LLMeter runs | [LLMeter task set notes](../data/local-coding-task-set.md) |
+| **Draft model for speculative decoding** | Off, or a small model of the same family as draft | Speed; output unchanged | 2x to 3x in the original paper; not yet measured by LLMeter | measured (paper) | [Speculative Decoding (Leviathan et al.)](https://arxiv.org/abs/2211.17192) |
+| **Prompt caching** | Keep a repeated prefix cached (default in most local runtimes; a priced option in cloud APIs) | Waiting time and input cost | -31% to -79% time to first token; cached input at 10% of the normal price | developer claim | [Anthropic: Prompt caching with Claude](https://claude.com/blog/prompt-caching) |
+| **Harness around the model** | Chat window, plain shell agent, or a coding agent with purpose-built tools | Quality on agent tasks | +64% on SWE-bench Lite for the same model (11.0 to 18.0) | measured | [SWE-agent (Yang et al.)](https://arxiv.org/abs/2405.15793) |
+
+How to use this:
+
+- **Bits are the first choice.** 4-bit is the usual sweet spot: about 70% less memory and more than twice the speed of 16-bit for a few percent of quality at most. 8-bit costs twice the memory of 4-bit for a gain that is hard to measure. Below 4 bits the size keeps falling but no source read here measures the quality loss, so it is not ranked.
+- **Prefer a QAT build when the developer offers one.** It has the same size as any other 4-bit build and loses about half as much.
+- **If memory allows, a bigger model at 4-bit beats a smaller one at 16-bit.** This follows from the two rows above (size tier changes scores by tens of percent, bits by a few percent). It is LLMeter's reading of separate sources, not a single measurement.
+- **A mixture-of-experts variant buys speed, not memory.** All its weights must be loaded, but only the active part computes each token.
+- **Thinking is a budget decision.** It helps a capable model on hard tasks and can hurt a small one that runs out of tokens or time.
+- **Runtime, parallel requests and context length change speed and memory, not the answers.** The same build scored the same in two runtimes.
+
 ## The background drivers: compute and algorithms
 
 The techniques above sit on top of two slower trends, which are rates per year, not one-off percentages:
@@ -217,4 +247,6 @@ All read on 2026-11-19. Each row of the data file carries its source link and pu
 - [Mercury: diffusion language models (Inception Labs)](https://arxiv.org/abs/2506.17298), published 2025-06-17
 - [Kimi K2 (Moonshot AI)](https://arxiv.org/abs/2507.20534), published 2025-07-28
 - [Token-Operations-Oriented Inference Optimization Techniques for Large Models (survey)](https://arxiv.org/abs/2606.20295), published 2026-07-24
+- [llama.cpp quantize README](https://github.com/ggml-org/llama.cpp/blob/master/tools/quantize/README.md), read as published on 2026-11-19
+- [Gemma 3 QAT Models (Google)](https://developers.googleblog.com/en/gemma-3-quantized-aware-trained-state-of-the-art-ai-to-consumer-gpus/), published 2025-04-18
 - LLMeter data: [local runs](../data/local-runtime-results.csv) (2026-11-18) and [long-coding tasks](../data/long-coding-tasks-2026-11-17.csv) (2026-11-17)
