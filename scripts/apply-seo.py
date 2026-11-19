@@ -7,13 +7,28 @@ import os
 DEFAULT_BASE="https://maxgerashenko.github.io/LLMeter/"
 BASE=("https://"+open("docs/CNAME").read().strip()+"/") if os.path.exists("docs/CNAME") else DEFAULT_BASE
 pages={"index.html":"","cloud.html":"cloud.html","cloud-rack.html":"cloud-rack.html","rack.html":"rack.html","runs.html":"runs.html","intelligence.html":"intelligence.html","finance.html":"finance.html","sources.html":"sources.html"}
-h1={"index.html":"Best local LLM per tier for long coding tasks","cloud.html":"Cloud models ranked by Intelligence Index","cloud-rack.html":"Cloud racks: memory, bandwidth, agents served and price","rack.html":"Speed of local models on Mac and DGX Spark racks","runs.html":"Local model runs on the LLMeter coding suite","finance.html":"Finance of the frontier AI labs"}
-titles={"index.html":"LLMeter: best local LLM per tier for long coding tasks"}
+h1={"index.html":"Best local AI model per tier for long coding tasks","cloud.html":"AI models ranked by Intelligence Index","cloud-rack.html":"AI scaling: cloud racks, agents served and price","rack.html":"Local AI speed on Mac and DGX Spark racks","runs.html":"Local model runs on the LLMeter coding suite","finance.html":"AI finance: Anthropic S-1 compute spend, AI impact on GDP and software"}
+titles={
+ "index.html":"LLMeter: best local AI model per tier for long coding tasks",
+ "rack.html":"LLMeter: local AI speed in tokens per second on Mac and DGX Spark",
+ "runs.html":"LLMeter: local LLM benchmark results on a MacBook Pro M5 Pro 64 GB",
+ "cloud.html":"LLMeter: AI model ranking by Intelligence Index, cloud and local",
+ "cloud-rack.html":"LLMeter: AI scaling in datacenter racks, agents served and price",
+ "intelligence.html":"LLMeter: AI growth in expert work time, METR time horizons",
+ "finance.html":"LLMeter: AI finance, Anthropic S-1 compute spend and AI impact on GDP"}
+descs={
+ "index.html":"Local AI for coding: open-weights models grouped into intelligence tiers on long coding tasks, measured against Claude Sonnet 5.5, with the best local model in each tier and its size on disk.",
+ "rack.html":"Local AI speed: generation in tokens per second of each tier's best local model on Mac Studio M5 Ultra, M5 Max, MacBook Pro M5 Pro, Mac Studio M1 Ultra and NVIDIA DGX Spark, against Claude Sonnet 5.5 in the cloud.",
+ "cloud-rack.html":"AI scaling in the datacenter: racks and 8-GPU servers compared by memory, bandwidth, how many coding agents they can serve, tokens per second and price.",
+ "intelligence.html":"AI growth in expert work time: how long frontier models can work on their own, and how their success rate falls from 50% to 100% reliability as tasks get longer. METR time horizons.",
+ "finance.html":"AI finance from public filings: Anthropic's S-1 of 2026-10-26 (revenue growth, compute spending and commitments), what AI replacing office work would mean for US GDP, and the cost of running coding agents on GB300 racks."}
+for k,v in descs.items(): pass
 for f,path in pages.items():
     p="docs/"+f; s=open(p).read()
     s=re.sub(r"  <!-- seo:start -->.*?<!-- seo:end -->\n(  <script src=\"assets/analytics.js\" defer></script>\n)?","",s,flags=re.S)
     if f in titles: s=re.sub(r"<title>.*?</title>","<title>%s</title>"%titles[f],s,count=1)
     title=html.unescape(re.search(r"<title>(.*?)</title>",s).group(1))
+    if f in descs: s=re.sub(r'<meta name="description" content=".*?">','<meta name="description" content="%s">'%html.escape(descs[f]),s,count=1)
     desc=re.search(r'<meta name="description" content="(.*?)">',s).group(1)
     url=BASE+path
     tags=f'''  <link rel="canonical" href="{url}">
