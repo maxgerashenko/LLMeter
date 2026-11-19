@@ -24,6 +24,8 @@
   ];
   var DEFAULT_HW = "MacBook Pro M5 Pro, 64 GB";
   var metric = "speed";
+  var thinkFilter = "on"; // all | on | off: which runs the charts show (default: thinking on)
+  var view = "speed"; // which chart is open; the priority one first
   var state = { runs: [], planned: [] };
 
   // CSV with quoted fields.
@@ -119,31 +121,58 @@
     { name: "TensorFold", planned: function (m) { return /^(installed|loads)/.test(m.tensorfold || ""); } }
   ];
 
+  var METRICS = {
+    speed: { key: "tok", title: "Decoding", unit: "tok/sec", digits: 1, max: function (runs) { return Math.max.apply(null, runs.map(function (r) { return r.tok || 0; }).concat([1])); } },
+    score: { key: "score", title: "Score", unit: "points", digits: 1, max: function () { return 100; } }
+  };
+
+  // Two charts, the priority metric first and the other second. Rows are ordered by the
+  // priority metric in both, so they line up across the charts. One scale per chart, shared
+  // by its runtime panels so bar lengths compare across runtimes.
   function drawBars() {
     var box = document.getElementById("runs-bars"); box.textContent = "";
-    var key = metric === "score" ? "score" : "tok";
-    var all = state.runs.filter(function (r) { return r[key] != null; });
-    // One scale for both panels so bar lengths compare across runtimes.
-    var max = metric === "score" ? 100 : Math.max.apply(null, all.map(function (r) { return r.tok; }).concat([1]));
-    RUNTIMES.forEach(function (rt) {
-      var runs = all.filter(function (r) { return r.rt === rt.name; }).sort(function (a, b) { return b[key] - a[key]; });
-      var panel = el("div", { cls: "rb-panel", role: "group", "aria-label": rt.name }, [
-        el("h3", { cls: "rb-title", text: rt.name })
-      ]);
-      var list = el("div", { cls: "rbars" });
-      panel.appendChild(list);
-      runs.forEach(function (r) {
-        var pct = Math.max(0, Math.min(100, 100 * r[key] / max));
-        list.appendChild(el("div", { cls: "rb-row" }, [
-          label(Object.assign({}, r, { runtime: "" })),
-          el("div", { cls: "rb-track" }, [el("span", { cls: "rb-bar" + (r.think ? " think-on" : ""), style: "width:" + pct.toFixed(1) + "%" })]),
-          el("div", { cls: "rb-value" }, [metric === "score" ? fmt(r.score, 1) : fmt(r.tok, 1), el("span", { cls: "rb-unit", text: metric === "score" ? "points" : "tok/sec" })])
-        ]));
-      });
-      if (!runs.length) list.appendChild(el("p", { cls: "muted", text: "No runs in " + rt.name + " yet." }));
-      box.appendChild(panel);
+    var order = metric === "score" ? ["score", "speed"] : ["speed", "score"];
+    var pri = METRICS[order[0]];
+    var shown = state.runs.filter(function (r) {
+      return r[pri.key] != null && (thinkFilter === "all" || (thinkFilter === "on") === r.think);
     });
-    // Third section: planned models with no run in any runtime.
+    function rank(rt) {
+      return shown.filter(function (r) { return r.rt === rt.name; }).sort(function (a, b) { return b[pri.key] - a[pri.key]; });
+    }
+    // Tabs for the two charts, priority chart first; one chart is open at a time.
+    var bar = el("div", { cls: "tabs rb-views", role: "tablist", "aria-label": "Chart" });
+    order.forEach(function (name, idx) {
+      var b = el("button", { type: "button", role: "tab", cls: "tab", "aria-selected": String(name === view), text: METRICS[name].title });
+      if (name !== view) b.tabIndex = -1;
+      b.addEventListener("click", function () { view = name; drawBars(); });
+      bar.appendChild(b);
+    });
+    var vb = document.getElementById("runs-views"); vb.textContent = ""; vb.appendChild(bar);
+    order.forEach(function (name, idx) {
+      if (name !== view) return;
+      var m = METRICS[name], max = m.max(shown);
+      var chart = el("div", { cls: "rb-chart", role: "group", "aria-label": m.title + (idx ? ", second chart" : ", priority chart") }, [
+        el("h3", { cls: "rb-chart-title", text: m.title + (idx ? ", in " + pri.title.toLowerCase() + " order" : "") })
+      ]);
+      RUNTIMES.forEach(function (rt) {
+        var runs = rank(rt);
+        var panel = el("div", { cls: "rb-panel", role: "group", "aria-label": rt.name }, [el("h4", { cls: "rb-title", text: rt.name })]);
+        var list = el("div", { cls: "rbars" });
+        panel.appendChild(list);
+        runs.forEach(function (r) {
+          var v = r[m.key], pct = v == null ? 0 : Math.max(0, Math.min(100, 100 * v / max));
+          list.appendChild(el("div", { cls: "rb-row" }, [
+            label(Object.assign({}, r, { runtime: "" })),
+            el("div", { cls: "rb-track" }, [el("span", { cls: "rb-bar" + (r.think ? " think-on" : ""), style: "width:" + pct.toFixed(1) + "%" })]),
+            el("div", { cls: "rb-value" }, [fmt(v, m.digits), el("span", { cls: "rb-unit", text: m.unit })])
+          ]));
+        });
+        if (!runs.length) list.appendChild(el("p", { cls: "muted", text: "No runs in " + rt.name + " yet." }));
+        chart.appendChild(panel);
+      });
+      box.appendChild(chart);
+    });
+    // Last section: planned models with no run in any runtime.
     var ranAny = {}; state.runs.forEach(function (r) { ranAny[r.id] = 1; });
     var todo = state.planned.filter(function (m) { return !ranAny[m.id]; });
     if (todo.length) {
@@ -158,9 +187,7 @@
       });
       box.appendChild(tp);
     }
-    box.setAttribute("aria-label", metric === "score"
-      ? "Two horizontal bar charts, one per runtime, of each run's suite score, 0 to 100"
-      : "Two horizontal bar charts, one per runtime, of each run's decoding speed in tokens per second");
+    box.setAttribute("aria-label", "Horizontal bar chart of local run results; the runs are in " + pri.title.toLowerCase() + " order in both charts");
   }
 
   function td(text, cls) { return el("td", { cls: cls || "", text: text }); }
@@ -239,7 +266,7 @@
       ? done + (done === 1 ? " run" : " runs") + " of the local coding suite, best first. "
       : "No runs recorded yet. ") +
       (left ? left + " planned " + (left === 1 ? "model has" : "models have") + " not been run. " : "") +
-      (metric === "score" ? "Bars show the suite score, 0 to 100." : "Bars show decoding speed in tokens per second (t/s).");
+      (metric === "score" ? "Score first (0 to 100), then decoding speed in tokens per second; the second chart opens in the same score order." : "Decoding speed in tokens per second first, then score (0 to 100); the second chart opens in the same speed order.");
   }
 
   function draw() { drawBars(); drawTable(); drawTasks(); drawLegend(); summary(); }
@@ -254,13 +281,23 @@
       });
     });
     function select(t) {
-      Array.prototype.forEach.call(tabs, function (x) { var on = x === t; x.setAttribute("aria-selected", on); x.tabIndex = on ? 0 : -1; });
-      metric = t.getAttribute("data-metric"); drawBars(); summary();
+      Array.prototype.forEach.call(tabs, function (x) { var on = x === t; x.setAttribute("aria-checked", on); x.tabIndex = on ? 0 : -1; });
+      metric = view = t.getAttribute("data-metric"); drawBars(); summary();
     }
   }
 
+  function setupThinking() {
+    var btns = document.querySelectorAll(".runs-think .tab");
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener("click", function () {
+        Array.prototype.forEach.call(btns, function (x) { var on = x === b; x.setAttribute("aria-checked", on); x.tabIndex = on ? 0 : -1; });
+        thinkFilter = b.getAttribute("data-think"); drawBars();
+      });
+    });
+  }
+
   function get(url) { return fetch(url, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(url + " " + r.status); return r.text(); }); }
-  setupTabs();
+  setupTabs(); setupThinking();
   Promise.all([get(MODELS_URL), get(RESULTS_URL).catch(function () { return ""; })]).then(function (t) {
     state.planned = parseCSV(t[0]);
     state.runs = buildRuns(parseCSV(t[1]), state.planned);

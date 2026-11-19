@@ -1,5 +1,10 @@
-.runs-metric { margin-bottom: 14px; }
-.runs-metric .tab { padding: 6px 12px; font-size: 14px; }
+.runs-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; margin: 0 0 4px; }
+#runs-views { flex: 1 1 auto; min-width: 0; }
+.priority-switch { display: flex; align-items: center; gap: 8px; margin: 0 0 8px auto; }
+.priority-label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.seg { display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--track); }
+.seg .tab { margin: 0; border: 0; border-radius: 999px; padding: 6px 16px; font-size: 14px; }
+.seg .tab[aria-checked="true"] { background: var(--accent); color: var(--surface); }
 
 /* Horizontal result bars, one panel per runtime */
 .rb-split { display: grid; grid-template-columns: 1fr; gap: 24px; }
@@ -58,3 +63,29 @@
   .task-table thead th:first-child { min-width: 0; }
   .task-title { display: none !important; }
 }
+
+.rb-chart + .rb-chart { margin-top: 28px; }
+.rb-chart-title { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+.rb-chart .rb-panel { margin-top: 12px; }
+.rb-views { margin-bottom: 4px; }
+.rb-views .tab { padding: 6px 10px; font-size: 14px; white-space: nowrap; }
+.rb-chart .rb-panel:first-of-type { margin-top: 0; }
+.rb-chart-title { display: none; }
+.rb-views { border-bottom: 0; }
+.rb-views .tab { margin-bottom: 0; border: 1px solid transparent; border-radius: 999px; }
+.rb-views .tab:hover { background: var(--track); }
+.rb-views .tab[aria-selected="true"] { background: var(--track); border-color: var(--line-strong); }
+/* Quiet priority switch: small muted text, the selected label bold with an underline. */
+.priority-switch { gap: 6px; }
+.priority-label { font-size: 12px; font-weight: 400; }
+.seg { padding: 0; gap: 10px; border: 0; background: none; border-radius: 0; }
+.seg .tab { padding: 2px 0; font-size: 12px; font-weight: 400; color: var(--muted); border-radius: 0; border-bottom: 1px solid transparent; background: none; }
+.seg .tab:hover { color: var(--text); }
+.seg .tab[aria-checked="true"] { background: none; color: var(--text); font-weight: 600; border-bottom-color: var(--text); }
+/* Priority options as small label chips: outlined when off, filled when selected. */
+.seg { gap: 6px; }
+.seg .tab { padding: 2px 9px; font-size: 12px; font-weight: 500; color: var(--muted); border: 1px solid var(--line-strong); border-radius: 999px; background: none; }
+.seg .tab:hover { color: var(--text); }
+.seg .tab[aria-checked="true"] { background: var(--track); color: var(--text); font-weight: 600; border-color: var(--muted); }
+.runs-settings { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 16px; margin-left: auto; }
+.runs-settings .priority-switch { margin: 0 0 8px; }

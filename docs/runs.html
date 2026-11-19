@@ -34,9 +34,25 @@
         <h2 id="runs-chart-h">Local model runs on MacBook Pro M5 Pro, 64 GB</h2>
         <p class="muted" id="runs-summary">Loading runs…</p>
       </div>
-      <div class="tabs runs-metric" role="tablist" aria-label="Chart metric">
-        <button type="button" role="tab" class="tab" data-metric="speed" aria-selected="true">Decoding</button>
-        <button type="button" role="tab" class="tab" data-metric="score" aria-selected="false" tabindex="-1">Score</button>
+      <div class="runs-top">
+        <div id="runs-views"></div>
+        <div class="runs-settings">
+          <div class="priority-switch">
+            <span class="priority-label" id="priority-label">Priority</span>
+            <div class="seg runs-metric" role="radiogroup" aria-labelledby="priority-label">
+              <button type="button" role="radio" class="tab" data-metric="speed" aria-checked="true">Decoding</button>
+              <button type="button" role="radio" class="tab" data-metric="score" aria-checked="false" tabindex="-1">Score</button>
+            </div>
+          </div>
+          <div class="priority-switch">
+            <span class="priority-label" id="thinking-label">Thinking</span>
+            <div class="seg runs-think" role="radiogroup" aria-labelledby="thinking-label">
+              <button type="button" role="radio" class="tab" data-think="all" aria-checked="false" tabindex="-1">All</button>
+              <button type="button" role="radio" class="tab" data-think="on" aria-checked="true">On</button>
+              <button type="button" role="radio" class="tab" data-think="off" aria-checked="false" tabindex="-1">Off</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="runs-bars" class="rb-split" role="group" aria-label="Horizontal bar chart of local run results"></div>
       <div class="legend" id="runs-legend"></div>
