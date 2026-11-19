@@ -190,12 +190,24 @@ class LMStudio:
         problems = []
         if running_tensorfold_servers():
             problems.append("a tensorfold-native server is running")
-        if lmstudio_loaded():
+        loaded = lmstudio_loaded()
+        if self.args.use_loaded:
+            if len(loaded) != 1:
+                problems.append(f"--use-loaded needs exactly one loaded model, found {loaded}")
+        elif loaded:
             problems.append("LM Studio already has a model loaded (run: lms unload --all)")
         return problems
 
     def start(self):
         a = self.args
+        if a.use_loaded:
+            # The model was loaded in the app by hand (for a model that
+            # `lms load` refuses). Take its context and parallel count as loaded.
+            model = json.loads(sh([LMS, "ps", "--json"]).stdout)[0]
+            self.api_model = model["identifier"]
+            a.context, a.parallel = model["contextLength"], model["parallel"]
+            Path(self.log_path).write_text("used the model already loaded:\n" + json.dumps(model, indent=2))
+            return
         command = [LMS, "load", a.model, "-y", "--context-length", str(a.context),
                    "--parallel", str(a.parallel), "--identifier", LMSTUDIO_IDENTIFIER]
         result = sh(command, timeout=LOAD_TIMEOUT_SECONDS)
@@ -212,7 +224,8 @@ class LMStudio:
                 "chat_template_kwargs": {"enable_thinking": self.args.thinking == "on"}}
 
     def stop(self):
-        sh([LMS, "unload", "--all"])
+        if not self.args.use_loaded:
+            sh([LMS, "unload", "--all"])
 
     def peak_rss_gb(self):
         return ""
@@ -307,13 +320,20 @@ def main():
     parser.add_argument("--model", required=True, help="model name or path as the runtime knows it")
     parser.add_argument("--thinking", choices=["on", "off"], required=True)
     parser.add_argument("--parallel", type=int, default=1)
-    parser.add_argument("--context", type=int, required=True)
+    parser.add_argument("--context", type=int, default=0)
+    parser.add_argument("--use-loaded", action="store_true",
+                        help="LM Studio only: test the one model already loaded in the app, "
+                             "with its context and parallel count, and leave it loaded")
     parser.add_argument("--tasks", default="", help="comma-separated task ids (default: all)")
     parser.add_argument("--results", default=str(ROOT / "data" / "local-runtime-results.csv"),
                         help="CSV to append to")
     parser.add_argument("--hardware", default="MacBook Pro M5 Pro, 64 GB")
     parser.add_argument("--runs-dir", default=str(ROOT / "data" / "local-runs"))
     args = parser.parse_args()
+    if args.use_loaded and args.runtime != "lmstudio":
+        parser.error("--use-loaded works only with --runtime lmstudio")
+    if not args.use_loaded and not args.context:
+        parser.error("--context is required")
 
     manifest = suite.load_manifest()
     tasks = manifest["tasks"]
@@ -351,7 +371,8 @@ def main():
                 print(f"[{run_id}] did not load with {args.parallel} parallel ({exc}); "
                       f"retrying with {args.parallel // 2}", flush=True)
                 args.parallel //= 2
-        load_seconds = round(time.time() - load_started, 1)
+        # Not measured when the model was loaded by hand.
+        load_seconds = "" if args.use_loaded else round(time.time() - load_started, 1)
         print(f"[{run_id}] loaded in {load_seconds}s; sending {len(tasks)} tasks, "
               f"{args.parallel} at a time", flush=True)
         suite_started = time.time()

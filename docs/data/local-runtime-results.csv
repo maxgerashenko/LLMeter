@@ -109,3 +109,13 @@ date,model_id,runtime,runtime_version,thinking,parallel,context_tokens,task_id,t
 2026-11-18,M10,LM Studio,0.4.28+2,on,1,419430,q08,0,12,0.0,897.1,800,11999,13.4,,4.6,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
 2026-11-18,M10,LM Studio,0.4.28+2,on,1,419430,q09,0,45,0.0,900.0,,11551,,,4.6,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
 2026-11-18,M10,LM Studio,0.4.28+2,on,1,419430,q10,0,45,0.0,900.2,,11596,,,4.6,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q01,12,12,1.0,60.6,370,1635,27.0,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q02,15,15,1.0,46.4,834,1153,24.8,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q03,18,18,1.0,42.0,933,1049,25.0,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q04,14,14,1.0,44.1,1195,1101,25.0,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q05,12,12,1.0,22.3,790,676,30.3,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q06,44,76,0.5789,61.0,858,1944,31.9,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q07,12,27,0.4444,47.8,640,1525,31.9,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q08,9,12,0.625,93.3,710,3649,39.1,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q09,25,45,0.5556,68.4,870,2474,36.2,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q10,0,45,0.0,80.9,892,3999,49.4,,,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
