@@ -100,10 +100,15 @@
     });
   }
 
+  // "1 request", "4 requests": how many requests were in flight during the run.
+  function requests(n) { return n ? n + (String(n) === "1" ? " request" : " requests") + " at a time" : ""; }
+  // Why a listed model has no run: "not installed", or "cannot run" with the reason in the model list.
+  function why(m) { return (m.run_status || "").split(":")[0]; }
+
   function label(r) {
     return el("div", { cls: "rb-label", title: r.model + " · " + r.quant + " · " + r.runtime + " · thinking " + r.thinking }, [
       el("span", { cls: "rb-model", text: r.model }),
-      el("span", { cls: "setting", text: [r.quant, r.runtime.split(/[;(]/)[0].trim(), r.thinking ? "thinking " + r.thinking : ""].filter(Boolean).join(" · ") })
+      el("span", { cls: "setting", text: [r.quant, r.runtime.split(/[;(]/)[0].trim(), r.thinking ? "thinking " + r.thinking : "", requests(r.parallel), r.why || ""].filter(Boolean).join(" · ") })
     ]);
   }
 
@@ -146,7 +151,7 @@
       var tl = el("div", { cls: "rbars" }); tp.appendChild(tl);
       todo.forEach(function (m) {
         tl.appendChild(el("div", { cls: "rb-row is-planned" }, [
-          label({ model: m.model, quant: [m.format, m.quant].filter(Boolean).join(" "), runtime: "", thinking: "" }),
+          label({ model: m.model, quant: [m.format, m.quant].filter(Boolean).join(" "), runtime: "", thinking: "", why: m.run_status }),
           el("div", { cls: "rb-track" }),
           el("div", { cls: "rb-value", text: "–" })
         ]));
@@ -181,7 +186,7 @@
         td([m.format, m.quant].filter(Boolean).join(" ")), td(rt.join(", ")),
         td(/^yes|unknown/.test(m.thinking_switch) ? "off, on" : "off"), td(DEFAULT_HW),
         td("–", "num"), td("–", "num"), td("–", "num"), td("–", "num"), td(m.max_parallel_64gb || "–", "num"), td("–"),
-        el("td", {}, [el("span", { cls: "status status-planned", text: "planned" })])
+        el("td", {}, [el("span", { cls: "status status-planned", title: m.run_status || "", text: why(m) || "planned" })])
       ]));
     });
     if (!body.children.length) body.appendChild(el("tr", {}, [el("td", { colspan: "12", cls: "muted", text: "No runs and no planned models." })]));
@@ -196,7 +201,7 @@
     if (!runs.length) return;
     table.appendChild(el("thead", {}, [el("tr", {}, [el("th", { scope: "col", text: "Task" })].concat(runs.map(function (r) {
       return el("th", { scope: "col", cls: "num" }, [r.model,
-        el("span", { cls: "sub", text: r.runtime.split(/[;(]/)[0].trim() + ", thinking " + r.thinking })]);
+        el("span", { cls: "sub", text: r.runtime.split(/[;(]/)[0].trim() + ", thinking " + r.thinking + ", " + requests(r.parallel) })]);
     })))]));
     var body = el("tbody");
     TASKS.forEach(function (t) {
