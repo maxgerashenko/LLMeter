@@ -8,7 +8,7 @@
       ["All Tier", "./#all", "index"],
       ["Rack", "rack.html", "rack"],
       ["Runs", "runs.html", "runs"],
-      ["Research", "research.html", "research"]
+      ["Build", "research.html", "research"]
     ],
     cloud: [["All", "cloud.html", "cloud"], ["Intelligence", "intelligence.html", "intelligence"], ["Rack", "cloud-rack.html", "cloud-rack"]],
     finance: [
