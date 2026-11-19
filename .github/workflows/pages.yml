@@ -3,9 +3,11 @@
 #   - Every open pull request from this repository is also published under
 #     /pr/<number>/, so its change can be opened like the real site. Closing or
 #     merging a PR removes its folder on the next deploy.
-# Requires Settings > Pages > Source: "GitHub Actions". The github-pages
-# environment must allow deployments from pull request branches (Settings >
-# Environments > github-pages > Deployment branches and tags).
+# Requires Settings > Pages > Source: "GitHub Actions". PR previews also need the
+# github-pages environment to allow deployments from pull request branches
+# (Settings > Environments > github-pages > Deployment branches and tags) and the
+# repository variable PR_PREVIEWS set to "true" (Settings > Variables > Actions).
+# Without that variable, pull requests only build the site and nothing is deployed.
 name: Deploy site to GitHub Pages
 
 on:
@@ -28,11 +30,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  # Builds the whole site (main plus open PRs) on every run, so a broken build fails CI.
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -65,6 +65,19 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+
+  # Publishes it. On pushes to main this always runs. On pull requests it runs only
+  # when the repository variable PR_PREVIEWS is "true", which should be set once the
+  # github-pages environment allows deployments from pull request branches
+  # (Settings > Environments > github-pages); until then PR runs build only.
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request' || vars.PR_PREVIEWS == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v4
 
