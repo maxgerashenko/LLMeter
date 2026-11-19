@@ -3,7 +3,7 @@
 // and paste it between the quotes below. Leave it empty to keep analytics off.
 (function () {
   "use strict";
-  var GA_MEASUREMENT_ID = ""; // e.g. "G-ABC123XYZ9"
+  var GA_MEASUREMENT_ID = "G-TTSZ1LC89F"; // e.g. "G-ABC123XYZ9"
 
   if (!/^G-[A-Z0-9]{6,}$/.test(GA_MEASUREMENT_ID)) return;
   // Respect browser privacy signals and a manual opt-out
