@@ -75,3 +75,10 @@
 .rb-views .tab { margin-bottom: 0; border: 1px solid transparent; border-radius: 999px; }
 .rb-views .tab:hover { background: var(--track); }
 .rb-views .tab[aria-selected="true"] { background: var(--track); border-color: var(--line-strong); }
+/* Quiet priority switch: small muted text, the selected label bold with an underline. */
+.priority-switch { gap: 6px; }
+.priority-label { font-size: 12px; font-weight: 400; }
+.seg { padding: 0; gap: 10px; border: 0; background: none; border-radius: 0; }
+.seg .tab { padding: 2px 0; font-size: 12px; font-weight: 400; color: var(--muted); border-radius: 0; border-bottom: 1px solid transparent; background: none; }
+.seg .tab:hover { color: var(--text); }
+.seg .tab[aria-checked="true"] { background: none; color: var(--text); font-weight: 600; border-bottom-color: var(--text); }
