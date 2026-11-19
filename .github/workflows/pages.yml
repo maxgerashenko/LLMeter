@@ -3,17 +3,17 @@
 #   - Every open pull request from this repository is also published under
 #     /pr/<number>/, so its change can be opened like the real site. Closing or
 #     merging a PR removes its folder on the next deploy.
-# Requires Settings > Pages > Source: "GitHub Actions". PR previews also need the
-# github-pages environment to allow deployments from pull request branches
-# (Settings > Environments > github-pages > Deployment branches and tags) and the
-# repository variable PR_PREVIEWS set to "true" (Settings > Variables > Actions).
-# Without that variable, pull requests only build the site and nothing is deployed.
+# Requires Settings > Pages > Source: "GitHub Actions".
+# Pull requests use the pull_request_target event, so the workflow runs from main's
+# ref (which the github-pages environment already allows) and no repository variable
+# or environment change is needed. It never runs code from the PR: it only copies the
+# PR's docs/ folder into the site as static files.
 name: Deploy site to GitHub Pages
 
 on:
   push:
     branches: [main]
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened, closed]
   workflow_dispatch:
 
@@ -66,13 +66,9 @@ jobs:
         with:
           path: _site
 
-  # Publishes it. On pushes to main this always runs. On pull requests it runs only
-  # when the repository variable PR_PREVIEWS is "true", which should be set once the
-  # github-pages environment allows deployments from pull request branches
-  # (Settings > Environments > github-pages); until then PR runs build only.
+  # Publishes it, on pushes to main and for pull requests.
   deploy:
     needs: build
-    if: github.event_name != 'pull_request' || vars.PR_PREVIEWS == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -82,7 +78,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Comment with the live preview link
-        if: github.event_name == 'pull_request' && github.event.action != 'closed'
+        if: github.event_name == 'pull_request_target' && github.event.action != 'closed'
         uses: actions/github-script@v7
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
