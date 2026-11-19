@@ -1,7 +1,7 @@
 {
   "title": "LLMeter source graph",
   "root": "llmeter",
-  "read_on": "2026-11-17",
+  "read_on": "2026-11-17 to 2026-11-19",
   "notes": "Edges point from a source to the source it cites or draws data from. Level = shortest distance from the LLMeter website (level 0). 'read' is the date a page was opened; null means the node is named by its parent but was not opened. 'status' says whether a node was expanded and, if not, why.",
   "nodes": [
     {
@@ -673,6 +673,366 @@
       "read": null,
       "status": "primary data (private payroll records, not public)",
       "note": "As described in the study; not opened."
+    },
+    {
+      "id": "technique-sources",
+      "title": "LLM technique papers and reports (35 sources)",
+      "publisher": "arXiv papers, plus OpenAI, Anthropic, Google, DeepSeek, LMSYS, llama.cpp, ARC Prize, Epoch AI",
+      "url": "https://github.com/maxgerashenko/LLMeter/blob/main/articles/llm-performance-techniques.md#sources",
+      "kind": "article",
+      "read": "2026-11-19",
+      "status": "expanded",
+      "note": "RESOURCES #6. The source list of the LLM performance techniques article; each source below is one node."
+    },
+    {
+      "id": "tech-r1",
+      "title": "DeepSeek-R1 model card",
+      "publisher": "DeepSeek, 2025-01-20",
+      "url": "https://github.com/deepseek-ai/DeepSeek-R1",
+      "kind": "code",
+      "read": "2026-11-19",
+      "status": "primary data (the publisher's own measurements)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-o1",
+      "title": "OpenAI: Learning to reason with LLMs",
+      "publisher": "OpenAI, 2024-09-12",
+      "url": "https://openai.com/index/learning-to-reason-with-llms/",
+      "kind": "article",
+      "read": "2026-11-19",
+      "status": "primary data (the publisher's own measurements)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-swe",
+      "title": "SWE-agent",
+      "publisher": "Yang et al., 2024-05-06",
+      "url": "https://arxiv.org/abs/2405.15793",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-cot",
+      "title": "Chain-of-Thought Prompting",
+      "publisher": "Wei et al., 2022-01-28",
+      "url": "https://arxiv.org/abs/2201.11903",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-o3",
+      "title": "ARC Prize: OpenAI o3 on ARC-AGI-Pub",
+      "publisher": "ARC Prize Foundation, 2024-12-20",
+      "url": "https://arcprize.org/blog/oai-o3-pub-breakthrough",
+      "kind": "article",
+      "read": "2026-11-19",
+      "status": "primary data (the publisher's own measurements)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-mtp",
+      "title": "Multi-token Prediction",
+      "publisher": "Gloeckle et al., 2024-04-30",
+      "url": "https://arxiv.org/abs/2404.19737",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-v3",
+      "title": "DeepSeek-V3 Technical Report",
+      "publisher": "DeepSeek, 2024-12-27",
+      "url": "https://arxiv.org/abs/2412.19437",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-v2",
+      "title": "DeepSeek-V2",
+      "publisher": "DeepSeek, 2024-05-07",
+      "url": "https://arxiv.org/abs/2405.04434",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-frugal",
+      "title": "FrugalGPT",
+      "publisher": "Chen et al., 2023-05-09",
+      "url": "https://arxiv.org/abs/2305.05176",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-bf16",
+      "title": "\"Give Me BF16 or Give Me Death\"?",
+      "publisher": "Kurtic et al., 2024-11-04",
+      "url": "https://arxiv.org/abs/2411.02355",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-gptq",
+      "title": "GPTQ",
+      "publisher": "Frantar et al., 2022-10-31",
+      "url": "https://arxiv.org/abs/2210.17323",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-merc",
+      "title": "Mercury: diffusion language models (Inception Labs)",
+      "publisher": "Inception Labs, 2025-06-17",
+      "url": "https://arxiv.org/abs/2506.17298",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the publisher's own measurements)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-vllm",
+      "title": "vLLM / PagedAttention",
+      "publisher": "Kwon et al., 2023-09-12",
+      "url": "https://arxiv.org/abs/2309.06180",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-fa",
+      "title": "FlashAttention",
+      "publisher": "Dao et al., 2022-05-27",
+      "url": "https://arxiv.org/abs/2205.14135",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-fa2",
+      "title": "FlashAttention-2",
+      "publisher": "Dao, 2023-07-17",
+      "url": "https://arxiv.org/abs/2307.08691",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-spec",
+      "title": "Speculative Decoding",
+      "publisher": "Leviathan et al., 2022-11-30",
+      "url": "https://arxiv.org/abs/2211.17192",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-medusa",
+      "title": "Medusa",
+      "publisher": "Cai et al., 2024-01-19",
+      "url": "https://arxiv.org/abs/2401.10774",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-eagle",
+      "title": "EAGLE",
+      "publisher": "Li et al., 2024-01-26",
+      "url": "https://arxiv.org/abs/2401.15077",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-cache",
+      "title": "Anthropic: Prompt caching with Claude",
+      "publisher": "Anthropic, 2024-08-14",
+      "url": "https://claude.com/blog/prompt-caching",
+      "kind": "article",
+      "read": "2026-11-19",
+      "status": "primary data (the publisher's own measurements)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-distil",
+      "title": "DistilBERT",
+      "publisher": "Sanh et al., 2019-10-02",
+      "url": "https://arxiv.org/abs/1910.01108",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-lingua",
+      "title": "LLMLingua",
+      "publisher": "Jiang et al., 2023-10-09",
+      "url": "https://arxiv.org/abs/2310.05736",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-route",
+      "title": "RouteLLM blog (LMSYS)",
+      "publisher": "LMSYS, 2024-07-01",
+      "url": "https://lmsys.org/blog/2024-07-01-routellm/",
+      "kind": "article",
+      "read": "2026-11-19",
+      "status": "expanded",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-routep",
+      "title": "RouteLLM paper",
+      "publisher": "Ong et al., 2024-06-26",
+      "url": "https://arxiv.org/abs/2406.18665",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-glam",
+      "title": "GLaM",
+      "publisher": "Du et al., 2021-12-13",
+      "url": "https://arxiv.org/abs/2112.06905",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-k2",
+      "title": "Kimi K2 (Moonshot AI)",
+      "publisher": "Moonshot AI, 2025-07-28",
+      "url": "https://arxiv.org/abs/2507.20534",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-sparse",
+      "title": "SparseGPT",
+      "publisher": "Frantar, Alistarh, 2023-01-02",
+      "url": "https://arxiv.org/abs/2301.00774",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-lora",
+      "title": "LoRA",
+      "publisher": "Hu et al., 2021-06-17",
+      "url": "https://arxiv.org/abs/2106.09685",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-ttc",
+      "title": "Scaling LLM Test-Time Compute",
+      "publisher": "Snell et al., 2024-08-06",
+      "url": "https://arxiv.org/abs/2408.03314",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-epoch",
+      "title": "Training compute of frontier AI models grows by 4-5x per year",
+      "publisher": "Epoch AI (Sevilla, Roldan), 2024-05-28",
+      "url": "https://epoch.ai/blog/training-compute-of-frontier-ai-models-grows-by-4-to-5x-per-year",
+      "kind": "article",
+      "read": "2026-11-19",
+      "status": "primary data (Epoch AI's own dataset of notable models)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-algo",
+      "title": "Algorithmic progress in language models",
+      "publisher": "Ho et al., 2024-03-09",
+      "url": "https://arxiv.org/abs/2403.05812",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-survey",
+      "title": "Token-Operations-Oriented Inference Optimization Techniques for Large Models (survey)",
+      "publisher": "arXiv 2606.20295, 2026-07-24",
+      "url": "https://arxiv.org/abs/2606.20295",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "not expanded: used only to check the list of techniques; its figures quote earlier papers",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-r1p",
+      "title": "DeepSeek-R1 paper",
+      "publisher": "DeepSeek, 2025-01-22",
+      "url": "https://arxiv.org/abs/2501.12948",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-phi",
+      "title": "Textbooks Are All You Need",
+      "publisher": "Gunasekar et al., 2023-06-20",
+      "url": "https://arxiv.org/abs/2306.11644",
+      "kind": "paper",
+      "read": "2026-11-19",
+      "status": "primary data (the paper's own experiments)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-lcq",
+      "title": "llama.cpp quantize README (speed and size per quantization type)",
+      "publisher": "llama.cpp project",
+      "url": "https://github.com/ggml-org/llama.cpp/blob/master/tools/quantize/README.md",
+      "kind": "code",
+      "read": "2026-11-19",
+      "status": "primary data (the publisher's own measurements)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
+    },
+    {
+      "id": "tech-qat",
+      "title": "Gemma 3 QAT Models",
+      "publisher": "Google, 2025-04-18",
+      "url": "https://developers.googleblog.com/en/gemma-3-quantized-aware-trained-state-of-the-art-ai-to-consumer-gpus/",
+      "kind": "article",
+      "read": "2026-11-19",
+      "status": "primary data (the publisher's own measurements)",
+      "note": "Read for the LLM performance techniques article: abstract, results tables or announcement page."
     }
   ],
   "edges": [
@@ -1100,6 +1460,236 @@
       "from": "stanford-adp",
       "to": "adp-payroll",
       "relation": "analyses"
+    },
+    {
+      "from": "llmeter",
+      "to": "technique-sources",
+      "relation": "lists"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-r1",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-o1",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-swe",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-cot",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-o3",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-mtp",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-v3",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-v2",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-frugal",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-bf16",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-gptq",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-merc",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-vllm",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-fa",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-fa2",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-spec",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-medusa",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-eagle",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-cache",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-distil",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-lingua",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-route",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-routep",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-glam",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-k2",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-sparse",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-lora",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-ttc",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-epoch",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-algo",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-survey",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-r1p",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-phi",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-lcq",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "tech-qat",
+      "relation": "cites"
+    },
+    {
+      "from": "tech-route",
+      "to": "tech-routep",
+      "relation": "described in"
+    },
+    {
+      "from": "tech-fa2",
+      "to": "tech-fa",
+      "relation": "builds on"
+    },
+    {
+      "from": "tech-v3",
+      "to": "tech-v2",
+      "relation": "builds on"
+    },
+    {
+      "from": "tech-r1",
+      "to": "tech-r1p",
+      "relation": "described in"
+    },
+    {
+      "from": "tech-r1p",
+      "to": "tech-v3",
+      "relation": "built from"
+    },
+    {
+      "from": "tech-survey",
+      "to": "tech-routep",
+      "relation": "cites"
+    },
+    {
+      "from": "tech-survey",
+      "to": "tech-frugal",
+      "relation": "cites"
+    },
+    {
+      "from": "tech-survey",
+      "to": "tech-spec",
+      "relation": "cites"
+    },
+    {
+      "from": "technique-sources",
+      "to": "metr-blog",
+      "relation": "cites"
+    },
+    {
+      "from": "tech-lcq",
+      "to": "llamacpp",
+      "relation": "measured with"
     }
   ]
 }
