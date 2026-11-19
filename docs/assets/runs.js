@@ -24,7 +24,7 @@
   ];
   var DEFAULT_HW = "MacBook Pro M5 Pro, 64 GB";
   var metric = "speed";
-  var thinkFilter = "all"; // all | on | off: which runs the charts show
+  var thinkFilter = "on"; // all | on | off: which runs the charts show (default: thinking on)
   var view = "speed"; // which chart is open; the priority one first
   var state = { runs: [], planned: [] };
 
