@@ -121,7 +121,7 @@
   ];
 
   var METRICS = {
-    speed: { key: "tok", title: "Decoding speed", unit: "tok/sec", digits: 1, max: function (runs) { return Math.max.apply(null, runs.map(function (r) { return r.tok || 0; }).concat([1])); } },
+    speed: { key: "tok", title: "Decoding", unit: "tok/sec", digits: 1, max: function (runs) { return Math.max.apply(null, runs.map(function (r) { return r.tok || 0; }).concat([1])); } },
     score: { key: "score", title: "Score", unit: "points", digits: 1, max: function () { return 100; } }
   };
 
@@ -139,12 +139,12 @@
     // Tabs for the two charts, priority chart first; one chart is open at a time.
     var bar = el("div", { cls: "tabs rb-views", role: "tablist", "aria-label": "Chart" });
     order.forEach(function (name, idx) {
-      var b = el("button", { type: "button", role: "tab", cls: "tab", "aria-selected": String(name === view), text: METRICS[name].title + (idx ? " · 2nd" : " · priority") });
+      var b = el("button", { type: "button", role: "tab", cls: "tab", "aria-selected": String(name === view), text: METRICS[name].title });
       if (name !== view) b.tabIndex = -1;
       b.addEventListener("click", function () { view = name; drawBars(); });
       bar.appendChild(b);
     });
-    box.appendChild(bar);
+    var vb = document.getElementById("runs-views"); vb.textContent = ""; vb.appendChild(bar);
     order.forEach(function (name, idx) {
       if (name !== view) return;
       var m = METRICS[name], max = m.max(shown);
