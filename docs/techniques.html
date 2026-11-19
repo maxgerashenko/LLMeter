@@ -60,7 +60,7 @@
       <section class="card">
         <div class="card-head">
           <h2>Techniques that change speed, ranked by measured effect</h2>
-          <p class="muted">Each bar is the largest measured effect of one technique on generation speed or waiting time, as a percentage. A 2x speedup is written as +100% and 3x as +200%. The prompt caching bar is a shorter wait, and the thinking bar is a slowdown, placed by its size. Dashed lines are the tier edges at 5%, 30% and 100%. Each number comes from a different source, model and test, so the bars rank the size of the effect, not the techniques against each other.</p>
+          <p class="muted">Each bar is the largest measured effect of one technique on generation speed or waiting time, as a percentage. A 2x speedup is written as +100% and 3x as +200%. The prompt caching bar is a shorter wait, and the thinking bar is a slowdown, placed by its size. The scale is logarithmic, from 1% to 1000%: each step along it is the same ratio, so a +900% bar is not nine times a +100% bar. Dashed lines are the tier edges at 5%, 30% and 100%. Each number comes from a different source, model and test, so the bars rank the size of the effect, not the techniques against each other.</p>
         </div>
         <div id="rs-bars-speed" class="bars rs-bars" role="img" aria-label="Bar chart of the largest measured effect of each technique on speed, as a percentage"></div>
         <div class="legend" id="rs-legend-speed"></div>

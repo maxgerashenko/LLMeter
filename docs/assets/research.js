@@ -168,6 +168,10 @@
     ranked.sort(function (a, b) { return +b.tier.label - +a.tier.label || (cfg.noun === "technique" ? b.pct - a.pct : 0); });
     var unranked = items.filter(function (c) { return ranked.indexOf(c) < 0; });
     var max = Math.max.apply(null, ranked.map(function (c) { return c.pct; }).concat([100]));
+    // Speed effects span 5% to 900%, so that chart is logarithmic (1% to 1000%): equal steps are equal
+    // ratios, and the tier edges at 5%, 30% and 100% sit evenly apart. Other charts stay linear.
+    var LOG = view === "speed", LO = 1, HI = 1000;
+    function pos(v) { return LOG ? Math.max(0, Math.log(v / LO) / Math.log(HI / LO)) * 100 : v / max * 100; }
 
     // Chart: one bar per item, coloured by tier
     var plot = el("div", { class: "plot rs-plot rs-plot-" + view });
@@ -175,15 +179,15 @@
     plot.appendChild(edges);
     EDGES.forEach(function (e, i) {
       // On a long scale the 5% and 30% lines sit close together: keep the line, drop the label that would overlap.
-      var crowded = i + 1 < EDGES.length && (EDGES[i + 1] - e) / max * 100 < 4;
-      edges.appendChild(el("span", { class: "edge", style: "left:" + (e / max * 100) + "%" }, crowded ? [] : [el("span", { class: "edge-label", text: e + "%" })]));
+      var crowded = i + 1 < EDGES.length && (pos(EDGES[i + 1]) - pos(e)) < 4;
+      edges.appendChild(el("span", { class: "edge", style: "left:" + pos(e) + "%" }, crowded ? [] : [el("span", { class: "edge-label", text: e + "%" })]));
     });
     ranked.concat(unranked).forEach(function (c) {
       var measured = ranked.indexOf(c) >= 0;
       plot.appendChild(el("div", { class: "rs-row" }, [
         el("span", { class: "rs-label", title: c.name }, [tierBadge(measured ? c.tier : null), el("span", { class: "rs-name", text: c.name })]),
         el("span", { class: "rs-track" + (measured ? "" : " rs-none"), title: measured ? c.measures : null },
-          measured ? [el("span", { class: "bar tier-bg-" + c.tier.id, style: "width:" + Math.max(0.6, c.pct / max * 100) + "%" })] : ["not measured yet"]),
+          measured ? [el("span", { class: "bar tier-bg-" + c.tier.id, style: "width:" + Math.max(0.6, pos(c.pct)) + "%" })] : ["not measured yet"]),
         el("span", { class: "rs-value" + (measured ? "" : " muted"), title: measured ? c.measures : null, text: measured ? cfg.barText(c) : "n/a" }),
         el("a", { class: "explain rs-more", href: "#" + c.id, title: "Details and sources for: " + c.name, "aria-label": "Details for " + c.name }, ["Details"])
       ]));
