@@ -71,3 +71,7 @@
 .rb-views .tab { padding: 6px 10px; font-size: 14px; white-space: nowrap; }
 .rb-chart .rb-panel:first-of-type { margin-top: 0; }
 .rb-chart-title { display: none; }
+.rb-views { border-bottom: 0; }
+.rb-views .tab { margin-bottom: 0; border: 1px solid transparent; border-radius: 999px; }
+.rb-views .tab:hover { background: var(--track); }
+.rb-views .tab[aria-selected="true"] { background: var(--track); border-color: var(--line-strong); }
