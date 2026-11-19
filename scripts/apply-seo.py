@@ -6,12 +6,13 @@ import os
 # Single place for the site's base URL. A docs/CNAME file (custom domain) overrides the github.io default.
 DEFAULT_BASE="https://maxgerashenko.github.io/LLMeter/"
 BASE=("https://"+open("docs/CNAME").read().strip()+"/") if os.path.exists("docs/CNAME") else DEFAULT_BASE
-pages={"index.html":"","cloud.html":"cloud.html","cloud-rack.html":"cloud-rack.html","rack.html":"rack.html","runs.html":"runs.html","intelligence.html":"intelligence.html","finance.html":"finance.html","sources.html":"sources.html"}
-h1={"index.html":"Best local AI model per tier for long coding tasks","cloud.html":"AI models ranked by Intelligence Index","cloud-rack.html":"AI scaling: cloud racks, agents served and price","rack.html":"Local AI speed on Mac and DGX Spark racks","runs.html":"Local model runs on the LLMeter coding suite","finance.html":"AI finance: Anthropic S-1 compute spend, AI impact on GDP and software"}
+pages={"index.html":"","cloud.html":"cloud.html","cloud-rack.html":"cloud-rack.html","rack.html":"rack.html","runs.html":"runs.html","research.html":"research.html","intelligence.html":"intelligence.html","finance.html":"finance.html","sources.html":"sources.html"}
+h1={"index.html":"Best local AI model per tier for long coding tasks","cloud.html":"AI models ranked by Intelligence Index","cloud-rack.html":"AI scaling: cloud racks, agents served and price","rack.html":"Local AI speed on Mac and DGX Spark racks","runs.html":"Local model runs on the LLMeter coding suite","research.html":"Local AI build choices ranked by measured effect","finance.html":"AI finance: Anthropic S-1 compute spend, AI impact on GDP and software"}
 titles={
  "index.html":"LLMeter: best local AI model per tier for long coding tasks",
  "rack.html":"LLMeter: local AI speed in tokens per second on Mac and DGX Spark",
  "runs.html":"LLMeter: local LLM benchmark results on a MacBook Pro M5 Pro 64 GB",
+ "research.html":"LLMeter: quantization, thinking and runtime, local LLM build choices ranked",
  "cloud.html":"LLMeter: AI model ranking by Intelligence Index, cloud and local",
  "cloud-rack.html":"LLMeter: AI scaling in datacenter racks, agents served and price",
  "intelligence.html":"LLMeter: AI growth in expert work time, METR time horizons",
@@ -19,6 +20,7 @@ titles={
 descs={
  "index.html":"Local AI for coding: open-weights models grouped into intelligence tiers on long coding tasks, measured against Claude Sonnet 5.5, with the best local model in each tier and its size on disk.",
  "rack.html":"Local AI speed: generation in tokens per second of each tier's best local model on Mac Studio M5 Ultra, M5 Max, MacBook Pro M5 Pro, Mac Studio M1 Ultra and NVIDIA DGX Spark, against Claude Sonnet 5.5 in the cloud.",
+ "research.html":"Local AI build choices ranked by measured effect: bits (4-bit or 8-bit quantization), QAT, dense or mixture of experts, model size, thinking, speculative decoding, prompt caching, harness and runtime, each with its source.",
  "cloud-rack.html":"AI scaling in the datacenter: racks and 8-GPU servers compared by memory, bandwidth, how many coding agents they can serve, tokens per second and price.",
  "intelligence.html":"AI growth in expert work time: how long frontier models can work on their own, and how their success rate falls from 50% to 100% reliability as tasks get longer. METR time horizons.",
  "finance.html":"AI finance from public filings: Anthropic's S-1 of 2026-10-26 (revenue growth, compute spending and commitments), what AI replacing office work would mean for US GDP, and the cost of running coding agents on GB300 racks."}
