@@ -5,6 +5,13 @@
   "use strict";
   var MODELS_URL = "data/local-test-models.csv";
   var RESULTS_URL = "data/local-runtime-results.csv";
+  var TIERS_URL = "data/long-coding-tasks-2026-11-17.csv"; // same file the Local page builds its tiers from
+  // Tier bands as on the Local page (articles/long-coding-tiers-local-models.md): share of Sonnet 5.5 on long coding tasks.
+  var TIER_BANDS = [
+    { id: "t4", label: "Tier 4", min: 75 }, { id: "t3", label: "Tier 3", min: 55 }, { id: "t2", label: "Tier 2", min: 40 },
+    { id: "t1", label: "Tier 1", min: 20 }, { id: "t0", label: "Tier 0", min: 0 }
+  ];
+  var tierByModel = {};
   // Suite local-coding-v1 weights (frozen; see tasks/local-coding-v1/manifest.json).
   var WEIGHTS = { q01: 1, q02: 1, q03: 2, q04: 2, q05: 2, q06: 3, q07: 3, q08: 3, q09: 3, q10: 3 };
   var LEVEL = { q01: "easy", q02: "easy", q03: "medium", q04: "medium", q05: "medium",
@@ -62,6 +69,19 @@
     if (s < 90) return Math.round(s) + " s";
     var m = s / 60; return (m < 10 ? m.toFixed(1) : Math.round(m)) + " min";
   }
+  function normName(n) { return String(n || "").replace(/\s*\([^)]*\)\s*$/, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
+  // Tier of a model by name, from its best row in the long-coding data; null when the model is not in it.
+  function tierOf(name) {
+    var pct = tierByModel[normName(name)];
+    if (pct == null) return null;
+    for (var i = 0; i < TIER_BANDS.length; i++) if (pct >= TIER_BANDS[i].min) return TIER_BANDS[i];
+    return null;
+  }
+  function tierBadge(name) {
+    var t = tierOf(name);
+    return t ? el("span", { cls: "tier-badge tier-" + t.id, title: t.label + ": " + Math.round(tierByModel[normName(name)]) + "% of Sonnet 5.5 on long coding tasks", text: t.label })
+      : el("span", { cls: "tier-badge tier-none", title: "Not in the long-coding data yet", text: "No tier" });
+  }
   function thinkingOn(t) { return /^(on|yes|true)$/i.test(t || ""); }
 
   function buildRuns(results, models) {
@@ -109,7 +129,7 @@
 
   function label(r) {
     return el("div", { cls: "rb-label", title: r.model + " · " + r.quant + " · " + r.runtime + " · thinking " + r.thinking }, [
-      el("span", { cls: "rb-model", text: r.model }),
+      tierBadge(r.model), el("span", { cls: "rb-model", text: r.model }),
       el("span", { cls: "setting", text: [r.quant, r.runtime.split(/[;(]/)[0].trim(), r.thinking ? "thinking " + r.thinking : "", requests(r.parallel), r.why || ""].filter(Boolean).join(" · ") })
     ]);
   }
@@ -197,6 +217,7 @@
     runs.forEach(function (r) {
       body.appendChild(el("tr", {}, [
         el("td", { cls: "model-cell" }, [el("strong", { text: r.model }), el("span", { cls: "sub", text: r.id + (r.mem != null ? " · peak " + fmt(r.mem, 1) + " GB" : "") })]),
+        el("td", {}, [tierBadge(r.model)]),
         td(r.quant), td(r.runtime), td(r.thinking), td(r.hardware),
         td(fmt(r.score, 1), "num score"),
         td([fmt(r.easy), fmt(r.medium), fmt(r.hard)].join(" / "), "num"),
@@ -210,13 +231,14 @@
       var rt = ["LM Studio"]; if (/^(installed|loads)/.test(m.tensorfold || "")) rt.push("TensorFold");
       body.appendChild(el("tr", { cls: "is-planned" }, [
         el("td", { cls: "model-cell" }, [el("strong", { text: m.model }), el("span", { cls: "sub", text: m.id + " · " + m.developer })]),
+        el("td", {}, [tierBadge(m.model)]),
         td([m.format, m.quant].filter(Boolean).join(" ")), td(rt.join(", ")),
         td(/^yes|unknown/.test(m.thinking_switch) ? "off, on" : "off"), td(DEFAULT_HW),
         td("–", "num"), td("–", "num"), td("–", "num"), td("–", "num"), td(m.max_parallel_64gb || "–", "num"), td("–"),
         el("td", {}, [el("span", { cls: "status status-planned", title: m.run_status || "", text: why(m) || "planned" })])
       ]));
     });
-    if (!body.children.length) body.appendChild(el("tr", {}, [el("td", { colspan: "12", cls: "muted", text: "No runs and no planned models." })]));
+    if (!body.children.length) body.appendChild(el("tr", {}, [el("td", { colspan: "13", cls: "muted", text: "No runs and no planned models." })]));
   }
 
   // Result per task: one column per run (best first), one row per task.
@@ -298,7 +320,11 @@
 
   function get(url) { return fetch(url, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(url + " " + r.status); return r.text(); }); }
   setupTabs(); setupThinking();
-  Promise.all([get(MODELS_URL), get(RESULTS_URL).catch(function () { return ""; })]).then(function (t) {
+  Promise.all([get(MODELS_URL), get(RESULTS_URL).catch(function () { return ""; }), get(TIERS_URL).catch(function () { return ""; })]).then(function (t) {
+    parseCSV(t[2]).forEach(function (r) {
+      var p = num(r.pct_of_sonnet_5_5), k = normName(r.model);
+      if (p != null && (tierByModel[k] == null || p > tierByModel[k])) tierByModel[k] = p;
+    });
     state.planned = parseCSV(t[0]);
     state.runs = buildRuns(parseCSV(t[1]), state.planned);
     draw();
