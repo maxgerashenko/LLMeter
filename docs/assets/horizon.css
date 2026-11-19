@@ -19,3 +19,6 @@
 .curves .axis { stroke: var(--line-strong); }
 .curves path { fill: none; stroke-width: 2; }
 @media (max-width: 640px) { .hbars { --label-w: 110px; } .hline span { display: none; } }
+.curves .rate-line { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.curves text.rate-label { fill: var(--accent); font-weight: 600; }
+#rel-table td, #rel-table th { white-space: nowrap; }
