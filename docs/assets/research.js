@@ -1,7 +1,7 @@
 // Builds the Research page from two data files copied into docs/data/ by scripts/sync-site-data.sh:
 // the techniques file (data/llm-techniques-*.csv) feeds the Speed and Quality tabs of techniques.html
 // (the Research section), and the build-choices file (data/llm-user-choices-*.csv) feeds research.html
-// (Local > Research).
+// (Local > Build).
 // No numbers are typed here: only the tier band edges, which are the article's definitions.
 (function () {
   "use strict";
