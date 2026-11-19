@@ -62,12 +62,13 @@
     <section class="card" id="details">
       <div class="card-head">
         <h2>Details and sources</h2>
-        <p class="muted">Every choice with its options, what it changes, the measured effect and where the number comes from, grouped by tier.</p>
+        <p class="muted">Every choice with its tier, options, what it changes, the measured effect and where the number comes from, one row per choice, ordered by tier.</p>
       </div>
       <div class="table-scroll">
         <table class="rs-table">
           <thead>
             <tr>
+              <th scope="col">Tier</th>
               <th scope="col">Choice</th>
               <th scope="col">Options</th>
               <th scope="col">What it changes</th>
@@ -76,7 +77,7 @@
             </tr>
           </thead>
           <tbody id="rs-rows">
-            <tr><td colspan="5" class="muted">Loading data…</td></tr>
+            <tr><td colspan="6" class="muted">Loading data…</td></tr>
           </tbody>
         </table>
       </div>

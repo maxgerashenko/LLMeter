@@ -57,7 +57,7 @@
   function slug(s) { return "choice-" + s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
 
   function tierBadge(t) {
-    if (!t) return el("span", { class: "pill pill-cloud rs-tag", title: "Not measured yet", text: "n/a" });
+    if (!t) return el("span", { class: "tier-badge tier-none rs-tag", title: "Not measured yet", text: "No tier" });
     return el("span", { class: "tier-badge rs-tag tier-" + t.id, title: "Tier " + t.label + ": " + t.range }, ["Tier " + t.label]);
   }
 
@@ -115,34 +115,27 @@
       legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + t.id }), "Tier " + t.label + ": " + t.range]));
     });
 
-    // Details table: one group per tier, then the choices not measured yet
+    // Details table: one row per choice with its tier, as in the Runs details table
     var body = document.getElementById("rs-rows");
     body.textContent = "";
-    function group(title, badge, list) {
-      body.appendChild(el("tr", { class: "rs-group" }, [el("th", { colspan: "5", scope: "colgroup" }, [badge, el("span", { text: title })])]));
-      if (!list.length) body.appendChild(el("tr", { class: "rs-empty" }, [el("td", { colspan: "5", class: "muted", text: "No choice in this tier." })]));
-      list.forEach(function (c) {
-        var src = sourceLinks(c);
-        body.appendChild(el("tr", { id: c.id, class: "rs-choice" }, [
-          el("th", { scope: "row", class: "rs-c-choice" }, [c.choice]),
-          el("td", { "data-label": "Options", text: c.options }),
-          el("td", { "data-label": "What it changes", text: c.what_it_changes }),
-          el("td", { "data-label": "Effect", class: "rs-c-effect" }, [
-            c.effect_pct_text ? el("span", { class: "rs-headline", text: c.effect_pct_text }) : null,
-            c.effect_pct_measures ? el("span", { class: "rs-measures", text: c.effect_pct_measures }) : null,
-            el("span", { class: "rs-effect-text", text: c.effect.replace(/ -> /g, " to ") })
-          ]),
-          el("td", { "data-label": "Source", class: "rs-c-source" }, [
-            el("span", { class: "rs-src" }, src.length ? src : ["none"]),
-            el("span", { class: "rs-evidence", text: "Evidence: " + c.evidence })
-          ])
-        ]));
-      });
-    }
-    TIERS.forEach(function (t) {
-      group(t.range, tierBadge(t), ranked.filter(function (c) { return c.tier === t; }));
+    ranked.concat(unranked).forEach(function (c) {
+      var src = sourceLinks(c);
+      body.appendChild(el("tr", { id: c.id, class: "rs-choice" }, [
+        el("td", { "data-label": "Tier", class: "rs-c-tier" }, [tierBadge(c.tier && c.pct != null ? c.tier : null)]),
+        el("th", { scope: "row", class: "rs-c-choice" }, [c.choice]),
+        el("td", { "data-label": "Options", text: c.options }),
+        el("td", { "data-label": "What it changes", text: c.what_it_changes }),
+        el("td", { "data-label": "Effect", class: "rs-c-effect" }, [
+          c.effect_pct_text ? el("span", { class: "rs-headline", text: c.effect_pct_text }) : null,
+          c.effect_pct_measures ? el("span", { class: "rs-measures", text: c.effect_pct_measures }) : null,
+          el("span", { class: "rs-effect-text", text: c.effect.replace(/ -> /g, " to ") })
+        ]),
+        el("td", { "data-label": "Source", class: "rs-c-source" }, [
+          el("span", { class: "rs-src" }, src.length ? src : ["none"]),
+          el("span", { class: "rs-evidence", text: "Evidence: " + c.evidence })
+        ])
+      ]));
     });
-    if (unranked.length) group("Not measured yet", tierBadge(null), unranked);
 
     if (choices[0] && choices[0].read) document.getElementById("rs-read").textContent = choices[0].read;
 
@@ -158,7 +151,7 @@
     .then(function (text) { render(parseCSV(text)); })
     .catch(function (err) {
       document.getElementById("rs-rows").innerHTML =
-        '<tr><td colspan="5">Could not load the data file (' + String(err.message || err) +
+        '<tr><td colspan="6">Could not load the data file (' + String(err.message || err) +
         '). See <a href="' + DATA_URL + '">the CSV</a>.</td></tr>';
     });
 })();
