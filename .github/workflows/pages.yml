@@ -56,6 +56,10 @@ jobs:
             git archive "pr-$n" docs | tar -x -C "_site/pr/$n" --strip-components=1
             echo "added pr/$n"
           done
+          # Cache-bust: stamp every page's local css/js links with this build's commit,
+          # so browsers never mix a new page with an old stylesheet or script.
+          find _site -name '*.html' -print0 | xargs -0 perl -pi -e \
+            's{(assets/[A-Za-z0-9_.-]+\.(?:css|js))(?:\?v=[^"]*)?"}{$1?v=${{ github.sha }}"}g'
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
