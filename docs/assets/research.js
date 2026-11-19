@@ -85,7 +85,7 @@
       c.pct = c.effect_pct === "" || isNaN(+c.effect_pct) ? null : +c.effect_pct;
     });
     var ranked = choices.filter(function (c) { return c.tier && c.pct != null; })
-      .sort(function (a, b) { return (+b.tier.label - +a.tier.label) || (b.pct - a.pct); });
+      .sort(function (a, b) { return +b.tier.label - +a.tier.label; }); // stable: data file order within a tier
     var unranked = choices.filter(function (c) { return ranked.indexOf(c) < 0; });
     var max = Math.max.apply(null, ranked.map(function (c) { return c.pct; }).concat([100]));
 
