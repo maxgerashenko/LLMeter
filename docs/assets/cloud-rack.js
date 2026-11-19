@@ -31,7 +31,7 @@
   function fmtPrice(v) { return v >= 1e6 ? "$" + (v / 1e6).toFixed(2).replace(/0$/, "").replace(/\.0$/, "") + "M" : "$" + Math.round(v / 1000) + "k"; }
   function fmtRent(v) { return "$" + (v >= 1000 ? Math.round(v).toLocaleString("en-US") : v.toFixed(2)); }
 
-  var rows = [], sortKey = "price_usd", dir = 1;
+  var rows = [], sortKey = "memory_gb", dir = -1;
   var tbody = document.getElementById("cr-rows");
 
   function cmp(a, b) {
@@ -56,12 +56,10 @@
           : el("td", { class: "num" + (r.price_status === "estimate" ? " est" : "") }, [(r.price_status === "estimate" ? "≈" : "") + fmtPrice(r.price_usd) + est(r.price_status)]),
         el("td", { class: "num" }, [r.rent_usd_hr == null ? el("span", { class: "cr-nofit", text: "n/a" })
           : el("a", { class: "cr-rent", href: r.rent_source, title: r.rent_note, text: fmtRent(r.rent_usd_hr) + "/hr" })]),
-        el("td", { class: "num", text: fmt(r.memory_gb) }),
-        el("td", { class: "num", text: String(r.bandwidth_tbs) }),
-        fits ? el("td", { class: "num est" }, [fmt(r.agents_low) + " est."])
-             : el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "doesn't fit" })]),
         fits ? el("td", { class: "num est" }, [fmt(r.agents_1m) + " est."])
              : el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "doesn't fit" })]),
+        el("td", { class: "num", text: fmt(r.memory_gb) }),
+        el("td", { class: "num", text: String(r.bandwidth_tbs) }),
         fits ? el("td", { class: "num" + (r.tok_s_status === "estimate" ? " est" : "") }, [fmtTok(r.tok_s) + est(r.tok_s_status)])
              : el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "doesn't fit" })]),
         fits ? el("td", { class: "num est" }, [fmtTok(Math.round(r.per_agent)) + " est."])
@@ -89,11 +87,11 @@
     rows = parseCSV(t).map(function (r) {
       ["gpus", "memory_gb", "bandwidth_tbs", "agents_low", "agents_high", "tok_s", "price_usd", "rent_usd_hr"].forEach(function (k) { r[k] = n(r[k]); });
       r.agents_1m = r.agents_low == null ? null : Math.max(0, Math.min(Math.floor((r.memory_gb - 671) / 312.5), Math.floor(r.tok_s / 65)));
-      r.per_agent = r.tok_s != null && r.agents_low ? r.tok_s / r.agents_low : null;
+      r.per_agent = r.tok_s != null && r.agents_1m ? r.tok_s / r.agents_1m : null;
       return r;
     });
     document.getElementById("cr-basis").innerHTML =
-      "<p><strong>How the figures are made.</strong> <em>Tokens/sec</em> is total decode throughput on DeepSeek-R1 (FP8, 8k in / 1k out) at 65 tokens/sec per user. GB200 NVL72 and H200 are measured (InferenceX data); the rest are scaled from H200 by HBM bandwidth. <em>Coding agents</em> is the number of concurrent 128k-token sessions: memory left after the 671 GB of weights divided by 40 GB of KV cache per agent with a full 128k-token context, capped at tokens/sec divided by 65. <em>1M-context agents</em> is the same count with a 1M-token context: KV cache grows linearly with context, so 40 GB per 128k becomes about 312 GB per agent (an estimate; a model with a compact KV cache fits several times more). This is the hard case, every agent running full context; a model with a compact KV cache (such as DeepSeek-R1's, about 9 GB) fits up to about 4x more. <em>Tokens/sec per agent</em> is the total divided by that agent count, so it is the speed each agent could get if the rack were shared evenly and every agent decoded all the time. It is an upper bound: in measured data a single stream tops out around 65 to 133 tokens/sec per user at these loads, and agents spend much of their time waiting on tools. The large values show that memory, not speed, limits how many agents fit. All of it is an estimate, not a measurement. Memory and bandwidth are vendor specs summed over GPUs.</p>";
+      "<p><strong>How the figures are made.</strong> <em>Tokens/sec</em> is total decode throughput on DeepSeek-R1 (FP8, 8k in / 1k out) at 65 tokens/sec per user. GB200 NVL72 and H200 are measured (InferenceX data); the rest are scaled from H200 by HBM bandwidth. <em>Coding agents (1M ctx)</em> is the number of concurrent coding sessions with a full 1M-token context: memory left after the 671 GB of weights divided by about 312 GB of KV cache per agent (40 GB per 128k tokens scaled linearly), capped at tokens/sec divided by 65. This is the hard case, every agent running full context; a model with a compact KV cache fits several times more. <em>Per agent</em> is total tokens/sec divided by that agent count, the speed each agent could get if the rack were shared evenly and every agent decoded all the time. It is an upper bound, since agents spend much of their time waiting on tools. All of it is an estimate, not a measurement. Memory and bandwidth are vendor specs summed over GPUs.</p>";
     render();
-  }).catch(function () { tbody.innerHTML = '<tr><td colspan="9" class="muted">Could not load data.</td></tr>'; });
+  }).catch(function () { tbody.innerHTML = '<tr><td colspan="8" class="muted">Could not load data.</td></tr>'; });
 })();
