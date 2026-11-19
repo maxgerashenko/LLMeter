@@ -50,7 +50,7 @@
       var fits = r.tok_s_status !== "no_fit";
       var tr = el("tr", { class: "cr-main" }, [
         el("th", { scope: "row", class: "cr-name" }, [r.name, el("span", { class: "cr-vendor", text: r.gpus + " GPUs · " + r.vendor })]),
-        r.price_usd == null ? el("td", { class: "num" }, [el("span", { class: "cr-nofit", text: "no public price" })])
+        r.price_usd == null ? el("td", { class: "num" }, [r.rent_usd_hr != null ? el("a", { class: "cr-rent", href: r.rent_source, title: r.price_note, text: "rent $" + r.rent_usd_hr.toFixed(2) + "/hr" }) : el("span", { class: "cr-nofit", text: "no public price" })])
           : el("td", { class: "num" + (r.price_status === "estimate" ? " est" : "") }, [(r.price_status === "estimate" ? "≈" : "") + fmtPrice(r.price_usd) + est(r.price_status)]),
         el("td", { class: "num", text: fmt(r.memory_gb) }),
         el("td", { class: "num", text: String(r.bandwidth_tbs) }),
@@ -81,7 +81,7 @@
   });
   fetch(URL_).then(function (r) { return r.text(); }).then(function (t) {
     rows = parseCSV(t).map(function (r) {
-      ["gpus", "memory_gb", "bandwidth_tbs", "agents_low", "agents_high", "tok_s", "price_usd"].forEach(function (k) { r[k] = n(r[k]); });
+      ["gpus", "memory_gb", "bandwidth_tbs", "agents_low", "agents_high", "tok_s", "price_usd", "rent_usd_hr"].forEach(function (k) { r[k] = n(r[k]); });
       r.per_agent = r.tok_s != null && r.agents_low ? r.tok_s / r.agents_low : null;
       return r;
     });

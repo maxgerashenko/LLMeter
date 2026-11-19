@@ -23,3 +23,4 @@
 .cr-basis-list a:hover { color: var(--accent); }
 .cr-table thead th { white-space: normal; vertical-align: bottom; }
 .cr-table th, .cr-table td { padding-left: 8px; padding-right: 8px; }
+.cr-table .cr-rent { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
