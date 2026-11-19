@@ -24,6 +24,7 @@
   ];
   var DEFAULT_HW = "MacBook Pro M5 Pro, 64 GB";
   var metric = "speed";
+  var view = "speed"; // which chart is open; the priority one first
   var state = { runs: [], planned: [] };
 
   // CSV with quoted fields.
@@ -135,10 +136,20 @@
     function rank(rt) {
       return shown.filter(function (r) { return r.rt === rt.name; }).sort(function (a, b) { return b[pri.key] - a[pri.key]; });
     }
+    // Tabs for the two charts, priority chart first; one chart is open at a time.
+    var bar = el("div", { cls: "tabs rb-views", role: "tablist", "aria-label": "Chart" });
     order.forEach(function (name, idx) {
+      var b = el("button", { type: "button", role: "tab", cls: "tab", "aria-selected": String(name === view), text: METRICS[name].title + (idx ? " · 2nd" : " · priority") });
+      if (name !== view) b.tabIndex = -1;
+      b.addEventListener("click", function () { view = name; drawBars(); });
+      bar.appendChild(b);
+    });
+    box.appendChild(bar);
+    order.forEach(function (name, idx) {
+      if (name !== view) return;
       var m = METRICS[name], max = m.max(shown);
       var chart = el("div", { cls: "rb-chart", role: "group", "aria-label": m.title + (idx ? ", second chart" : ", priority chart") }, [
-        el("h3", { cls: "rb-chart-title", text: m.title + (idx ? "" : " (priority)") })
+        el("h3", { cls: "rb-chart-title", text: m.title + (idx ? ", in " + pri.title.toLowerCase() + " order" : "") })
       ]);
       RUNTIMES.forEach(function (rt) {
         var runs = rank(rt);
@@ -173,7 +184,7 @@
       });
       box.appendChild(tp);
     }
-    box.setAttribute("aria-label", "Two horizontal bar charts of local run results, " + pri.title.toLowerCase() + " first; the runs are in the same order in both");
+    box.setAttribute("aria-label", "Horizontal bar chart of local run results; the runs are in " + pri.title.toLowerCase() + " order in both charts");
   }
 
   function td(text, cls) { return el("td", { cls: cls || "", text: text }); }
@@ -252,7 +263,7 @@
       ? done + (done === 1 ? " run" : " runs") + " of the local coding suite, best first. "
       : "No runs recorded yet. ") +
       (left ? left + " planned " + (left === 1 ? "model has" : "models have") + " not been run. " : "") +
-      (metric === "score" ? "Score first (0 to 100), then decoding speed in tokens per second; both charts use the score order." : "Decoding speed in tokens per second first, then score (0 to 100); both charts use the speed order.");
+      (metric === "score" ? "Score first (0 to 100), then decoding speed in tokens per second; the second chart opens in the same score order." : "Decoding speed in tokens per second first, then score (0 to 100); the second chart opens in the same speed order.");
   }
 
   function draw() { drawBars(); drawTable(); drawTasks(); drawLegend(); summary(); }
@@ -268,7 +279,7 @@
     });
     function select(t) {
       Array.prototype.forEach.call(tabs, function (x) { var on = x === t; x.setAttribute("aria-checked", on); x.tabIndex = on ? 0 : -1; });
-      metric = t.getAttribute("data-metric"); drawBars(); summary();
+      metric = view = t.getAttribute("data-metric"); drawBars(); summary();
     }
   }
 
