@@ -117,8 +117,8 @@
   // The chart is split in two, one panel per runtime, so the same model can be compared
   // across runtimes on a shared scale. Panels are always shown, even with no run in them.
   var RUNTIMES = [
-    { name: "LM Studio", planned: function (m) { return !!m.lmstudio; } },
-    { name: "TensorFold", planned: function (m) { return /^(installed|loads)/.test(m.tensorfold || ""); } }
+    { name: "TensorFold", planned: function (m) { return /^(installed|loads)/.test(m.tensorfold || ""); } },
+    { name: "LM Studio", planned: function (m) { return !!m.lmstudio; } }
   ];
 
   var METRICS = {
