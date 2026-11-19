@@ -47,55 +47,157 @@
   <script src="assets/nav.js"></script>
 
   <main class="wrap">
-    <h1 class="sr-only">Local AI build choices ranked by measured effect</h1>
-    <div class="top-gap"></div>
+    <h1 class="sr-only">LLM speed and quality techniques and local build choices ranked by measured effect</h1>
+    <div class="tabs rs-tabs" role="tablist" aria-label="Research views">
+      <button type="button" role="tab" id="tab-speed" class="tab" aria-selected="true" aria-controls="panel-speed">Speed</button>
+      <button type="button" role="tab" id="tab-quality" class="tab" aria-selected="false" tabindex="-1" aria-controls="panel-quality">Quality</button>
+      <button type="button" role="tab" id="tab-choices" class="tab" aria-selected="false" tabindex="-1" aria-controls="panel-choices">Build choices</button>
+    </div>
 
-    <section class="card">
-      <div class="card-head">
-        <h2>What you control when you pick a build of one model</h2>
-        <p class="muted">One model name comes in many builds and can be run with many settings, and those choices are yours. Each bar is the largest measured effect of one choice, as a percentage. A plus is a gain and a minus is a cost or a reduction. Dashed lines are the tier edges at 5%, 30% and 100%. Each number comes from a different source and test, so the bars rank the size of the effect, not the choices against each other.</p>
-      </div>
-      <div id="rs-bars" class="bars rs-bars" role="img" aria-label="Bar chart of the largest measured effect of each build choice, as a percentage"></div>
-      <div class="legend" id="rs-legend"></div>
-    </section>
+    <div id="panel-speed" role="tabpanel" aria-labelledby="tab-speed">
+      <section class="card">
+        <div class="card-head">
+          <h2>Techniques that change speed, ranked by measured effect</h2>
+          <p class="muted">Each bar is the largest measured effect of one technique on generation speed or waiting time, as a percentage. A 2x speedup is written as +100% and 3x as +200%. The prompt caching bar is a shorter wait, and the thinking bar is a slowdown, placed by its size. Dashed lines are the tier edges at 5%, 30% and 100%. Each number comes from a different source, model and test, so the bars rank the size of the effect, not the techniques against each other.</p>
+        </div>
+        <div id="rs-bars-speed" class="bars rs-bars" role="img" aria-label="Bar chart of the largest measured effect of each technique on speed, as a percentage"></div>
+        <div class="legend" id="rs-legend-speed"></div>
+      </section>
 
-    <section class="card" id="details">
-      <div class="card-head">
-        <h2>Details and sources</h2>
-        <p class="muted">Every choice with its tier, options, what it changes, the measured effect and where the number comes from, one row per choice, ordered by tier.</p>
-      </div>
-      <div class="table-scroll">
-        <table class="rs-table">
-          <thead>
-            <tr>
-              <th scope="col">Tier</th>
-              <th scope="col">Choice</th>
-              <th scope="col">Options</th>
-              <th scope="col">What it changes</th>
-              <th scope="col">Effect</th>
-              <th scope="col">Source</th>
-            </tr>
-          </thead>
-          <tbody id="rs-rows">
-            <tr><td colspan="6" class="muted">Loading data…</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+      <section class="card" id="details-speed">
+        <div class="card-head">
+          <h2>Details and sources</h2>
+          <p class="muted">Every technique with its tier, the measured effect, what the percentage measures, the baseline and the result, the kind of evidence and where the number comes from, one row per technique, ordered by tier.</p>
+        </div>
+        <div class="table-scroll">
+          <table class="rs-table rs-table-tech">
+            <thead>
+              <tr>
+                <th scope="col">Tier</th>
+                <th scope="col">Technique</th>
+                <th scope="col">Effect</th>
+                <th scope="col">What the % measures</th>
+                <th scope="col">Baseline to result</th>
+                <th scope="col">Evidence</th>
+                <th scope="col">Source</th>
+              </tr>
+            </thead>
+            <tbody id="rs-rows-speed">
+              <tr><td colspan="7" class="muted">Loading data…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-    <section class="card prose">
-      <h2>How to use this</h2>
-      <p>The choices that change the result most are the model itself (size tier, dense or mixture of experts), the bits, thinking and a draft model. How the build was made, the harness, caching and parallel requests are mid-sized. Which runtime you use matters least. No choice falls under 5%.</p>
-      <ul class="rs-list">
-        <li><strong>Bits are the first choice.</strong> 4-bit is the usual sweet spot: about 70% less memory and more than twice the speed of 16-bit for a few percent of quality at most. 8-bit costs twice the memory of 4-bit for a gain that is hard to measure. Below 4 bits the size keeps falling but no source read here measures the quality loss, so it is not ranked.</li>
-        <li><strong>Prefer a QAT build when the developer offers one.</strong> It has the same size as any other 4-bit build and loses about half as much.</li>
-        <li><strong>If memory allows, a bigger model at 4-bit beats a smaller one at 16-bit.</strong> Size tier changes scores by tens of percent, bits by a few percent. This is LLMeter's reading of separate sources, not a single measurement.</li>
-        <li><strong>A mixture-of-experts variant buys speed, not memory.</strong> All its weights must be loaded, but only the active part computes each token.</li>
-        <li><strong>Thinking is a budget decision.</strong> It helps a capable model on hard tasks and can hurt a small one that runs out of tokens or time.</li>
-        <li><strong>Runtime, parallel requests and context length change speed and memory, not the answers.</strong> The same build scored the same in two runtimes.</li>
-      </ul>
-      <p class="muted">From the article <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/llm-performance-techniques.md#what-you-control-when-you-pick-a-build-of-one-model">What makes LLMs better, faster and cheaper: the techniques, ranked by measured effect</a>. Data file: <a href="data/llm-user-choices-2026-11-19.csv">llm-user-choices-2026-11-19.csv</a>.</p>
-    </section>
+      <section class="card prose">
+        <h2>What this shows</h2>
+        <ul class="rs-list">
+          <li><strong>Predicting several tokens at once is worth 2x to 3.6x.</strong> In speculative decoding a small draft model, or extra prediction heads, guesses several tokens that the large model then checks in one pass. The original method gives identical outputs.</li>
+          <li><strong>Diffusion models are the outlier.</strong> The 10x figure is the developer's own comparison against other companies' models, so quality is not held equal.</li>
+          <li><strong>Attention and memory engineering give 2x to 6x each.</strong> FlashAttention, paged KV-cache memory with continuous batching and latent attention all attack the same bottleneck: memory traffic, not arithmetic.</li>
+          <li><strong>Quantization speedups depend on hardware.</strong> The 2022 result was 3.25x to 4.5x. A 2024 study on current GPUs found 1.08x to 3.09x, largest on the biggest model.</li>
+          <li><strong>These gains stack only partly.</strong> They compete for the same headroom, and no source read here measures the full stack, so the percentages must not be multiplied together.</li>
+        </ul>
+        <p class="muted">From the article <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/llm-performance-techniques.md#ranking-2-speed">What makes LLMs better, faster and cheaper: the techniques, ranked by measured effect</a>. Data file: <a href="data/llm-techniques-2026-11-19.csv">llm-techniques-2026-11-19.csv</a>.</p>
+      </section>
+    </div>
+
+    <div id="panel-quality" role="tabpanel" aria-labelledby="tab-quality" hidden>
+      <section class="card">
+        <div class="card-head">
+          <h2>Techniques that change quality, ranked by measured effect</h2>
+          <p class="muted">Each bar is the largest measured effect of one technique on a benchmark score, as a percentage: the relative change in the score, so a rise from 39.2 to 79.8 is +104%. Bars with a minus sign are quality costs, placed by their size. Relative gains flatter low baselines, so the table shows the baseline and the result. Dashed lines are the tier edges at 5%, 30% and 100%. Each number comes from a different source, model and test, so the bars rank the size of the effect, not the techniques against each other.</p>
+        </div>
+        <div id="rs-bars-quality" class="bars rs-bars" role="img" aria-label="Bar chart of the largest measured effect of each technique on quality, as a percentage"></div>
+        <div class="legend" id="rs-legend-quality"></div>
+      </section>
+
+      <section class="card" id="details-quality">
+        <div class="card-head">
+          <h2>Details and sources</h2>
+          <p class="muted">Every technique with its tier, the measured effect, what the percentage measures, the baseline and the result, the kind of evidence and where the number comes from, one row per technique, ordered by tier. Smaller measurements of the same technique are listed under its largest one.</p>
+        </div>
+        <div class="table-scroll">
+          <table class="rs-table rs-table-tech">
+            <thead>
+              <tr>
+                <th scope="col">Tier</th>
+                <th scope="col">Technique</th>
+                <th scope="col">Effect</th>
+                <th scope="col">What the % measures</th>
+                <th scope="col">Baseline to result</th>
+                <th scope="col">Evidence</th>
+                <th scope="col">Source</th>
+              </tr>
+            </thead>
+            <tbody id="rs-rows-quality">
+              <tr><td colspan="7" class="muted">Loading data…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card prose">
+        <h2>What this shows</h2>
+        <ul class="rs-list">
+          <li><strong>Reasoning is the largest single lever of the last two years.</strong> The cleanest measurement is one base model with reasoning training added: its AIME 2024 score doubles, while general knowledge (MMLU) moves by about 3%.</li>
+          <li><strong>The harness matters as much as the model on agent tasks.</strong> With the model held fixed, a better agent interface raised the share of SWE-bench Lite tasks resolved from 11.0% to 18.0%.</li>
+          <li><strong>Distillation moves most of the gain into a small model.</strong> A 32B model distilled from a reasoning model reaches 91% of its score with under 5% of its parameters.</li>
+          <li><strong>Efficiency techniques are nearly free in quality.</strong> Quantizing to 8 or 4 bits keeps 96% to 101% of the full-precision score.</li>
+          <li><strong>Thinking is not always a gain.</strong> In LLMeter's local runs, turning thinking on for two small models under fixed token and time limits lowered the score by 24% to 64%.</li>
+        </ul>
+        <p class="muted">From the article <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/llm-performance-techniques.md#ranking-1-quality">What makes LLMs better, faster and cheaper: the techniques, ranked by measured effect</a>. Data file: <a href="data/llm-techniques-2026-11-19.csv">llm-techniques-2026-11-19.csv</a>.</p>
+      </section>
+    </div>
+
+    <div id="panel-choices" role="tabpanel" aria-labelledby="tab-choices" hidden>
+      <section class="card">
+        <div class="card-head">
+          <h2>What you control when you pick a build of one model</h2>
+          <p class="muted">One model name comes in many builds and can be run with many settings, and those choices are yours. Each bar is the largest measured effect of one choice, as a percentage. A plus is a gain and a minus is a cost or a reduction. Dashed lines are the tier edges at 5%, 30% and 100%. Each number comes from a different source and test, so the bars rank the size of the effect, not the choices against each other.</p>
+        </div>
+        <div id="rs-bars-choices" class="bars rs-bars" role="img" aria-label="Bar chart of the largest measured effect of each build choice, as a percentage"></div>
+        <div class="legend" id="rs-legend-choices"></div>
+      </section>
+
+      <section class="card" id="details-choices">
+        <div class="card-head">
+          <h2>Details and sources</h2>
+          <p class="muted">Every choice with its tier, options, what it changes, the measured effect and where the number comes from, one row per choice, ordered by tier.</p>
+        </div>
+        <div class="table-scroll">
+          <table class="rs-table">
+            <thead>
+              <tr>
+                <th scope="col">Tier</th>
+                <th scope="col">Choice</th>
+                <th scope="col">Options</th>
+                <th scope="col">What it changes</th>
+                <th scope="col">Effect</th>
+                <th scope="col">Source</th>
+              </tr>
+            </thead>
+            <tbody id="rs-rows-choices">
+              <tr><td colspan="6" class="muted">Loading data…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card prose">
+        <h2>How to use this</h2>
+        <p>The choices that change the result most are the model itself (size tier, dense or mixture of experts), the bits, thinking and a draft model. How the build was made, the harness, caching and parallel requests are mid-sized. Which runtime you use matters least. No choice falls under 5%.</p>
+        <ul class="rs-list">
+          <li><strong>Bits are the first choice.</strong> 4-bit is the usual sweet spot: about 70% less memory and more than twice the speed of 16-bit for a few percent of quality at most. 8-bit costs twice the memory of 4-bit for a gain that is hard to measure. Below 4 bits the size keeps falling but no source read here measures the quality loss, so it is not ranked.</li>
+          <li><strong>Prefer a QAT build when the developer offers one.</strong> It has the same size as any other 4-bit build and loses about half as much.</li>
+          <li><strong>If memory allows, a bigger model at 4-bit beats a smaller one at 16-bit.</strong> Size tier changes scores by tens of percent, bits by a few percent. This is LLMeter's reading of separate sources, not a single measurement.</li>
+          <li><strong>A mixture-of-experts variant buys speed, not memory.</strong> All its weights must be loaded, but only the active part computes each token.</li>
+          <li><strong>Thinking is a budget decision.</strong> It helps a capable model on hard tasks and can hurt a small one that runs out of tokens or time.</li>
+          <li><strong>Runtime, parallel requests and context length change speed and memory, not the answers.</strong> The same build scored the same in two runtimes.</li>
+        </ul>
+        <p class="muted">From the article <a href="https://github.com/maxgerashenko/LLMeter/blob/main/articles/llm-performance-techniques.md#what-you-control-when-you-pick-a-build-of-one-model">What makes LLMs better, faster and cheaper: the techniques, ranked by measured effect</a>. Data file: <a href="data/llm-user-choices-2026-11-19.csv">llm-user-choices-2026-11-19.csv</a>.</p>
+      </section>
+    </div>
   </main>
 
   <footer class="site-footer">

@@ -13,6 +13,13 @@
 .rs-value { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .rs-more { font-size: 12.5px; font-weight: 500; text-align: right; white-space: nowrap; }
 
+/* Speed and Quality: longer names and values than the build choices */
+.rs-tabs { margin-top: 18px; }
+.rs-plot-speed, .rs-plot-quality { --label-w: 400px; --value-w: 128px; }
+.rs-plot-speed .rs-row, .rs-plot-quality .rs-row { min-height: 32px; }
+.rs-plot-speed .rs-label, .rs-plot-quality .rs-label { white-space: normal; line-height: 1.25; font-size: 13px; }
+.rs-plot-speed .rs-name, .rs-plot-quality .rs-name { overflow: visible; }
+
 /* Details table */
 .rs-table { font-size: 13.5px; }
 .rs-table th, .rs-table td { vertical-align: top; padding: 12px 10px; }
@@ -21,6 +28,16 @@
 .rs-table thead th:nth-child(3) { width: 19%; }
 .rs-table thead th:nth-child(4) { width: 14%; }
 .rs-table thead th:nth-child(5) { width: 31%; }
+.rs-table-tech thead th:nth-child(1) { width: 8%; }
+.rs-table-tech thead th:nth-child(2) { width: 19%; }
+.rs-table-tech thead th:nth-child(3) { width: 13%; }
+.rs-table-tech thead th:nth-child(4) { width: 17%; }
+.rs-table-tech thead th:nth-child(5) { width: 25%; }
+.rs-table-tech thead th:nth-child(6) { width: 10%; }
+.rs-also { display: block; margin-top: 8px; color: var(--muted); font-size: 13px; }
+.rs-also-head { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.rs-also-item { display: block; margin-top: 3px; }
+.rs-also-item strong { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
 .rs-c-choice { font-weight: 600; }
 .rs-choice { scroll-margin-top: 112px; }
 .rs-choice:target > * { background: color-mix(in srgb, var(--accent) 9%, transparent); }
@@ -51,7 +68,7 @@
 
   .rs-choice, .rs-empty { padding: 12px 0; border-bottom: 1px solid var(--line); }
   .rs-table tbody tr:last-child { border-bottom: 0; padding-bottom: 0; }
-  .rs-choice { scroll-margin-top: 100px; }
+  .rs-choice { scroll-margin-top: 122px; }
   .rs-choice:target { margin: 0 -8px; padding-left: 8px; padding-right: 8px; border-radius: 6px; background: color-mix(in srgb, var(--accent) 9%, transparent); }
   .rs-choice:target > *, .rs-choice:target > :first-child { background: none; box-shadow: none; }
   .rs-c-tier { margin-bottom: 6px; }

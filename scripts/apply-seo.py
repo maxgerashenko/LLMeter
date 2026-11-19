@@ -7,7 +7,7 @@ import os
 DEFAULT_BASE="https://maxgerashenko.github.io/LLMeter/"
 BASE=("https://"+open("docs/CNAME").read().strip()+"/") if os.path.exists("docs/CNAME") else DEFAULT_BASE
 pages={"index.html":"","cloud.html":"cloud.html","cloud-rack.html":"cloud-rack.html","rack.html":"rack.html","runs.html":"runs.html","research.html":"research.html","intelligence.html":"intelligence.html","finance.html":"finance.html","sources.html":"sources.html"}
-h1={"index.html":"Best local AI model per tier for long coding tasks","cloud.html":"AI models ranked by Intelligence Index","cloud-rack.html":"AI scaling: cloud racks, agents served and price","rack.html":"Local AI speed on Mac and DGX Spark racks","runs.html":"Local model runs on the LLMeter coding suite","research.html":"Local AI build choices ranked by measured effect","finance.html":"AI finance: Anthropic S-1 compute spend, AI impact on GDP and software"}
+h1={"index.html":"Best local AI model per tier for long coding tasks","cloud.html":"AI models ranked by Intelligence Index","cloud-rack.html":"AI scaling: cloud racks, agents served and price","rack.html":"Local AI speed on Mac and DGX Spark racks","runs.html":"Local model runs on the LLMeter coding suite","research.html":"LLM speed and quality techniques and local build choices ranked by measured effect","finance.html":"AI finance: Anthropic S-1 compute spend, AI impact on GDP and software"}
 titles={
  "index.html":"LLMeter: best local AI model per tier for long coding tasks",
  "rack.html":"LLMeter: local AI speed in tokens per second on Mac and DGX Spark",
