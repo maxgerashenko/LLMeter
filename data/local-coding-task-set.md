@@ -4,7 +4,7 @@ Status: run rules v0.4, written 2026-11-18 (v0.4: 15-minute wall time for thinki
 
 ## Scope
 
-All text models in LM Studio and TensorFold are tested, except vision models (Qwen3-VL 8B, GLM-4.6V Flash) and the uncensored fine-tune (Qwen3.8 27B Uncensored). Video models (Wan) are not language models and are out. Model ID M05 was removed; IDs are not renumbered.
+All text models in LM Studio and TensorFold are tested, except vision models (Qwen3-VL 8B, GLM-4.6V Flash) and the uncensored fine-tune (Qwen3.8 27B Uncensored). Video models (Wan) are not language models and are out. Model IDs M03, M04, M05, M06 and M12 were removed, and IDs are not renumbered. M04 (Qwen3.6 27B) and M12 (Llama 3.1 70B) are no longer installed (checked 2026-11-18). M03 (Qwen3.8 27B, MLX 6-bit) has its files on disk, but LM Studio does not list or load it. M06 (Qwen3.6 35B A3B, GGUF) cannot be selected with `lms load`.
 
 ## Purpose
 
@@ -56,7 +56,7 @@ Typical running time is roughly total output tokens divided by (tokens per secon
 
 ## Calibration before the full run
 
-The difficulty levels above are a design intent, not a measured fact. Before testing every model, run a pilot with three models: one expected to be strong (Qwen3.8 27B), one middle (Qwen3-Coder 30B) and one weak (Llama 3.1 70B). Then adjust:
+The difficulty levels above are a design intent, not a measured fact. Before testing every model, run a pilot with three models: one expected to be strong (Qwen3.8 27B), one middle (Qwen3-Coder 30B) and one weak (Nemotron 3.5 Lightning 30B; the first choice, Llama 3.1 70B, is no longer installed). Then adjust:
 
 - A task every pilot model passes fully is too easy to separate models: keep at most two such tasks as setup checks and harden or replace the rest.
 - A task every pilot model fails fully is too hard to separate models: simplify it or add partial-credit tests.
@@ -105,9 +105,9 @@ Both apps expose an OpenAI-compatible chat API, so one runner script can send th
 
 ## Context: 80% of the maximum for each model
 
-Context comes first, parallel requests second: every model loads with 80% of its maximum context (209,715 tokens for a 262,144-token model), and then with as many parallel requests as still fit in memory (4, then 2, then 1). In the first runs Qwen3.8 27B fitted only 1 request at this context; Nemotron 3.5 Lightning fitted 4. The maximum is read from its `config.json` (`max_context_tokens` in [local-test-models.csv](local-test-models.csv): 262,144 for most Qwen models and Nemotron, 202,752 for GLM-4.7 Flash, 131,072 for Llama 3.1, 524,288 for Nanbeige). The test prompts are short, so only the reserved cache size changes, not the answers.
+Context comes first, parallel requests second: every model loads with 80% of its maximum context (209,715 tokens for a 262,144-token model), and then with as many parallel requests as still fit in memory (4, then 2, then 1). In the first runs Qwen3.8 27B fitted only 1 request at this context; Nemotron 3.5 Lightning fitted 4. The maximum is read from its `config.json` (`max_context_tokens` in [local-test-models.csv](local-test-models.csv): 262,144 for most Qwen models and Nemotron, 202,752 for GLM-4.7 Flash, 524,288 for Nanbeige). The test prompts are short, so only the reserved cache size changes, not the answers.
 
-Memory warning: the KV cache grows with context and with parallel slots. Full-attention models such as Llama 3.1 70B need about 43 GB of KV cache at 131,072 tokens, on top of 37 GB of weights, which does not fit in 64 GB if it is fully reserved. GGUF models in LM Studio reserve the whole cache at load. If a model fails to load or memory pressure appears at maximum context, lower the context in steps (halve it), and write the context actually used into the results file. The `max_parallel_64gb` column is a first guess and must be confirmed at the maximum context.
+Memory warning: the KV cache grows with context and with parallel slots. A large full-attention model can need more KV cache than fits in 64 GB next to its weights if the cache is fully reserved. GGUF models in LM Studio reserve the whole cache at load. If a model fails to load or memory pressure appears at maximum context, lower the context in steps (halve it), and write the context actually used into the results file. The `max_parallel_64gb` column is a first guess and must be confirmed at the maximum context.
 
 ## Result file columns
 
@@ -122,7 +122,8 @@ Memory warning: the KV cache grows with context and with parallel slots. Full-at
 - LM Studio, thinking off: not available. Checked on 2026-11-18 with Qwen3.8 27B in LM Studio 0.4.28: none of the request settings tried (`reasoning.effort`, `chat_template_kwargs.enable_thinking`, `enable_thinking`, `/no_think` in the prompt, `thinking_budget`) reduced the reasoning text. So in LM Studio a model with a thinking mode is run with thinking on only, and a model without one (Qwen3-Coder, Qwen3-Next) is recorded as thinking off. A thinking-off comparison between the two runtimes is therefore not possible yet.
 - LM Studio, parallel requests: with 4 requests in flight each one gets about a quarter of the speed (about 7 tokens per second for Qwen3.8 27B), so thinking-on tasks hit the 15-minute limit before the answer. Qwen3.8 27B and Nanbeige4.3 33B were therefore run again with 1 request at a time (about 16.7 and 13 tokens per second). The scores did not change (13.0 and 8.7): Qwen3.8 27B now reaches the 12,000-token limit on 8 of 10 tasks instead of the time limit, and Nanbeige4.3 33B is still too slow to produce 12,000 tokens in 15 minutes. With thinking on, the token budget, not the number of parallel requests, decides these scores; the same Qwen3.8 27B build scores 13.0 in both runtimes.
 - GLM-4.7 Flash in LM Studio: tasks q09 and q10 were interrupted by an operator mistake in the first attempt and were run again alone (2 requests in flight instead of 4). Both hit the 12,000-token limit, so the run score did not change.
-- LM Studio models that could not be run: Qwen3-Next 80B (LM Studio estimates 58.49 GiB at every context size tried, from 26,214 to 209,715 tokens, and its memory guardrail refuses the load on this 64 GB Mac); Qwen3.6 35B A3B, GGUF build (`lms load` does not find the `@q4_k_m` variant that `lms ls` lists, so only the MLX build can be loaded from the command line).
+- Qwen3-Next 80B was run with a hand-loaded model, not under the context rule. `lms load` is refused at every context size tried, from 4,096 to 209,715 tokens: LM Studio estimates 58.49 GiB each time and its memory guardrail stops the load on this 64 GB Mac. The model does load from the LM Studio app (44.86 GB), so it was loaded there by hand with a 14,604-token context and 4 parallel requests, and the runner tested that copy (`--use-loaded`). Its rows record context 14,604 and no load time. The test prompts are short, so the smaller context does not cut any prompt or answer, but the run is not a like-for-like memory or speed comparison with models loaded at 80% of their maximum context.
+- LM Studio models that could not be run: Qwen3.6 35B A3B, GGUF build (`lms load` does not find the `@q4_k_m` variant that `lms ls` lists, so only the MLX build can be loaded from the command line).
 - Measure peak memory for the whole model (the `peak_mem_gb` column is empty so far) and prompt speed (`prompt_tok_per_s`).
 - Download Nemotron 3.5 Lightning in LM Studio so M01 runs in both runtimes.
 - Add TensorFold (version 1.2.0 engine) to `RESOURCES.md` with a source link; there is no public link yet.
