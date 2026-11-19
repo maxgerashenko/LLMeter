@@ -1,17 +1,28 @@
-# Publish the website in docs/ to GitHub Pages on every push to main.
-# Requires Settings > Pages > Source: "GitHub Actions".
+# Publish the website in docs/ to GitHub Pages.
+#   - The site root is main's docs/ (rebuilt on every push to main).
+#   - Every open pull request from this repository is also published under
+#     /pr/<number>/, so its change can be opened like the real site. Closing or
+#     merging a PR removes its folder on the next deploy.
+# Requires Settings > Pages > Source: "GitHub Actions". The github-pages
+# environment must allow deployments from pull request branches (Settings >
+# Environments > github-pages > Deployment branches and tags).
 name: Deploy site to GitHub Pages
 
 on:
   push:
     branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
   workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
+  pull-requests: write
 
+# One deploy at a time. Each run rebuilds the whole site (main plus all open PRs),
+# so a skipped intermediate run loses nothing.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -24,11 +35,63 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+
       - name: Copy data files into the site
         run: ./scripts/sync-site-data.sh
+
+      - name: Build the site, main at the root and each open PR under pr/<number>/
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p _site
+          cp -r docs/. _site/
+          prs=$(gh api "repos/${{ github.repository }}/pulls?state=open&per_page=100" \
+            --jq '.[] | select(.head.repo.full_name == "${{ github.repository }}") | .number')
+          for n in $prs; do
+            git fetch -q origin "pull/$n/head:pr-$n" || continue
+            mkdir -p "_site/pr/$n"
+            git archive "pr-$n" docs | tar -x -C "_site/pr/$n" --strip-components=1
+            echo "added pr/$n"
+          done
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Comment with the live preview link
+        if: github.event_name == 'pull_request' && github.event.action != 'closed'
+        uses: actions/github-script@v7
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            if (pr.head.repo.full_name !== context.payload.repository.full_name) return;
+            const base = `${process.env.PAGE_URL.replace(/\/$/, '')}/pr/${pr.number}`;
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const marker = '<!-- llmeter-pr-preview -->';
+            const lines = [
+              marker,
+              `### Live preview for ${pr.head.sha.slice(0, 7)}`,
+              '',
+              `- [Tiers (home)](${base}/index.html)`,
+              `- [Intelligence](${base}/intelligence.html)`,
+              `- [Rack](${base}/rack.html)`,
+              `- [Runs](${base}/runs.html)`,
+              `- [Finance](${base}/finance.html)`,
+              `- [Sources](${base}/sources.html)`,
+              '',
+              `Served by GitHub Pages under \`/pr/${pr.number}/\`; it updates with each push and goes away when the PR is closed. The live site is not changed. Screenshots and the site folder are under **Artifacts** of the [PR preview run](${run}).`,
+            ];
+            const body = lines.join('\n');
+            const { owner, repo: name } = context.repo;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo: name, issue_number: pr.number });
+            const old = comments.find(c => c.body && c.body.includes(marker));
+            if (old) await github.rest.issues.updateComment({ owner, repo: name, comment_id: old.id, body });
+            else await github.rest.issues.createComment({ owner, repo: name, issue_number: pr.number, body });
