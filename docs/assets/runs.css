@@ -87,3 +87,5 @@
 .seg .tab { padding: 2px 9px; font-size: 12px; font-weight: 500; color: var(--muted); border: 1px solid var(--line-strong); border-radius: 999px; background: none; }
 .seg .tab:hover { color: var(--text); }
 .seg .tab[aria-checked="true"] { background: var(--track); color: var(--text); font-weight: 600; border-color: var(--muted); }
+.runs-settings { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 16px; margin-left: auto; }
+.runs-settings .priority-switch { margin: 0 0 8px; }

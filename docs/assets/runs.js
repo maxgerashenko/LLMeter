@@ -24,6 +24,7 @@
   ];
   var DEFAULT_HW = "MacBook Pro M5 Pro, 64 GB";
   var metric = "speed";
+  var thinkFilter = "all"; // all | on | off: which runs the charts show
   var view = "speed"; // which chart is open; the priority one first
   var state = { runs: [], planned: [] };
 
@@ -132,7 +133,9 @@
     var box = document.getElementById("runs-bars"); box.textContent = "";
     var order = metric === "score" ? ["score", "speed"] : ["speed", "score"];
     var pri = METRICS[order[0]];
-    var shown = state.runs.filter(function (r) { return r[pri.key] != null; });
+    var shown = state.runs.filter(function (r) {
+      return r[pri.key] != null && (thinkFilter === "all" || (thinkFilter === "on") === r.think);
+    });
     function rank(rt) {
       return shown.filter(function (r) { return r.rt === rt.name; }).sort(function (a, b) { return b[pri.key] - a[pri.key]; });
     }
@@ -283,8 +286,18 @@
     }
   }
 
+  function setupThinking() {
+    var btns = document.querySelectorAll(".runs-think .tab");
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener("click", function () {
+        Array.prototype.forEach.call(btns, function (x) { var on = x === b; x.setAttribute("aria-checked", on); x.tabIndex = on ? 0 : -1; });
+        thinkFilter = b.getAttribute("data-think"); drawBars();
+      });
+    });
+  }
+
   function get(url) { return fetch(url, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(url + " " + r.status); return r.text(); }); }
-  setupTabs();
+  setupTabs(); setupThinking();
   Promise.all([get(MODELS_URL), get(RESULTS_URL).catch(function () { return ""; })]).then(function (t) {
     state.planned = parseCSV(t[0]);
     state.runs = buildRuns(parseCSV(t[1]), state.planned);
