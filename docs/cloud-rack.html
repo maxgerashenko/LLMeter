@@ -39,14 +39,15 @@
             <tr>
               <th scope="col" class="sortable" data-key="name" aria-sort="none"><button type="button">Name</button></th>
               <th scope="col" class="num sortable" data-key="price_usd" aria-sort="none"><button type="button">Price</button></th>
+              <th scope="col" class="num sortable" data-key="rent_usd_hr" aria-sort="none"><button type="button">Rent ($/hr)</button></th>
+              <th scope="col" class="num sortable" data-key="agents_1m" aria-sort="none"><button type="button">Coding agents (1M ctx)</button></th>
               <th scope="col" class="num sortable" data-key="memory_gb" aria-sort="none"><button type="button">Memory (GB)</button></th>
               <th scope="col" class="num sortable" data-key="bandwidth_tbs" aria-sort="none"><button type="button">Bandwidth (TB/s)</button></th>
-              <th scope="col" class="num sortable" data-key="agents_low" aria-sort="none"><button type="button">Coding agents (full ctx)</button></th>
               <th scope="col" class="num sortable" data-key="tok_s" aria-sort="none"><button type="button">Total (T/s)</button></th>
               <th scope="col" class="num sortable" data-key="per_agent" aria-sort="none"><button type="button">Per agent (T/s)</button></th>
             </tr>
           </thead>
-          <tbody id="cr-rows"><tr><td colspan="7" class="muted">Loading data…</td></tr></tbody>
+          <tbody id="cr-rows"><tr><td colspan="8" class="muted">Loading data…</td></tr></tbody>
         </table>
       </div>
       <div class="note" id="cr-basis"></div>
@@ -58,7 +59,7 @@
   <footer class="site-footer">
     <div class="wrap">
       <p>
-        Specs and prices from the sources linked in each row, read 2026-11-18. Prices are street or analyst figures, not vendor list prices, unless marked otherwise.
+        Specs and prices from the sources linked in each row, read 2026-11-18. Prices are street or analyst figures, not vendor list prices, unless marked otherwise. Rent is the cheapest listed on-demand rate per GPU-hour times the GPUs in the rack, so it is the hourly cost of the whole rack; AMD publishes no purchase price.
         LLMeter is an independent project, <a href="https://github.com/maxgerashenko/LLMeter">source on GitHub</a>.
       </p>
     </div>
