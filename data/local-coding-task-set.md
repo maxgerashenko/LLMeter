@@ -4,7 +4,7 @@ Status: run rules v0.4, written 2026-11-18 (v0.4: 15-minute wall time for thinki
 
 ## Scope
 
-All text models in LM Studio and TensorFold are tested, except vision models (Qwen3-VL 8B, GLM-4.6V Flash) and the uncensored fine-tune (Qwen3.8 27B Uncensored). Video models (Wan) are not language models and are out. Model IDs M04 (Qwen3.6 27B), M05 and M12 (Llama 3.1 70B) were removed: M04 and M12 are no longer installed (checked 2026-11-18). IDs are not renumbered.
+All text models in LM Studio and TensorFold are tested, except vision models (Qwen3-VL 8B, GLM-4.6V Flash) and the uncensored fine-tune (Qwen3.8 27B Uncensored). Video models (Wan) are not language models and are out. Model IDs M03, M04, M05, M06 and M12 were removed, and IDs are not renumbered. M04 (Qwen3.6 27B) and M12 (Llama 3.1 70B) are no longer installed (checked 2026-11-18). M03 (Qwen3.8 27B, MLX 6-bit) has its files on disk, but LM Studio does not list or load it. M06 (Qwen3.6 35B A3B, GGUF) cannot be selected with `lms load`.
 
 ## Purpose
 
