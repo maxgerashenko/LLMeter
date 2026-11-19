@@ -33,6 +33,7 @@
 #panel-economy .sw { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-right: 8px; vertical-align: -1px; }
 #panel-economy .trio { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.1fr) minmax(0, 1fr); gap: 20px; align-items: center; }
 #panel-economy .pfig { margin: 0; display: grid; gap: 8px; justify-items: center; min-width: 0; }
+#panel-economy .trio .pfig { align-self: start; }
 #panel-economy .pfig figcaption { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 #panel-economy .trio .pie { max-width: 280px; }
 #panel-economy .glegend { display: grid; gap: 4px; font-size: 12.5px; font-weight: 600; }
