@@ -75,14 +75,14 @@
         Score is the weighted share of hidden tests passed, 0 to 100. Tokens/sec is the average generation speed across the run's tasks.
         Limits per task: 4,000 output tokens and 5 minutes with thinking off; 12,000 tokens (thinking included) and 15 minutes with thinking on. An answer cut off at a limit scores 0, so a low thinking-on score can mean the model spent its budget on thinking, not that its answer was wrong.
         Results are read from <a href="https://github.com/maxgerashenko/LLMeter/blob/main/data/local-runtime-results.csv">data/local-runtime-results.csv</a> (one row per task) and the model list from <a href="https://github.com/maxgerashenko/LLMeter/blob/main/data/local-test-models.csv">data/local-test-models.csv</a>;
-        a row marked <em>planned</em> has not been run yet and has no numbers.
+        a row marked <em>planned</em>, <em>not installed</em> or <em>cannot run</em> has no numbers; the reason a model cannot run is in the model list.
       </p>
     </section>
 
     <section class="card" id="tasks-card" aria-labelledby="runs-tasks-h" hidden>
       <div class="card-head">
         <h2 id="runs-tasks-h">Result per task</h2>
-        <p class="muted">One column per run, best first. Each cell is the share of the hidden tests gained over the starter files, with the tests passed under it. An answer cut off at the token limit ("truncated") or the time limit ("timeout") scores 0. "error" means the run itself was interrupted, so that cell is not a result of the model and the task will be run again.</p>
+        <p class="muted">One column per run, best first. Each cell is the share of the hidden tests gained over the starter files, with the tests passed under it. An answer cut off at the token limit ("truncated") or the time limit ("timeout") scores 0.</p>
       </div>
       <div class="table-scroll"><table class="data-table task-table" id="task-table"></table></div>
     </section>
