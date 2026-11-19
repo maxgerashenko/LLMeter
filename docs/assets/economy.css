@@ -41,7 +41,7 @@
 #panel-economy .glegend i { display: inline-block; width: 22px; height: 0; border-top: 4px solid var(--text); border-radius: 2px; flex: none; }
 #panel-economy .glegend i.gl-dash { border-top: 4px dotted var(--muted); }
 @media (max-width: 980px) { #panel-economy .trio { grid-template-columns: 1fr 1fr; } #panel-economy .trio .tcell { grid-column: 1 / -1; order: 3; } #panel-economy .dual { min-width: 540px; } }
-@media (max-width: 520px) { #panel-economy .trio .pie { max-width: 200px; } }
+@media (max-width: 520px) { #panel-economy .trio .pie { max-width: 200px; } #panel-economy .trio .pfig figcaption { min-height: 2.5em; line-height: 1.25; text-align: center; } }
 #panel-economy .dual td, #panel-economy .dual th { padding: 6px 6px; }
 #panel-economy .dual td.xnm, #panel-economy .dual th.xnm { text-align: center; }
 #panel-economy .dual td.xnm { font-size: 13px; }
