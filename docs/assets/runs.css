@@ -58,3 +58,7 @@
   .task-table thead th:first-child { min-width: 0; }
   .task-title { display: none !important; }
 }
+
+.rb-chart + .rb-chart { margin-top: 28px; }
+.rb-chart-title { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+.rb-chart .rb-panel { margin-top: 12px; }
