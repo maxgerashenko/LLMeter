@@ -21,8 +21,17 @@ The agent's replies are not saved here; the article and the data file are their 
    > like take more queaties take mxi of erxtrs and soon on
    > thinsk that aree under the condtorl fo rhte use hwen her seclt diffet coffso lke format qat mxi and so on
 
+3. > sperate each talbe gy order of magintede
+   > less tehe 5%
+   > let 30%
+   > let htsn 100%
+   > ne more that 100%
+   > tiesr 1 is 5 then soo on
+
 ## How it was read
 
 Research every technique that changes LLM performance, in top open-weight and top closed frontier models, and put a percentage on each one, ranked from the largest down. The examples given were read as quantization, mixture of experts, routing, and predictive methods (speculative decoding and multi-token prediction). The result was to be a Markdown article in the repository, to become a website page later.
 
 The second prompt was read as: add a table of the things a user controls when choosing among builds of the same model (quantization level, QAT, mixture-of-experts variant, format and similar), with the effect of each.
+
+The third prompt was read as: split each table into tiers by the size of the effect, Tier 1 under 5%, Tier 2 under 30%, Tier 3 under 100%, Tier 4 over 100%.
