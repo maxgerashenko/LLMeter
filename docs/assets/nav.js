@@ -10,7 +10,7 @@
       ["Runs", "runs.html", "runs"],
       ["Build", "research.html", "research"]
     ],
-    cloud: [["All", "cloud.html", "cloud"], ["Intelligence", "intelligence.html", "intelligence"], ["Rack", "cloud-rack.html", "cloud-rack"]],
+    cloud: [["All", "cloud.html", "cloud"], ["Rack", "cloud-rack.html", "cloud-rack"]],
     finance: [
       ["GDP", "finance.html#gdp", "finance"],
       ["Software", "finance.html#software", "finance"],
@@ -18,10 +18,11 @@
     ],
     research: [
       ["Speed", "techniques.html#speed", "techniques"],
-      ["Quality", "techniques.html#quality", "techniques"]
+      ["Quality", "techniques.html#quality", "techniques"],
+      ["Horizon", "horizon.html", "horizon"]
     ]
   };
-  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", research: "local", intelligence: "cloud", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", techniques: "research", sources: "sources" };
+  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", research: "local", horizon: "research", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", techniques: "research", sources: "sources" };
 
   var page = (location.pathname.split("/").pop() || "index.html").replace(/\.html$/, "") || "index";
   var section = PAGE_SECTION[page];
