@@ -4,7 +4,7 @@ Status: run rules v0.4, written 2026-11-18 (v0.4: 15-minute wall time for thinki
 
 ## Scope
 
-All text models in LM Studio and TensorFold are tested, except vision models (Qwen3-VL 8B, GLM-4.6V Flash) and the uncensored fine-tune (Qwen3.8 27B Uncensored). Video models (Wan) are not language models and are out. Model ID M05 was removed; IDs are not renumbered.
+All text models in LM Studio and TensorFold are tested, except vision models (Qwen3-VL 8B, GLM-4.6V Flash) and the uncensored fine-tune (Qwen3.8 27B Uncensored). Video models (Wan) are not language models and are out. Model IDs M04 (Qwen3.6 27B), M05 and M12 (Llama 3.1 70B) were removed: M04 and M12 are no longer installed (checked 2026-11-18). IDs are not renumbered.
 
 ## Purpose
 
@@ -56,7 +56,7 @@ Typical running time is roughly total output tokens divided by (tokens per secon
 
 ## Calibration before the full run
 
-The difficulty levels above are a design intent, not a measured fact. Before testing every model, run a pilot with three models: one expected to be strong (Qwen3.8 27B), one middle (Qwen3-Coder 30B) and one weak (Llama 3.1 70B). Then adjust:
+The difficulty levels above are a design intent, not a measured fact. Before testing every model, run a pilot with three models: one expected to be strong (Qwen3.8 27B), one middle (Qwen3-Coder 30B) and one weak (Nemotron 3.5 Lightning 30B; the first choice, Llama 3.1 70B, is no longer installed). Then adjust:
 
 - A task every pilot model passes fully is too easy to separate models: keep at most two such tasks as setup checks and harden or replace the rest.
 - A task every pilot model fails fully is too hard to separate models: simplify it or add partial-credit tests.
@@ -105,9 +105,9 @@ Both apps expose an OpenAI-compatible chat API, so one runner script can send th
 
 ## Context: 80% of the maximum for each model
 
-Context comes first, parallel requests second: every model loads with 80% of its maximum context (209,715 tokens for a 262,144-token model), and then with as many parallel requests as still fit in memory (4, then 2, then 1). In the first runs Qwen3.8 27B fitted only 1 request at this context; Nemotron 3.5 Lightning fitted 4. The maximum is read from its `config.json` (`max_context_tokens` in [local-test-models.csv](local-test-models.csv): 262,144 for most Qwen models and Nemotron, 202,752 for GLM-4.7 Flash, 131,072 for Llama 3.1, 524,288 for Nanbeige). The test prompts are short, so only the reserved cache size changes, not the answers.
+Context comes first, parallel requests second: every model loads with 80% of its maximum context (209,715 tokens for a 262,144-token model), and then with as many parallel requests as still fit in memory (4, then 2, then 1). In the first runs Qwen3.8 27B fitted only 1 request at this context; Nemotron 3.5 Lightning fitted 4. The maximum is read from its `config.json` (`max_context_tokens` in [local-test-models.csv](local-test-models.csv): 262,144 for most Qwen models and Nemotron, 202,752 for GLM-4.7 Flash, 524,288 for Nanbeige). The test prompts are short, so only the reserved cache size changes, not the answers.
 
-Memory warning: the KV cache grows with context and with parallel slots. Full-attention models such as Llama 3.1 70B need about 43 GB of KV cache at 131,072 tokens, on top of 37 GB of weights, which does not fit in 64 GB if it is fully reserved. GGUF models in LM Studio reserve the whole cache at load. If a model fails to load or memory pressure appears at maximum context, lower the context in steps (halve it), and write the context actually used into the results file. The `max_parallel_64gb` column is a first guess and must be confirmed at the maximum context.
+Memory warning: the KV cache grows with context and with parallel slots. A large full-attention model can need more KV cache than fits in 64 GB next to its weights if the cache is fully reserved. GGUF models in LM Studio reserve the whole cache at load. If a model fails to load or memory pressure appears at maximum context, lower the context in steps (halve it), and write the context actually used into the results file. The `max_parallel_64gb` column is a first guess and must be confirmed at the maximum context.
 
 ## Result file columns
 
