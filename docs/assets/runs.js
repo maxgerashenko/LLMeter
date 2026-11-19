@@ -137,9 +137,7 @@
         list.appendChild(el("div", { cls: "rb-row" }, [
           label(Object.assign({}, r, { runtime: "" })),
           el("div", { cls: "rb-track" }, [el("span", { cls: "rb-bar" + (r.think ? " think-on" : ""), style: "width:" + pct.toFixed(1) + "%" })]),
-          metric === "score"
-            ? el("div", { cls: "rb-value", text: fmt(r.score, 1) + " points" })
-            : el("div", { cls: "rb-value" }, [fmt(r.tok, 1), el("span", { cls: "rb-unit", text: "tok/sec" })])
+          el("div", { cls: "rb-value" }, [metric === "score" ? fmt(r.score, 1) : fmt(r.tok, 1), el("span", { cls: "rb-unit", text: metric === "score" ? "points" : "tok/sec" })])
         ]));
       });
       if (!runs.length) list.appendChild(el("p", { cls: "muted", text: "No runs in " + rt.name + " yet." }));
