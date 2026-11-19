@@ -72,8 +72,7 @@
     var urls = c.source_url ? c.source_url.split(/;\s*/) : [];
     var out = [];
     urls.forEach(function (u, i) {
-      if (i) out.push(", ");
-      out.push(el("a", { class: "rs-source", href: href(u), title: names[i] || null, "aria-label": "Source: " + (names[i] || "link"), text: urls.length > 1 ? "source " + (i + 1) : "source" }));
+      out.push(el("a", { class: "rs-source", href: href(u), title: (names[i] || "source") + ". Evidence: " + c.evidence, "aria-label": "Source: " + (names[i] || "link"), text: urls.length > 1 ? "source " + (i + 1) : "source" }));
     });
     return out;
   }
@@ -132,8 +131,7 @@
           el("span", { class: "rs-effect-text", text: c.effect.replace(/ -> /g, " to ") })
         ]),
         el("td", { "data-label": "Source", class: "rs-c-source" }, [
-          el("span", { class: "rs-src" }, src.length ? src : ["none"]),
-          el("span", { class: "rs-evidence", text: "Evidence: " + c.evidence })
+          el("span", { class: "rs-src" }, src.length ? src : [el("span", { class: "muted", title: "Evidence: " + c.evidence, text: "none" })])
         ])
       ]));
     });
