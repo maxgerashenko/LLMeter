@@ -40,6 +40,7 @@
         <a href="./" data-section="local">Local</a>
         <a href="cloud.html" data-section="cloud">Cloud</a>
         <a href="finance.html#gdp" data-section="finance">Finance</a>
+        <a href="techniques.html#speed" data-section="research">Research</a>
         <a href="sources.html" data-section="sources" class="nav-minor">Sources</a>
       </nav>
     </div>
@@ -55,8 +56,8 @@
         <h2>What you control when you pick a build of one model</h2>
         <p class="muted">One model name comes in many builds and can be run with many settings, and those choices are yours. Each bar is the largest measured effect of one choice, as a percentage. A plus is a gain and a minus is a cost or a reduction. Dashed lines are the tier edges at 5%, 30% and 100%. Each number comes from a different source and test, so the bars rank the size of the effect, not the choices against each other.</p>
       </div>
-      <div id="rs-bars" class="bars rs-bars" role="img" aria-label="Bar chart of the largest measured effect of each build choice, as a percentage"></div>
-      <div class="legend" id="rs-legend"></div>
+      <div id="rs-bars-choices" class="bars rs-bars" role="img" aria-label="Bar chart of the largest measured effect of each build choice, as a percentage"></div>
+      <div class="legend" id="rs-legend-choices"></div>
     </section>
 
     <section class="card" id="details">
@@ -76,7 +77,7 @@
               <th scope="col">Source</th>
             </tr>
           </thead>
-          <tbody id="rs-rows">
+          <tbody id="rs-rows-choices">
             <tr><td colspan="6" class="muted">Loading data…</td></tr>
           </tbody>
         </table>
