@@ -5,7 +5,7 @@ import { chromium, devices } from 'playwright';
 import { mkdirSync } from 'node:fs';
 
 const [base = 'http://localhost:8000', out = 'preview-screenshots'] = process.argv.slice(2);
-const pages = ['index', 'intelligence', 'rack', 'runs', 'finance', 'sources'];
+const pages = ['index', 'intelligence', 'rack', 'runs', 'research', 'finance', 'sources'];
 const views = {
   desktop: { viewport: { width: 1280, height: 800 } },
   phone: devices['iPhone 13'],

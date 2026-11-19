@@ -7,7 +7,8 @@
       ["Top Tier", "./#top", "index"],
       ["All Tier", "./#all", "index"],
       ["Rack", "rack.html", "rack"],
-      ["Runs", "runs.html", "runs"]
+      ["Runs", "runs.html", "runs"],
+      ["Research", "research.html", "research"]
     ],
     cloud: [["All", "cloud.html", "cloud"], ["Intelligence", "intelligence.html", "intelligence"], ["Rack", "cloud-rack.html", "cloud-rack"]],
     finance: [
@@ -16,7 +17,7 @@
       ["Anthropic S-1", "finance.html#anthropic-s1", "finance"]
     ]
   };
-  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", intelligence: "cloud", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", sources: "sources" };
+  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", research: "local", intelligence: "cloud", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", sources: "sources" };
 
   var page = (location.pathname.split("/").pop() || "index.html").replace(/\.html$/, "") || "index";
   var section = PAGE_SECTION[page];
