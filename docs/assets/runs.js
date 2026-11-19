@@ -267,7 +267,7 @@
       });
     });
     function select(t) {
-      Array.prototype.forEach.call(tabs, function (x) { var on = x === t; x.setAttribute("aria-selected", on); x.tabIndex = on ? 0 : -1; });
+      Array.prototype.forEach.call(tabs, function (x) { var on = x === t; x.setAttribute("aria-checked", on); x.tabIndex = on ? 0 : -1; });
       metric = t.getAttribute("data-metric"); drawBars(); summary();
     }
   }
