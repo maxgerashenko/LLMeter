@@ -66,13 +66,14 @@
     if (/^https?:/.test(u)) return u;
     return /^data\/[^/]+\.(csv|json)$/.test(u) ? u : REPO + u;
   }
+  // Short "source" links (numbered when a row has several); the full name is the hover title.
   function sourceLinks(c) {
     var names = c.source ? c.source.split(/;\s*/) : [];
     var urls = c.source_url ? c.source_url.split(/;\s*/) : [];
     var out = [];
-    names.forEach(function (n, i) {
+    urls.forEach(function (u, i) {
       if (i) out.push(", ");
-      out.push(urls[i] ? el("a", { href: href(urls[i]), text: n }) : n);
+      out.push(el("a", { class: "rs-source", href: href(u), title: names[i] || null, "aria-label": "Source: " + (names[i] || "link"), text: urls.length > 1 ? "source " + (i + 1) : "source" }));
     });
     return out;
   }
