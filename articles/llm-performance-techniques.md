@@ -216,22 +216,45 @@ So for closed models this article can rank only what is visible from outside: re
 
 ## What you control when you pick a build of one model
 
-Most of the techniques above are fixed by the developer. But one model name usually comes in many builds and can be run with many settings, and those choices are yours. This table lists them with the effect of each, ordered by the same tiers (Tier 4 is an effect over 100%, Tier 1 under 5%), using the largest measured effect of each choice. Data file: [data/llm-user-choices-2026-11-19.csv](../data/llm-user-choices-2026-11-19.csv).
+Most of the techniques above are fixed by the developer. But one model name usually comes in many builds and can be run with many settings, and those choices are yours. This table lists them with the effect of each, split into the same four tiers. A choice is placed by its largest measured effect. Data file: [data/llm-user-choices-2026-11-19.csv](../data/llm-user-choices-2026-11-19.csv).
 
-| Choice | Tier | Options | What it changes | Effect | Evidence | Source |
-| --- | --- | --- | --- | --- | --- | --- |
-| **Weight precision (bits)** | 4 | 16-bit, 8-bit, 6-bit, 5-bit, 4-bit, 3-bit and lower | Memory, speed; small quality loss | 16-bit to 4-bit (Q4_K_M): size 14.96 to 4.58 GiB (-69%), generation 29.2 to 71.9 tok/s (+147%). 16-bit to 8-bit: -47% size, +75% speed. Quality kept: 96% to 101% at 8-bit and 4-bit | measured (Llama 3.1 8B; Llama 3.1 8B to 405B) | [llama.cpp quantize README](https://github.com/ggml-org/llama.cpp/blob/master/tools/quantize/README.md), ["Give Me BF16 or Give Me Death"?](https://arxiv.org/abs/2411.02355) |
-| **Dense or mixture-of-experts variant** | 4 | Dense model, or MoE with few active parameters (for example 30B with 3B active) | Speed at similar memory; quality differs by model | On one MacBook Pro M5 Pro at 4-bit: MoE models with 3B active ran at 32 to 48 tok/s, the dense 27B at 16 tok/s (2x to 3x) | LLMeter runs (different models) | [LLMeter local runs](../data/local-runtime-results.csv) |
-| **Size tier of the same family** | 4 | Smaller or larger model of one family, including distilled versions | Quality against memory and speed | DeepSeek-R1 distills on AIME 2024: 1.5B 28.9, 7B 55.5, 14B 69.7, 32B 72.6, full model 79.8 | measured | [DeepSeek-R1 model card](https://github.com/deepseek-ai/DeepSeek-R1) |
-| **Thinking on or off, or effort level** | 4 | Off, on, or low to maximum effort | Quality on hard tasks; tokens and time | Gains up to +104% on hard math for a model trained for it. On two small local models under fixed limits: score -24% to -64%, 6x to 8x the tokens, 8x to 9x the time | measured; LLMeter runs | [DeepSeek-R1 model card](https://github.com/deepseek-ai/DeepSeek-R1), [LLMeter local runs](../data/local-runtime-results.csv) |
-| **Draft model for speculative decoding** | 4 | Off, or a small model of the same family as draft | Speed; output unchanged | 2x to 3x in the original paper; not yet measured by LLMeter | measured (paper) | [Speculative Decoding (Leviathan et al.)](https://arxiv.org/abs/2211.17192) |
-| **How the low-bit build was made** | 3 | Plain post-training quantization, calibrated (importance matrix, GPTQ, AWQ), or quantization-aware training (QAT) by the developer | Quality at the same size | QAT: 54% less perplexity loss at 4-bit, same memory as any 4-bit build (Gemma 3 27B: 54 GB to 14.1 GB) | developer claim | [Gemma 3 QAT (Google)](https://developers.googleblog.com/en/gemma-3-quantized-aware-trained-state-of-the-art-ai-to-consumer-gpus/) |
-| **Parallel requests** | 3 | 1 to 4 or more at once | Total throughput against speed of each request; memory | Qwen3.8 27B: 16.7 to 11.1 tok/s per request at 4 in flight (-34%); Nanbeige4.3 33B: 13.6 to 6.9 (-49%). Each slot adds KV cache memory | LLMeter runs | [LLMeter local runs](../data/local-runtime-results.csv) |
-| **Prompt caching** | 3 | Keep a repeated prefix cached (default in most local runtimes; a priced option in cloud APIs) | Waiting time and input cost | -31% to -79% time to first token; cached input at 10% of the normal price | developer claim | [Anthropic: Prompt caching with Claude](https://claude.com/blog/prompt-caching) |
-| **Harness around the model** | 3 | Chat window, plain shell agent, or a coding agent with purpose-built tools | Quality on agent tasks | +64% on SWE-bench Lite for the same model (11.0 to 18.0) | measured | [SWE-agent (Yang et al.)](https://arxiv.org/abs/2405.15793) |
-| **Runtime** | 2 | LM Studio, TensorFold, llama.cpp, vLLM and others | Speed, which models load at all | Same Qwen3.8 27B 4-bit build: 16.7 tok/s in LM Studio, 15.2 in TensorFold (10% apart), same score. Several MoE models were not served by one of the two runtimes | LLMeter runs | [LLMeter local runs](../data/local-runtime-results.csv) |
-| **File format** | not measured | MLX (Apple), GGUF (llama.cpp), safetensors (GPU servers) | Which runtime and hardware can use it; speed | Not measured here: all LLMeter runs so far use MLX builds | not measured |  |
-| **Context length loaded** | not measured | From a few thousand tokens to the model maximum | Memory (KV cache), not answer quality on short prompts | Qwen3-Next 80B was refused at every context tried on a 64 GB Mac by the memory estimate (58.5 GiB) although its weights are about 40 GiB | LLMeter runs | [LLMeter task set notes](../data/local-coding-task-set.md) |
+### Tier 4: more than 100%
+
+| Choice | Options | What it changes | Effect | Evidence | Source |
+| --- | --- | --- | --- | --- | --- |
+| **Weight precision (bits)** | 16-bit, 8-bit, 6-bit, 5-bit, 4-bit, 3-bit and lower | Memory, speed; small quality loss | 16-bit to 4-bit (Q4_K_M): size 14.96 to 4.58 GiB (-69%), generation 29.2 to 71.9 tok/s (+147%). 16-bit to 8-bit: -47% size, +75% speed. Quality kept: 96% to 101% at 8-bit and 4-bit | measured (Llama 3.1 8B; Llama 3.1 8B to 405B) | [llama.cpp quantize README](https://github.com/ggml-org/llama.cpp/blob/master/tools/quantize/README.md), ["Give Me BF16 or Give Me Death"?](https://arxiv.org/abs/2411.02355) |
+| **Dense or mixture-of-experts variant** | Dense model, or MoE with few active parameters (for example 30B with 3B active) | Speed at similar memory; quality differs by model | On one MacBook Pro M5 Pro at 4-bit: MoE models with 3B active ran at 32 to 48 tok/s, the dense 27B at 16 tok/s (2x to 3x) | LLMeter runs (different models) | [LLMeter local runs](../data/local-runtime-results.csv) |
+| **Size tier of the same family** | Smaller or larger model of one family, including distilled versions | Quality against memory and speed | DeepSeek-R1 distills on AIME 2024: 1.5B 28.9, 7B 55.5, 14B 69.7, 32B 72.6, full model 79.8 | measured | [DeepSeek-R1 model card](https://github.com/deepseek-ai/DeepSeek-R1) |
+| **Thinking on or off, or effort level** | Off, on, or low to maximum effort | Quality on hard tasks; tokens and time | Gains up to +104% on hard math for a model trained for it. On two small local models under fixed limits: score -24% to -64%, 6x to 8x the tokens, 8x to 9x the time | measured; LLMeter runs | [DeepSeek-R1 model card](https://github.com/deepseek-ai/DeepSeek-R1), [LLMeter local runs](../data/local-runtime-results.csv) |
+| **Draft model for speculative decoding** | Off, or a small model of the same family as draft | Speed; output unchanged | 2x to 3x in the original paper; not yet measured by LLMeter | measured (paper) | [Speculative Decoding (Leviathan et al.)](https://arxiv.org/abs/2211.17192) |
+
+### Tier 3: 30% to 100%
+
+| Choice | Options | What it changes | Effect | Evidence | Source |
+| --- | --- | --- | --- | --- | --- |
+| **How the low-bit build was made** | Plain post-training quantization, calibrated (importance matrix, GPTQ, AWQ), or quantization-aware training (QAT) by the developer | Quality at the same size | QAT: 54% less perplexity loss at 4-bit, same memory as any 4-bit build (Gemma 3 27B: 54 GB to 14.1 GB) | developer claim | [Gemma 3 QAT (Google)](https://developers.googleblog.com/en/gemma-3-quantized-aware-trained-state-of-the-art-ai-to-consumer-gpus/) |
+| **Parallel requests** | 1 to 4 or more at once | Total throughput against speed of each request; memory | Qwen3.8 27B: 16.7 to 11.1 tok/s per request at 4 in flight (-34%); Nanbeige4.3 33B: 13.6 to 6.9 (-49%). Each slot adds KV cache memory | LLMeter runs | [LLMeter local runs](../data/local-runtime-results.csv) |
+| **Prompt caching** | Keep a repeated prefix cached (default in most local runtimes; a priced option in cloud APIs) | Waiting time and input cost | -31% to -79% time to first token; cached input at 10% of the normal price | developer claim | [Anthropic: Prompt caching with Claude](https://claude.com/blog/prompt-caching) |
+| **Harness around the model** | Chat window, plain shell agent, or a coding agent with purpose-built tools | Quality on agent tasks | +64% on SWE-bench Lite for the same model (11.0 to 18.0) | measured | [SWE-agent (Yang et al.)](https://arxiv.org/abs/2405.15793) |
+
+### Tier 2: 5% to 30%
+
+| Choice | Options | What it changes | Effect | Evidence | Source |
+| --- | --- | --- | --- | --- | --- |
+| **Runtime** | LM Studio, TensorFold, llama.cpp, vLLM and others | Speed, which models load at all | Same Qwen3.8 27B 4-bit build: 16.7 tok/s in LM Studio, 15.2 in TensorFold (10% apart), same score. Several MoE models were not served by one of the two runtimes | LLMeter runs | [LLMeter local runs](../data/local-runtime-results.csv) |
+
+### Tier 1: less than 5%
+
+No choice in this tier.
+
+### Not measured yet
+
+| Choice | Options | What it changes | Effect | Evidence | Source |
+| --- | --- | --- | --- | --- | --- |
+| **File format** | MLX (Apple), GGUF (llama.cpp), safetensors (GPU servers) | Which runtime and hardware can use it; speed | Not measured here: all LLMeter runs so far use MLX builds | not measured |  |
+| **Context length loaded** | From a few thousand tokens to the model maximum | Memory (KV cache), not answer quality on short prompts | Qwen3-Next 80B was refused at every context tried on a 64 GB Mac by the memory estimate (58.5 GiB) although its weights are about 40 GiB | LLMeter runs | [LLMeter task set notes](../data/local-coding-task-set.md) |
+
+What the tiers say: the choices that change the result most are the model itself (size tier, dense or mixture of experts), the bits, thinking and a draft model. How the build was made, the harness, caching and parallel requests are mid-sized. Which runtime you use matters least. No choice falls under 5%.
 
 How to use this:
 
