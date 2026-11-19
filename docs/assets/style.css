@@ -308,3 +308,6 @@ section[hidden] { display: none; }
   .subnav-inner a { padding: 8px 12px; font-size: 13.5px; }
   .subnav-inner a:first-child { margin-left: -12px; }
 }
+
+/* Visually hidden text (kept for search engines and screen readers) */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
