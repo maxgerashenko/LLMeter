@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LLMeter: trillion-dollar companies, jobs per dollar of value and margins</title>
-  <meta name="description" content="The US companies worth over $1 trillion ranked by employees per $1 billion of market value, with revenue, profit margin and profit per employee, against Ford, GM, JPMorgan and Anthropic, and an estimate of what paying profit out as wages would change.">
+  <meta name="description" content="The US companies worth over $1 trillion ranked by employees per $1 billion of market value, with revenue, profit margin and profit per employee, including Anthropic after its IPO, against Ford, GM and JPMorgan, and an estimate of what paying profit out as wages would change.">
   <!-- seo:start -->
   <link rel="canonical" href="https://maxgerashenko.github.io/LLMeter/jobs.html">
   <meta name="robots" content="index, follow, max-image-preview:large">
@@ -12,7 +12,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="LLMeter">
   <meta property="og:title" content="LLMeter: trillion-dollar companies, jobs per dollar of value and margins">
-  <meta property="og:description" content="The US companies worth over $1 trillion ranked by employees per $1 billion of market value, with revenue, profit margin and profit per employee, against Ford, GM, JPMorgan and Anthropic, and an estimate of what paying profit out as wages would change.">
+  <meta property="og:description" content="The US companies worth over $1 trillion ranked by employees per $1 billion of market value, with revenue, profit margin and profit per employee, including Anthropic after its IPO, against Ford, GM and JPMorgan, and an estimate of what paying profit out as wages would change.">
   <meta property="og:url" content="https://maxgerashenko.github.io/LLMeter/jobs.html">
   <meta property="og:image" content="https://maxgerashenko.github.io/LLMeter/assets/og.png">
   <meta property="og:image:width" content="1200">
@@ -20,9 +20,9 @@
   <meta property="og:image:alt" content="LLMeter: measuring LLM progress on long coding tasks">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="LLMeter: trillion-dollar companies, jobs per dollar of value and margins">
-  <meta name="twitter:description" content="The US companies worth over $1 trillion ranked by employees per $1 billion of market value, with revenue, profit margin and profit per employee, against Ford, GM, JPMorgan and Anthropic, and an estimate of what paying profit out as wages would change.">
+  <meta name="twitter:description" content="The US companies worth over $1 trillion ranked by employees per $1 billion of market value, with revenue, profit margin and profit per employee, including Anthropic after its IPO, against Ford, GM and JPMorgan, and an estimate of what paying profit out as wages would change.">
   <meta name="twitter:image" content="https://maxgerashenko.github.io/LLMeter/assets/og.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"LLMeter: trillion-dollar companies, jobs per dollar of value and margins","description":"The US companies worth over $1 trillion ranked by employees per $1 billion of market value, with revenue, profit margin and profit per employee, against Ford, GM, JPMorgan and Anthropic, and an estimate of what paying profit out as wages would change.","url":"https://maxgerashenko.github.io/LLMeter/jobs.html","isPartOf":{"@type":"WebSite","name":"LLMeter","url":"https://maxgerashenko.github.io/LLMeter/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"LLMeter: trillion-dollar companies, jobs per dollar of value and margins","description":"The US companies worth over $1 trillion ranked by employees per $1 billion of market value, with revenue, profit margin and profit per employee, including Anthropic after its IPO, against Ford, GM and JPMorgan, and an estimate of what paying profit out as wages would change.","url":"https://maxgerashenko.github.io/LLMeter/jobs.html","isPartOf":{"@type":"WebSite","name":"LLMeter","url":"https://maxgerashenko.github.io/LLMeter/"}}</script>
   <!-- seo:end -->
   <script src="assets/analytics.js" defer></script>
   <script src="assets/theme.js"></script>
@@ -54,7 +54,7 @@
     <section class="card">
       <div class="card-head">
         <h2>Jobs per $1 billion of market value</h2>
-        <p class="muted">Each bar is one company: its employees divided by its market value in billions of dollars. A long bar means the company gives a lot of work for its size; a short bar means a lot of value and profit with few people. The 12 US-listed companies above $1 trillion are shown with five others for contrast (paler bars): Ford, General Motors, JPMorgan Chase, ExxonMobil and Anthropic. The scale is logarithmic, from 1 to 10,000 jobs: each step along it is the same ratio. Dashed lines are the tier edges at 30, 100 and 1,000 jobs. Employees are worldwide, not only in the US.</p>
+        <p class="muted">Each bar is one company: its employees divided by its market value in billions of dollars. A long bar means the company gives a lot of work for its size; a short bar means a lot of value and profit with few people. The 13 US-listed companies above $1 trillion are shown with four others for contrast (paler bars): Ford, General Motors, JPMorgan Chase and ExxonMobil. Anthropic joined the group on 2026-11-19, its first day of trading; its value is that day's closing price times the shares Yahoo Finance counts. The scale is logarithmic, from 1 to 10,000 jobs: each step along it is the same ratio. Dashed lines are the tier edges at 30, 100 and 1,000 jobs. Employees are worldwide, not only in the US.</p>
       </div>
       <div id="jobs-bars" class="bars rs-bars" role="img" aria-label="Bar chart of employees per 1 billion dollars of market value for each company"></div>
       <div class="legend" id="jobs-legend"></div>
@@ -63,7 +63,7 @@
     <section class="card">
       <div class="card-head">
         <h2>Who holds the jobs, the profit and the value</h2>
-        <p class="muted">The 12 companies above $1 trillion, grouped by tier. Each cell is the tier's share of the group's total, with the amount in brackets.</p>
+        <p class="muted">The 13 companies above $1 trillion, grouped by tier. Each cell is the tier's share of the group's total, with the amount in brackets. Anthropic's net result is not counted in the profit column.</p>
       </div>
       <div class="table-scroll">
         <table class="rs-table rs-table-tiers">
@@ -112,8 +112,8 @@
     <section class="card prose">
       <h2>What this shows</h2>
       <ul class="rs-list">
-        <li><strong>Value and jobs have come apart.</strong> Walmart alone has 42% of the group's jobs with 2% of its profit. Nvidia, SpaceX and Broadcom together have 2% of the jobs with 21% of the profit and 25% of the market value.</li>
-        <li><strong>The gap between the ends is several hundred times.</strong> Ford has about 3,660 jobs per $1 billion of market value, Nvidia about 11 and Anthropic about 5. Nvidia earns $4.59 million of net profit per employee, Walmart about $11,000.</li>
+        <li><strong>Value and jobs have come apart.</strong> Walmart alone has 42% of the group's jobs with 2% of its profit. Nvidia, SpaceX, Broadcom and Anthropic together have 2% of the jobs with 21% of the profit and 28% of the market value.</li>
+        <li><strong>The gap between the ends is several hundred times.</strong> Ford has about 3,660 jobs per $1 billion of market value, Nvidia about 11 and Anthropic about 4. Nvidia earns $4.59 million of net profit per employee, Walmart about $11,000.</li>
         <li><strong>High margin does not always mean few jobs.</strong> Microsoft and Alphabet have net margins above 40% and still employ more than 200,000 people each. Amazon is both a top-five company by value and the second largest employer in the group.</li>
         <li><strong>Estimate: moving 10% of the group's profit into wages would pay about 1.1 million average US jobs.</strong> That is $108 billion a year at the average US employer cost of $97,500 per full-time job. The gain in federal tax would be small, about $6 billion to $19 billion a year: the main change is who receives the money, not how much tax is paid.</li>
         <li><strong>AI companies sit at the far end.</strong> Anthropic reports $6.6 million of revenue per employee with 5,300 staff. Its yearly revenue equals the employer cost of about 360,000 average US jobs. So far a study of US data finds no clear rise in unemployment in the jobs most exposed to AI, but hiring of young workers in those jobs has slowed by 14%.</li>

@@ -6,11 +6,11 @@
 
 The question: do the largest companies distort the economy by moving a lot of money and keeping a large margin while employing few people? The idea is to count employees against the company's size, and use that as an index of how much the company gives back through work, not only through profit and tax.
 
-What the data shows for the 12 US-listed companies worth more than $1 trillion:
+What the data shows for the 13 US-listed companies worth more than $1 trillion (Anthropic joined them on 2026-11-19, its first day of trading):
 
-- Together they are worth $29.5 trillion, earn $1.08 trillion of net profit a year on $4.08 trillion of revenue (a 26% net margin) and employ 5.0 million people worldwide. For scale, US payrolls hold 159.3 million jobs.
-- **Jobs and value have come apart.** Walmart alone has 42% of the group's jobs with 2% of its profit. Nvidia, SpaceX and Broadcom together have 2% of the jobs with 21% of the profit and 25% of the value.
-- **The gap between the ends is several hundred times.** Ford has about 3,660 jobs per $1 billion of market value, Nvidia about 11, Anthropic about 5.
+- Together they are worth $30.8 trillion, earn $1.08 trillion of net profit a year on $4.12 trillion of revenue (a 26% net margin) and employ 5.0 million people worldwide. Anthropic's net result is not counted in the profit, see the note under the data table. For scale, US payrolls hold 159.3 million jobs.
+- **Jobs and value have come apart.** Walmart alone has 42% of the group's jobs with 2% of its profit. Nvidia, SpaceX, Broadcom and Anthropic together have 2% of the jobs with 21% of the profit and 28% of the value.
+- **The gap between the ends is several hundred times.** Ford has about 3,660 jobs per $1 billion of market value, Nvidia about 11, Anthropic about 4.
 - **Estimate:** paying 10% of the group's profit as wages would fund about 1.1 million average US jobs. The extra federal tax would be small ($6 billion to $19 billion a year). The real change would be who receives the money.
 - **The hypothesis is half supported.** The data shows very large profit with very few jobs at one end. It does not show that this harms the economy: that needs data this article does not have (see [Limits](#limits)).
 
@@ -33,11 +33,11 @@ The tier edges are this article's own choice. They are set where the data has ga
 
 ## Which companies
 
-The list is every US-listed company with a market value above $1 trillion on the [StockAnalysis list of biggest companies](https://stockanalysis.com/list/biggest-companies/) as read on 2026-11-20, checked against [The Motley Fool's November 2026 list](https://www.fool.com/research/largest-companies-by-market-cap/). That gives 12 companies. Berkshire Hathaway is not in the top rows of the StockAnalysis list but is at $1.26 trillion on its own page and $1.2 trillion on the Motley Fool list, so it is included.
+The list is every US-listed company with a market value above $1 trillion on the [StockAnalysis list of biggest companies](https://stockanalysis.com/list/biggest-companies/) as read on 2026-11-20, checked against [The Motley Fool's November 2026 list](https://www.fool.com/research/largest-companies-by-market-cap/). That gives 12 companies. Anthropic is the 13th: it began trading on Nasdaq on 2026-11-19 (ticker ANT) and is not yet on either list. Its market value here is its first-day closing price of $97.17 times the 13.1 billion implied shares outstanding that [Yahoo Finance](https://finance.yahoo.com/markets/live/stock-market-today-thursday-november-19-dow-sp-500-nasdaq-anthropic-ipo-live-141306032.html) counts, which gives about $1.27 trillion. Yahoo Finance reports about $1.5 trillion on a fully diluted basis at the IPO price of $83. Berkshire Hathaway is not in the top rows of the StockAnalysis list but is at $1.26 trillion on its own page and $1.2 trillion on the Motley Fool list, so it is included.
 
 Not included: Taiwan Semiconductor ($1.85 trillion) and Saudi Aramco ($1.69 trillion), which are not US companies, and Samsung, which is just under or over $1 trillion depending on the day.
 
-Five companies below $1 trillion are added for contrast: Ford and General Motors (many employees, low margin), JPMorgan Chase (the largest US company under the line), ExxonMobil (old-economy company with few employees) and Anthropic (a private AI company valued at about $1 trillion in its last funding round).
+Four companies below $1 trillion are added for contrast: Ford and General Motors (many employees, low margin), JPMorgan Chase (the largest US company under the line) and ExxonMobil (old-economy company with few employees).
 
 ## The data
 
@@ -57,7 +57,10 @@ All numbers are for the last 12 months as shown on each company's StockAnalysis 
 | 1 | [Broadcom](https://stockanalysis.com/stocks/avgo/statistics/) | $1.66T | 33,000 | $89.1B | $38.3B | 42.9% | 19.9 | $2.70M | $1.16M |
 | 1 | [SpaceX](https://stockanalysis.com/stocks/spcx/statistics/) | $1.89T | 22,000 | $32.0B | -$3.4B | -8.6% | 11.6 | $1.46M | -$156K |
 | 1 | [Nvidia](https://stockanalysis.com/stocks/nvda/statistics/) | $3.75T | 42,000 | $303.0B | $192.9B | 63.7% | 11.2 | $7.21M | $4.59M |
-| | **All 12** | **$29.51T** | **5,007,117** | **$4,080.8B** | **$1,078.2B** | **26.4%** | **170** | **$815K** | **$215K** |
+| 1 | [Anthropic](https://finance.yahoo.com/markets/live/stock-market-today-thursday-november-19-dow-sp-500-nasdaq-anthropic-ipo-live-141306032.html) | $1.27T | 5,300 | $35.3B | not used | -4.3% operating | 4.2 | $6.65M | not used |
+| | **All 13** | **$30.78T** | **5,012,417** | **$4,116.1B** | **$1,078.2B** | **26.4%** | **163** | **$821K** | **$215K** |
+
+The net profit and net margin in the total row cover the 12 companies other than Anthropic.
 
 Contrast companies, below $1 trillion:
 
@@ -67,26 +70,25 @@ Contrast companies, below $1 trillion:
 | 4 | [General Motors](https://stockanalysis.com/stocks/gm/statistics/) | $72.6B | 156,000 | $187.0B | $3.9B | 2.1% | 2,150 | $1.20M | $25K |
 | 3 | [JPMorgan Chase](https://stockanalysis.com/stocks/jpm/statistics/) | $919.4B | 322,964 | $190.7B | $64.5B | 34.6% | 351 | $591K | $200K |
 | 2 | [ExxonMobil](https://stockanalysis.com/stocks/xom/statistics/) | $676.6B | 58,000 | $388.2B | $40.6B | 10.5% | 85.7 | $6.69M | $700K |
-| 1 | [Anthropic](https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm) | $998B (implied) | 5,300 | $35.3B | not used | -4.3% operating | 5.3 | $6.65M | not used |
 
 Notes on single rows:
 
 - **Alphabet.** The net margin (50.0%) is above the operating margin (33.3%), so the profit includes large gains from outside the main business. The page read does not break them down.
 - **SpaceX and Ford** made a net loss over the last 12 months.
-- **Anthropic** is private. Its value is the implied value at the Series H share price of May to June 2026, its revenue is the 12 months to 2026-09-30 and its staff count is from 2026-09-30, all from its [Form S-1](https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm) as recorded in [data/anthropic-s1-2026-10-26.csv](../data/anthropic-s1-2026-10-26.csv). The margin shown is the operating margin for the first half of 2026 (-$693 million on $16,286 million of revenue). The net loss is not used because most of it is a non-cash change in the value of convertible notes.
+- **Anthropic** listed on 2026-11-19. Its market value is one day old and calculated here from the closing price and Yahoo Finance's share count, so it is the least firm number in the table. Its revenue is the 12 months to 2026-09-30 and its staff count is from 2026-09-30, all from its [Form S-1](https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm) as recorded in [data/anthropic-s1-2026-10-26.csv](../data/anthropic-s1-2026-10-26.csv). The margin shown is the operating margin for the first half of 2026 (-$693 million on $16,286 million of revenue). The net loss is not used because most of it is a non-cash change in the value of convertible notes.
 
 ## The tiers, and one competition in each
 
-Shares are of the 12 companies above $1 trillion.
+Shares are of the 13 companies above $1 trillion. Profit shares are of the 12 with a profit figure.
 
 | Tier | Companies | Share of jobs | Share of net profit | Share of market value |
 | --- | --- | ---: | ---: | ---: |
-| 4 | Walmart | 41.9% (2,100,000) | 2.0% ($22B) | 3.5% ($1.02T) |
-| 3 | Amazon, Berkshire Hathaway | 39.2% (1,963,800) | 19.6% ($212B) | 14.0% ($4.14T) |
-| 2 | Tesla, Microsoft, Alphabet, Meta, Eli Lilly, Apple | 16.9% (846,317) | 57.2% ($617B) | 57.8% ($17.05T) |
-| 1 | Broadcom, SpaceX, Nvidia | 1.9% (97,000) | 21.1% ($228B) | 24.7% ($7.30T) |
+| 4 | Walmart | 41.9% (2,100,000) | 2.0% ($22B) | 3.3% ($1.02T) |
+| 3 | Amazon, Berkshire Hathaway | 39.2% (1,963,800) | 19.6% ($212B) | 13.4% ($4.14T) |
+| 2 | Tesla, Microsoft, Alphabet, Meta, Eli Lilly, Apple | 16.9% (846,317) | 57.2% ($617B) | 55.4% ($17.05T) |
+| 1 | Broadcom, SpaceX, Nvidia, Anthropic | 2.0% (102,300) | 21.1% ($228B) | 27.8% ($8.57T) |
 
-Tiers 1 and 2 together hold 82% of the value and 78% of the profit with 19% of the jobs.
+Tiers 1 and 2 together hold 83% of the value and 78% of the profit with 19% of the jobs.
 
 **Tier 4, job heavy: Walmart against Amazon (retail).** Walmart sells $736 billion a year with 2.1 million people and keeps 3 cents of each dollar. Amazon sells $797 billion with 1.58 million people and keeps 17 cents, because its cloud business has few people and a high margin. Amazon does about 44% more revenue per employee. As Amazon grows against Walmart, the same sales need fewer people.
 
@@ -94,28 +96,28 @@ Tiers 1 and 2 together hold 82% of the value and 78% of the profit with 19% of t
 
 **Tier 2, high margin with many people: Microsoft against Alphabet (software, cloud, AI).** Both have net margins above 40% and each employs more than 200,000 people. Their jobs index (56 to 59) is 35 times lower than Walmart's. This tier holds more than half of all the value and profit. Tesla is here by value, not by margin: it has Ford's margin (3%) with a market value 33 times larger.
 
-**Tier 1, capital heavy: Nvidia against Broadcom (AI chips).** Nvidia earns $4.59 million of net profit per employee, 437 times Walmart's $10,500. Broadcom earns $1.16 million. Both design chips and have them made by others, so the factory jobs are counted at their suppliers (mostly TSMC, outside the US).
+**Tier 1, capital heavy: Nvidia against Broadcom (AI chips).** Nvidia earns $4.59 million of net profit per employee, 437 times Walmart's $10,500. Broadcom earns $1.16 million. Both design chips and have them made by others, so the factory jobs are counted at their suppliers (mostly TSMC, outside the US). Anthropic, the newest member, has the lowest index of all: 4.2 jobs per $1 billion.
 
 ## Ford, Google, Anthropic: three shapes
 
 | | Ford | Alphabet (Google) | Anthropic |
 | --- | ---: | ---: | ---: |
-| Market value | $46B | $3.64T | $998B (implied, private) |
+| Market value | $46B | $3.64T | $1.27T (first-day close) |
 | Employees | 169,000 | 204,757 | 5,300 |
 | Revenue | $188B | $471B | $35B |
 | Margin | -3.9% net | 50.0% net | 85% gross, -4% operating (first half of 2026) |
-| Jobs per $1B of value | 3,660 | 56.3 | 5.3 |
-| Market value per employee | $0.3M | $17.8M | $188M |
+| Jobs per $1B of value | 3,660 | 56.3 | 4.2 |
+| Market value per employee | $0.3M | $17.8M | $240M |
 
 - **Ford: many jobs, almost no margin.** Nearly every dollar of revenue goes back out to workers and suppliers. Investors value it at a quarter of one year's revenue.
 - **Google: many jobs and a high margin.** It employs more people than Ford and keeps half of its revenue as profit. A high margin and a large workforce can go together.
-- **Anthropic: very few people for its value.** Each employee stands for $188 million of company value, 690 times Ford. But it is not yet a high-profit company: its gross margin is 85%, its operating result was close to zero in the first half of 2026, and it spends heavily on compute. It also pays its people a large part of what it earns: personnel expense was $3.15 billion in the first half of 2026, 19% of revenue, of which $2.19 billion was stock.
+- **Anthropic: very few people for its value.** Each employee stands for $240 million of company value, about 880 times Ford. But it is not yet a high-profit company: its gross margin is 85%, its operating result was close to zero in the first half of 2026, and it spends heavily on compute. It also pays its people a large part of what it earns: personnel expense was $3.15 billion in the first half of 2026, 19% of revenue, of which $2.19 billion was stock.
 
 ## What if profit came back as wages?
 
 These are estimates. Each one states its assumptions.
 
-**What comes back today.** The 12 companies paid $229 billion of income tax over the last 12 months on $1,307 billion of profit before tax. That is an effective rate of 17.5%, against the US federal rate of 21%. Meta (4.6%) and Broadcom (5.5%) are the lowest. Tax paid to all countries is counted, not only to the US.
+**What comes back today.** The 12 companies other than Anthropic paid $229 billion of income tax over the last 12 months on $1,307 billion of profit before tax. That is an effective rate of 17.5%, against the US federal rate of 21%. Meta (4.6%) and Broadcom (5.5%) are the lowest. Tax paid to all countries is counted, not only to the US.
 
 **Estimate 1: jobs.** Suppose the group paid out 10% of its net profit, $108 billion a year, as wages for new jobs. The average cost to a US private employer is $46.89 per hour worked ([BLS, June 2026](https://www.bls.gov/news.release/ecec.nr0.htm)), or about $97,500 for a full-time year of 2,080 hours. So $108 billion pays for about **1.1 million average jobs**. With 25% of profit it is about 2.8 million. US payrolls hold 159.3 million jobs ([BLS, October 2026](https://www.bls.gov/news.release/empsit.nr0.htm)), so 10% of the profit equals about 0.7% of US jobs.
 
@@ -160,8 +162,8 @@ LLMeter's Finance section has a separate estimate of [what AI replacing office w
 
 | Claim | What the data says |
 | --- | --- |
-| The largest companies earn large margins with few employees | **Mostly true.** 9 of 12 are in Tiers 1 and 2. They hold 82% of the value, 78% of the profit and 19% of the jobs. But Walmart, Amazon and Berkshire are large employers. |
-| Employees per dollar of value separates companies clearly | **True.** The index runs from 5 (Anthropic) to 3,660 (Ford), a range of about 690 times. |
+| The largest companies earn large margins with few employees | **Mostly true.** 10 of 13 are in Tiers 1 and 2. They hold 83% of the value, 78% of the profit and 19% of the jobs. But Walmart, Amazon and Berkshire are large employers. |
+| Employees per dollar of value separates companies clearly | **True.** The index runs from 4 (Anthropic) to 3,660 (Ford), a range of about 870 times. |
 | Low-employment companies give less back to society | **Not shown.** They pay $229 billion of income tax and very high wages to the people they do employ. Whether that is "less" than a job-heavy company gives back needs wage bills, US-only headcount and supplier jobs, which were not read. |
 | Returning profit as wages would help the economy | **Partly.** About 1.1 million jobs' worth of pay for each 10% of profit, and a small tax gain. The effect on investment and share prices is not estimated. |
 | New AI companies replace jobs | **Early signs only.** No measured rise in unemployment yet, slower hiring of young workers in exposed jobs. |
@@ -183,7 +185,8 @@ LLMeter's Finance section has a separate estimate of [what AI replacing office w
 | [Biggest companies by market cap](https://stockanalysis.com/list/biggest-companies/) | StockAnalysis | Live list, read 2026-11-20 | Which companies are above $1 trillion |
 | [The largest companies by market cap in November 2026](https://www.fool.com/research/largest-companies-by-market-cap/) | The Motley Fool | 2026-11-08, data to 2026-11-19 | Cross-check of the list; Berkshire Hathaway |
 | StockAnalysis statistics pages, one per company (linked in the data tables) | StockAnalysis | 2026-10-27 to 2026-11-18 | Market value, revenue, net profit, margins, employees, income tax, tax rate |
-| [Anthropic, PBC Form S-1](https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm) | Anthropic, filed with the SEC | 2026-10-26 | Staff, revenue, personnel expense, implied value (from [data/anthropic-s1-2026-10-26.csv](../data/anthropic-s1-2026-10-26.csv)) |
+| [Stock market today, 19 November 2026 (live blog)](https://finance.yahoo.com/markets/live/stock-market-today-thursday-november-19-dow-sp-500-nasdaq-anthropic-ipo-live-141306032.html), [Anthropic stock's first trade](https://finance.yahoo.com/markets/article/anthropic-stocks-first-trade-was-worth-12-billion--34-above-its-ipo-price-171721561.html), [Anthropic prices IPO at $83](https://finance.yahoo.com/markets/stocks/articles/anthropic-prices-ipo-83-share-014000480.html) | Yahoo Finance | 2026-11-18 and 2026-11-19 | Anthropic's IPO price ($83), opening price ($111.50), closing price ($97.17), 13.1 billion implied shares outstanding, about $1.5 trillion fully diluted at the IPO price. The Yahoo Finance quote page for ANT still showed "Pending IPO" when read. |
+| [Anthropic, PBC Form S-1](https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm) | Anthropic, filed with the SEC | 2026-10-26 | Staff, revenue, personnel expense (from [data/anthropic-s1-2026-10-26.csv](../data/anthropic-s1-2026-10-26.csv)) |
 | [Employer Costs for Employee Compensation](https://www.bls.gov/news.release/ecec.nr0.htm) | US Bureau of Labor Statistics | 2026-09-09 (June 2026) | $46.89 per hour: $32.82 wages, $14.07 benefits |
 | [The Employment Situation](https://www.bls.gov/news.release/empsit.nr0.htm), [Table B-1](https://www.bls.gov/news.release/empsit.t17.htm) | US Bureau of Labor Statistics | 2026-11-06 (October 2026) | 159,293 thousand payroll jobs; 4.1% unemployment |
 | [Usual Weekly Earnings](https://www.bls.gov/news.release/wkyeng.nr0.htm) | US Bureau of Labor Statistics | 2026-10-21 (Q3 2026) | Median full-time pay of $1,232 a week, used as a check on the average job cost |
