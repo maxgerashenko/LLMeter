@@ -80,7 +80,9 @@
         margin: num(r.profit_margin_pct), opm: num(r.operating_margin_pct), emp: +r.employees, tax: num(r.income_tax_ttm_usd_b)
       };
     });
-    items.sort(function (a, b) { return b.jobs - a.jobs; });
+    // Tier 1 (fewest jobs for the value) first, Tier 4 last
+    items.sort(function (a, b) { return a.jobs - b.jobs; });
+    var ORDER = TIERS.slice().reverse();
 
     // Chart: one bar per company, coloured by tier, on a logarithmic scale
     var plot = el("div", { class: "plot rs-plot rs-plot-jobs" });
@@ -103,7 +105,7 @@
     bars.appendChild(plot);
     var legend = document.getElementById("jobs-legend");
     legend.textContent = "";
-    TIERS.forEach(function (t) {
+    ORDER.forEach(function (t) {
       legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + t.id }), "Tier " + t.label + ": " + t.range]));
     });
 
@@ -113,7 +115,7 @@
     var all = { cap: sum(club, "cap"), ni: sum(club, "ni"), emp: sum(club, "emp") };
     var tb = document.getElementById("jobs-tier-rows");
     tb.textContent = "";
-    TIERS.forEach(function (t) {
+    ORDER.forEach(function (t) {
       var list = club.filter(function (c) { return c.tier === t; });
       if (!list.length) return;
       tb.appendChild(el("tr", { class: "rs-choice" }, [

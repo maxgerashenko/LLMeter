@@ -20,14 +20,14 @@ What the data shows for the 13 US-listed companies worth more than $1 trillion (
 
 It reads the same way for every company: how many people have work for each $1 billion that investors say the company is worth. The inverse is market value per employee. Two more numbers sit beside it: revenue per employee and net profit per employee.
 
-Companies are grouped into four tiers by this index, with the same tier colours as the rest of the site. Tier 4 gives the most work for its size.
+Companies are grouped into four tiers by this index, with the same tier colours as the rest of the site. Tier 1 gives the least work for its size and Tier 4 the most. Tables go from Tier 1 down to Tier 4.
 
 | Tier | Jobs per $1 billion of market value |
 | --- | --- |
-| **Tier 4** | 1,000 or more |
-| **Tier 3** | 100 to 1,000 |
-| **Tier 2** | 30 to 100 |
 | **Tier 1** | fewer than 30 |
+| **Tier 2** | 30 to 100 |
+| **Tier 3** | 100 to 1,000 |
+| **Tier 4** | 1,000 or more |
 
 The tier edges are this article's own choice. They are set where the data has gaps.
 
@@ -45,19 +45,19 @@ All numbers are for the last 12 months as shown on each company's StockAnalysis 
 
 | Tier | Company | Market value | Employees | Revenue | Net profit | Net margin | Jobs per $1B of value | Revenue per employee | Net profit per employee |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 4 | [Walmart](https://stockanalysis.com/stocks/wmt/statistics/) | $1.02T | 2,100,000 | $735.8B | $22.1B | 3.0% | 2,059 | $350K | $11K |
-| 3 | [Amazon](https://stockanalysis.com/stocks/amzn/statistics/) | $2.88T | 1,576,000 | $797.5B | $134.8B | 16.9% | 547 | $506K | $86K |
-| 3 | [Berkshire Hathaway](https://stockanalysis.com/stocks/brk.b/statistics/) | $1.26T | 387,800 | $395.4B | $77.1B | 19.5% | 308 | $1.02M | $199K |
-| 2 | [Tesla](https://stockanalysis.com/stocks/tsla/statistics/) | $1.54T | 134,785 | $103.6B | $3.2B | 3.1% | 87.5 | $768K | $24K |
-| 2 | [Microsoft](https://stockanalysis.com/stocks/msft/statistics/) | $3.76T | 223,000 | $346.5B | $142.6B | 41.2% | 59.3 | $1.55M | $640K |
-| 2 | [Alphabet (Google)](https://stockanalysis.com/stocks/googl/statistics/) | $3.64T | 204,757 | $471.1B | $235.7B | 50.0% | 56.3 | $2.30M | $1.15M |
-| 2 | [Meta](https://stockanalysis.com/stocks/meta/statistics/) | $1.64T | 66,775 | $241.6B | $75.3B | 31.2% | 40.7 | $3.62M | $1.13M |
-| 2 | [Eli Lilly](https://stockanalysis.com/stocks/lly/statistics/) | $1.29T | 50,000 | $86.5B | $27.6B | 31.9% | 38.8 | $1.73M | $552K |
-| 2 | [Apple](https://stockanalysis.com/stocks/aapl/statistics/) | $5.18T | 167,000 | $478.8B | $132.2B | 27.6% | 32.2 | $2.87M | $791K |
-| 1 | [Broadcom](https://stockanalysis.com/stocks/avgo/statistics/) | $1.66T | 33,000 | $89.1B | $38.3B | 42.9% | 19.9 | $2.70M | $1.16M |
-| 1 | [SpaceX](https://stockanalysis.com/stocks/spcx/statistics/) | $1.89T | 22,000 | $32.0B | -$3.4B | -8.6% | 11.6 | $1.46M | -$156K |
-| 1 | [Nvidia](https://stockanalysis.com/stocks/nvda/statistics/) | $3.75T | 42,000 | $303.0B | $192.9B | 63.7% | 11.2 | $7.21M | $4.59M |
 | 1 | [Anthropic](https://finance.yahoo.com/markets/live/stock-market-today-thursday-november-19-dow-sp-500-nasdaq-anthropic-ipo-live-141306032.html) | $1.27T | 5,300 | $35.3B | not used | -4.3% operating | 4.2 | $6.65M | not used |
+| 1 | [Nvidia](https://stockanalysis.com/stocks/nvda/statistics/) | $3.75T | 42,000 | $303.0B | $192.9B | 63.7% | 11.2 | $7.21M | $4.59M |
+| 1 | [SpaceX](https://stockanalysis.com/stocks/spcx/statistics/) | $1.89T | 22,000 | $32.0B | -$3.4B | -8.6% | 11.6 | $1.46M | -$156K |
+| 1 | [Broadcom](https://stockanalysis.com/stocks/avgo/statistics/) | $1.66T | 33,000 | $89.1B | $38.3B | 42.9% | 19.9 | $2.70M | $1.16M |
+| 2 | [Apple](https://stockanalysis.com/stocks/aapl/statistics/) | $5.18T | 167,000 | $478.8B | $132.2B | 27.6% | 32.2 | $2.87M | $791K |
+| 2 | [Eli Lilly](https://stockanalysis.com/stocks/lly/statistics/) | $1.29T | 50,000 | $86.5B | $27.6B | 31.9% | 38.8 | $1.73M | $552K |
+| 2 | [Meta](https://stockanalysis.com/stocks/meta/statistics/) | $1.64T | 66,775 | $241.6B | $75.3B | 31.2% | 40.7 | $3.62M | $1.13M |
+| 2 | [Alphabet (Google)](https://stockanalysis.com/stocks/googl/statistics/) | $3.64T | 204,757 | $471.1B | $235.7B | 50.0% | 56.3 | $2.30M | $1.15M |
+| 2 | [Microsoft](https://stockanalysis.com/stocks/msft/statistics/) | $3.76T | 223,000 | $346.5B | $142.6B | 41.2% | 59.3 | $1.55M | $640K |
+| 2 | [Tesla](https://stockanalysis.com/stocks/tsla/statistics/) | $1.54T | 134,785 | $103.6B | $3.2B | 3.1% | 87.5 | $768K | $24K |
+| 3 | [Berkshire Hathaway](https://stockanalysis.com/stocks/brk.b/statistics/) | $1.26T | 387,800 | $395.4B | $77.1B | 19.5% | 308 | $1.02M | $199K |
+| 3 | [Amazon](https://stockanalysis.com/stocks/amzn/statistics/) | $2.88T | 1,576,000 | $797.5B | $134.8B | 16.9% | 547 | $506K | $86K |
+| 4 | [Walmart](https://stockanalysis.com/stocks/wmt/statistics/) | $1.02T | 2,100,000 | $735.8B | $22.1B | 3.0% | 2,059 | $350K | $11K |
 | | **All 13** | **$30.78T** | **5,012,417** | **$4,116.1B** | **$1,078.2B** | **26.4%** | **163** | **$821K** | **$215K** |
 
 The net profit and net margin in the total row cover the 12 companies other than Anthropic.
@@ -66,10 +66,10 @@ Contrast companies, below $1 trillion:
 
 | Tier | Company | Market value | Employees | Revenue | Net profit | Net margin | Jobs per $1B of value | Revenue per employee | Net profit per employee |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 4 | [Ford](https://stockanalysis.com/stocks/f/statistics/) | $46.2B | 169,000 | $188.0B | -$7.4B | -3.9% | 3,660 | $1.11M | -$44K |
-| 4 | [General Motors](https://stockanalysis.com/stocks/gm/statistics/) | $72.6B | 156,000 | $187.0B | $3.9B | 2.1% | 2,150 | $1.20M | $25K |
-| 3 | [JPMorgan Chase](https://stockanalysis.com/stocks/jpm/statistics/) | $919.4B | 322,964 | $190.7B | $64.5B | 34.6% | 351 | $591K | $200K |
 | 2 | [ExxonMobil](https://stockanalysis.com/stocks/xom/statistics/) | $676.6B | 58,000 | $388.2B | $40.6B | 10.5% | 85.7 | $6.69M | $700K |
+| 3 | [JPMorgan Chase](https://stockanalysis.com/stocks/jpm/statistics/) | $919.4B | 322,964 | $190.7B | $64.5B | 34.6% | 351 | $591K | $200K |
+| 4 | [General Motors](https://stockanalysis.com/stocks/gm/statistics/) | $72.6B | 156,000 | $187.0B | $3.9B | 2.1% | 2,150 | $1.20M | $25K |
+| 4 | [Ford](https://stockanalysis.com/stocks/f/statistics/) | $46.2B | 169,000 | $188.0B | -$7.4B | -3.9% | 3,660 | $1.11M | -$44K |
 
 Notes on single rows:
 
@@ -83,20 +83,20 @@ Shares are of the 13 companies above $1 trillion. Profit shares are of the 12 wi
 
 | Tier | Companies | Share of jobs | Share of net profit | Share of market value |
 | --- | --- | ---: | ---: | ---: |
-| 4 | Walmart | 41.9% (2,100,000) | 2.0% ($22B) | 3.3% ($1.02T) |
-| 3 | Amazon, Berkshire Hathaway | 39.2% (1,963,800) | 19.6% ($212B) | 13.4% ($4.14T) |
-| 2 | Tesla, Microsoft, Alphabet, Meta, Eli Lilly, Apple | 16.9% (846,317) | 57.2% ($617B) | 55.4% ($17.05T) |
 | 1 | Broadcom, SpaceX, Nvidia, Anthropic | 2.0% (102,300) | 21.1% ($228B) | 27.8% ($8.57T) |
+| 2 | Tesla, Microsoft, Alphabet, Meta, Eli Lilly, Apple | 16.9% (846,317) | 57.2% ($617B) | 55.4% ($17.05T) |
+| 3 | Amazon, Berkshire Hathaway | 39.2% (1,963,800) | 19.6% ($212B) | 13.4% ($4.14T) |
+| 4 | Walmart | 41.9% (2,100,000) | 2.0% ($22B) | 3.3% ($1.02T) |
 
 Tiers 1 and 2 together hold 83% of the value and 78% of the profit with 19% of the jobs.
 
-**Tier 4, job heavy: Walmart against Amazon (retail).** Walmart sells $736 billion a year with 2.1 million people and keeps 3 cents of each dollar. Amazon sells $797 billion with 1.58 million people and keeps 17 cents, because its cloud business has few people and a high margin. Amazon does about 44% more revenue per employee. As Amazon grows against Walmart, the same sales need fewer people.
-
-**Tier 3, mixed: Berkshire Hathaway against JPMorgan Chase (finance and holdings).** Both sit near 300 to 350 jobs per $1 billion and close to $200,000 of profit per employee. This is the profile of a large, profitable company that still needs a lot of people.
+**Tier 1, capital heavy: Nvidia against Broadcom (AI chips).** Nvidia earns $4.59 million of net profit per employee, 437 times Walmart's $10,500. Broadcom earns $1.16 million. Both design chips and have them made by others, so the factory jobs are counted at their suppliers (mostly TSMC, outside the US). Anthropic, the newest member, has the lowest index of all: 4.2 jobs per $1 billion.
 
 **Tier 2, high margin with many people: Microsoft against Alphabet (software, cloud, AI).** Both have net margins above 40% and each employs more than 200,000 people. Their jobs index (56 to 59) is 35 times lower than Walmart's. This tier holds more than half of all the value and profit. Tesla is here by value, not by margin: it has Ford's margin (3%) with a market value 33 times larger.
 
-**Tier 1, capital heavy: Nvidia against Broadcom (AI chips).** Nvidia earns $4.59 million of net profit per employee, 437 times Walmart's $10,500. Broadcom earns $1.16 million. Both design chips and have them made by others, so the factory jobs are counted at their suppliers (mostly TSMC, outside the US). Anthropic, the newest member, has the lowest index of all: 4.2 jobs per $1 billion.
+**Tier 3, mixed: Berkshire Hathaway against JPMorgan Chase (finance and holdings).** Both sit near 300 to 350 jobs per $1 billion and close to $200,000 of profit per employee. This is the profile of a large, profitable company that still needs a lot of people.
+
+**Tier 4, job heavy: Walmart against Amazon (retail).** Walmart sells $736 billion a year with 2.1 million people and keeps 3 cents of each dollar. Amazon sells $797 billion with 1.58 million people and keeps 17 cents, because its cloud business has few people and a high margin. Amazon does about 44% more revenue per employee. As Amazon grows against Walmart, the same sales need fewer people.
 
 ## Ford, Google, Anthropic: three shapes
 
