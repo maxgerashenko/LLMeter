@@ -31,3 +31,12 @@
 #panel-software #sw-panels .panels { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 1040px) { #panel-software #sw-panels .panels { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1041px) { #panel-software #sw-panels .p-label { white-space: nowrap; font-size: 10.5px; letter-spacing: 0; } }
+#panel-software .s-lead { margin: 0 0 10px; }
+#panel-software .s-key { font-size: 12.5px; color: var(--muted); margin: 0 0 12px; }
+#panel-software .s-tag { display: inline-block; font-size: 10.5px; font-weight: 600; line-height: 1; padding: 3px 6px; border-radius: 4px; vertical-align: middle; letter-spacing: .02em; }
+#panel-software .s-tag.memo { background: var(--s-soft); color: var(--s-accent); }
+#panel-software .s-tag.calc { background: var(--s-warm-soft); color: var(--s-warm); }
+#panel-software .s-orig { font-size: 15px; font-weight: 600; color: var(--muted); margin: 24px 0 10px; }
+#panel-software #sw-check .panels { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 1040px) { #panel-software #sw-check .panels { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1041px) { #panel-software #sw-check .p-label { white-space: nowrap; font-size: 10.5px; letter-spacing: 0; } }
