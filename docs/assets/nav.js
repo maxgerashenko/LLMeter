@@ -14,16 +14,16 @@
     finance: [
       ["GDP", "finance.html#gdp", "finance"],
       ["Software", "finance.html#software", "finance"],
-      ["Anthropic S-1", "finance.html#anthropic-s1", "finance"]
+      ["Anthropic S-1", "finance.html#anthropic-s1", "finance"],
+      ["Jobs", "jobs.html", "jobs"]
     ],
     research: [
       ["Speed", "techniques.html#speed", "techniques"],
       ["Quality", "techniques.html#quality", "techniques"],
-      ["Horizon", "horizon.html", "horizon"],
-      ["Jobs", "jobs.html", "jobs"]
+      ["Horizon", "horizon.html", "horizon"]
     ]
   };
-  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", research: "local", horizon: "research", jobs: "research", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", techniques: "research", sources: "sources" };
+  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", research: "local", horizon: "research", jobs: "finance", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", techniques: "research", sources: "sources" };
 
   var page = (location.pathname.split("/").pop() || "index.html").replace(/\.html$/, "") || "index";
   var section = PAGE_SECTION[page];

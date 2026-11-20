@@ -1,4 +1,4 @@
-// Builds the Research > Jobs page from data/trillion-companies-*.csv (copied into docs/data/ by
+// Builds the Finance > Jobs page from data/trillion-companies-*.csv (copied into docs/data/ by
 // scripts/sync-site-data.sh). No numbers are typed here: only the tier band edges, which are the
 // definitions in articles/trillion-companies-jobs.md.
 (function () {

@@ -1,6 +1,6 @@
 # Trillion-dollar companies: jobs, margins and what comes back to the US economy
 
-*Written 2026-11-20. All sources read on 2026-11-20. Data file: [data/trillion-companies-2026-11-20.csv](../data/trillion-companies-2026-11-20.csv). Prompts behind this article: [prompts/trillion-companies-jobs-2026-11-20.md](../prompts/trillion-companies-jobs-2026-11-20.md). Website page: [Research > Jobs](https://maxgerashenko.github.io/LLMeter/jobs.html).*
+*Written 2026-11-20. All sources read on 2026-11-20. Data file: [data/trillion-companies-2026-11-20.csv](../data/trillion-companies-2026-11-20.csv). Prompts behind this article: [prompts/trillion-companies-jobs-2026-11-20.md](../prompts/trillion-companies-jobs-2026-11-20.md). Website page: [Finance > Jobs](https://maxgerashenko.github.io/LLMeter/jobs.html).*
 
 ## Summary
 
