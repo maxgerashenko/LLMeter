@@ -149,12 +149,9 @@
         el("td", { "data-label": "Market value", text: usdB(c.cap) }),
         el("td", { "data-label": "Revenue and profit" }, [
           el("span", { text: usdB(c.rev) + " revenue" }),
-          el("span", { class: "rs-effect-text", text: c.ni == null ? "net profit not used" : usdB(c.ni) + " net profit" })
+          el("span", { class: "rs-effect-text", text: c.ni == null ? "net profit not counted" : usdB(c.ni) + " net profit" })
         ]),
-        el("td", { "data-label": "Margin" }, [
-          el("span", { text: c.margin == null ? "n/a" : pct(c.margin) + " net" }),
-          el("span", { class: "rs-effect-text", text: c.opm == null ? "" : pct(c.opm) + " operating" })
-        ]),
+        el("td", { "data-label": "Net margin", text: c.margin == null ? "n/a" : pct(c.margin) }),
         el("td", { "data-label": "Per employee" }, [
           el("span", { text: usdK(num(r.revenue_per_employee_usd_k)) + " revenue" }),
           el("span", { class: "rs-effect-text", text: num(r.profit_per_employee_usd_k) == null ? "" : usdK(num(r.profit_per_employee_usd_k)) + " profit" }),

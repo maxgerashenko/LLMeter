@@ -20,6 +20,8 @@ What the data shows for the 13 US-listed companies worth more than $1 trillion (
 
 It reads the same way for every company: how many people have work for each $1 billion that investors say the company is worth. The inverse is market value per employee. Two more numbers sit beside it: revenue per employee and net profit per employee.
 
+**Margin** in this article always means the **net profit margin** (net margin): net profit divided by revenue. It is the last margin, what is left as profit after all costs, interest and tax.
+
 Companies are grouped into four tiers by this index, with the same tier colours as the rest of the site. Tier 1 gives the least work for its size and Tier 4 the most. Tables go from Tier 1 down to Tier 4.
 
 | Tier | Jobs per $1 billion of market value |
@@ -45,7 +47,7 @@ All numbers are for the last 12 months as shown on each company's StockAnalysis 
 
 | Tier | Company | Market value | Employees | Revenue | Net profit | Net margin | Jobs per $1B of value | Revenue per employee | Net profit per employee |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | [Anthropic](https://finance.yahoo.com/markets/live/stock-market-today-thursday-november-19-dow-sp-500-nasdaq-anthropic-ipo-live-141306032.html) | $1.27T | 5,300 | $35.3B | not used | -4.3% operating | 4.2 | $6.65M | not used |
+| 1 | [Anthropic](https://finance.yahoo.com/markets/live/stock-market-today-thursday-november-19-dow-sp-500-nasdaq-anthropic-ipo-live-141306032.html) | $1.27T | 5,300 | $35.3B | not counted | -557% | 4.2 | $6.65M | not counted |
 | 1 | [Nvidia](https://stockanalysis.com/stocks/nvda/statistics/) | $3.75T | 42,000 | $303.0B | $192.9B | 63.7% | 11.2 | $7.21M | $4.59M |
 | 1 | [SpaceX](https://stockanalysis.com/stocks/spcx/statistics/) | $1.89T | 22,000 | $32.0B | -$3.4B | -8.6% | 11.6 | $1.46M | -$156K |
 | 1 | [Broadcom](https://stockanalysis.com/stocks/avgo/statistics/) | $1.66T | 33,000 | $89.1B | $38.3B | 42.9% | 19.9 | $2.70M | $1.16M |
@@ -73,9 +75,9 @@ Contrast companies, below $1 trillion:
 
 Notes on single rows:
 
-- **Alphabet.** The net margin (50.0%) is above the operating margin (33.3%), so the profit includes large gains from outside the main business. The page read does not break them down.
+- **Alphabet.** The net margin (50.0%) is above its margin on operations alone (33.3%), so the profit includes large gains from outside the main business. The page read does not break them down.
 - **SpaceX and Ford** made a net loss over the last 12 months.
-- **Anthropic** listed on 2026-11-19. Its market value is one day old and calculated here from the closing price and Yahoo Finance's share count, so it is the least firm number in the table. Its revenue is the 12 months to 2026-09-30 and its staff count is from 2026-09-30, all from its [Form S-1](https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm) as recorded in [data/anthropic-s1-2026-10-26.csv](../data/anthropic-s1-2026-10-26.csv). The margin shown is the operating margin for the first half of 2026 (-$693 million on $16,286 million of revenue). The net loss is not used because most of it is a non-cash change in the value of convertible notes.
+- **Anthropic** listed on 2026-11-19. Its market value is one day old and calculated here from the closing price and Yahoo Finance's share count, so it is the least firm number in the table. Its revenue is the 12 months to 2026-09-30 and its staff count is from 2026-09-30, all from its [Form S-1](https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm) as recorded in [data/anthropic-s1-2026-10-26.csv](../data/anthropic-s1-2026-10-26.csv). Its net margin of -557% is the reported one for the 12 months to 2026-06-30: a net loss of $109.7 billion on revenue of $19.7 billion ([StockAnalysis](https://stockanalysis.com/stocks/ant/statistics/)). Most of that loss is a non-cash change in the value of convertible notes, so it is not counted in the group's profit total. From operations alone, the first half of 2026 was close to zero (-$693 million on $16,286 million of revenue).
 
 ## The tiers, and one competition in each
 
@@ -105,7 +107,7 @@ Tiers 1 and 2 together hold 83% of the value and 78% of the profit with 19% of t
 | Market value | $46B | $3.64T | $1.27T (first-day close) |
 | Employees | 169,000 | 204,757 | 5,300 |
 | Revenue | $188B | $471B | $35B |
-| Margin | -3.9% net | 50.0% net | 85% gross, -4% operating (first half of 2026) |
+| Net margin | -3.9% | 50.0% | -557% (12 months to June 2026, mostly non-cash) |
 | Jobs per $1B of value | 3,660 | 56.3 | 4.2 |
 | Market value per employee | $0.3M | $17.8M | $240M |
 
