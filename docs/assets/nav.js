@@ -19,10 +19,11 @@
     research: [
       ["Speed", "techniques.html#speed", "techniques"],
       ["Quality", "techniques.html#quality", "techniques"],
-      ["Horizon", "horizon.html", "horizon"]
+      ["Horizon", "horizon.html", "horizon"],
+      ["Jobs", "jobs.html", "jobs"]
     ]
   };
-  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", research: "local", horizon: "research", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", techniques: "research", sources: "sources" };
+  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", research: "local", horizon: "research", jobs: "research", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", techniques: "research", sources: "sources" };
 
   var page = (location.pathname.split("/").pop() || "index.html").replace(/\.html$/, "") || "index";
   var section = PAGE_SECTION[page];
