@@ -43,14 +43,20 @@
     var recent = all.filter(function (m) { return m.release_date >= "2025-05-01"; })
       .sort(function (a, b) { return b.p50 - a.p50; });
     var ctx = document.getElementById("ctx");
+    var rate = document.getElementById("rate");
+    var curveLine, curveLabel; // success-rate marker on the curve chart
+    function pct() { return +rate.value / 100; }
+    function lenAt(m, p) { return p === 0.5 ? m.p50 : lengthAt(m, p); }
 
     function drawBars() {
-      var k = +ctx.value;
+      var k = +ctx.value, p = pct(), rl = Math.round(p * 100);
+      document.getElementById("rate-val").textContent = rl + "%";
+      document.getElementById("rate-note").textContent = rl === 50 ? "METR's published 50% horizon." : rl === 80 ? "METR's published 80% horizon." : "Estimate: derived from METR's 50% and 80% points with a logistic curve in log task length.";
       document.getElementById("ctx-val").textContent = k + "×";
       document.getElementById("ctx-note").textContent = k === 1
         ? "At 1× the chart shows METR's own numbers (expert baseliners with little codebase context). The speed-up is an assumption: no public source gives it."
         : "Assumption: this developer needs 1/" + k + " of the METR human time for the same task, so each horizon below is METR's value divided by " + k + ".";
-      var max = Math.max.apply(null, recent.map(function (m) { return m.p50 / k / 60; })) * 1.05;
+      var max = Math.max.apply(null, recent.map(function (m) { return lenAt(m, p) / k / 60; })) * 1.05;
       var box = document.getElementById("hbars");
       box.textContent = "";
       var lines = el("div", { "class": "hlines", "aria-hidden": "true" });
@@ -59,27 +65,40 @@
       });
       box.appendChild(lines);
       recent.forEach(function (m) {
-        var h = m.p50 / k / 60;
+        var h = lenAt(m, p) / k / 60;
         box.appendChild(el("div", { "class": "hrow" }, [
           el("span", { "class": "hlabel", text: m.model }),
           el("span", { "class": "htrack" }, [
             el("span", { "class": "hbar dev-" + m.developer, style: "width:" + Math.max(0.5, h / max * 100) + "%" }),
-            el("span", { "class": "hval", style: "left:" + (h / max * 100) + "%", text: fmtMin(m.p50 / k) })
+            el("span", { "class": "hval", style: "left:" + (h / max * 100) + "%", text: fmtMin(lenAt(m, p) / k) })
           ])
         ]));
       });
     }
+    function updateMarker() {
+      if (!curveLine) return;
+      var p = pct(), y = Y(p);
+      curveLine.setAttribute("y1", y); curveLine.setAttribute("y2", y);
+      curveLabel.setAttribute("y", y - 4);
+      curveLabel.textContent = Math.round(p * 100) + "% success";
+    }
+    function renderSel() {
+      var p = pct();
+      document.querySelectorAll("#hr-table td.sel").forEach(function (td, i) { td.textContent = fmtMin(lenAt(recent[i], p)); });
+    }
     ctx.addEventListener("input", drawBars);
-    drawBars();
+    rate.addEventListener("input", function () { drawBars(); updateMarker(); renderSel(); });
 
     var t = document.getElementById("hr-table");
-    t.appendChild(el("thead", {}, [el("tr", {}, ["Model", "Released", "50% horizon", "80% horizon"].map(function (h, i) { return el("th", { scope: "col", "class": i > 1 ? "num" : "", text: h }); }))]));
+    t.appendChild(el("thead", {}, [el("tr", {}, ["Model", "Released", "50% horizon", "80% horizon", "At selected rate"].map(function (h, i) { return el("th", { scope: "col", "class": i > 1 ? "num" : "", text: h }); }))]));
     var tb = el("tbody");
     recent.forEach(function (m) {
       tb.appendChild(el("tr", {}, [el("td", { text: m.model }), el("td", { text: m.release_date }),
-        el("td", { "class": "num", text: fmtMin(m.p50) }), el("td", { "class": "num", text: fmtMin(m.p80) })]));
+        el("td", { "class": "num", text: fmtMin(m.p50) }), el("td", { "class": "num", text: fmtMin(m.p80) }),
+        el("td", { "class": "num sel", text: fmtMin(lenAt(m, pct())) })]));
     });
     t.appendChild(tb);
+    drawBars();
 
     // Facts from sources, numbers taken from the data
     var by = {}; all.forEach(function (m) { by[m.model] = m; });
@@ -123,14 +142,17 @@
       s.appendChild(svg("circle", { cx: X(m.p50), cy: Y(0.5), r: 3.5, style: "fill:" + COLORS[i] }));
       legend.appendChild(el("span", { "class": "legend-item" }, [el("span", { "class": "swatch", style: "background:" + COLORS[i] }), document.createTextNode(m.model)]));
     });
+    curveLine = svg("line", { x1: L, x2: W - R, y1: Y(pct()), y2: Y(pct()), "class": "rate-line" });
+    curveLabel = svg("text", { x: W - R - 4, y: Y(pct()) - 4, "text-anchor": "end", "class": "rate-label", text: Math.round(pct() * 100) + "% success" });
+    s.appendChild(curveLine); s.appendChild(curveLabel);
     document.getElementById("curves").appendChild(s);
 
     var rt = document.getElementById("rel-table");
-    rt.appendChild(el("thead", {}, [el("tr", {}, ["Model", "50% (METR)", "80% (METR)", "90% (derived)", "95% (derived)"].map(function (h, i) { return el("th", { scope: "col", "class": i ? "num" : "", text: h }); }))]));
+    rt.appendChild(el("thead", {}, [el("tr", {}, ["Model", "50% (METR)", "80% (METR)", "90% (derived)", "95% (derived)", "99% (derived)"].map(function (h, i) { return el("th", { scope: "col", "class": i ? "num" : "", text: h }); }))]));
     var rb = el("tbody");
-    models.forEach(function (m) {
+    recent.forEach(function (m) {
       rb.appendChild(el("tr", {}, [el("td", { text: m.model }), el("td", { "class": "num", text: fmtMin(m.p50) }), el("td", { "class": "num", text: fmtMin(m.p80) }),
-        el("td", { "class": "num", text: fmtMin(lengthAt(m, 0.9)) }), el("td", { "class": "num", text: fmtMin(lengthAt(m, 0.95)) })]));
+        el("td", { "class": "num", text: fmtMin(lengthAt(m, 0.9)) }), el("td", { "class": "num", text: fmtMin(lengthAt(m, 0.95)) }), el("td", { "class": "num", text: fmtMin(lengthAt(m, 0.99)) })]));
     });
     rt.appendChild(rb);
   }

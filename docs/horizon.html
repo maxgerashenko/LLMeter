@@ -54,14 +54,19 @@
       <p class="lede">
         METR measures the <strong>time horizon</strong>: how long a task is, in hours an expert human needs for it,
         when the AI agent finishes it 50% of the time. Below, that is mapped to a working day and week, followed by the
-        success curve from 50% up to 100%.
+        success curve from 50% up to 99%, with a slider for the success rate.
       </p>
     </section>
 
     <section class="card" id="horizon">
       <div class="card-head">
-        <h2>1. Expert work time at 50% success</h2>
-        <p class="muted">Each bar is the task length (in expert human time) a model completes half of the time, as published by METR. Dashed lines are plain arithmetic: one 8-hour working day and one 40-hour working week.</p>
+        <h2>1. Longest task a model completes at your success rate</h2>
+        <p class="muted">Move the slider to set how often the model must succeed (50% to 99%). Each bar is the longest task, in expert human time, the model completes at that rate. At 50% and 80% the values are METR's own; every other rate is an estimate. 100% is not offered: on this curve the task length shrinks to zero. Dashed lines are plain arithmetic: one 8-hour working day and one 40-hour working week.</p>
+      </div>
+      <div class="ctl">
+        <label for="rate">Task success rate: <strong id="rate-val">50%</strong></label>
+        <input id="rate" type="range" min="50" max="99" step="1" value="50">
+        <p class="note" id="rate-note"></p>
       </div>
       <div class="ctl">
         <label for="ctx">Context speed-up for a senior developer who already knows the codebase:
@@ -81,18 +86,18 @@
     <section class="card" id="curve">
       <div class="card-head">
         <h2>3. From 50% to 100% success: the reliability curve</h2>
-        <p class="muted">Success rate as a function of task length (expert human time, log scale). Every curve starts near 100% on very short tasks and reaches 50% at the model's time horizon. The curves are <strong>derived</strong> from METR's two published points (50% and 80%) with a logistic in log task length; they are not METR's own plotted curves.</p>
+        <p class="muted">Success rate as a function of task length (expert human time, log scale). Every curve starts near 100% on very short tasks and reaches 50% at the model's time horizon. The slider rate is drawn as a dashed horizontal line. The curves are <strong>derived</strong> from METR's two published points (50% and 80%) with a logistic in log task length; they are not METR's own plotted curves.</p>
       </div>
       <div id="curves" class="curves"></div>
       <div class="legend" id="curve-legend"></div>
       <div class="table-scroll"><table class="data-table" id="rel-table"></table></div>
-      <p class="note">METR does not publish a 99% horizon: it says measuring it would need many more, very short tasks, and results would be sensitive to methodology. The 90% and 95% columns are extrapolations from the two published points. Treat them as estimates.</p>
+      <p class="note">METR does not publish 90%, 95% or 99% horizons: it says measuring them would need many more, very short tasks, and results would be sensitive to methodology. Method used here: success = 1 / (1 + (t / T50)^b), where T50 is METR's 50% horizon and b = ln 4 / ln(T50 / T80) is fixed by METR's 80% horizon. The task length at success rate p is then T50 × ((1 − p) / p)^(1/b). The 90%, 95% and 99% columns are extrapolations of that fit, so treat them as estimates; they get less reliable the further p is from 80%.</p>
     </section>
 
     <section class="card prose" id="caveats">
       <h2>What is sourced and what is assumed</h2>
       <p><strong>Sourced:</strong> every model's 50% and 80% horizon, release date and the doubling time, from METR's data file (METR-Horizon-v1.1). Data file here: <a href="data/metr-time-horizons-1-1.csv">metr-time-horizons-1-1.csv</a>.</p>
-      <p><strong>Derived by LLMeter:</strong> the curves, and the 90% and 95% lengths, from the two published points.</p>
+      <p><strong>Derived by LLMeter:</strong> the values between and beyond the 50% and 80% points, the curves, and the 90%, 95% and 99% lengths, from the two published points.</p>
       <p><strong>Assumption, not data:</strong> the "senior developer with 8 years of experience who knows the codebase". METR's human baseliners had about 5 years of relevant experience and little or no context for the task, and METR warns that a time horizon is not "hours of work a high-context professional does in their day-to-day job". No public source gives the speed-up for a developer who knows the codebase, so the slider starts at 1× (METR's own units). If you set it to 3×, a task METR counts as 3 hours is treated as 1 hour for that developer, so the model's horizon in that developer's time shrinks to a third.</p>
       <p><strong>Not covered:</strong> METR has no Claude Sonnet 5.x or Fable 5.x, and no open-weights model, so none of those can be placed on this page. This list is a selection of METR's entries from 2023 on, not all of them.</p>
       <p class="muted">Sources: <a href="https://metr.org/time-horizons/">METR Time Horizons</a>, <a href="https://metr.org/assets/benchmark_results_1_1.yaml">raw data</a>, <a href="https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/">the original paper post</a>. Read 2026-11-17.</p>
