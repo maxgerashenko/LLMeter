@@ -92,6 +92,21 @@ Shares are of the 13 companies above $1 trillion. Profit shares are of the 12 wi
 
 Tiers 1 and 2 together hold 83% of the value and 78% of the profit with 19% of the jobs.
 
+### Margin tiers
+
+The net profit margin has its own four tiers, separate from the job tiers. The edges are this article's own choice.
+
+| Margin tier | Net profit margin | Companies, lowest margin first |
+| --- | --- | --- |
+| **Tier 1** | less than 5%, or a net loss | Anthropic (-557%), SpaceX (-8.6%), Ford (-3.9%), General Motors (2.1%), Walmart (3.0%), Tesla (3.1%) |
+| **Tier 2** | 5% to 20% | ExxonMobil (10.5%), Amazon (16.9%), Berkshire Hathaway (19.5%) |
+| **Tier 3** | 20% to 40% | Apple (27.6%), Meta (31.2%), Eli Lilly (31.9%), JPMorgan Chase (34.6%) |
+| **Tier 4** | 40% or more | Microsoft (41.2%), Broadcom (42.9%), Alphabet (50.0%), Nvidia (63.7%) |
+
+Margin and jobs mostly move in opposite directions. All four companies in margin Tier 4 are in job Tiers 1 and 2, and the job-heavy companies (Walmart, General Motors, Ford) keep 3% or less. The exceptions are SpaceX, Anthropic and Tesla: very high value with a low margin or a loss, because investors are paying for expected profit, not current profit.
+
+### One competition in each job tier
+
 **Tier 1, capital heavy: Nvidia against Broadcom (AI chips).** Nvidia earns $4.59 million of net profit per employee, 437 times Walmart's $10,500. Broadcom earns $1.16 million. Both design chips and have them made by others, so the factory jobs are counted at their suppliers (mostly TSMC, outside the US). Anthropic, the newest member, has the lowest index of all: 4.2 jobs per $1 billion.
 
 **Tier 2, high margin with many people: Microsoft against Alphabet (software, cloud, AI).** Both have net margins above 40% and each employs more than 200,000 people. Their jobs index (56 to 59) is 35 times lower than Walmart's. This tier holds more than half of all the value and profit. Tesla is here by value, not by margin: it has Ford's margin (3%) with a market value 33 times larger.

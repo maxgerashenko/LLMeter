@@ -13,6 +13,14 @@
     { id: "t1", label: "1", range: "fewer than 30" }
   ];
   var EDGES = [30, 100, 1000], LO = 1, HI = 10000;
+  // Margin tiers: net profit margin in percent. A net loss is in Tier 1.
+  var MTIERS = [
+    { id: "t4", label: "4", range: "40% or more", min: 40 },
+    { id: "t3", label: "3", range: "20% to 40%", min: 20 },
+    { id: "t2", label: "2", range: "5% to 20%", min: 5 },
+    { id: "t1", label: "1", range: "less than 5%, or a net loss", min: -Infinity }
+  ];
+  var MEDGES = [5, 20, 40], MHI = 70;
 
   function parseCSV(text) {
     var rows = [], row = [], field = "", inQuotes = false;
@@ -66,10 +74,13 @@
     var a = Math.abs(k), sign = k < 0 ? "-" : "";
     return sign + "$" + (a >= 1000 ? (a / 1000).toFixed(2) + "M" : int(a) + "K");
   }
-  function pct(p) { return p == null ? "n/a" : p.toFixed(1) + "%"; }
+  // Rounds halves away from zero (31.15 shows as 31.2), which toFixed alone does not do reliably
+  function r1(v) { return (Math.sign(v) * Math.round(Math.abs(v) * 10 + 1e-9) / 10).toFixed(1); }
+  function pct(p) { return p == null ? "n/a" : r1(p) + "%"; }
   function slug(s) { return "job-" + s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
   function tierOf(label) { return TIERS.filter(function (t) { return t.label === label; })[0]; }
   function badge(t) { return el("span", { class: "tier-badge rs-tag tier-" + t.id, title: "Tier " + t.label + ": " + t.range }, ["Tier " + t.label]); }
+  function r_note(c) { return c.r.note || ""; }
   function pos(v) { return Math.min(100, Math.max(0, Math.log(v / LO) / Math.log(HI / LO)) * 100); }
 
   function render(rows) {
@@ -133,6 +144,37 @@
       el("td", { "data-label": "Net profit", text: usdB(all.ni) }),
       el("td", { "data-label": "Market value", text: usdB(all.cap) })
     ]));
+
+    // Net margin chart: its own tiers, lowest margin first. Bars are linear from 0% to 70%;
+    // a net loss has no bar.
+    var byMargin = items.filter(function (c) { return c.margin != null; }).sort(function (a, b) { return a.margin - b.margin; });
+    var mplot = el("div", { class: "plot rs-plot rs-plot-jobs" });
+    var medges = el("div", { class: "edges", "aria-hidden": "true" });
+    mplot.appendChild(medges);
+    MEDGES.forEach(function (e) {
+      medges.appendChild(el("span", { class: "edge", style: "left:" + (e / MHI * 100) + "%" }, [el("span", { class: "edge-label", text: e + "%" })]));
+    });
+    byMargin.forEach(function (c) {
+      var t = MTIERS.filter(function (m) { return c.margin >= m.min; })[0], loss = c.margin < 0;
+      mplot.appendChild(el("div", { class: "rs-row" }, [
+        el("span", { class: "rs-label", title: c.name }, [
+          el("span", { class: "tier-badge rs-tag tier-" + t.id, title: "Margin tier " + t.label + ": " + t.range }, ["Tier " + t.label]),
+          el("span", { class: "rs-name" }, [c.name, c.club ? null : el("span", { class: "muted jobs-ref", text: " below $1T" })])
+        ]),
+        el("span", { class: "rs-track" + (loss ? " rs-none" : ""), title: c.ni == null ? r_note(c) : usdB(c.ni) + " net profit on " + usdB(c.rev) + " revenue" },
+          loss ? ["net loss"] : [el("span", { class: "bar tier-bg-" + t.id + (c.club ? "" : " jobs-ref-bar"), style: "width:" + Math.max(0.6, Math.min(100, c.margin / MHI * 100)) + "%" })]),
+        el("span", { class: "rs-value", text: (Math.abs(c.margin) >= 100 ? int(c.margin) : r1(c.margin)) + "%" }),
+        el("a", { class: "explain rs-more", href: "#" + c.id, title: "Details and source for " + c.name, "aria-label": "Details for " + c.name }, ["Details"])
+      ]));
+    });
+    var mbars = document.getElementById("margin-bars");
+    mbars.textContent = "";
+    mbars.appendChild(mplot);
+    var mlegend = document.getElementById("margin-legend");
+    mlegend.textContent = "";
+    MTIERS.slice().reverse().forEach(function (t) {
+      mlegend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + t.id }), "Tier " + t.label + ": " + t.range]));
+    });
 
     // Details table
     var body = document.getElementById("jobs-rows");
