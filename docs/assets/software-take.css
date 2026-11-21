@@ -31,6 +31,3 @@
 #panel-software #sw-panels .panels { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 1040px) { #panel-software #sw-panels .panels { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1041px) { #panel-software #sw-panels .p-label { white-space: nowrap; font-size: 10.5px; letter-spacing: 0; } }
-#panel-software #sw-check .panels { grid-template-columns: repeat(3, 1fr); }
-@media (max-width: 1040px) { #panel-software #sw-check .panels { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 1041px) { #panel-software #sw-check .p-label { white-space: nowrap; font-size: 10.5px; letter-spacing: 0; } }
