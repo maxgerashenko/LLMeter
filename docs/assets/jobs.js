@@ -20,7 +20,7 @@
     { id: "t3", label: "3", range: "5% to 20%", min: 5 },
     { id: "t4", label: "4", range: "less than 5%, or a net loss", min: -Infinity }
   ];
-  var MEDGES = [5, 20, 40], MHI = 70;
+  var MEDGES = [5, 20, 40], MHI = 80;
 
   function parseCSV(text) {
     var rows = [], row = [], field = "", inQuotes = false;
@@ -171,8 +171,13 @@
             // Two segments: profit from operations (solid, only when positive), then the R&D added back (striped)
             x.ops > 0 ? el("span", { class: "bar jobs-seg tier-bg-" + t.id, style: "width:" + (x.ops / MHI * 100) + "%" }) : null,
             el("span", { class: "bar jobs-seg jobs-rd tier-bg-" + t.id, style: "width:" + ((x.m - Math.max(0, x.ops)) / MHI * 100) + "%" })
+          ] : x.rd != null ? [
+            // Net margin (solid), then the R&D spending as a share of revenue (striped) as a separate feature
+            el("span", { class: "bar jobs-seg tier-bg-" + t.id + (c.club ? "" : " jobs-ref-bar"), style: "width:" + (x.m / MHI * 100) + "%" }),
+            el("span", { class: "bar jobs-seg jobs-rd tier-bg-" + t.id + (c.club ? "" : " jobs-ref-bar"), style: "width:" + Math.min(x.rd, MHI - x.m) / MHI * 100 + "%" })
           ] : [el("span", { class: "bar tier-bg-" + t.id + (c.club ? "" : " jobs-ref-bar"), style: "width:" + Math.max(0.6, Math.min(100, x.m / MHI * 100)) + "%" })]),
-        el("span", { class: "rs-value" }, x.beforeRd ? [r1(x.m) + "%", el("span", { class: "jobs-split", text: r1(x.ops) + "% + " + r1(x.rd) + "% R&D" })] : [r1(x.m) + "%"]),
+        el("span", { class: "rs-value" }, x.beforeRd ? [r1(x.m) + "%", el("span", { class: "jobs-split", text: r1(x.ops) + "% + " + r1(x.rd) + "% R&D" })]
+          : x.rd != null ? [r1(x.m) + "%", el("span", { class: "jobs-split", text: "+ " + r1(x.rd) + "% R&D" })] : [r1(x.m) + "%"]),
         el("a", { class: "explain rs-more", href: "#" + c.id, title: "Details and source for " + c.name, "aria-label": "Details for " + c.name }, ["Details"])
       ]));
     });
@@ -204,7 +209,9 @@
         ]),
         el("td", { "data-label": "Net margin" }, [
           el("span", { text: c.margin == null ? "n/a" : pct(c.margin) }),
-          num(r.margin_before_rd_pct) == null ? null : el("span", { class: "rs-effect-text" }, [pct(num(r.margin_before_rd_pct)) + " before R&D (", el("a", { href: r.margin_before_rd_source_url, title: r.margin_before_rd_basis, text: "source" }), ")"])
+          num(r.margin_before_rd_pct) != null ? el("span", { class: "rs-effect-text" }, [pct(num(r.margin_before_rd_pct)) + " before R&D (", el("a", { href: r.margin_before_rd_source_url, title: r.margin_before_rd_basis, text: "source" }), ")"])
+            : num(r.rd_pct_of_revenue) != null ? el("span", { class: "rs-effect-text" }, ["R&D " + pct(num(r.rd_pct_of_revenue)) + " of revenue (", el("a", { href: r.rd_source_url, title: r.rd_basis, text: "source" }), ")"])
+            : el("span", { class: "rs-effect-text", text: "no R&D line" })
         ]),
         el("td", { "data-label": "Per employee" }, [
           el("span", { text: usdK(num(r.revenue_per_employee_usd_k)) + " revenue" }),
