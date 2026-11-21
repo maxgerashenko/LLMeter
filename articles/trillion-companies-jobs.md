@@ -107,11 +107,11 @@ For most companies the margin is the net profit margin. For three young companie
 
 \* Margin before R&D, calculated here:
 
-| Company | Period | Revenue | Profit from operations | R&D spending | Margin before R&D | Net margin | Source |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| SpaceX | 12 months to 2026-09-30 | $32,043M | $575M | $13,473M | 43.8% | -8.6% | [StockAnalysis income statement](https://stockanalysis.com/stocks/spcx/financials/income-statement/) |
-| Anthropic | 12 months to 2026-06-30 | $19,708M | -$6,618M | $14,229M | 38.6% | -557% | [Form S-1](https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm), statements of operations and Note 8 |
-| Tesla | 12 months to 2026-06-30 | $103,619M | $4,278M | $7,730M | 11.6% | 3.1% | [StockAnalysis income statement](https://stockanalysis.com/stocks/tsla/financials/income-statement/) |
+| Company | Period | Revenue | Profit from operations | R&D spending | Margin from operations | R&D share of revenue | Margin before R&D | Net margin | Source |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| SpaceX | 12 months to 2026-09-30 | $32,043M | $575M | $13,473M | 1.8% | 42.0% | 43.8% | -8.6% | [StockAnalysis income statement](https://stockanalysis.com/stocks/spcx/financials/income-statement/) |
+| Anthropic | 12 months to 2026-06-30 | $19,708M | -$6,618M | $14,229M | -33.6% | 72.2% | 38.6% | -557% | [Form S-1](https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm), statements of operations and Note 8 |
+| Tesla | 12 months to 2026-06-30 | $103,619M | $4,278M | $7,730M | 4.1% | 7.5% | 11.6% | 3.1% | [StockAnalysis income statement](https://stockanalysis.com/stocks/tsla/financials/income-statement/) |
 
 Anthropic's R&D line includes the compute it uses for research. For the first half of 2026 alone its margin before R&D is 55.6% (-$693 million plus $9,741 million on $16,286 million of revenue).
 

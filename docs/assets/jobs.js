@@ -149,9 +149,11 @@
     // ones) are placed by that margin, the others by net profit margin.
     var byMargin = items.map(function (c) {
       var before = num(c.r.margin_before_rd_pct);
-      return { c: c, m: before != null ? before : c.margin, beforeRd: before != null };
+      // rd = research spending as a share of revenue; ops = profit from operations as a share of revenue
+      var rd = num(c.r.rd_pct_of_revenue);
+      return { c: c, m: before != null ? before : c.margin, beforeRd: before != null, rd: rd, ops: before != null ? before - rd : null };
     }).filter(function (x) { return x.m != null; }).sort(function (a, b) { return b.m - a.m; });
-    var mplot = el("div", { class: "plot rs-plot rs-plot-jobs" });
+    var mplot = el("div", { class: "plot rs-plot rs-plot-jobs rs-plot-margin" });
     var medges = el("div", { class: "edges", "aria-hidden": "true" });
     mplot.appendChild(medges);
     MEDGES.forEach(function (e) {
@@ -165,8 +167,12 @@
           el("span", { class: "rs-name" }, [c.name, x.beforeRd ? el("span", { class: "muted jobs-ref", text: " before R&D" }) : null, c.club ? null : el("span", { class: "muted jobs-ref", text: " below $1T" })])
         ]),
         el("span", { class: "rs-track" + (loss ? " rs-none" : ""), title: x.beforeRd ? c.r.margin_before_rd_basis : usdB(c.ni) + " net profit on " + usdB(c.rev) + " revenue" },
-          loss ? ["net loss"] : [el("span", { class: "bar tier-bg-" + t.id + (c.club ? "" : " jobs-ref-bar"), style: "width:" + Math.max(0.6, Math.min(100, x.m / MHI * 100)) + "%" })]),
-        el("span", { class: "rs-value", text: r1(x.m) + "%" }),
+          loss ? ["net loss"] : x.beforeRd ? [
+            // Two segments: profit from operations (solid, only when positive), then the R&D added back (striped)
+            x.ops > 0 ? el("span", { class: "bar jobs-seg tier-bg-" + t.id, style: "width:" + (x.ops / MHI * 100) + "%" }) : null,
+            el("span", { class: "bar jobs-seg jobs-rd tier-bg-" + t.id, style: "width:" + ((x.m - Math.max(0, x.ops)) / MHI * 100) + "%" })
+          ] : [el("span", { class: "bar tier-bg-" + t.id + (c.club ? "" : " jobs-ref-bar"), style: "width:" + Math.max(0.6, Math.min(100, x.m / MHI * 100)) + "%" })]),
+        el("span", { class: "rs-value" }, x.beforeRd ? [r1(x.m) + "%", el("span", { class: "jobs-split", text: r1(x.ops) + "% + " + r1(x.rd) + "% R&D" })] : [r1(x.m) + "%"]),
         el("a", { class: "explain rs-more", href: "#" + c.id, title: "Details and source for " + c.name, "aria-label": "Details for " + c.name }, ["Details"])
       ]));
     });

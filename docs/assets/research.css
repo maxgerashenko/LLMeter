@@ -94,3 +94,15 @@
 .rs-table-tiers thead th:nth-child(2) { width: 35%; }
 .rs-table-tiers thead th:nth-child(3), .rs-table-tiers thead th:nth-child(4), .rs-table-tiers thead th:nth-child(5) { width: 19%; }
 .jobs-total > * { font-weight: 600; }
+/* Margin chart: a "before R&D" bar is the profit from operations (solid) followed by the R&D added back (striped) */
+.rs-track:has(.jobs-seg) { display: flex; }
+.jobs-seg { flex: none; border-radius: 0 !important; }
+.jobs-rd { background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0 3px, transparent 3px 7px); }
+.jobs-split { display: block; font-size: 11.5px; font-weight: 500; color: var(--muted); }
+.rs-plot-margin { --value-w: 150px; }
+@media (max-width: 640px) {
+  /* Keep every track the same width: the two-part numbers sit on their own line under the bar */
+  .rs-plot-margin .rs-value { position: relative; }
+  .rs-plot-margin .jobs-split { position: absolute; right: 0; top: 100%; white-space: nowrap; }
+  .rs-plot-margin .rs-row:has(.jobs-split) { padding-bottom: 22px; }
+}
