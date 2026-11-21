@@ -13,12 +13,12 @@
     { id: "t1", label: "1", range: "fewer than 30" }
   ];
   var EDGES = [30, 100, 1000], LO = 1, HI = 10000;
-  // Margin tiers: net profit margin in percent. A net loss is in Tier 1.
+  // Margin tiers: Tier 1 is the highest margin. A net loss is in Tier 4.
   var MTIERS = [
-    { id: "t4", label: "4", range: "40% or more", min: 40 },
-    { id: "t3", label: "3", range: "20% to 40%", min: 20 },
-    { id: "t2", label: "2", range: "5% to 20%", min: 5 },
-    { id: "t1", label: "1", range: "less than 5%, or a net loss", min: -Infinity }
+    { id: "t1", label: "1", range: "40% or more", min: 40 },
+    { id: "t2", label: "2", range: "20% to 40%", min: 20 },
+    { id: "t3", label: "3", range: "5% to 20%", min: 5 },
+    { id: "t4", label: "4", range: "less than 5%, or a net loss", min: -Infinity }
   ];
   var MEDGES = [5, 20, 40], MHI = 70;
 
@@ -80,7 +80,6 @@
   function slug(s) { return "job-" + s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
   function tierOf(label) { return TIERS.filter(function (t) { return t.label === label; })[0]; }
   function badge(t) { return el("span", { class: "tier-badge rs-tag tier-" + t.id, title: "Tier " + t.label + ": " + t.range }, ["Tier " + t.label]); }
-  function r_note(c) { return c.r.note || ""; }
   function pos(v) { return Math.min(100, Math.max(0, Math.log(v / LO) / Math.log(HI / LO)) * 100); }
 
   function render(rows) {
@@ -145,25 +144,29 @@
       el("td", { "data-label": "Market value", text: usdB(all.cap) })
     ]));
 
-    // Net margin chart: its own tiers, lowest margin first. Bars are linear from 0% to 70%;
-    // a net loss has no bar.
-    var byMargin = items.filter(function (c) { return c.margin != null; }).sort(function (a, b) { return a.margin - b.margin; });
+    // Margin chart: its own tiers, highest margin first. Bars are linear from 0% to 70%; a net loss
+    // has no bar. Companies with a "margin before R&D" in the data file (the young, fast-growing
+    // ones) are placed by that margin, the others by net profit margin.
+    var byMargin = items.map(function (c) {
+      var before = num(c.r.margin_before_rd_pct);
+      return { c: c, m: before != null ? before : c.margin, beforeRd: before != null };
+    }).filter(function (x) { return x.m != null; }).sort(function (a, b) { return b.m - a.m; });
     var mplot = el("div", { class: "plot rs-plot rs-plot-jobs" });
     var medges = el("div", { class: "edges", "aria-hidden": "true" });
     mplot.appendChild(medges);
     MEDGES.forEach(function (e) {
       medges.appendChild(el("span", { class: "edge", style: "left:" + (e / MHI * 100) + "%" }, [el("span", { class: "edge-label", text: e + "%" })]));
     });
-    byMargin.forEach(function (c) {
-      var t = MTIERS.filter(function (m) { return c.margin >= m.min; })[0], loss = c.margin < 0;
+    byMargin.forEach(function (x) {
+      var c = x.c, t = MTIERS.filter(function (m) { return x.m >= m.min; })[0], loss = x.m < 0;
       mplot.appendChild(el("div", { class: "rs-row" }, [
         el("span", { class: "rs-label", title: c.name }, [
           el("span", { class: "tier-badge rs-tag tier-" + t.id, title: "Margin tier " + t.label + ": " + t.range }, ["Tier " + t.label]),
-          el("span", { class: "rs-name" }, [c.name, c.club ? null : el("span", { class: "muted jobs-ref", text: " below $1T" })])
+          el("span", { class: "rs-name" }, [c.name, x.beforeRd ? el("span", { class: "muted jobs-ref", text: " before R&D" }) : null, c.club ? null : el("span", { class: "muted jobs-ref", text: " below $1T" })])
         ]),
-        el("span", { class: "rs-track" + (loss ? " rs-none" : ""), title: c.ni == null ? r_note(c) : usdB(c.ni) + " net profit on " + usdB(c.rev) + " revenue" },
-          loss ? ["net loss"] : [el("span", { class: "bar tier-bg-" + t.id + (c.club ? "" : " jobs-ref-bar"), style: "width:" + Math.max(0.6, Math.min(100, c.margin / MHI * 100)) + "%" })]),
-        el("span", { class: "rs-value", text: (Math.abs(c.margin) >= 100 ? int(c.margin) : r1(c.margin)) + "%" }),
+        el("span", { class: "rs-track" + (loss ? " rs-none" : ""), title: x.beforeRd ? c.r.margin_before_rd_basis : usdB(c.ni) + " net profit on " + usdB(c.rev) + " revenue" },
+          loss ? ["net loss"] : [el("span", { class: "bar tier-bg-" + t.id + (c.club ? "" : " jobs-ref-bar"), style: "width:" + Math.max(0.6, Math.min(100, x.m / MHI * 100)) + "%" })]),
+        el("span", { class: "rs-value", text: r1(x.m) + "%" }),
         el("a", { class: "explain rs-more", href: "#" + c.id, title: "Details and source for " + c.name, "aria-label": "Details for " + c.name }, ["Details"])
       ]));
     });
@@ -172,7 +175,7 @@
     mbars.appendChild(mplot);
     var mlegend = document.getElementById("margin-legend");
     mlegend.textContent = "";
-    MTIERS.slice().reverse().forEach(function (t) {
+    MTIERS.forEach(function (t) {
       mlegend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + t.id }), "Tier " + t.label + ": " + t.range]));
     });
 
@@ -193,7 +196,10 @@
           el("span", { text: usdB(c.rev) + " revenue" }),
           el("span", { class: "rs-effect-text", text: c.ni == null ? "net profit not counted" : usdB(c.ni) + " net profit" })
         ]),
-        el("td", { "data-label": "Net margin", text: c.margin == null ? "n/a" : pct(c.margin) }),
+        el("td", { "data-label": "Net margin" }, [
+          el("span", { text: c.margin == null ? "n/a" : pct(c.margin) }),
+          num(r.margin_before_rd_pct) == null ? null : el("span", { class: "rs-effect-text" }, [pct(num(r.margin_before_rd_pct)) + " before R&D (", el("a", { href: r.margin_before_rd_source_url, title: r.margin_before_rd_basis, text: "source" }), ")"])
+        ]),
         el("td", { "data-label": "Per employee" }, [
           el("span", { text: usdK(num(r.revenue_per_employee_usd_k)) + " revenue" }),
           el("span", { class: "rs-effect-text", text: num(r.profit_per_employee_usd_k) == null ? "" : usdK(num(r.profit_per_employee_usd_k)) + " profit" }),

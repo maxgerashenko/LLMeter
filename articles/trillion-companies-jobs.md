@@ -94,16 +94,28 @@ Tiers 1 and 2 together hold 83% of the value and 78% of the profit with 19% of t
 
 ### Margin tiers
 
-The net profit margin has its own four tiers, separate from the job tiers. The edges are this article's own choice.
+The profit margin has its own four tiers, separate from the job tiers. Tier 1 is the highest margin. The edges are this article's own choice.
 
-| Margin tier | Net profit margin | Companies, lowest margin first |
+For most companies the margin is the net profit margin. For three young companies that spend heavily on research (SpaceX, Anthropic and Tesla) the tier uses the **margin before R&D**: profit from operations with research and development spending added back, divided by revenue. It shows what the business earns before it invests in new products. It is not directly comparable with a net margin, because it also leaves out interest, tax and one-off items, so these three are marked with a star.
+
+| Margin tier | Margin | Companies, highest margin first |
 | --- | --- | --- |
-| **Tier 1** | less than 5%, or a net loss | Anthropic (-557%), SpaceX (-8.6%), Ford (-3.9%), General Motors (2.1%), Walmart (3.0%), Tesla (3.1%) |
-| **Tier 2** | 5% to 20% | ExxonMobil (10.5%), Amazon (16.9%), Berkshire Hathaway (19.5%) |
-| **Tier 3** | 20% to 40% | Apple (27.6%), Meta (31.2%), Eli Lilly (31.9%), JPMorgan Chase (34.6%) |
-| **Tier 4** | 40% or more | Microsoft (41.2%), Broadcom (42.9%), Alphabet (50.0%), Nvidia (63.7%) |
+| **Tier 1** | 40% or more | Nvidia (63.7%), Alphabet (50.0%), SpaceX* (43.8%), Broadcom (42.9%), Microsoft (41.2%) |
+| **Tier 2** | 20% to 40% | Anthropic* (38.6%), JPMorgan Chase (34.6%), Eli Lilly (31.9%), Meta (31.2%), Apple (27.6%) |
+| **Tier 3** | 5% to 20% | Berkshire Hathaway (19.5%), Amazon (16.9%), Tesla* (11.6%), ExxonMobil (10.5%) |
+| **Tier 4** | less than 5%, or a net loss | Walmart (3.0%), General Motors (2.1%), Ford (-3.9%) |
 
-Margin and jobs mostly move in opposite directions. All four companies in margin Tier 4 are in job Tiers 1 and 2, and the job-heavy companies (Walmart, General Motors, Ford) keep 3% or less. The exceptions are SpaceX, Anthropic and Tesla: very high value with a low margin or a loss, because investors are paying for expected profit, not current profit.
+\* Margin before R&D, calculated here:
+
+| Company | Period | Revenue | Profit from operations | R&D spending | Margin before R&D | Net margin | Source |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| SpaceX | 12 months to 2026-09-30 | $32,043M | $575M | $13,473M | 43.8% | -8.6% | [StockAnalysis income statement](https://stockanalysis.com/stocks/spcx/financials/income-statement/) |
+| Anthropic | 12 months to 2026-06-30 | $19,708M | -$6,618M | $14,229M | 38.6% | -557% | [Form S-1](https://www.sec.gov/Archives/edgar/data/0002130357/000162828026067168/anthropicpbc-sx1.htm), statements of operations and Note 8 |
+| Tesla | 12 months to 2026-06-30 | $103,619M | $4,278M | $7,730M | 11.6% | 3.1% | [StockAnalysis income statement](https://stockanalysis.com/stocks/tsla/financials/income-statement/) |
+
+Anthropic's R&D line includes the compute it uses for research. For the first half of 2026 alone its margin before R&D is 55.6% (-$693 million plus $9,741 million on $16,286 million of revenue).
+
+Margin and jobs move in opposite directions. All five companies in margin Tier 1 are in job Tiers 1 and 2, and the job-heavy companies (Walmart, General Motors, Ford) keep 3% or less. Before research spending, SpaceX and Anthropic look like the established high-margin companies. Tesla does not: at 11.6% before R&D, its low margin is not explained by research alone.
 
 ### One competition in each job tier
 
