@@ -49,7 +49,7 @@
   }
 
   function usdB(b) { return b >= 1000 ? "$" + (b / 1000).toFixed(2) + "T" : "$" + Math.round(b) + "B"; }
-  function shares(m) { return m >= 1000 ? (m / 1000).toFixed(m >= 10000 ? 1 : 2).replace(/0$/, "") + "B" : Math.round(m) + "M"; }
+  function shares(m) { return m >= 1000 ? String(+(m / 1000).toFixed(2)) + "B" : Math.round(m) + "M"; }
   function tierOf(n) { return TIERS.filter(function (t) { return t.label === n; })[0]; }
   function badge(t) { return el("span", { class: "tier-badge rs-tag tier-" + t.id, title: "Tier " + t.label + ": " + t.range }, ["Tier " + t.label]); }
 
