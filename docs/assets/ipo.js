@@ -97,7 +97,7 @@
         el("span", { class: "muted", text: " · " + pctTxt(pct) + " of the company · ~" + usdB(val) + " · " + shares(sum(g.list, "sh")) + " shares" })]));
       var gp = el("div", { class: "plot rs-plot rs-plot-jobs rs-plot-tiers" });
       g.list.forEach(function (c) {
-        gp.appendChild(row(el("span", { class: "ipo-dot tier-bg-" + g.t.id, "aria-hidden": "true" }), c.name + (c.est ? " (estimate)" : ""), c.pct, { id: g.t.id, paler: c.est }, shares(c.sh) + " shares. Fully free by: " + c.r.free_by, "~" + c.pct + "%", "~" + usdB(c.val)));
+        gp.appendChild(row(badge(g.t), c.name + (c.est ? " (estimate)" : ""), c.pct, { id: g.t.id, paler: c.est }, shares(c.sh) + " shares. Fully free by: " + c.r.free_by, "~" + c.pct + "%", "~" + usdB(c.val)));
       });
       det.appendChild(gp);
     });
