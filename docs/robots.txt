@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://maxgerashenko.github.io/LLMeter/sitemap.xml
+Sitemap: https://llmeter.fyi/sitemap.xml

@@ -63,7 +63,7 @@ The planned layout of the repository:
 
 The project's findings are published as a public website on GitHub Pages, built from the `docs/` folder. Each new article becomes a page on the site, so the website always reflects the latest analysis. The [source graph page](docs/sources.html) draws `data/source-graph.json` as an interactive graph, levels 0 to 3 by default.
 
-Once Pages is turned on, the site will be at https://maxgerashenko.github.io/LLMeter/.
+The site is served from the custom domain (`docs/CNAME`) at https://llmeter.fyi/.
 
 ## Contributing
 
