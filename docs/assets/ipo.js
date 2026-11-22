@@ -59,7 +59,7 @@
     });
     // Free now first, then by value within a tier
     items.sort(function (a, b) { return a.tier.label - b.tier.label || b.val - a.val; });
-    var MAX = Math.ceil(Math.max.apply(null, items.map(function (c) { return c.pct; })) / 5) * 5;
+    var MAX = 100; // a full bar is 100% of the company
 
     var plot = el("div", { class: "plot rs-plot rs-plot-jobs" });
     items.forEach(function (c) {
