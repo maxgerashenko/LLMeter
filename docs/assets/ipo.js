@@ -92,16 +92,12 @@
     // Panel 2: each tier with its holders as bars
     var det = document.getElementById("ipo-tier-detail");
     det.textContent = "";
-    groups.forEach(function (g) {
-      var pct = sum(g.list, "pct"), val = sum(g.list, "val");
-      det.appendChild(el("div", { class: "ipo-tier-head" }, [badge(g.t), el("strong", { text: g.t.title }),
-        el("span", { class: "muted", text: " · " + pctTxt(pct) + " of the company · ~" + usdB(val) + " · " + shares(sum(g.list, "sh")) + " shares" })]));
-      var gp = el("div", { class: "plot rs-plot rs-plot-jobs rs-plot-tiers" });
-      g.list.forEach(function (c) {
-        gp.appendChild(row(badge(g.t), c.name + (c.est ? " (estimate)" : ""), c.pct, { id: g.t.id, paler: c.est }, shares(c.sh) + " shares. Fully free by: " + c.r.free_by, "~" + c.pct + "%", "~" + usdB(c.val)));
-      });
-      det.appendChild(gp);
+    // One flat list of holders, ordered by tier; each row repeats its tier badge
+    var gp = el("div", { class: "plot rs-plot rs-plot-jobs rs-plot-tiers" });
+    items.forEach(function (c) {
+      gp.appendChild(row(badge(c.tier), c.name + (c.est ? " (estimate)" : ""), c.pct, { id: c.tier.id, paler: c.est }, shares(c.sh) + " shares. Fully free by: " + c.r.free_by, "~" + c.pct + "%", "~" + usdB(c.val)));
     });
+    det.appendChild(gp);
     det.appendChild(el("p", { class: "muted ipo-total", text: "All " + items.length + " groups listed: " + pctTxt(sum(items, "pct")) + " of the company, ~" + usdB(sum(items, "val")) + ", " + shares(sum(items, "sh")) + " shares." }));
 
     var body = document.getElementById("ipo-rows");
