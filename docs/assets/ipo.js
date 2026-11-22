@@ -5,9 +5,10 @@
 
   var DATA_URL = "data/anthropic-ipo-holders-2026-11-22.csv";
   var TIERS = [
-    { id: "t1", label: "1", range: "free now" },
-    { id: "t2", label: "2", range: "free by May 17, 2027" },
-    { id: "t3", label: "3", range: "free by Nov 18, 2027" }
+    { id: "t1", label: "1", range: "free now", title: "Free now" },
+    { id: "t2", label: "2", range: "free by May 17, 2027", title: "Free by May 17, 2027" },
+    { id: "t3", label: "3", range: "free by Nov 18, 2027, or date not confirmed", title: "Free by Nov 18, 2027 (or not confirmed)" },
+    { id: "t4", label: "4", range: "co-founders: 29% free May 17, 2027, all by Nov 18, 2027", title: "Co-founders: last to be fully free" }
   ];
 
   function parseCSV(text) {
@@ -77,7 +78,7 @@
     var plot = el("div", { class: "plot rs-plot rs-plot-jobs rs-plot-tiers" });
     groups.forEach(function (g) {
       var pct = sum(g.list, "pct"), val = sum(g.list, "val");
-      plot.appendChild(row(badge(g.t), "Free " + g.t.range.replace("free ", ""), pct, { id: g.t.id }, shares(sum(g.list, "sh")) + " shares in " + g.list.length + " group(s)", pctTxt(pct), "~" + usdB(val)));
+      plot.appendChild(row(badge(g.t), g.t.title, pct, { id: g.t.id }, shares(sum(g.list, "sh")) + " shares in " + g.list.length + " group(s)", pctTxt(pct), "~" + usdB(val)));
     });
     var bars = document.getElementById("ipo-bars");
     bars.textContent = "";
@@ -93,7 +94,7 @@
     det.textContent = "";
     groups.forEach(function (g) {
       var pct = sum(g.list, "pct"), val = sum(g.list, "val");
-      det.appendChild(el("div", { class: "ipo-tier-head" }, [badge(g.t), el("strong", { text: "Free " + g.t.range.replace("free ", "") }),
+      det.appendChild(el("div", { class: "ipo-tier-head" }, [badge(g.t), el("strong", { text: g.t.title }),
         el("span", { class: "muted", text: " · " + pctTxt(pct) + " of the company · ~" + usdB(val) + " · " + shares(sum(g.list, "sh")) + " shares" })]));
       var gp = el("div", { class: "plot rs-plot rs-plot-jobs rs-plot-tiers" });
       g.list.forEach(function (c) {
