@@ -373,7 +373,7 @@ graph LR
 
 | Source | Publisher | Reached from | Read | Status |
 | --- | --- | --- | --- | --- |
-| [LLMeter website](https://maxgerashenko.github.io/LLMeter/) | LLMeter | - | not opened | expanded |
+| [LLMeter website](https://llmeter.fyi/) | LLMeter | - | not opened | expanded |
 
 ### Level 1 (6)
 
