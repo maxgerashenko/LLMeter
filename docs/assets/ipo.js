@@ -93,9 +93,10 @@
     var det = document.getElementById("ipo-tier-detail");
     det.textContent = "";
     // One flat list of holders, ordered by tier; each row repeats its tier badge
+    var BIGGEST = Math.max.apply(null, items.map(function (c) { return c.pct; }));
     var gp = el("div", { class: "plot rs-plot rs-plot-jobs rs-plot-tiers" });
     items.forEach(function (c) {
-      gp.appendChild(row(badge(c.tier), c.name + (c.est ? " (estimate)" : ""), c.pct, { id: c.tier.id, paler: c.est }, shares(c.sh) + " shares. Fully free by: " + c.r.free_by, "~" + c.pct + "%", "~" + usdB(c.val)));
+      gp.appendChild(row(badge(c.tier), c.name + (c.est ? " (estimate)" : ""), c.pct / BIGGEST * 100, { id: c.tier.id, paler: c.est }, shares(c.sh) + " shares. Fully free by: " + c.r.free_by, "~" + c.pct + "%", "~" + usdB(c.val)));
     });
     det.appendChild(gp);
     det.appendChild(el("p", { class: "muted ipo-total", text: "All " + items.length + " groups listed: " + pctTxt(sum(items, "pct")) + " of the company, ~" + usdB(sum(items, "val")) + ", " + shares(sum(items, "sh")) + " shares." }));
