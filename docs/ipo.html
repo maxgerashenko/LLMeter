@@ -31,6 +31,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/research.css">
+  <style>
+    .ipo-tier-head { margin: 18px 0 6px; font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .ipo-tier-head:first-child { margin-top: 4px; }
+    .ipo-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
+    .ipo-total { margin: 16px 0 0; font-size: 13px; }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -55,34 +61,18 @@
     <section class="card">
       <div class="card-head">
         <h2>Anthropic IPO: who holds the shares, and when they can sell</h2>
-        <p class="muted">The IPO was 980 million shares at $83, about $81.3B: Anthropic sold more than 956 million of them and existing holders sold the rest. Each bar is one holder group's share of the company, in %, and a full bar is 100%; the small number under it is its value at the first-day close of $97.17 (Friday's close could not be found). Bars are tiered by when the group's shares are fully free to sell: Tier 1 is free now, Tier 2 by May 17, 2027, Tier 3 by Nov 18, 2027. Dates are the latest dates and can move earlier if earnings are published first. Bars drawn paler are rough estimates.</p>
+        <p class="muted">The IPO was 980 million shares at $83, about $81.3B: Anthropic sold more than 956 million of them and existing holders sold the rest. Each bar is one lockup tier's share of the company, in %, and a full bar is 100%; the small number under it is its value at the first-day close of $97.17 (Friday's close could not be found). Tiers are by when shares are fully free to sell: Tier 1 is free now, Tier 2 by May 17, 2027, Tier 3 by Nov 18, 2027. The holders in each tier are in the next panel. Dates are the latest dates and can move earlier if earnings are published first. </p>
       </div>
-      <div id="ipo-bars" class="bars rs-bars" role="img" aria-label="Bar chart of the share of the company held by each holder group of Anthropic shares, coloured by lockup tier"></div>
+      <div id="ipo-bars" class="bars rs-bars" role="img" aria-label="Bar chart of the share of the company in each lockup tier of Anthropic shares, coloured by lockup tier"></div>
       <div class="legend" id="ipo-legend"></div>
     </section>
 
     <section class="card">
       <div class="card-head">
-        <h2>How much is free, tier by tier</h2>
-        <p class="muted">The same groups added up by tier. Percentages are shares of the company, and the groups do not add to 100%.</p>
+        <h2>Who is in each tier</h2>
+        <p class="muted">The holders inside each tier, as bars of their share of the company (a full bar is 100%). Bars drawn paler are rough estimates. The groups do not add to 100%.</p>
       </div>
-      <div class="table-scroll">
-        <table class="rs-table rs-table-tiers">
-          <thead>
-            <tr>
-              <th scope="col">Tier</th>
-              <th scope="col">Holders</th>
-              <th scope="col">Fully free by</th>
-              <th scope="col">Shares</th>
-              <th scope="col">Share of company</th>
-              <th scope="col">Value at $97.17</th>
-            </tr>
-          </thead>
-          <tbody id="ipo-tier-rows">
-            <tr><td colspan="6" class="muted">Loading data…</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div id="ipo-tier-detail" class="ipo-tiers"><p class="muted">Loading data…</p></div>
     </section>
 
     <section class="card">

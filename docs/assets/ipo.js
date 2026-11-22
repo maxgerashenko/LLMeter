@@ -61,14 +61,23 @@
     items.sort(function (a, b) { return a.tier.label - b.tier.label || b.val - a.val; });
     var MAX = 100; // a full bar is 100% of the company
 
-    var plot = el("div", { class: "plot rs-plot rs-plot-jobs" });
-    items.forEach(function (c) {
-      plot.appendChild(el("div", { class: "rs-row" }, [
-        el("span", { class: "rs-label", title: c.name }, [badge(c.tier), el("span", { class: "rs-name" }, [c.name, c.est ? el("span", { class: "muted jobs-ref", text: " estimate" }) : null])]),
-        el("span", { class: "rs-track", title: shares(c.sh) + " shares, " + c.pct + "% of the company. Fully free by: " + c.r.free_by },
-          [el("span", { class: "bar tier-bg-" + c.tier.id + (c.est ? " jobs-ref-bar" : ""), style: "width:" + Math.max(0.6, c.pct / MAX * 100) + "%" })]),
-        el("span", { class: "rs-value" }, ["~" + c.pct + "%", el("span", { class: "jobs-split", text: "~" + usdB(c.val) })])
-      ]));
+    function sum(list, k) { return list.reduce(function (s, c) { return s + c[k]; }, 0); }
+    function pctTxt(v) { return "~" + String(+v.toFixed(1)) + "%"; }
+    // One bar row: label, bar as % of the company (a full bar is 100%), value text
+    function row(badgeEl, name, w, cls, title, pctText, sub) {
+      return el("div", { class: "rs-row" }, [
+        el("span", { class: "rs-label", title: name }, [badgeEl, el("span", { class: "rs-name" }, [name])]),
+        el("span", { class: "rs-track", title: title }, [el("span", { class: "bar tier-bg-" + cls.id + (cls.paler ? " jobs-ref-bar" : ""), style: "width:" + Math.max(0.6, w) + "%" })]),
+        el("span", { class: "rs-value" }, [pctText, el("span", { class: "jobs-split", text: sub })])
+      ]);
+    }
+    var groups = TIERS.map(function (t) { return { t: t, list: items.filter(function (c) { return c.tier === t; }) }; }).filter(function (g) { return g.list.length; });
+
+    // Chart 1: one bar per tier
+    var plot = el("div", { class: "plot rs-plot rs-plot-jobs rs-plot-tiers" });
+    groups.forEach(function (g) {
+      var pct = sum(g.list, "pct"), val = sum(g.list, "val");
+      plot.appendChild(row(badge(g.t), "Free " + g.t.range.replace("free ", ""), pct, { id: g.t.id }, shares(sum(g.list, "sh")) + " shares in " + g.list.length + " group(s)", pctTxt(pct), "~" + usdB(val)));
     });
     var bars = document.getElementById("ipo-bars");
     bars.textContent = "";
@@ -79,29 +88,20 @@
       legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + t.id }), "Tier " + t.label + ": " + t.range]));
     });
 
-    function sum(list, k) { return list.reduce(function (s, c) { return s + c[k]; }, 0); }
-    var tb = document.getElementById("ipo-tier-rows");
-    tb.textContent = "";
-    TIERS.forEach(function (t) {
-      var list = items.filter(function (c) { return c.tier === t; });
-      if (!list.length) return;
-      tb.appendChild(el("tr", { class: "rs-choice" }, [
-        el("td", { "data-label": "Tier", class: "rs-c-tier" }, [badge(t)]),
-        el("th", { scope: "row", class: "rs-c-choice", text: list.map(function (c) { return c.name; }).join("; ") }),
-        el("td", { "data-label": "Fully free by", text: t.range.replace("free ", "") }),
-        el("td", { "data-label": "Shares", text: shares(sum(list, "sh")) }),
-        el("td", { "data-label": "Share of company", text: "~" + sum(list, "pct").toFixed(1).replace(/\.0$/, "") + "%" }),
-        el("td", { "data-label": "Value at $97.17", text: "~" + usdB(sum(list, "val")) })
-      ]));
+    // Panel 2: each tier with its holders as bars
+    var det = document.getElementById("ipo-tier-detail");
+    det.textContent = "";
+    groups.forEach(function (g) {
+      var pct = sum(g.list, "pct"), val = sum(g.list, "val");
+      det.appendChild(el("div", { class: "ipo-tier-head" }, [badge(g.t), el("strong", { text: "Free " + g.t.range.replace("free ", "") }),
+        el("span", { class: "muted", text: " · " + pctTxt(pct) + " of the company · ~" + usdB(val) + " · " + shares(sum(g.list, "sh")) + " shares" })]));
+      var gp = el("div", { class: "plot rs-plot rs-plot-jobs rs-plot-tiers" });
+      g.list.forEach(function (c) {
+        gp.appendChild(row(el("span", { class: "ipo-dot tier-bg-" + g.t.id, "aria-hidden": "true" }), c.name + (c.est ? " (estimate)" : ""), c.pct, { id: g.t.id, paler: c.est }, shares(c.sh) + " shares. Fully free by: " + c.r.free_by, "~" + c.pct + "%", "~" + usdB(c.val)));
+      });
+      det.appendChild(gp);
     });
-    tb.appendChild(el("tr", { class: "rs-choice jobs-total" }, [
-      el("td", { "data-label": "Tier", class: "rs-c-tier", text: "All" }),
-      el("th", { scope: "row", class: "rs-c-choice", text: items.length + " groups listed" }),
-      el("td", { "data-label": "Fully free by", text: "" }),
-      el("td", { "data-label": "Shares", text: shares(sum(items, "sh")) }),
-      el("td", { "data-label": "Share of company", text: "~" + sum(items, "pct").toFixed(1).replace(/\.0$/, "") + "%" }),
-      el("td", { "data-label": "Value at $97.17", text: "~" + usdB(sum(items, "val")) })
-    ]));
+    det.appendChild(el("p", { class: "muted ipo-total", text: "All " + items.length + " groups listed: " + pctTxt(sum(items, "pct")) + " of the company, ~" + usdB(sum(items, "val")) + ", " + shares(sum(items, "sh")) + " shares." }));
 
     var body = document.getElementById("ipo-rows");
     body.textContent = "";
