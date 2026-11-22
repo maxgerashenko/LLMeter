@@ -59,15 +59,15 @@
     });
     // Free now first, then by value within a tier
     items.sort(function (a, b) { return a.tier.label - b.tier.label || b.val - a.val; });
-    var MAX = Math.ceil(Math.max.apply(null, items.map(function (c) { return c.val; })) / 50) * 50;
+    var MAX = Math.ceil(Math.max.apply(null, items.map(function (c) { return c.pct; })) / 5) * 5;
 
     var plot = el("div", { class: "plot rs-plot rs-plot-jobs" });
     items.forEach(function (c) {
       plot.appendChild(el("div", { class: "rs-row" }, [
         el("span", { class: "rs-label", title: c.name }, [badge(c.tier), el("span", { class: "rs-name" }, [c.name, c.est ? el("span", { class: "muted jobs-ref", text: " estimate" }) : null])]),
         el("span", { class: "rs-track", title: shares(c.sh) + " shares, " + c.pct + "% of the company. Fully free by: " + c.r.free_by },
-          [el("span", { class: "bar tier-bg-" + c.tier.id + (c.est ? " jobs-ref-bar" : ""), style: "width:" + Math.max(0.6, c.val / MAX * 100) + "%" })]),
-        el("span", { class: "rs-value" }, [usdB(c.val), el("span", { class: "jobs-split", text: c.pct + "% of company" })])
+          [el("span", { class: "bar tier-bg-" + c.tier.id + (c.est ? " jobs-ref-bar" : ""), style: "width:" + Math.max(0.6, c.pct / MAX * 100) + "%" })]),
+        el("span", { class: "rs-value" }, ["~" + c.pct + "%", el("span", { class: "jobs-split", text: "~" + usdB(c.val) })])
       ]));
     });
     var bars = document.getElementById("ipo-bars");
