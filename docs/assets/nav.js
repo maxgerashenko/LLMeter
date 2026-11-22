@@ -1,4 +1,4 @@
-// Two-level site menu. The top level (Local, Cloud, Finance, Research, Sources) is plain HTML in each
+// Two-level site menu. The top level (Local, Cloud, Economy, Research, Sources) is plain HTML in each
 // page's header; this script marks the active section and fills the second row of tabs.
 (function () {
   "use strict";

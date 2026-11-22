@@ -202,7 +202,7 @@ The trillion-dollar list shows where the economy has been moving: more value per
 
 **Blue-collar work** is less exposed for now. In the same study 30% of workers have no exposure at all: cooks, mechanics, bartenders, dishwashers. Replacing these jobs needs robots, not language models, and no source read here measures it. But this is where the job-heavy tiers are: Walmart and Amazon alone employ 3.7 million people, mostly in shops, warehouses and delivery. If robots do reach that work, it reaches the two companies that hold 73% of the group's jobs.
 
-LLMeter's Finance section has a separate estimate of [what AI replacing office work would mean for US GDP](https://llmeter.fyi/finance.html#gdp).
+LLMeter's Economy section has a separate estimate of [what AI replacing office work would mean for US GDP](https://llmeter.fyi/finance.html#gdp).
 
 ## Verdict on the hypothesis
 
