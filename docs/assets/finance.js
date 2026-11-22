@@ -1,6 +1,9 @@
-// Finance page tabs: one tab per filing or topic. Add a [tab id, panel id, hash] row for each new tab.
+// Finance and Economy page tabs: one tab per filing or topic. Add a [tab id, panel id, hash] row for each new tab.
 (function () {
   var tabs = [["tab-anthropic-s1", "panel-anthropic-s1", /^#anthropic-s1$/], ["tab-economy", "panel-economy", /^#(economy|gdp)$/], ["tab-software", "panel-software", /^#(software|software-take)$/]];
+  tabs = tabs.filter(function (t) { return document.getElementById(t[0]); });
+  if (!tabs.length) return;
+  if (/^#(economy|gdp|software|software-take)$/.test(location.hash) && !document.getElementById("tab-economy")) { location.replace("economy.html" + location.hash); return; }
   function select(id) {
     tabs.forEach(function (t) {
       var on = t[0] === id, b = document.getElementById(t[0]);

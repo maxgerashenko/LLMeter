@@ -99,6 +99,7 @@ jobs:
               `- [Research](${base}/techniques.html)`,
               `- [Horizon](${base}/horizon.html)`,
               `- [Jobs](${base}/jobs.html)`,
+              `- [Economy](${base}/economy.html)`,
               `- [Finance](${base}/finance.html)`,
               `- [Sources](${base}/sources.html)`,
               '',

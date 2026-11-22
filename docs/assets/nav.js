@@ -1,4 +1,4 @@
-// Two-level site menu. The top level (Local, Cloud, Finance, Research, Sources) is plain HTML in each
+// Two-level site menu. The top level (Local, Cloud, Economy, Finance, Research, Sources) is plain HTML in each
 // page's header; this script marks the active section and fills the second row of tabs.
 (function () {
   "use strict";
@@ -11,19 +11,19 @@
       ["Build", "research.html", "research"]
     ],
     cloud: [["All", "cloud.html", "cloud"], ["Rack", "cloud-rack.html", "cloud-rack"]],
-    finance: [
-      ["GDP", "finance.html#gdp", "finance"],
-      ["Software", "finance.html#software", "finance"],
-      ["Anthropic S-1", "finance.html#anthropic-s1", "finance"],
+    economy: [
+      ["GDP", "economy.html#gdp", "economy"],
+      ["Software", "economy.html#software", "economy"],
       ["Jobs", "jobs.html", "jobs"]
     ],
+    finance: [["Anthropic S-1", "finance.html#anthropic-s1", "finance"]],
     research: [
       ["Speed", "techniques.html#speed", "techniques"],
       ["Quality", "techniques.html#quality", "techniques"],
       ["Horizon", "horizon.html", "horizon"]
     ]
   };
-  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", research: "local", horizon: "research", jobs: "finance", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", techniques: "research", sources: "sources" };
+  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", research: "local", horizon: "research", jobs: "economy", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", economy: "economy", techniques: "research", sources: "sources" };
 
   var page = (location.pathname.split("/").pop() || "index.html").replace(/\.html$/, "") || "index";
   var section = PAGE_SECTION[page];
@@ -57,7 +57,7 @@
   function activeIndex() {
     var h = location.hash;
     if (page === "index") return /^#(all|panel-all)$/.test(h) ? 1 : 0;
-    if (page === "finance") return /^#(economy|gdp)$/.test(h) ? 0 : /^#(software|software-take)$/.test(h) ? 1 : 2;
+    if (page === "economy") return /^#(software|software-take)$/.test(h) ? 1 : 0;
     if (page === "techniques") return /^#quality/.test(h) ? 1 : 0;
     for (var i = 0; i < items.length; i++) if (items[i][2] === page) return i;
     return 0;
