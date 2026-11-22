@@ -58,8 +58,8 @@
     var items = rows.map(function (r) {
       return { r: r, name: r.group, tier: tierOf(r.lockup_tier), sh: +r.shares_m, pct: +r.pct_of_company, val: +r.value_usd_b, est: r.shares_kind === "estimate" };
     });
-    // Free now first, then by value within a tier
-    items.sort(function (a, b) { return a.tier.label - b.tier.label || b.val - a.val; });
+    // Free now first; within a tier, smallest share to biggest
+    items.sort(function (a, b) { return a.tier.label - b.tier.label || a.pct - b.pct; });
     var MAX = 100; // a full bar is 100% of the company
 
     function sum(list, k) { return list.reduce(function (s, c) { return s + c[k]; }, 0); }
