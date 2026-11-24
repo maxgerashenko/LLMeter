@@ -91,3 +91,5 @@
 .runs-settings .priority-switch { margin: 0 0 8px; }
 .rb-label .tier-badge { min-width: 52px; padding: 2px 8px; font-size: 12px; margin-right: 8px; vertical-align: 1px; }
 .tier-none { background: transparent; color: var(--muted); border: 1px solid var(--border, currentColor); font-weight: 500; }
+/* Sticky filter row: stays under the top menu while the chart card is on screen, released when the card ends. */
+.runs-top { position: sticky; top: var(--header-h, 56px); z-index: 5; background: var(--surface); padding: 8px 0 0; margin-top: -8px; border-bottom: 1px solid var(--line); box-shadow: 0 6px 6px -6px color-mix(in srgb, var(--text) 18%, transparent); }
