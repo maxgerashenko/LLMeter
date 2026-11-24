@@ -332,3 +332,14 @@
     document.getElementById("runs-summary").textContent = "Could not load the run data (" + e.message + ").";
   });
 })();
+
+/* Keep the sticky filter row just under the top menu, whose height changes when the menu wraps on narrow screens. */
+(function () {
+  function setHeaderHeight() {
+    var h = document.querySelector(".site-header");
+    if (h) document.documentElement.style.setProperty("--header-h", h.offsetHeight + "px");
+  }
+  setHeaderHeight();
+  window.addEventListener("resize", setHeaderHeight);
+  window.addEventListener("load", setHeaderHeight);
+})();
