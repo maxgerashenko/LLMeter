@@ -220,8 +220,12 @@ class LMStudio:
 
     def extra_body(self):
         # Thinking switch for LM Studio's OpenAI-compatible API.
-        return {"reasoning": {"effort": "medium" if self.args.thinking == "on" else "none"},
+        body = {"reasoning": {"effort": "medium" if self.args.thinking == "on" else "none"},
                 "chat_template_kwargs": {"enable_thinking": self.args.thinking == "on"}}
+        if self.args.draft_model:
+            # Speculative decoding: the small model proposes tokens, the main one checks them.
+            body["draft_model"] = self.args.draft_model
+        return body
 
     def stop(self):
         if not self.args.use_loaded:
@@ -324,6 +328,9 @@ def main():
     parser.add_argument("--use-loaded", action="store_true",
                         help="LM Studio only: test the one model already loaded in the app, "
                              "with its context and parallel count, and leave it loaded")
+    parser.add_argument("--draft-model", default="",
+                        help="LM Studio only: draft model key for speculative decoding "
+                             "(sent as draft_model with every request)")
     parser.add_argument("--tasks", default="", help="comma-separated task ids (default: all)")
     parser.add_argument("--results", default=str(ROOT / "data" / "local-runtime-results.csv"),
                         help="CSV to append to")
@@ -332,6 +339,8 @@ def main():
     args = parser.parse_args()
     if args.use_loaded and args.runtime != "lmstudio":
         parser.error("--use-loaded works only with --runtime lmstudio")
+    if args.draft_model and args.runtime != "lmstudio":
+        parser.error("--draft-model works only with --runtime lmstudio")
     if not args.use_loaded and not args.context:
         parser.error("--context is required")
 
