@@ -90,4 +90,8 @@
 .runs-settings { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 16px; margin-left: auto; }
 .runs-settings .priority-switch { margin: 0 0 8px; }
 .rb-label .tier-badge { min-width: 52px; padding: 2px 8px; font-size: 12px; margin-right: 8px; vertical-align: 1px; }
-.tier-none { background: transparent; color: var(--muted); border: 1px solid var(--border, currentColor); font-weight: 500; }
+.tier-none { background: transparent; color: var(--muted); border: 1px solid var(--line-strong); font-weight: 500; }
+
+/* Labels after a run's title: draft, thinking, batching N. */
+.run-chip { display: inline-block; margin-left: 6px; padding: 1px 7px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: 11.5px; line-height: 1.5; color: var(--muted); vertical-align: 1px; }
+.run-chip.chip-draft, .run-chip.chip-think { color: var(--text); }

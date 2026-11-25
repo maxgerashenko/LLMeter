@@ -32,6 +32,8 @@
   var DEFAULT_HW = "MacBook Pro M5 Pro, 64 GB";
   var metric = "speed";
   var thinkFilter = "all"; // all | on | off: which runs the charts show (default: all)
+  var batchFilter = "all"; // on: more than 1 request at a time; off: 1 request
+  var draftFilter = "all"; // on: run with a draft model (speculative decoding)
   var view = "speed"; // which chart is open; the priority one first
   var state = { runs: [], planned: [] };
 
@@ -117,6 +119,7 @@
         score: tasks ? 100 * ws / 23 : null, easy: lvl("easy"), medium: lvl("medium"), hard: lvl("hard"),
         tok: tok.length ? tok.reduce(function (a, b) { return a + b; }, 0) / tok.length : null,
         time: hasTime ? time : null, mem: mem, tasks: tasks, bad: bad, think: thinkingOn(f.thinking),
+        batch: num(f.parallel) > 1, draft: /\+\s*draft\s/i.test(m.model || ""),
         status: tasks < 10 ? "partial" : "done", byTask: byTask
       };
     });
@@ -127,11 +130,21 @@
   // Why a listed model has no run: "not installed", or "cannot run" with the reason in the model list.
   function why(m) { return (m.run_status || "").split(":")[0]; }
 
+  // Labels after the title: draft model, thinking mode, requests in flight ("batching 4").
+  function chips(r) {
+    var out = [], draft = /\+\s*draft\s+(.+)$/i.exec(r.model || "");
+    function chip(text, cls, title) { out.push(el("span", { cls: "run-chip " + cls, title: title, text: text })); }
+    if (draft) chip("draft", "chip-draft", "Speculative decoding with draft model " + draft[1]);
+    if (r.thinking) chip(thinkingOn(r.thinking) ? "thinking" : "no thinking", thinkingOn(r.thinking) ? "chip-think" : "chip-off", "Thinking " + r.thinking);
+    if (r.parallel) chip("batching " + r.parallel, "chip-batch", requests(r.parallel));
+    return out;
+  }
+
   function label(r) {
     return el("div", { cls: "rb-label", title: r.model + " · " + r.quant + " · " + r.runtime + " · thinking " + r.thinking }, [
       tierBadge(r.model), el("span", { cls: "rb-model", text: r.model }),
-      el("span", { cls: "setting", text: [r.quant, r.runtime.split(/[;(]/)[0].trim(), r.thinking ? "thinking " + r.thinking : "", requests(r.parallel), r.why || ""].filter(Boolean).join(" · ") })
-    ]);
+      el("span", { cls: "setting", text: [r.quant, r.runtime.split(/[;(]/)[0].trim(), r.why || ""].filter(Boolean).join(" · ") })
+    ].concat(chips(r)));
   }
 
   // The chart is split in two, one panel per runtime, so the same model can be compared
@@ -154,7 +167,8 @@
     var order = metric === "score" ? ["score", "speed"] : ["speed", "score"];
     var pri = METRICS[order[0]];
     var shown = state.runs.filter(function (r) {
-      return r[pri.key] != null && (thinkFilter === "all" || (thinkFilter === "on") === r.think);
+      function pass(f, v) { return f === "all" || (f === "on") === v; }
+      return r[pri.key] != null && pass(thinkFilter, r.think) && pass(batchFilter, r.batch) && pass(draftFilter, r.draft);
     });
     function rank(rt) {
       return shown.filter(function (r) { return r.rt === rt.name; }).sort(function (a, b) { return b[pri.key] - a[pri.key]; });
@@ -308,18 +322,24 @@
     }
   }
 
-  function setupThinking() {
-    var btns = document.querySelectorAll(".runs-think .tab");
+  // An All / On / Off switch above the charts; set() stores the chosen value.
+  function setupFilter(selector, set) {
+    var btns = document.querySelectorAll(selector + " .tab");
     Array.prototype.forEach.call(btns, function (b) {
       b.addEventListener("click", function () {
         Array.prototype.forEach.call(btns, function (x) { var on = x === b; x.setAttribute("aria-checked", on); x.tabIndex = on ? 0 : -1; });
-        thinkFilter = b.getAttribute("data-think"); drawBars();
+        set(b.getAttribute("data-value")); drawBars();
       });
     });
   }
+  function setupFilters() {
+    setupFilter(".runs-think", function (v) { thinkFilter = v; });
+    setupFilter(".runs-batch", function (v) { batchFilter = v; });
+    setupFilter(".runs-draft", function (v) { draftFilter = v; });
+  }
 
   function get(url) { return fetch(url, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(url + " " + r.status); return r.text(); }); }
-  setupTabs(); setupThinking();
+  setupTabs(); setupFilters();
   Promise.all([get(MODELS_URL), get(RESULTS_URL).catch(function () { return ""; }), get(TIERS_URL).catch(function () { return ""; })]).then(function (t) {
     parseCSV(t[2]).forEach(function (r) {
       var p = num(r.pct_of_sonnet_5_5), k = normName(r.model);
