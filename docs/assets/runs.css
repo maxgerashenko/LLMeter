@@ -108,3 +108,11 @@ main .card { scroll-margin-top: 112px; }
 /* Filter line and chart controls: stick under the site header while the chart card is on screen. */
 .runs-sticky { position: sticky; top: var(--header-h, 97px); z-index: 5; margin: 0 -20px 8px; padding: 4px 20px 0; background: var(--surface); border-bottom: 1px solid var(--line); }
 .runs-sticky .model-filter { margin: 0 0 6px; }
+
+/* Estimated equivalent tier: same colour as the tier, dashed outline and a star. */
+.tier-badge.tier-est { outline: 1px dashed currentColor; outline-offset: 1px; }
+.est-table td { vertical-align: top; white-space: normal; }
+.est-item { display: block; margin: 0 0 8px 0; }
+.est-item .sub { display: block; }
+.est-item.is-est { font-style: italic; }
+.task-table th .tier-badge { margin-top: 4px; }

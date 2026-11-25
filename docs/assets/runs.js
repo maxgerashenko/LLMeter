@@ -37,6 +37,7 @@
   var modelFilter = null; // base model name: show only its runs (set by a click on a run row)
   // Model name without the draft part, so runs with and without a draft count as one model.
   function baseModel(name) { return String(name || "").replace(/\s*\+\s*draft\s.*$/i, ""); }
+  var bothFilter = false; // true: only models run on both LM Studio and TensorFold
   var view = "speed"; // which chart is open; the priority one first
   var state = { runs: [], planned: [] };
 
@@ -74,18 +75,49 @@
     if (s < 90) return Math.round(s) + " s";
     var m = s / 60; return (m < 10 ? m.toFixed(1) : Math.round(m)) + " min";
   }
-  function normName(n) { return String(n || "").replace(/\s*\([^)]*\)\s*$/, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
+  // A run with a draft model is the same model for tiers: the "+ draft ..." part of the name is dropped.
+  function normName(n) { return baseModel(n).replace(/\s*\([^)]*\)\s*$/, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
   // Tier of a model by name, from its best row in the long-coding data; null when the model is not in it.
-  function tierOf(name) {
-    var pct = tierByModel[normName(name)];
-    if (pct == null) return null;
+  // A model without one gets an estimated equivalent tier from its local suite score (see estimateTiers).
+  var estByModel = {};
+  function bandOf(pct) {
     for (var i = 0; i < TIER_BANDS.length; i++) if (pct >= TIER_BANDS[i].min) return TIER_BANDS[i];
     return null;
   }
+  function tierOf(name) {
+    var k = normName(name), pct = tierByModel[k];
+    if (pct != null) return { band: bandOf(pct), pct: pct, est: false };
+    if (estByModel[k] != null) return { band: bandOf(estByModel[k]), pct: estByModel[k], est: true };
+    return null;
+  }
+  // Estimated equivalent tier: take the best suite score of every model that has an official tier (the anchors),
+  // put the untiered model on that score line and read its "% of Sonnet 5.5" by straight-line interpolation
+  // between the two nearest anchors (the nearest one outside their range). Then apply the same tier bands.
+  function estimateTiers() {
+    var best = {};
+    state.runs.forEach(function (r) {
+      var k = normName(r.model);
+      if (r.score != null && (best[k] == null || r.score > best[k].score)) best[k] = { score: r.score, name: baseModel(r.model) };
+    });
+    var anchors = [];
+    Object.keys(best).forEach(function (k) { if (tierByModel[k] != null) anchors.push({ score: best[k].score, pct: tierByModel[k], name: best[k].name }); });
+    anchors.sort(function (a, b) { return a.score - b.score; });
+    estByModel = {}; state.anchors = anchors; state.estimated = [];
+    if (!anchors.length) return;
+    Object.keys(best).forEach(function (k) {
+      if (tierByModel[k] != null) return;
+      var x = best[k].score, pct, lo = null, hi = null;
+      anchors.forEach(function (a) { if (a.score <= x) lo = a; if (a.score >= x && !hi) hi = a; });
+      if (lo && hi && hi.score > lo.score) pct = lo.pct + (hi.pct - lo.pct) * (x - lo.score) / (hi.score - lo.score);
+      else pct = (lo || hi).pct;
+      estByModel[k] = pct; state.estimated.push({ name: best[k].name, score: x, pct: pct });
+    });
+  }
   function tierBadge(name) {
     var t = tierOf(name);
-    return t ? el("span", { cls: "tier-badge tier-" + t.id, title: t.label + ": " + Math.round(tierByModel[normName(name)]) + "% of Sonnet 5.5 on long coding tasks", text: t.label })
-      : el("span", { cls: "tier-badge tier-none", title: "Not in the long-coding data yet", text: "No tier" });
+    if (!t) return el("span", { cls: "tier-badge tier-none", title: "Not in the long-coding data yet and not run locally, so no estimate", text: "No tier" });
+    if (!t.est) return el("span", { cls: "tier-badge tier-" + t.band.id, title: t.band.label + ": " + Math.round(t.pct) + "% of Sonnet 5.5 on long coding tasks", text: t.band.label });
+    return el("span", { cls: "tier-badge tier-" + t.band.id + " tier-est", title: "Estimated equivalent tier: about " + Math.round(t.pct) + "% of Sonnet 5.5, placed by its local suite score against models that have a tier", text: t.band.label + "*" });
   }
   // Mixture of experts: fewer active parameters than total, or said so in the model list notes.
   function isMoE(m) {
@@ -172,11 +204,22 @@
   // Two charts, the priority metric first and the other second. Rows are ordered by the
   // priority metric in both, so they line up across the charts. One scale per chart, shared
   // by its runtime panels so bar lengths compare across runtimes.
+  // "Both runtimes" filter: only models that have a run in every runtime (LM Studio and TensorFold).
+  function onBoth() {
+    var seen = {};
+    state.runs.forEach(function (r) { (seen[r.id] = seen[r.id] || {})[r.rt] = 1; });
+    return function (id) { return RUNTIMES.every(function (rt) { return seen[id] && seen[id][rt.name]; }); };
+  }
+  function visibleRuns() {
+    if (!bothFilter) return state.runs;
+    var ok = onBoth();
+    return state.runs.filter(function (r) { return ok(r.id); });
+  }
   function drawBars() {
     var box = document.getElementById("runs-bars"); box.textContent = "";
     var order = metric === "score" ? ["score", "speed"] : ["speed", "score"];
     var pri = METRICS[order[0]];
-    var shown = state.runs.filter(function (r) {
+    var shown = visibleRuns().filter(function (r) {
       function pass(f, v) { return f === "all" || (f === "on") === v; }
       if (modelFilter && baseModel(r.model) !== modelFilter) return false;
       return r[pri.key] != null && pass(thinkFilter, r.think) && pass(batchFilter, r.batch) && pass(draftFilter, r.draft);
@@ -239,7 +282,7 @@
     });
     // Last section: planned models with no run in any runtime.
     var ranAny = {}; state.runs.forEach(function (r) { ranAny[r.id] = 1; });
-    var todo = state.planned.filter(function (m) { return !ranAny[m.id]; });
+    var todo = bothFilter ? [] : state.planned.filter(function (m) { return !ranAny[m.id]; });
     if (todo.length) {
       var tp = el("div", { cls: "rb-panel", role: "group", "aria-label": "Not run yet" }, [el("h3", { cls: "rb-title", text: "Not run yet" })]);
       var tl = el("div", { cls: "rbars" }); tp.appendChild(tl);
@@ -258,7 +301,7 @@
   function td(text, cls) { return el("td", { cls: cls || "", text: text }); }
   function drawTable() {
     var body = document.getElementById("runs-rows"); body.textContent = "";
-    var runs = state.runs.slice().sort(function (a, b) { return (b.score || 0) - (a.score || 0); });
+    var runs = visibleRuns().slice().sort(function (a, b) { return (b.score || 0) - (a.score || 0); });
     runs.forEach(function (r) {
       body.appendChild(el("tr", {}, [
         el("td", { cls: "model-cell" }, [el("strong", { text: r.model }), el("span", { cls: "sub", text: r.id + (r.mem != null ? " · peak " + fmt(r.mem, 1) + " GB" : "") })]),
@@ -272,7 +315,7 @@
       ]));
     });
     var ran = {}; state.runs.forEach(function (r) { ran[r.id] = 1; });
-    state.planned.filter(function (m) { return !ran[m.id]; }).forEach(function (m) {
+    state.planned.filter(function (m) { return !bothFilter && !ran[m.id]; }).forEach(function (m) {
       var rt = ["LM Studio"]; if (/^(installed|loads)/.test(m.tensorfold || "")) rt.push("TensorFold");
       body.appendChild(el("tr", { cls: "is-planned" }, [
         el("td", { cls: "model-cell" }, [el("strong", { text: m.model }), el("span", { cls: "sub", text: m.id + " · " + m.developer })]),
@@ -289,12 +332,12 @@
   // Result per task: one column per run (best first), one row per task.
   function drawTasks() {
     var table = document.getElementById("task-table"), card = document.getElementById("tasks-card");
-    var runs = state.runs.slice().sort(function (a, b) { return (b.score || 0) - (a.score || 0); });
+    var runs = visibleRuns().slice().sort(function (a, b) { return (b.score || 0) - (a.score || 0); });
     table.textContent = "";
     card.hidden = !runs.length;
     if (!runs.length) return;
     table.appendChild(el("thead", {}, [el("tr", {}, [el("th", { scope: "col", text: "Task" })].concat(runs.map(function (r) {
-      return el("th", { scope: "col", cls: "num" }, [r.model,
+      return el("th", { scope: "col", cls: "num" }, [r.model, el("br"), tierBadge(r.model),
         el("span", { cls: "sub", text: r.runtime.split(/[;(]/)[0].trim() + ", thinking " + r.thinking + ", " + requests(r.parallel) })]);
     })))]));
     var body = el("tbody");
@@ -327,16 +370,37 @@
   function summary() {
     var p = document.getElementById("runs-summary");
     var ran = {}; state.runs.forEach(function (r) { ran[r.id] = 1; });
-    var left = state.planned.filter(function (m) { return !ran[m.id]; }).length;
-    var done = state.runs.length;
+    var left = bothFilter ? 0 : state.planned.filter(function (m) { return !ran[m.id]; }).length;
+    var done = visibleRuns().length;
     p.textContent = (done
       ? done + (done === 1 ? " run" : " runs") + " of the local coding suite, best first. "
       : "No runs recorded yet. ") +
+      (bothFilter ? "Only models run on both LM Studio and TensorFold. " : "") +
       (left ? left + " planned " + (left === 1 ? "model has" : "models have") + " not been run. " : "") +
       (metric === "score" ? "Score first (0 to 100), then decoding speed in tokens per second; the second chart opens in the same score order." : "Decoding speed in tokens per second first, then score (0 to 100); the second chart opens in the same speed order.");
   }
 
-  function draw() { drawBars(); drawTable(); drawTasks(); drawLegend(); summary(); }
+  // Tier table with the estimated models placed in their tier next to the official ones.
+  function drawTierTable() {
+    var body = document.getElementById("est-rows"); if (!body) return; body.textContent = "";
+    var rows = {};
+    function add(name, pct, est, score) { var b = bandOf(pct); (rows[b.id] = rows[b.id] || []).push({ name: name, pct: pct, est: est, score: score }); }
+    Object.keys(tierByModel).forEach(function (k) {
+      var run = state.runs.filter(function (r) { return normName(r.model) === k; })[0];
+      if (run) add(run.model, tierByModel[k], false, Math.max.apply(null, state.runs.filter(function (r) { return normName(r.model) === k; }).map(function (r) { return r.score || 0; })));
+    });
+    state.estimated.forEach(function (e) { add(e.name, e.pct, true, e.score); });
+    TIER_BANDS.forEach(function (b) {
+      var list = (rows[b.id] || []).sort(function (a, c) { return c.pct - a.pct; });
+      var cell = el("td", {}, list.length ? list.map(function (m) {
+        return el("span", { cls: "est-item" + (m.est ? " is-est" : "") }, [m.name + (m.est ? "*" : ""), el("span", { cls: "sub", text: (m.est ? "~" : "") + Math.round(m.pct) + "% of Sonnet 5.5 · suite " + fmt(m.score, 1) })]);
+      }) : [el("span", { cls: "muted", text: "none run yet" })]);
+      body.appendChild(el("tr", {}, [el("td", {}, [el("span", { cls: "tier-badge tier-" + b.id, text: b.label })]), cell]));
+    });
+    var card = document.getElementById("est-card"); if (card) card.hidden = !state.runs.length;
+  }
+
+  function draw() { drawTierTable(); drawBars(); drawTable(); drawTasks(); drawLegend(); summary(); }
 
   function setupTabs() {
     var tabs = document.querySelectorAll(".runs-metric .tab");
@@ -359,7 +423,17 @@
     Array.prototype.forEach.call(btns, function (b) {
       b.addEventListener("click", function () {
         Array.prototype.forEach.call(btns, function (x) { var on = x === b; x.setAttribute("aria-checked", on); x.tabIndex = on ? 0 : -1; });
-        set(b.getAttribute("data-value")); drawBars();
+        set(b.getAttribute("data-value")); draw();
+      });
+    });
+  }
+
+  function setupBoth() {
+    var btns = document.querySelectorAll(".runs-both .tab");
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener("click", function () {
+        Array.prototype.forEach.call(btns, function (x) { var on = x === b; x.setAttribute("aria-checked", on); x.tabIndex = on ? 0 : -1; });
+        bothFilter = b.getAttribute("data-both") === "on"; draw();
       });
     });
   }
@@ -376,8 +450,8 @@
     var h = document.querySelector(".site-header");
     document.documentElement.style.setProperty("--header-h", (h ? Math.floor(h.getBoundingClientRect().height) - 1 : 0) + "px");
   }
-  headerHeight(); window.addEventListener("resize", headerHeight);
-  setupTabs(); setupFilters();
+  headerHeight(); window.addEventListener("resize", headerHeight); window.addEventListener("load", headerHeight);
+  setupTabs(); setupFilters(); setupBoth();
   Promise.all([get(MODELS_URL), get(RESULTS_URL).catch(function () { return ""; }), get(TIERS_URL).catch(function () { return ""; })]).then(function (t) {
     parseCSV(t[2]).forEach(function (r) {
       var p = num(r.pct_of_sonnet_5_5), k = normName(r.model);
@@ -385,6 +459,7 @@
     });
     state.planned = parseCSV(t[0]);
     state.runs = buildRuns(parseCSV(t[1]), state.planned);
+    estimateTiers();
     draw();
   }).catch(function (e) {
     document.getElementById("runs-summary").textContent = "Could not load the run data (" + e.message + ").";

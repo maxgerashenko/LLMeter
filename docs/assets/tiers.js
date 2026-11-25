@@ -46,10 +46,24 @@
 
   function num(v) { return v === "" || v == null || isNaN(+v) ? null : +v; }
 
-  function tierFor(m) {
+  // How a tier can be defined on the All tab: the score used, as a share of Sonnet 5.5's own score on it.
+  // The first (default) is the one the whole site uses; the others re-draw the same bands on another score.
+  // The shared "Tier by" choice lives in nav.js (second-level header), so every Local page agrees on it.
+  var LB = window.LLMeterBasis;
+  var BASES = LB.bases;
+
+  // Share of Sonnet 5.5 on the chosen basis (null when the model has no score on it).
+  function shareOf(m, basis, ref) {
+    if (basis.id === "long") return m.pct;
+    var v = m[basis.key], r = ref && ref[basis.key];
+    return v == null || r == null || r === 0 ? null : v / r * 100;
+  }
+
+  function tierFor(m, pct) {
     if (m.model === REFERENCE) return TIERS[0];
-    if (m.pct == null) return null;
-    for (var i = 1; i < TIERS.length; i++) if (m.pct >= TIERS[i].min) return TIERS[i];
+    if (pct === undefined) pct = m.pct;
+    if (pct == null) return null;
+    for (var i = 1; i < TIERS.length; i++) if (pct >= TIERS[i].min) return TIERS[i];
     return null;
   }
 
@@ -143,12 +157,17 @@
     var ref = models.filter(function (m) { return m.model === REFERENCE; })[0];
 
     // Best open-weights model per tier: the highest unrounded long-coding score in the band.
-    var picks = TIERS.map(function (t) {
-      if (t.id === "max") return { tier: t, model: ref };
-      var inBand = models.filter(function (m) { return m.open && tierFor(m) === t; });
-      inBand.sort(function (a, b) { return (b.lcs - a.lcs) || (b.pct - a.pct); });
-      return { tier: t, model: inBand[0] || null };
-    });
+    var basis = BASES.filter(function (b) { return b.id === LB.get(); })[0] || BASES[0];
+    var picks;
+    function pickLeaders() {
+      picks = TIERS.map(function (t) {
+        if (t.id === "max") return { tier: t, model: ref };
+        var inBand = models.filter(function (m) { return m.open && tierFor(m, shareOf(m, basis, ref)) === t; });
+        inBand.sort(function (a, b) { return shareOf(b, basis, ref) - shareOf(a, basis, ref); });
+        return { tier: t, model: inBand[0] || null };
+      });
+    }
+    pickLeaders();
 
     // Tier table: the leader of each tier.
     function iiCell(m) {
@@ -163,6 +182,7 @@
       ];
     }
 
+    function drawTop() {
     var body = document.getElementById("tier-rows");
     body.textContent = "";
     picks.forEach(function (p) {
@@ -177,19 +197,22 @@
     tb.textContent = "";
     picks.forEach(function (p) {
       var m = p.model, t = p.tier;
-      if (!m || m.pct == null) return;
+      var share = m ? shareOf(m, basis, ref) : null;
+      if (!m || share == null) return;
       tb.appendChild(el("div", { class: "tb-row" }, [
         el("span", { class: "tb-label" }, [
           tierBadge(t),
           el("a", { class: "tb-model", href: sourceFor(m), text: splitName(m.model).base })
         ]),
         el("span", { class: "tb-track" }, [
-          el("span", { class: "tb-bar tier-bg-" + t.id, style: "width:" + Math.max(0.6, Math.min(100, m.pct)) + "%" })
+          el("span", { class: "tb-bar tier-bg-" + t.id, style: "width:" + Math.max(0.6, Math.min(100, share)) + "%" })
         ]),
-        el("span", { class: "tb-value", text: fmtPct(m.pct) }),
+        el("span", { class: "tb-value", text: fmtPct(share) }),
         el("a", { class: "explain tb-explain", href: ARTICLE + "#" + t.anchor, title: "Why this tier's pick, with hardware needs" }, ["Explain"])
       ]));
     });
+
+    }
 
     // Tier tag in front of each bar label: the tier badge, or a "Cloud" pill for cloud-only models
     function chartTag(m, t) {
@@ -198,10 +221,13 @@
       return el("span", { class: "pill pill-cloud bar-tag" }, ["Cloud"]);
     }
     // Bar chart on the All tab: every model, open-weights coloured by tier, cloud grey
-    function renderChart(barsId, legendId, list, legendTiers, cloudLegend) {
-      var chartModels = list.filter(function (m) { return m.pct != null; })
-        .sort(function (a, b) { return b.pct - a.pct; });
-      var max = Math.max(110, Math.max.apply(null, chartModels.map(function (m) { return m.pct; })));
+    function renderChart(barsId, legendId, list, legendTiers, cloudLegend, basis) {
+      var host = document.getElementById(barsId);
+      host.textContent = "";
+      var shown = list.map(function (m) { return { m: m, v: shareOf(m, basis, ref) }; })
+        .filter(function (x) { return x.v != null; })
+        .sort(function (a, b) { return b.v - a.v; });
+      var max = Math.max(110, Math.max.apply(null, shown.map(function (x) { return x.v; })));
       var plot = el("div", { class: "plot" });
       var edges = el("div", { class: "edges", "aria-hidden": "true" });
       plot.appendChild(edges);
@@ -209,26 +235,36 @@
         edges.appendChild(el("span", { class: "edge", style: "left:" + (edge / max * 100) + "%" }, [el("span", { class: "edge-label", text: edge + "%" })]));
       });
       edges.appendChild(el("span", { class: "edge edge-ref", style: "left:" + (100 / max * 100) + "%" }, [el("span", { class: "edge-label", text: "Sonnet 5.5" })]));
-      chartModels.forEach(function (m) {
-        var t = tierFor(m);
+      shown.forEach(function (x) {
+        var m = x.m, t = tierFor(m, x.v);
         var cls = m.open && t ? "tier-bg-" + t.id : (m.model === REFERENCE ? "tier-bg-max" : "bar-cloud");
         var n = splitName(m.model);
         plot.appendChild(el("div", { class: "bar-row" + (m.model === REFERENCE ? " is-ref" : "") }, [
           el("span", { class: "bar-label" }, [chartTag(m, t), el("a", { href: sourceFor(m), text: n.base }), n.setting ? el("span", { class: "setting", text: n.setting }) : null]),
           el("span", { class: "bar-track" }, [
-            el("span", { class: "bar " + cls, style: "width:" + Math.max(0.6, m.pct / max * 100) + "%" }),
-            el("span", { class: "bar-value", style: "left:" + (m.pct / max * 100) + "%", text: fmtPct(m.pct) })
+            el("span", { class: "bar " + cls, style: "width:" + Math.max(0.6, x.v / max * 100) + "%" }),
+            el("span", { class: "bar-value", style: "left:" + (x.v / max * 100) + "%", text: fmtPct(x.v) })
           ])
         ]));
       });
-      document.getElementById(barsId).appendChild(plot);
+      host.appendChild(plot);
+      var missing = list.length - shown.length;
+      document.getElementById("basis-note").textContent = basis.desc + (missing ? " " + missing + " of " + list.length + " models have no score on it and are left out." : "");
       var legend = document.getElementById(legendId);
+      if (legend.childNodes.length) return;
       legendTiers.forEach(function (t) {
         legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + t.id }), t.id === "max" ? "Max" : "Tier " + t.label]));
       });
       if (cloudLegend) legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch bar-cloud" }), "Cloud"]));
     }
-    renderChart("bars-all", "legend-all", models, TIERS, true);
+    drawTop();
+    renderChart("bars-all", "legend-all", models, TIERS, true, basis);
+    LB.onChange(function (id) {
+      basis = BASES.filter(function (b) { return b.id === id; })[0] || BASES[0];
+      pickLeaders();
+      drawTop();
+      renderChart("bars-all", "legend-all", models, TIERS, true, basis);
+    });
 
   }
 
