@@ -87,7 +87,12 @@
     <section id="panel-all" class="card" role="tabpanel" aria-labelledby="tab-all" hidden>
       <div class="card-head">
         <h2>All models, share of Sonnet 5.5</h2>
-        <p class="muted">Long-coding score (average of Terminal-Bench 4.0 and FrontierCode 2.0) as a percentage of Sonnet 5.5's 52.7, for every model in the data file. Dashed lines are tier edges. Open-weights models are coloured by tier; cloud-only models are grey.</p>
+        <p class="muted">Every model in the data file as a percentage of Sonnet 5.5's own score. Pick which score defines the tier. Dashed lines are the same tier edges for every choice. Open-weights models are coloured by tier; cloud-only models are grey.</p>
+      </div>
+      <div class="basis">
+        <span class="basis-title" id="basis-title">Define a tier by</span>
+        <div id="basis-options" class="basis-options" role="radiogroup" aria-labelledby="basis-title"></div>
+        <p class="muted basis-note" id="basis-note" aria-live="polite"></p>
       </div>
       <div id="bars-all" class="bars" role="img" aria-label="Bar chart of each model's long-coding score as a share of Sonnet 5.5"></div>
       <div class="legend" id="legend-all"></div>
