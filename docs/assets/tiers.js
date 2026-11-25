@@ -48,13 +48,9 @@
 
   // How a tier can be defined on the All tab: the score used, as a share of Sonnet 5.5's own score on it.
   // The first (default) is the one the whole site uses; the others re-draw the same bands on another score.
-  var BASES = [
-    { id: "long", label: "Long coding", key: "lcs", desc: "Average of Terminal-Bench 4.0 and FrontierCode 2.0, as a percentage of Sonnet 5.5's 52.7. This is the basis of the tiers on the TOP tab." },
-    { id: "cai", label: "Coding Agent Index", key: "cai", desc: "Artificial Analysis Coding Agent Index v2.1 (a model run inside a coding-agent harness), as a percentage of Sonnet 5.5's 56.3. Only 10 models have it." },
-    { id: "tb4", label: "Terminal-Bench", key: "tb4", desc: "Terminal-Bench 4.0 (long command-line tasks), as a percentage of Sonnet 5.5's 63.6." },
-    { id: "fc2", label: "FrontierCode", key: "fc2", desc: "FrontierCode 2.0 (hard, open-ended programming), as a percentage of Sonnet 5.5's 41.7." },
-    { id: "ii", label: "General (Intelligence Index)", key: "ii", desc: "Artificial Analysis Intelligence Index v5.0.1, a general index across all of its evaluations, as a percentage of Sonnet 5.5's 55.0." }
-  ];
+  // The shared "Tier by" choice lives in nav.js (second-level header), so every Local page agrees on it.
+  var LB = window.LLMeterBasis;
+  var BASES = LB.bases;
 
   // Share of Sonnet 5.5 on the chosen basis (null when the model has no score on it).
   function shareOf(m, basis, ref) {
@@ -161,12 +157,17 @@
     var ref = models.filter(function (m) { return m.model === REFERENCE; })[0];
 
     // Best open-weights model per tier: the highest unrounded long-coding score in the band.
-    var picks = TIERS.map(function (t) {
-      if (t.id === "max") return { tier: t, model: ref };
-      var inBand = models.filter(function (m) { return m.open && tierFor(m) === t; });
-      inBand.sort(function (a, b) { return (b.lcs - a.lcs) || (b.pct - a.pct); });
-      return { tier: t, model: inBand[0] || null };
-    });
+    var basis = BASES.filter(function (b) { return b.id === LB.get(); })[0] || BASES[0];
+    var picks;
+    function pickLeaders() {
+      picks = TIERS.map(function (t) {
+        if (t.id === "max") return { tier: t, model: ref };
+        var inBand = models.filter(function (m) { return m.open && tierFor(m, shareOf(m, basis, ref)) === t; });
+        inBand.sort(function (a, b) { return shareOf(b, basis, ref) - shareOf(a, basis, ref); });
+        return { tier: t, model: inBand[0] || null };
+      });
+    }
+    pickLeaders();
 
     // Tier table: the leader of each tier.
     function iiCell(m) {
@@ -181,6 +182,7 @@
       ];
     }
 
+    function drawTop() {
     var body = document.getElementById("tier-rows");
     body.textContent = "";
     picks.forEach(function (p) {
@@ -195,19 +197,22 @@
     tb.textContent = "";
     picks.forEach(function (p) {
       var m = p.model, t = p.tier;
-      if (!m || m.pct == null) return;
+      var share = m ? shareOf(m, basis, ref) : null;
+      if (!m || share == null) return;
       tb.appendChild(el("div", { class: "tb-row" }, [
         el("span", { class: "tb-label" }, [
           tierBadge(t),
           el("a", { class: "tb-model", href: sourceFor(m), text: splitName(m.model).base })
         ]),
         el("span", { class: "tb-track" }, [
-          el("span", { class: "tb-bar tier-bg-" + t.id, style: "width:" + Math.max(0.6, Math.min(100, m.pct)) + "%" })
+          el("span", { class: "tb-bar tier-bg-" + t.id, style: "width:" + Math.max(0.6, Math.min(100, share)) + "%" })
         ]),
-        el("span", { class: "tb-value", text: fmtPct(m.pct) }),
+        el("span", { class: "tb-value", text: fmtPct(share) }),
         el("a", { class: "explain tb-explain", href: ARTICLE + "#" + t.anchor, title: "Why this tier's pick, with hardware needs" }, ["Explain"])
       ]));
     });
+
+    }
 
     // Tier tag in front of each bar label: the tier badge, or a "Cloud" pill for cloud-only models
     function chartTag(m, t) {
@@ -252,18 +257,14 @@
       });
       if (cloudLegend) legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch bar-cloud" }), "Cloud"]));
     }
-    var basisBox = document.getElementById("basis-options");
-    BASES.forEach(function (b, i) {
-      var btn = el("button", { type: "button", role: "radio", class: "tab", "aria-checked": String(i === 0), tabindex: i === 0 ? "0" : "-1", "data-basis": b.id, text: b.label });
-      btn.addEventListener("click", function () {
-        Array.prototype.forEach.call(basisBox.children, function (c) {
-          var on = c === btn; c.setAttribute("aria-checked", String(on)); c.tabIndex = on ? 0 : -1;
-        });
-        renderChart("bars-all", "legend-all", models, TIERS, true, b);
-      });
-      basisBox.appendChild(btn);
+    drawTop();
+    renderChart("bars-all", "legend-all", models, TIERS, true, basis);
+    LB.onChange(function (id) {
+      basis = BASES.filter(function (b) { return b.id === id; })[0] || BASES[0];
+      pickLeaders();
+      drawTop();
+      renderChart("bars-all", "legend-all", models, TIERS, true, basis);
     });
-    renderChart("bars-all", "legend-all", models, TIERS, true, BASES[0]);
 
   }
 

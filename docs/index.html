@@ -79,21 +79,17 @@
       </div>
       <p class="note">
         The <a href="https://artificialanalysis.ai/models">Intelligence Index</a> is a general index across all of Artificial Analysis's
-        evaluations, shown so every model is rated on one scale. It is not the basis of the tiers: it rates Nanbeige4.3-33B and
-        Qwen3.8 27B almost equally, although Nanbeige is about twice as good on long coding tasks.
+        evaluations, shown so every model is rated on one scale. The tiers follow the score chosen under "Tier by" in the menu (Coding Agent Index by default),
+        not this column: the Intelligence Index rates Nanbeige4.3-33B and Qwen3.8 27B almost equally, although Nanbeige is about twice as good on long coding tasks.
       </p>
     </section>
 
     <section id="panel-all" class="card" role="tabpanel" aria-labelledby="tab-all" hidden>
       <div class="card-head">
         <h2>All models, share of Sonnet 5.5</h2>
-        <p class="muted">Every model in the data file as a percentage of Sonnet 5.5's own score. Pick which score defines the tier. Dashed lines are the same tier edges for every choice. Open-weights models are coloured by tier; cloud-only models are grey.</p>
+        <p class="muted">Every model in the data file as a percentage of Sonnet 5.5's own score. Choose which score defines the tier at the right of the menu. Dashed lines are the same tier edges for every choice. Open-weights models are coloured by tier; cloud-only models are grey.</p>
       </div>
-      <div class="basis">
-        <span class="basis-title" id="basis-title">Define a tier by</span>
-        <div id="basis-options" class="basis-options" role="radiogroup" aria-labelledby="basis-title"></div>
-        <p class="muted basis-note" id="basis-note" aria-live="polite"></p>
-      </div>
+      <p class="muted basis-note" id="basis-note" aria-live="polite"></p>
       <div id="bars-all" class="bars" role="img" aria-label="Bar chart of each model's long-coding score as a share of Sonnet 5.5"></div>
       <div class="legend" id="legend-all"></div>
     </section>
