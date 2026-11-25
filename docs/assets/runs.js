@@ -71,16 +71,46 @@
   }
   function normName(n) { return String(n || "").replace(/\s*\([^)]*\)\s*$/, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
   // Tier of a model by name, from its best row in the long-coding data; null when the model is not in it.
-  function tierOf(name) {
-    var pct = tierByModel[normName(name)];
-    if (pct == null) return null;
+  // A model without one gets an estimated equivalent tier from its local suite score (see estimateTiers).
+  var estByModel = {};
+  function bandOf(pct) {
     for (var i = 0; i < TIER_BANDS.length; i++) if (pct >= TIER_BANDS[i].min) return TIER_BANDS[i];
     return null;
   }
+  function tierOf(name) {
+    var k = normName(name), pct = tierByModel[k];
+    if (pct != null) return { band: bandOf(pct), pct: pct, est: false };
+    if (estByModel[k] != null) return { band: bandOf(estByModel[k]), pct: estByModel[k], est: true };
+    return null;
+  }
+  // Estimated equivalent tier: take the best suite score of every model that has an official tier (the anchors),
+  // put the untiered model on that score line and read its "% of Sonnet 5.5" by straight-line interpolation
+  // between the two nearest anchors (the nearest one outside their range). Then apply the same tier bands.
+  function estimateTiers() {
+    var best = {};
+    state.runs.forEach(function (r) {
+      var k = normName(r.model);
+      if (r.score != null && (best[k] == null || r.score > best[k].score)) best[k] = { score: r.score, name: r.model };
+    });
+    var anchors = [];
+    Object.keys(best).forEach(function (k) { if (tierByModel[k] != null) anchors.push({ score: best[k].score, pct: tierByModel[k], name: best[k].name }); });
+    anchors.sort(function (a, b) { return a.score - b.score; });
+    estByModel = {}; state.anchors = anchors; state.estimated = [];
+    if (!anchors.length) return;
+    Object.keys(best).forEach(function (k) {
+      if (tierByModel[k] != null) return;
+      var x = best[k].score, pct, lo = null, hi = null;
+      anchors.forEach(function (a) { if (a.score <= x) lo = a; if (a.score >= x && !hi) hi = a; });
+      if (lo && hi && hi.score > lo.score) pct = lo.pct + (hi.pct - lo.pct) * (x - lo.score) / (hi.score - lo.score);
+      else pct = (lo || hi).pct;
+      estByModel[k] = pct; state.estimated.push({ name: best[k].name, score: x, pct: pct });
+    });
+  }
   function tierBadge(name) {
     var t = tierOf(name);
-    return t ? el("span", { cls: "tier-badge tier-" + t.id, title: t.label + ": " + Math.round(tierByModel[normName(name)]) + "% of Sonnet 5.5 on long coding tasks", text: t.label })
-      : el("span", { cls: "tier-badge tier-none", title: "Not in the long-coding data yet", text: "No tier" });
+    if (!t) return el("span", { cls: "tier-badge tier-none", title: "Not in the long-coding data yet and not run locally, so no estimate", text: "No tier" });
+    if (!t.est) return el("span", { cls: "tier-badge tier-" + t.band.id, title: t.band.label + ": " + Math.round(t.pct) + "% of Sonnet 5.5 on long coding tasks", text: t.band.label });
+    return el("span", { cls: "tier-badge tier-" + t.band.id + " tier-est", title: "Estimated equivalent tier: about " + Math.round(t.pct) + "% of Sonnet 5.5, placed by its local suite score against models that have a tier", text: t.band.label + "*" });
   }
   function thinkingOn(t) { return /^(on|yes|true)$/i.test(t || ""); }
 
@@ -260,7 +290,7 @@
     card.hidden = !runs.length;
     if (!runs.length) return;
     table.appendChild(el("thead", {}, [el("tr", {}, [el("th", { scope: "col", text: "Task" })].concat(runs.map(function (r) {
-      return el("th", { scope: "col", cls: "num" }, [r.model,
+      return el("th", { scope: "col", cls: "num" }, [r.model, el("br"), tierBadge(r.model),
         el("span", { cls: "sub", text: r.runtime.split(/[;(]/)[0].trim() + ", thinking " + r.thinking + ", " + requests(r.parallel) })]);
     })))]));
     var body = el("tbody");
@@ -303,7 +333,27 @@
       (metric === "score" ? "Score first (0 to 100), then decoding speed in tokens per second; the second chart opens in the same score order." : "Decoding speed in tokens per second first, then score (0 to 100); the second chart opens in the same speed order.");
   }
 
-  function draw() { drawBars(); drawTable(); drawTasks(); drawLegend(); summary(); }
+  // Tier table with the estimated models placed in their tier next to the official ones.
+  function drawTierTable() {
+    var body = document.getElementById("est-rows"); if (!body) return; body.textContent = "";
+    var rows = {};
+    function add(name, pct, est, score) { var b = bandOf(pct); (rows[b.id] = rows[b.id] || []).push({ name: name, pct: pct, est: est, score: score }); }
+    Object.keys(tierByModel).forEach(function (k) {
+      var run = state.runs.filter(function (r) { return normName(r.model) === k; })[0];
+      if (run) add(run.model, tierByModel[k], false, Math.max.apply(null, state.runs.filter(function (r) { return normName(r.model) === k; }).map(function (r) { return r.score || 0; })));
+    });
+    state.estimated.forEach(function (e) { add(e.name, e.pct, true, e.score); });
+    TIER_BANDS.forEach(function (b) {
+      var list = (rows[b.id] || []).sort(function (a, c) { return c.pct - a.pct; });
+      var cell = el("td", {}, list.length ? list.map(function (m) {
+        return el("span", { cls: "est-item" + (m.est ? " is-est" : "") }, [m.name + (m.est ? "*" : ""), el("span", { cls: "sub", text: (m.est ? "~" : "") + Math.round(m.pct) + "% of Sonnet 5.5 · suite " + fmt(m.score, 1) })]);
+      }) : [el("span", { cls: "muted", text: "none run yet" })]);
+      body.appendChild(el("tr", {}, [el("td", {}, [el("span", { cls: "tier-badge tier-" + b.id, text: b.label })]), cell]));
+    });
+    var card = document.getElementById("est-card"); if (card) card.hidden = !state.runs.length;
+  }
+
+  function draw() { drawTierTable(); drawBars(); drawTable(); drawTasks(); drawLegend(); summary(); }
 
   function setupTabs() {
     var tabs = document.querySelectorAll(".runs-metric .tab");
@@ -349,6 +399,7 @@
     });
     state.planned = parseCSV(t[0]);
     state.runs = buildRuns(parseCSV(t[1]), state.planned);
+    estimateTiers();
     draw();
   }).catch(function (e) {
     document.getElementById("runs-summary").textContent = "Could not load the run data (" + e.message + ").";
