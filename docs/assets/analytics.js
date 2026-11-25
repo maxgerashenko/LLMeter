@@ -1,4 +1,5 @@
 // Google Analytics 4, loaded async on every page. Does nothing until an ID is set.
+// Opt out per browser with ?ga_off=1 (undo with ?ga_off=0).
 // To turn it on: create a GA4 property, copy its Measurement ID (looks like G-ABC123XYZ9)
 // and paste it between the quotes below. Leave it empty to keep analytics off.
 (function () {
@@ -6,11 +7,18 @@
   var GA_MEASUREMENT_ID = "G-TTSZ1LC89F"; // e.g. "G-ABC123XYZ9"
 
   if (!/^G-[A-Z0-9]{6,}$/.test(GA_MEASUREMENT_ID)) return;
-  // Respect browser privacy signals and a manual opt-out
-  // (run localStorage.setItem("llmeter-analytics-optout", "1") to opt out).
+  // Manual opt-out: open any page with ?ga_off=1 to stop analytics on this browser,
+  // ?ga_off=0 to turn it back on. Stored in localStorage (no cookie).
+  var KEY = "llmeter-analytics-optout";
+  try {
+    var q = new URLSearchParams(location.search).get("ga_off");
+    if (q === "1") localStorage.setItem(KEY, "1");
+    else if (q === "0") localStorage.removeItem(KEY);
+  } catch (e) {}
+  // Respect browser privacy signals and the stored opt-out.
   try {
     if (navigator.doNotTrack === "1" || navigator.globalPrivacyControl) return;
-    if (localStorage.getItem("llmeter-analytics-optout") === "1") return;
+    if (localStorage.getItem(KEY) === "1") { window["ga-disable-" + GA_MEASUREMENT_ID] = true; return; }
   } catch (e) {}
 
   window.dataLayer = window.dataLayer || [];
