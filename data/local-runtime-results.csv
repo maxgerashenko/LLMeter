@@ -119,3 +119,123 @@ date,model_id,runtime,runtime_version,thinking,parallel,context_tokens,task_id,t
 2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q08,9,12,0.625,93.3,710,3649,39.1,,,,finished,"MacBook Pro M5 Pro, 64 GB",
 2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q09,25,45,0.5556,68.4,870,2474,36.2,,,,finished,"MacBook Pro M5 Pro, 64 GB",
 2026-11-18,M11,LM Studio,0.4.28+2,off,4,14604,q10,0,45,0.0,80.9,892,3999,49.4,,,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M15,LM Studio,0.4.28+2,on,4,131072,q01,8,12,0.4286,65.9,368,2011,30.5,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M15,LM Studio,0.4.28+2,on,4,131072,q02,15,15,1.0,72.9,832,2197,30.1,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M15,LM Studio,0.4.28+2,on,4,131072,q03,0,18,0.0,577.8,927,11999,20.8,,,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M15,LM Studio,0.4.28+2,on,4,131072,q04,0,14,0.0,97.1,1184,2889,29.8,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M15,LM Studio,0.4.28+2,on,4,131072,q05,0,12,0.0,557.0,,10699,19.2,,,,error,"MacBook Pro M5 Pro, 64 GB",stream ended without a finish reason output_tokens counted from stream chunks
+2026-11-24,M15,LM Studio,0.4.28+2,on,4,131072,q06,0,76,0.0,550.0,,10250,18.6,,,,error,"MacBook Pro M5 Pro, 64 GB",stream ended without a finish reason output_tokens counted from stream chunks
+2026-11-24,M15,LM Studio,0.4.28+2,on,4,131072,q07,0,27,0.0,243.7,634,5171,21.2,,,,finished,"MacBook Pro M5 Pro, 64 GB","SyntaxError(""f-string: unmatched ']'"", ('/private/var/folders/sp/_6_c5qfd6cq1d9m5kc16nb500000gn/T/llmeter-task-31vlql9k/work/scheduler.py', 19, 66, '            raise ValueError(f""Duplicate task name:"
+2026-11-24,M15,LM Studio,0.4.28+2,on,4,131072,q08,0,12,0.0,282.1,,4662,16.5,,,,error,"MacBook Pro M5 Pro, 64 GB",stream ended without a finish reason output_tokens counted from stream chunks
+2026-11-24,M15,LM Studio,0.4.28+2,on,4,131072,q09,0,45,0.0,45.1,,727,16.1,,,,error,"MacBook Pro M5 Pro, 64 GB",stream ended without a finish reason output_tokens counted from stream chunks
+2026-11-24,M15,LM Studio,0.4.28+2,on,4,131072,q10,0,45,0.0,0.1,,,,,,,error,"MacBook Pro M5 Pro, 64 GB",stream ended without a finish reason
+2026-11-24,M08D,LM Studio,0.4.28+2,off,1,262144,q01,6,12,0.1429,3.3,370,246,74.5,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M08D,LM Studio,0.4.28+2,off,1,262144,q02,12,15,0.7857,10.3,834,973,94.5,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M08D,LM Studio,0.4.28+2,off,1,262144,q03,18,18,1.0,8.1,933,787,97.2,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M08D,LM Studio,0.4.28+2,off,1,262144,q04,13,14,0.9091,12.5,1195,1191,95.3,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M08D,LM Studio,0.4.28+2,off,1,262144,q05,12,12,1.0,6.1,790,580,95.1,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M08D,LM Studio,0.4.28+2,off,1,262144,q06,35,76,0.4605,23.3,858,1876,80.5,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M08D,LM Studio,0.4.28+2,off,1,262144,q07,2,27,0.0741,34.8,640,2955,84.9,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M08D,LM Studio,0.4.28+2,off,1,262144,q08,9,12,0.625,3.9,710,335,85.9,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M08D,LM Studio,0.4.28+2,off,1,262144,q09,37,45,0.8222,24.0,870,1846,76.9,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M08D,LM Studio,0.4.28+2,off,1,262144,q10,5,45,0.1111,57.4,892,3895,67.9,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M16D,LM Studio,0.4.28+2,on,4,83456,q01,0,12,0.0,900.4,,4989,5.5,,,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M16D,LM Studio,0.4.28+2,on,4,83456,q02,0,15,0.0,900.2,,4958,5.5,,,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M16D,LM Studio,0.4.28+2,on,4,83456,q03,18,18,1.0,251.6,993,1484,5.9,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M16D,LM Studio,0.4.28+2,on,4,83456,q04,14,14,1.0,449.8,1269,2955,6.6,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M16D,LM Studio,0.4.28+2,on,4,83456,q05,12,12,1.0,607.2,845,4268,7.0,,,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M16D,LM Studio,0.4.28+2,on,4,83456,q06,0,76,0.0,1079.5,,4069,3.8,,,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M16D,LM Studio,0.4.28+2,on,4,83456,q07,0,27,0.0,972.6,,1812,1.9,,,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M16D,LM Studio,0.4.28+2,on,4,83456,q08,0,12,0.0,933.6,,1737,1.9,,,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M16D,LM Studio,0.4.28+2,on,4,83456,q09,0,45,0.0,930.9,,1817,2.0,,,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M16D,LM Studio,0.4.28+2,on,4,83456,q10,0,45,0.0,1339.8,,712,0.5,,,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M17D,LM Studio,0.4.28+2,on,4,262144,q01,0,12,0.0,309.9,395,5274,17.0,,,,finished,"MacBook Pro M5 Pro, 64 GB",no file block in answer
+2026-11-24,M17D,LM Studio,0.4.28+2,on,4,262144,q02,0,15,0.0,341.9,889,6006,17.6,,,,finished,"MacBook Pro M5 Pro, 64 GB",no file block in answer
+2026-11-24,M17D,LM Studio,0.4.28+2,on,4,262144,q03,0,18,0.0,376.5,993,7595,20.2,,,,finished,"MacBook Pro M5 Pro, 64 GB",no file block in answer
+2026-11-24,M17D,LM Studio,0.4.28+2,on,4,262144,q04,0,14,0.0,414.4,1269,8144,19.7,,,,finished,"MacBook Pro M5 Pro, 64 GB",no file block in answer
+2026-11-24,M17D,LM Studio,0.4.28+2,on,4,262144,q05,0,12,0.0,198.0,845,3775,19.1,,,,finished,"MacBook Pro M5 Pro, 64 GB",no file block in answer
+2026-11-24,M17D,LM Studio,0.4.28+2,on,4,262144,q06,0,76,0.0,704.7,885,12000,17.0,,,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M17D,LM Studio,0.4.28+2,on,4,262144,q07,0,27,0.0,738.2,659,12000,16.3,,,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M17D,LM Studio,0.4.28+2,on,4,262144,q08,0,12,0.0,880.1,740,12000,13.6,,,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M17D,LM Studio,0.4.28+2,on,4,262144,q09,0,45,0.0,791.6,897,12000,15.2,,,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M17D,LM Studio,0.4.28+2,on,4,262144,q10,0,45,0.0,434.8,920,12000,27.6,,,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M18,LM Studio,0.4.28+2,off,4,209715,q01,9,12,0.5714,7.7,370,199,25.8,,7.4,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M18,LM Studio,0.4.28+2,off,4,209715,q02,12,15,0.7857,31.5,834,968,30.7,,7.4,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M18,LM Studio,0.4.28+2,off,4,209715,q03,13,18,0.5455,25.5,933,778,30.5,,7.4,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M18,LM Studio,0.4.28+2,off,4,209715,q04,14,14,1.0,38.5,1195,1191,30.9,,7.4,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M18,LM Studio,0.4.28+2,off,4,209715,q05,12,12,1.0,16.9,790,561,33.2,,7.4,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M18,LM Studio,0.4.28+2,off,4,209715,q06,2,76,0.0263,44.1,858,1399,31.7,,7.4,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M18,LM Studio,0.4.28+2,off,4,209715,q07,6,27,0.2222,44.6,640,1441,32.3,,7.4,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M18,LM Studio,0.4.28+2,off,4,209715,q08,9,12,0.625,11.2,710,355,31.7,,7.4,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M18,LM Studio,0.4.28+2,off,4,209715,q09,28,45,0.6222,60.3,870,2787,46.2,,7.4,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M18,LM Studio,0.4.28+2,off,4,209715,q10,22,45,0.4889,39.0,892,1465,37.6,,7.4,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M18D,LM Studio,0.4.28+2,off,4,209715,q01,9,12,0.5714,7.3,370,199,27.3,,3.6,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,4,209715,q02,12,15,0.7857,30.8,834,962,31.2,,3.6,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,4,209715,q03,13,18,0.5455,25.0,933,778,31.1,,3.6,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,4,209715,q04,14,14,1.0,37.9,1195,1191,31.4,,3.6,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,4,209715,q05,12,12,1.0,16.7,790,561,33.6,,3.6,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,4,209715,q06,1,76,0.0132,53.9,858,1681,31.2,,3.6,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,4,209715,q07,1,27,0.037,60.0,640,1925,32.1,,3.6,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,4,209715,q08,9,12,0.625,11.7,710,370,31.6,,3.6,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,4,209715,q09,42,45,0.9333,62.0,870,2516,40.6,,3.6,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,4,209715,q10,7,45,0.1556,44.5,892,1465,32.9,,3.6,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,1,209715,q01,9,12,0.5714,2.6,370,202,77.7,,3.1,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,1,209715,q02,12,15,0.7857,12.1,834,986,81.5,,3.1,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,1,209715,q03,0,18,0.0,300.0,,55,0.2,,3.1,,timeout,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct; output_tokens counted from stream chunks
+2026-11-24,M18D,LM Studio,0.4.28+2,off,1,209715,q04,2,14,0.0,24.7,1195,1177,47.7,,3.1,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,1,209715,q05,12,12,1.0,6.9,790,561,81.3,,3.1,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,1,209715,q06,0,76,0.0,675.0,,904,1.3,,3.1,,timeout,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct; output_tokens counted from stream chunks
+2026-11-24,M18D,LM Studio,0.4.28+2,off,1,209715,q07,1,27,0.037,22.4,640,1772,79.1,,3.1,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,1,209715,q08,9,12,0.625,4.4,710,355,80.7,,3.1,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M18D,LM Studio,0.4.28+2,off,1,209715,q09,0,45,0.0,981.3,,1374,1.4,,3.1,,timeout,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct; output_tokens counted from stream chunks
+2026-11-24,M18D,LM Studio,0.4.28+2,off,1,209715,q10,7,45,0.1556,23.3,892,1810,77.7,,3.1,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M19D,LM Studio,0.4.28+2,off,1,14604,q01,3,12,0.0,25.7,370,1581,61.5,,19.9,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M19D,LM Studio,0.4.28+2,off,1,14604,q02,15,15,1.0,54.8,834,2716,49.6,,19.9,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M19D,LM Studio,0.4.28+2,off,1,14604,q03,18,18,1.0,38.7,933,1080,27.9,,19.9,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M19D,LM Studio,0.4.28+2,off,1,14604,q04,14,14,1.0,79.7,1195,1334,16.7,,19.9,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M19D,LM Studio,0.4.28+2,off,1,14604,q05,12,12,1.0,43.9,790,729,16.6,,19.9,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M19D,LM Studio,0.4.28+2,off,1,14604,q06,37,76,0.4868,106.0,858,2164,20.4,,19.9,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M19D,LM Studio,0.4.28+2,off,1,14604,q07,0,27,0.0,161.2,640,4000,24.8,,19.9,,truncated,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct; no answer file
+2026-11-24,M19D,LM Studio,0.4.28+2,off,1,14604,q08,9,12,0.625,54.7,710,1304,23.8,,19.9,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct
+2026-11-24,M19D,LM Studio,0.4.28+2,off,1,14604,q09,0,45,0.0,162.0,870,3702,22.9,,19.9,,finished,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct; no file block in answer
+2026-11-24,M19D,LM Studio,0.4.28+2,off,1,14604,q10,0,45,0.0,192.0,892,4000,20.8,,19.9,,truncated,"MacBook Pro M5 Pro, 64 GB",draft qwen2.5-0.5b-instruct; no answer file
+2026-11-24,M20,LM Studio,0.4.28+2,on,4,209715,q01,12,12,1.0,759.8,395,6811,9.0,,7.7,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M20,LM Studio,0.4.28+2,on,4,209715,q02,0,15,0.0,900.0,,7657,8.5,,7.7,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M20,LM Studio,0.4.28+2,on,4,209715,q03,18,18,1.0,237.8,993,2444,10.3,,7.7,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M20,LM Studio,0.4.28+2,on,4,209715,q04,0,14,0.0,900.0,,8101,9.0,,7.7,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M20,LM Studio,0.4.28+2,on,4,209715,q05,12,12,1.0,712.1,845,5633,7.9,,7.7,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M20,LM Studio,0.4.28+2,on,4,209715,q06,0,76,0.0,900.1,,7689,8.5,,7.7,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M20,LM Studio,0.4.28+2,on,4,209715,q07,0,27,0.0,900.0,,7343,8.2,,7.7,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M20,LM Studio,0.4.28+2,on,4,209715,q08,0,12,0.0,900.0,,7006,7.8,,7.7,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M20,LM Studio,0.4.28+2,on,4,209715,q09,0,45,0.0,900.1,,7816,8.7,,7.7,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M20,LM Studio,0.4.28+2,on,4,209715,q10,0,45,0.0,652.6,920,12000,18.4,,7.7,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M14,LM Studio,0.4.28+2,on,1,209715,q01,3,12,0.0,65.8,395,862,13.1,,6.0,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M14,LM Studio,0.4.28+2,on,1,209715,q02,0,15,0.0,900.1,,6104,6.8,,6.0,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M14,LM Studio,0.4.28+2,on,1,209715,q03,0,18,0.0,582.0,993,8949,15.4,,6.0,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M14,LM Studio,0.4.28+2,on,1,209715,q04,2,14,0.0,36.0,1269,1806,50.2,,6.0,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M14,LM Studio,0.4.28+2,on,1,209715,q05,12,12,1.0,100.4,845,5107,50.9,,6.0,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M14,LM Studio,0.4.28+2,on,1,209715,q06,0,76,0.0,241.7,885,11999,49.6,,6.0,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M14,LM Studio,0.4.28+2,on,1,209715,q07,0,27,0.0,1242.5,,7337,5.9,,6.0,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M14,LM Studio,0.4.28+2,on,1,209715,q08,0,12,0.0,474.8,740,11999,25.3,,6.0,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M14,LM Studio,0.4.28+2,on,1,209715,q09,5,45,0.1111,126.6,897,4312,34.1,,6.0,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M14,LM Studio,0.4.28+2,on,1,209715,q10,7,45,0.1556,215.6,920,2970,13.8,,6.0,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M21,LM Studio,0.4.28+2,on,1,209715,q01,0,12,0.0,1562.9,,808,0.5,,22.3,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M21,LM Studio,0.4.28+2,on,1,209715,q02,0,15,0.0,1041.0,,,,,22.3,,timeout,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M21,LM Studio,0.4.28+2,on,1,209715,q03,0,18,0.0,1014.0,,247,0.2,,22.3,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M21,LM Studio,0.4.28+2,on,1,209715,q04,0,14,0.0,900.2,,2370,2.6,,22.3,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M21,LM Studio,0.4.28+2,on,1,209715,q05,12,12,1.0,420.6,887,1922,4.6,,22.3,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M21,LM Studio,0.4.28+2,on,1,209715,q06,0,76,0.0,900.4,,3111,3.5,,22.3,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M21,LM Studio,0.4.28+2,on,1,209715,q07,0,27,0.0,900.4,,2658,3.0,,22.3,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M21,LM Studio,0.4.28+2,on,1,209715,q08,0,12,0.0,900.8,,2265,2.5,,22.3,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M21,LM Studio,0.4.28+2,on,1,209715,q09,0,45,0.0,1117.8,,2124,1.9,,22.3,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M21,LM Studio,0.4.28+2,on,1,209715,q10,0,45,0.0,1299.8,,38,0.0,,22.3,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q01,3,12,0.0,44.7,396,721,16.1,,5.3,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q02,0,15,0.0,952.0,,160,0.2,,5.3,,timeout,"MacBook Pro M5 Pro, 64 GB",output_tokens counted from stream chunks
+2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q03,2,18,0.0,511.3,994,1703,3.3,,5.3,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q04,14,14,1.0,256.6,1270,2303,9.0,,5.3,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q05,12,12,1.0,85.6,846,1306,15.3,,5.3,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q06,13,76,0.1711,165.3,886,2477,15.0,,5.3,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q07,6,27,0.2222,108.7,660,1630,15.0,,5.3,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q08,0,12,0.0,844.9,741,11999,14.2,,5.3,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
+2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q09,35,45,0.7778,158.1,898,2425,15.3,,5.3,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q10,17,45,0.3778,121.5,921,1878,15.5,,5.3,,finished,"MacBook Pro M5 Pro, 64 GB",

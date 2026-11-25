@@ -1,6 +1,6 @@
 # Local runtime coding test: quick standard suite
 
-Status: run rules v0.4, written 2026-11-18 (v0.4: 15-minute wall time for thinking-on runs, streamed replies, context at 80% of the maximum). The tasks themselves are in a separate, frozen folder: [tasks/local-coding-v1](../tasks/local-coding-v1/README.md) (suite version 1.0.0, with starter files, hidden tests, reference solutions and a grader). First runs: 2026-11-18 (TensorFold: M01 and M02, thinking off and on; LM Studio: M02, M07, M08, M09 and M10). Runs are made with `scripts/run_local_suite.py`. Results go to `data/local-runtime-results.csv` (one file for all runs, one row per task, a date on every row; the site's Runs page reads it); models to test are in [local-test-models.csv](local-test-models.csv).
+Status: run rules v0.4, written 2026-11-18 (v0.4: 15-minute wall time for thinking-on runs, streamed replies, context at 80% of the maximum). The tasks themselves are in a separate, frozen folder: [tasks/local-coding-v1](../tasks/local-coding-v1/README.md) (suite version 1.0.0, with starter files, hidden tests, reference solutions and a grader). First runs: 2026-11-18 (TensorFold: M01 and M02, thinking off and on; LM Studio: M02, M07, M08, M09 and M10). Second round: 2026-11-24 (LM Studio only: GGUF builds, draft models, and five more models; see "Runs of 2026-11-24" below). Runs are made with `scripts/run_local_suite.py`. Results go to `data/local-runtime-results.csv` (one file for all runs, one row per task, a date on every row; the site's Runs page reads it); models to test are in [local-test-models.csv](local-test-models.csv).
 
 ## Scope
 
@@ -99,9 +99,32 @@ Each run must see an otherwise empty machine:
 | Thinking | model's reasoning toggle in the chat template | `--thinking` / `--no-thinking` |
 | Parallel | Max concurrent predictions (set in model load options) | `--parallel N` |
 | Max tokens | per request, from the limits above | `--max-tokens` |
-| Draft model | off | `--no-drafts` for the main comparison; a separate row with drafter on for M02 |
+| Draft model | off for the main comparison; a draft run has its own model ID (suffix `D`, for example `M08D`) | `--no-drafts` for the main comparison; a separate row with drafter on for M02 |
 
 Both apps expose an OpenAI-compatible chat API, so one runner script can send the same requests to either (LM Studio default `http://localhost:1234/v1`; TensorFold port set with `--port`).
+
+## Rule: draft model (speculative decoding) on an MLX model means 1 parallel request
+
+LM Studio cannot combine a draft model with batched MLX decoding. GGUF builds do not have this limit: on 2026-11-24 Qwen3.6 27B (GGUF, Q4_K_M) with draft Llama-3.2-1B-Qwen3.8-27B-Draft and Qwen3-Coder 30B (GGUF, Q4_K_M) with draft Qwen2.5-0.5B each completed a suite run with 4 parallel requests. A `draft_model` field in a reply shows only that a draft is attached, not that it works: with draft Qwen3.5-4B-Qwen3.8-27B-Draft the same Qwen3.6 27B answered a 5-token request and then failed every suite request (`decode() failed: failed to process speculative batch`). For an MLX model with 2 or more parallel requests every request fails with `SpeculativeDecodingNotSupportedError: Speculative decoding is not supported for batched MLX models.` (noticed 2026-11-24 on Qwen3-Next 80B loaded at 4 parallel with a draft attached). So:
+
+- A run of an MLX model with a draft model always uses `--parallel 1`. The runner refuses `--draft-model` with any other value, and refuses `--use-loaded --draft-model` when the loaded MLX model has more than 1 parallel. For a GGUF model pass `--gguf` (with `--use-loaded` the runner reads the format itself), and parallel requests are allowed.
+- A draft is set when the model loads (`lms load --speculative-draft-simple --speculative-draft-model KEY`, or in the app). LM Studio refuses a draft named in a request (`speculative decoding must be configured at load time, not prediction time`). `lms load` accepts only a GGUF draft; an MLX draft can be set only in the app.
+- If the loaded copy has a draft attached in the app, every request uses it, even when the request names none. Check with a plain request (the reply carries `draft_model`) before a no-draft run, and eject the draft first.
+- A draft run and a no-draft run of the same model differ in setup (parallel 1 against up to 4), so record the draft run under its own model ID and do not call the speed difference a pure draft effect.
+- The runner now stops a request on a server `error` event and writes the message into `notes`, so a failing server is not scored as a model failure. Check `notes` before reading a zero score.
+
+## Runs of 2026-11-24
+
+All in LM Studio 0.4.28. Scores and speeds are in `local-runtime-results.csv`; the load setup of each model is in the notes of `local-test-models.csv`.
+
+- Vision model: GLM-4.6V Flash (M15) was run on the suite at Max's request, although the scope above leaves vision models out. Five of ten tasks ended with a server error, so its score is not a model result.
+- Hand-loaded copies (`--use-loaded`, context and parallel as loaded, not under the 80% context rule): M08D, M15, M16D, M17D.
+- Loaded by the runner at 80% context: M13, M14, M18, M18D, M20, M21. M19D (Qwen3-Next 80B GGUF) used context 14,604, as M11 did.
+- Draft model at 4 parallel requests on GGUF gave no speed gain (Qwen3-Coder 30B: 33.3 tokens per second per request with the draft, 34.9 without). At 1 request the same model with the draft reached 71.2 tokens per second on the tasks that completed, but three tasks stalled in the server until the time limit.
+- Qwen3.6 35B A3B GGUF (M17D), hand-loaded: every finished reply came wrapped in a JSON object, so the grader found no file block and the run scores 0. The cause (an app setting or the chat template) is not known.
+- Not recorded: two runs in which every request failed in the server (Qwen3-Next 80B MLX loaded with a draft at 4 parallel; Qwen3.6 27B GGUF with draft Qwen3.5-4B-Qwen3.8-27B-Draft). Their raw replies are in `data/local-runs`.
+- Did not load: Qwen3-Next 80B GGUF without a draft (`llama-server did not become healthy`); Qwen3.8 27B iMatrix MTP with `--speculative-draft-mtp` (`Only one speculative decoding mode can be enabled at a time; got: mtp, simple`).
+- `lms load` cannot select a variant with `@` (for example `qwen/qwen3.6-35b-a3b@4bit`): the bare key loads the variant selected in the app. Qwen3.6 35B A3B MLX 4-bit was therefore not run.
 
 ## Context: 80% of the maximum for each model
 
