@@ -94,4 +94,17 @@
 
 /* Labels after a run's title: draft, thinking, batching N. */
 .run-chip { display: inline-block; margin-left: 6px; padding: 1px 7px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: 11.5px; line-height: 1.5; color: var(--muted); vertical-align: 1px; }
-.run-chip.chip-draft, .run-chip.chip-think { color: var(--text); }
+.run-chip.chip-draft, .run-chip.chip-think, .run-chip.chip-batch { color: var(--text); }
+
+/* A run row is a button: it filters the chart to that model's runs. */
+.rb-row.rb-click { cursor: pointer; border-radius: 6px; padding: 3px 8px; margin: 0 -8px; }
+.rb-row.rb-click:hover { background: color-mix(in srgb, var(--text) 7%, transparent); }
+.rb-row.rb-click:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.model-filter { display: flex; justify-content: flex-end; align-items: center; gap: 6px; min-height: 26px; margin: 4px 0 0; font-size: 12.5px; }
+.model-reset { font: inherit; font-weight: 600; line-height: 1.2; padding: 3px 10px; margin-left: 2px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--surface); color: var(--text); cursor: pointer; }
+.model-reset:hover { background: var(--track); }
+/* Keep a card that is scrolled into view clear of the sticky site header. */
+main .card { scroll-margin-top: 112px; }
+/* Filter line and chart controls: stick under the site header while the chart card is on screen. */
+.runs-sticky { position: sticky; top: var(--header-h, 97px); z-index: 5; margin: 0 -20px 8px; padding: 4px 20px 0; background: var(--surface); border-bottom: 1px solid var(--line); }
+.runs-sticky .model-filter { margin: 0 0 6px; }

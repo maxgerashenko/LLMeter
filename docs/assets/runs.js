@@ -34,6 +34,9 @@
   var thinkFilter = "all"; // all | on | off: which runs the charts show (default: all)
   var batchFilter = "all"; // on: more than 1 request at a time; off: 1 request
   var draftFilter = "all"; // on: run with a draft model (speculative decoding)
+  var modelFilter = null; // base model name: show only its runs (set by a click on a run row)
+  // Model name without the draft part, so runs with and without a draft count as one model.
+  function baseModel(name) { return String(name || "").replace(/\s*\+\s*draft\s.*$/i, ""); }
   var view = "speed"; // which chart is open; the priority one first
   var state = { runs: [], planned: [] };
 
@@ -141,8 +144,9 @@
     var out = [], draft = /\+\s*draft\s+(.+)$/i.exec(r.model || "");
     function chip(text, cls, title) { out.push(el("span", { cls: "run-chip " + cls, title: title, text: text })); }
     if (draft) chip("draft", "chip-draft", "Speculative decoding with draft model " + draft[1]);
-    if (r.thinking) chip(thinkingOn(r.thinking) ? "thinking" : "no thinking", thinkingOn(r.thinking) ? "chip-think" : "chip-off", "Thinking " + r.thinking);
-    if (r.parallel) chip("batching " + r.parallel, "chip-batch", requests(r.parallel));
+    // Only what is switched on gets a label: no label for thinking off or for 1 request at a time.
+    if (thinkingOn(r.thinking)) chip("thinking", "chip-think", "Thinking on");
+    if (num(r.parallel) > 1) chip("batching " + r.parallel, "chip-batch", requests(r.parallel));
     return out;
   }
 
@@ -174,6 +178,7 @@
     var pri = METRICS[order[0]];
     var shown = state.runs.filter(function (r) {
       function pass(f, v) { return f === "all" || (f === "on") === v; }
+      if (modelFilter && baseModel(r.model) !== modelFilter) return false;
       return r[pri.key] != null && pass(thinkFilter, r.think) && pass(batchFilter, r.batch) && pass(draftFilter, r.draft);
     });
     function rank(rt) {
@@ -188,6 +193,15 @@
       bar.appendChild(b);
     });
     var vb = document.getElementById("runs-views"); vb.textContent = ""; vb.appendChild(bar);
+    // Slot under the summary, always the same height, so the chart does not move when a filter is set.
+    var slot = document.getElementById("runs-model-filter"); slot.textContent = "";
+    if (modelFilter) {
+      var reset = el("button", { type: "button", cls: "model-reset", text: "Show all" });
+      reset.addEventListener("click", function () { modelFilter = null; drawBars(); });
+      slot.appendChild(el("span", { cls: "muted", text: "Only runs of" }));
+      slot.appendChild(el("strong", { text: modelFilter }));
+      slot.appendChild(reset);
+    } else slot.appendChild(el("span", { cls: "muted", text: "Shows all models" }));
     order.forEach(function (name, idx) {
       if (name !== view) return;
       var m = METRICS[name], max = m.max(shown);
@@ -201,11 +215,22 @@
         panel.appendChild(list);
         runs.forEach(function (r) {
           var v = r[m.key], pct = v == null ? 0 : Math.max(0, Math.min(100, 100 * v / max));
-          list.appendChild(el("div", { cls: "rb-row" }, [
+          var base = baseModel(r.model);
+          var row = el("div", { cls: "rb-row rb-click", role: "button", tabindex: "0",
+            "aria-label": (modelFilter ? "Show all models" : "Show only runs of " + base) }, [
             label(Object.assign({}, r, { runtime: "" })),
             el("div", { cls: "rb-track" }, [el("span", { cls: "rb-bar" + (r.moe ? " moe" : ""), style: "width:" + pct.toFixed(1) + "%" })]),
             el("div", { cls: "rb-value" }, [fmt(v, m.digits), el("span", { cls: "rb-unit", text: m.unit })])
-          ]));
+          ]);
+          // A click shows only this model's runs; a click while filtered shows all again.
+          function toggle() {
+            modelFilter = modelFilter ? null : base; drawBars();
+            // The filtered list is short: bring the top of the chart card back into view.
+            if (modelFilter) document.getElementById("runs-chart-h").closest("section").scrollIntoView({ block: "start", behavior: "smooth" });
+          }
+          row.addEventListener("click", toggle);
+          row.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+          list.appendChild(row);
         });
         if (!runs.length) list.appendChild(el("p", { cls: "muted", text: "No runs in " + rt.name + " yet." }));
         chart.appendChild(panel);
@@ -345,6 +370,13 @@
   }
 
   function get(url) { return fetch(url, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(url + " " + r.status); return r.text(); }); }
+  // The chart controls stick under the site header while the chart card scrolls. They tuck
+  // 1px under the header, so no strip of the chart shows between the two.
+  function headerHeight() {
+    var h = document.querySelector(".site-header");
+    document.documentElement.style.setProperty("--header-h", (h ? Math.floor(h.getBoundingClientRect().height) - 1 : 0) + "px");
+  }
+  headerHeight(); window.addEventListener("resize", headerHeight);
   setupTabs(); setupFilters();
   Promise.all([get(MODELS_URL), get(RESULTS_URL).catch(function () { return ""; }), get(TIERS_URL).catch(function () { return ""; })]).then(function (t) {
     parseCSV(t[2]).forEach(function (r) {
