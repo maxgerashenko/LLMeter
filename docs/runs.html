@@ -126,6 +126,22 @@
       </p>
     </section>
 
+    <section class="card" id="est-card" aria-labelledby="est-h" hidden>
+      <div class="card-head">
+        <h2 id="est-h">Tiers with estimates</h2>
+        <p class="muted">Every run model in its tier. A name or badge with <strong>*</strong> has no tier of its own: its tier is an estimated equivalent.</p>
+      </div>
+      <div class="table-scroll"><table class="data-table est-table">
+        <thead><tr><th scope="col">Tier</th><th scope="col">Models run locally</th></tr></thead>
+        <tbody id="est-rows"></tbody>
+      </table></div>
+      <p class="note">
+        <strong>*estimated equivalent tier.</strong> Some local models are not in the long-coding data, so they have no official tier. Each is placed by its best local suite score against the models that do have a tier:
+        the tiered models' scores form a line (suite score to % of Sonnet 5.5), the untiered model is put on that line by straight-line interpolation between the two nearest tiered models (clamped to the nearest one outside their range), and the usual tier bands apply (Tier 4 from 75%, Tier 3 from 55%, Tier 2 from 40%, Tier 1 from 20%).
+        It is a rough guide, not a measurement: few models have both a tier and a run so far, and the estimate improves as more are run. Models not run yet stay at <em>No tier</em>. Estimated badges have a dashed outline.
+      </p>
+    </section>
+
     <section class="card" id="tasks-card" aria-labelledby="runs-tasks-h" hidden>
       <div class="card-head">
         <h2 id="runs-tasks-h">Result per task</h2>
