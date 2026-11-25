@@ -1,0 +1,6 @@
+model,best_suite_score,estimated_pct_of_sonnet_5_5,estimated_tier,anchor_below,anchor_above
+Nemotron 3.5 Lightning 30B A3B,16.8,34.8,Tier 1*,Nanbeige4.3 33B,Qwen3.8 27B
+GLM-4.7 Flash,28.9,29.9,Tier 1*,Nanbeige4.3 33B,Qwen3.8 27B
+Qwen3.6 35B A3B,34.5,27.7,Tier 1*,Nanbeige4.3 33B,Qwen3.8 27B
+Qwen3-Coder 30B A3B Instruct,46.5,22.9,Tier 1*,Nanbeige4.3 33B,Qwen3.8 27B
+Qwen3-Next 80B A3B Instruct,63.5,19.0,Tier 0*,Qwen3.8 27B,
