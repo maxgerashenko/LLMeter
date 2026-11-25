@@ -22,7 +22,7 @@
 .rb-label .setting { margin-left: 6px; }
 .rb-track { height: 16px; border-radius: 4px; background: var(--track); overflow: hidden; }
 .rb-bar { display: block; height: 100%; border-radius: 4px; background: var(--t4); }
-.rb-bar.think-on { background: var(--t2); }
+.rb-bar.moe { background: var(--t2); }
 .rb-value { font-size: 13px; font-weight: 600; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .rb-unit { display: block; font-size: 11px; font-weight: 400; color: var(--muted); }
 .rb-row.is-planned .rb-value { font-weight: 500; color: var(--muted); }
@@ -42,7 +42,7 @@
   .rb-label .setting { display: inline; }
 }
 .swatch.rb-bar { height: 10px; background: var(--t4); }
-.swatch.rb-bar.think-on { background: var(--t2); }
+.swatch.rb-bar.moe { background: var(--t2); }
 .swatch-planned { border: 1px solid var(--line-strong); background: repeating-linear-gradient(135deg, var(--track) 0 2px, transparent 2px 4px); }
 .runs-table tr.is-planned td { color: var(--muted); }
 .runs-table tr.is-planned strong { color: var(--text); font-weight: 500; }

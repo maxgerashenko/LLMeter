@@ -84,6 +84,12 @@
     return t ? el("span", { cls: "tier-badge tier-" + t.id, title: t.label + ": " + Math.round(tierByModel[normName(name)]) + "% of Sonnet 5.5 on long coding tasks", text: t.label })
       : el("span", { cls: "tier-badge tier-none", title: "Not in the long-coding data yet", text: "No tier" });
   }
+  // Mixture of experts: fewer active parameters than total, or said so in the model list notes.
+  function isMoE(m) {
+    function n(v) { return num(String(v || "").replace(/[^0-9.]/g, "")); }
+    var all = n(m.params_b), act = n(m.active_params_b);
+    return (all != null && act != null && act < all) || /mixture of experts/i.test(m.notes || "");
+  }
   function thinkingOn(t) { return /^(on|yes|true)$/i.test(t || ""); }
 
   function buildRuns(results, models) {
@@ -118,7 +124,7 @@
         // Missing tasks count as 0, so a partial run cannot score above a full one.
         score: tasks ? 100 * ws / 23 : null, easy: lvl("easy"), medium: lvl("medium"), hard: lvl("hard"),
         tok: tok.length ? tok.reduce(function (a, b) { return a + b; }, 0) / tok.length : null,
-        time: hasTime ? time : null, mem: mem, tasks: tasks, bad: bad, think: thinkingOn(f.thinking),
+        time: hasTime ? time : null, mem: mem, tasks: tasks, bad: bad, think: thinkingOn(f.thinking), moe: isMoE(m),
         batch: num(f.parallel) > 1, draft: /\+\s*draft\s/i.test(m.model || ""),
         status: tasks < 10 ? "partial" : "done", byTask: byTask
       };
@@ -197,7 +203,7 @@
           var v = r[m.key], pct = v == null ? 0 : Math.max(0, Math.min(100, 100 * v / max));
           list.appendChild(el("div", { cls: "rb-row" }, [
             label(Object.assign({}, r, { runtime: "" })),
-            el("div", { cls: "rb-track" }, [el("span", { cls: "rb-bar" + (r.think ? " think-on" : ""), style: "width:" + pct.toFixed(1) + "%" })]),
+            el("div", { cls: "rb-track" }, [el("span", { cls: "rb-bar" + (r.moe ? " moe" : ""), style: "width:" + pct.toFixed(1) + "%" })]),
             el("div", { cls: "rb-value" }, [fmt(v, m.digits), el("span", { cls: "rb-unit", text: m.unit })])
           ]));
         });
@@ -287,7 +293,7 @@
 
   function drawLegend() {
     var lg = document.getElementById("runs-legend"); lg.textContent = "";
-    [["rb-bar", "Thinking off"], ["rb-bar think-on", "Thinking on"]].forEach(function (x) {
+    [["rb-bar", "Dense"], ["rb-bar moe", "MoE (mixture of experts)"]].forEach(function (x) {
       lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "swatch " + x[0] }), x[1]]));
     });
     lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "swatch swatch-planned" }), "Not run yet"]));
