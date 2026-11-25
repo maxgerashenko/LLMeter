@@ -106,7 +106,7 @@
         el("span", { class: "rs-label", title: c.name }, [badge(c.tier), el("span", { class: "rs-name" }, [c.name, c.club ? null : el("span", { class: "muted jobs-ref", text: " below $1T" })])]),
         el("span", { class: "rs-track", title: int(c.emp) + " employees, market value " + usdB(c.cap) },
           [el("span", { class: "bar tier-bg-" + c.tier.id + (c.club ? "" : " jobs-ref-bar"), style: "width:" + Math.max(0.6, pos(c.jobs)) + "%" })]),
-        el("span", { class: "rs-value", text: (c.jobs < 100 ? c.jobs.toFixed(1) : int(c.jobs)) + " jobs" }),
+        el("span", { class: "rs-value" }, [(c.jobs < 100 ? c.jobs.toFixed(1) : int(c.jobs)) + " jobs", el("span", { class: "jobs-split", text: "/ " + int(c.emp) + " total jobs" })]),
         el("a", { class: "explain rs-more", href: "#" + c.id, title: "Details and source for " + c.name, "aria-label": "Details for " + c.name }, ["Details"])
       ]));
     });
@@ -200,7 +200,7 @@
         el("th", { scope: "row", class: "rs-c-choice" }, [c.name, el("span", { class: "rs-evidence", text: r.sector + (c.club ? "" : ", below $1T") })]),
         el("td", { "data-label": "Jobs per $1B of value" }, [
           el("span", { class: "rs-headline", text: c.jobs < 100 ? c.jobs.toFixed(1) : int(c.jobs) }),
-          el("span", { class: "rs-effect-text", text: int(c.emp) + " employees" })
+          el("span", { class: "rs-effect-text", text: "/ " + int(c.emp) + " total jobs" })
         ]),
         el("td", { "data-label": "Market value", text: usdB(c.cap) }),
         el("td", { "data-label": "Revenue and profit" }, [
