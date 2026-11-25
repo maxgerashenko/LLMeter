@@ -27,11 +27,11 @@
 
   // Shared "Tier by" choice (Local > Top Tier / All Tier). Default: Coding Agent Index; remembered across pages.
   var BASES = [
-    { id: "cai", label: "Coding Agent Index", key: "cai", desc: "Artificial Analysis Coding Agent Index v2.1 (a model run inside a coding-agent harness), as a percentage of Sonnet 5.5's 56.3. Only 10 models have it." },
+    { id: "cai", label: "Coding agent", key: "cai", desc: "Artificial Analysis Coding Agent Index v2.1 (a model run inside a coding-agent harness), as a percentage of Sonnet 5.5's 56.3. Only 10 models have it." },
     { id: "long", label: "Long coding", key: "lcs", desc: "Average of Terminal-Bench 4.0 and FrontierCode 2.0, as a percentage of Sonnet 5.5's 52.7." },
     { id: "tb4", label: "Terminal-Bench", key: "tb4", desc: "Terminal-Bench 4.0 (long command-line tasks), as a percentage of Sonnet 5.5's 63.6." },
     { id: "fc2", label: "FrontierCode", key: "fc2", desc: "FrontierCode 2.0 (hard, open-ended programming), as a percentage of Sonnet 5.5's 41.7." },
-    { id: "ii", label: "General (Intelligence Index)", key: "ii", desc: "Artificial Analysis Intelligence Index v5.0.1, a general index across all of its evaluations, as a percentage of Sonnet 5.5's 55.0." }
+    { id: "ii", label: "Intelligence", key: "ii", desc: "Artificial Analysis Intelligence Index v5.0.1, a general index across all of its evaluations, as a percentage of Sonnet 5.5's 55.0." }
   ];
   var listeners = [], KEY = "llmeter-tier-basis", current = "cai";
   try { var saved = localStorage.getItem(KEY); if (BASES.some(function (b) { return b.id === saved; })) current = saved; } catch (e) {}
@@ -78,19 +78,21 @@
   sub.appendChild(row);
   header.appendChild(sub);
 
-  // Right side of the second-level menu: Top Tier / All Tier choose the basis; Rack is fixed to the Coding Agent Index; Build has none.
+  // Right side of the second-level menu: Top Tier / All Tier choose the basis; Rack is fixed to the Coding Agent Index Runs to Long coding and Build to Effect size.
   var pick = null;
   function buildPick() {
     if (pick) { pick.remove(); pick = null; }
-    var isTier = page === "index", isRack = page === "rack";
-    if (!isTier && !isRack) return;
+    var isTier = page === "index", isRack = page === "rack", isRuns = page === "runs", isBuild = page === "research";
+    if (!isTier && !isRack && !isRuns && !isBuild) return;
     pick = document.createElement("label");
     pick.className = "basis-pick";
     pick.appendChild(document.createTextNode("Tier by"));
-    if (isRack) {
+    if (isRack || isRuns || isBuild) {
       var fixed = document.createElement("span");
       fixed.className = "basis-fixed";
-      fixed.textContent = "Coding Agent Index";
+      fixed.textContent = isBuild ? "Effect size" : isRuns ? "Long coding" : "Coding agent";
+      if (isRuns) fixed.title = "Runs tiers use the long-coding score: the average of Terminal-Bench 4.0 and FrontierCode 2.0, as a percentage of Sonnet 5.5";
+      if (isBuild) fixed.title = "Build tiers are the size of each choice's largest measured effect: Tier 1 under 5%, Tier 2 from 5%, Tier 3 from 30%, Tier 4 above 100%";
       pick.appendChild(fixed);
     } else {
       var sel = document.createElement("select");

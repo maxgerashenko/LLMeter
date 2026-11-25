@@ -206,10 +206,17 @@ class LMStudio:
             model = json.loads(sh([LMS, "ps", "--json"]).stdout)[0]
             self.api_model = model["identifier"]
             a.context, a.parallel = model["contextLength"], model["parallel"]
+            if a.draft_model and model.get("format") != "gguf" and a.parallel != 1:
+                raise SystemExit(f"a draft-model run on an MLX model needs 1 parallel, found {a.parallel}")
             Path(self.log_path).write_text("used the model already loaded:\n" + json.dumps(model, indent=2))
             return
         command = [LMS, "load", a.model, "-y", "--context-length", str(a.context),
                    "--parallel", str(a.parallel), "--identifier", LMSTUDIO_IDENTIFIER]
+        # Speculative decoding is set when the model loads; LM Studio refuses it per request.
+        if a.draft_model:
+            command += ["--speculative-draft-simple", "--speculative-draft-model", a.draft_model]
+        elif a.draft_mtp:
+            command += ["--speculative-draft-mtp"]
         result = sh(command, timeout=LOAD_TIMEOUT_SECONDS)
         Path(self.log_path).write_text(" ".join(command) + "\n" + result.stdout + result.stderr)
         if result.returncode != 0:
@@ -220,8 +227,9 @@ class LMStudio:
 
     def extra_body(self):
         # Thinking switch for LM Studio's OpenAI-compatible API.
-        return {"reasoning": {"effort": "medium" if self.args.thinking == "on" else "none"},
+        body = {"reasoning": {"effort": "medium" if self.args.thinking == "on" else "none"},
                 "chat_template_kwargs": {"enable_thinking": self.args.thinking == "on"}}
+        return body
 
     def stop(self):
         if not self.args.use_loaded:
@@ -276,6 +284,11 @@ def ask(runtime, task, max_tokens, timeout):
                 if data == "[DONE]":
                     break
                 event = json.loads(data)
+                if event.get("error"):
+                    # The server reports a failure as an error event, not as a finish.
+                    err = event["error"]
+                    row["notes"] = ("server error: " + (err.get("message", "") if isinstance(err, dict) else str(err)))[:200]
+                    break
                 usage = event.get("usage") or usage
                 for choice in event.get("choices") or []:
                     delta = choice.get("delta") or {}
@@ -324,6 +337,13 @@ def main():
     parser.add_argument("--use-loaded", action="store_true",
                         help="LM Studio only: test the one model already loaded in the app, "
                              "with its context and parallel count, and leave it loaded")
+    parser.add_argument("--draft-model", default="",
+                        help="LM Studio only: draft model key for speculative decoding "
+                             "(set when the model loads; with --use-loaded it only labels the run)")
+    parser.add_argument("--draft-mtp", action="store_true",
+                        help="LM Studio only: load with the model's own MTP draft head")
+    parser.add_argument("--gguf", action="store_true",
+                        help="the model is a GGUF build (a draft model then works with parallel requests)")
     parser.add_argument("--tasks", default="", help="comma-separated task ids (default: all)")
     parser.add_argument("--results", default=str(ROOT / "data" / "local-runtime-results.csv"),
                         help="CSV to append to")
@@ -332,6 +352,14 @@ def main():
     args = parser.parse_args()
     if args.use_loaded and args.runtime != "lmstudio":
         parser.error("--use-loaded works only with --runtime lmstudio")
+    if args.draft_model and args.runtime != "lmstudio":
+        parser.error("--draft-model works only with --runtime lmstudio")
+    # Run rule: LM Studio cannot combine a draft model with batched (parallel) MLX
+    # decoding, so an MLX draft run uses exactly 1 parallel request. GGUF models
+    # accept a draft model with parallel requests (--gguf says the model is GGUF).
+    if args.draft_model and not args.gguf and args.parallel != 1:
+        parser.error("--draft-model needs --parallel 1 for an MLX model (LM Studio: speculative "
+                     "decoding is not supported for batched MLX models); add --gguf for a GGUF model")
     if not args.use_loaded and not args.context:
         parser.error("--context is required")
 
@@ -408,6 +436,8 @@ def main():
         if new_file:
             writer.writeheader()
         version = runtime.version().split()[-1] if runtime.version() else ""
+        draft_note = ("draft " + args.draft_model if args.draft_model
+                      else "draft MTP" if args.draft_mtp else "")
         for row in replies:
             g = by_id[row["id"]]
             out = row.get("output_tokens") or 0
@@ -423,7 +453,7 @@ def main():
                 # out GPU memory, so it is not a peak for the whole model.
                 "prompt_tok_per_s": "", "load_seconds": load_seconds, "peak_mem_gb": "",
                 "end_reason": row["end_reason"], "hardware": args.hardware,
-                "notes": (row["notes"] or g["note"])[:200],
+                "notes": "; ".join(n for n in (draft_note, row["notes"] or g["note"]) if n)[:200],
             })
 
     print(f"[{run_id}] score {summary['score']} by level {summary['by_level']} "

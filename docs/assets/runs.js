@@ -31,7 +31,13 @@
   ];
   var DEFAULT_HW = "MacBook Pro M5 Pro, 64 GB";
   var metric = "speed";
-  var thinkFilter = "all", bothFilter = false; // all | on | off: which runs the charts show (default: all)
+  var thinkFilter = "all"; // all | on | off: which runs the charts show (default: all)
+  var batchFilter = "all"; // on: more than 1 request at a time; off: 1 request
+  var draftFilter = "all"; // on: run with a draft model (speculative decoding)
+  var modelFilter = null; // base model name: show only its runs (set by a click on a run row)
+  // Model name without the draft part, so runs with and without a draft count as one model.
+  function baseModel(name) { return String(name || "").replace(/\s*\+\s*draft\s.*$/i, ""); }
+  var bothFilter = false; // true: only models run on both LM Studio and TensorFold
   var view = "speed"; // which chart is open; the priority one first
   var state = { runs: [], planned: [] };
 
@@ -69,7 +75,8 @@
     if (s < 90) return Math.round(s) + " s";
     var m = s / 60; return (m < 10 ? m.toFixed(1) : Math.round(m)) + " min";
   }
-  function normName(n) { return String(n || "").replace(/\s*\([^)]*\)\s*$/, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
+  // A run with a draft model is the same model for tiers: the "+ draft ..." part of the name is dropped.
+  function normName(n) { return baseModel(n).replace(/\s*\([^)]*\)\s*$/, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
   // Tier of a model by name, from its best row in the long-coding data; null when the model is not in it.
   // A model without one gets an estimated equivalent tier from its local suite score (see estimateTiers).
   var estByModel = {};
@@ -90,7 +97,7 @@
     var best = {};
     state.runs.forEach(function (r) {
       var k = normName(r.model);
-      if (r.score != null && (best[k] == null || r.score > best[k].score)) best[k] = { score: r.score, name: r.model };
+      if (r.score != null && (best[k] == null || r.score > best[k].score)) best[k] = { score: r.score, name: baseModel(r.model) };
     });
     var anchors = [];
     Object.keys(best).forEach(function (k) { if (tierByModel[k] != null) anchors.push({ score: best[k].score, pct: tierByModel[k], name: best[k].name }); });
@@ -110,7 +117,13 @@
     var t = tierOf(name);
     if (!t) return el("span", { cls: "tier-badge tier-none", title: "Not in the long-coding data yet and not run locally, so no estimate", text: "No tier" });
     if (!t.est) return el("span", { cls: "tier-badge tier-" + t.band.id, title: t.band.label + ": " + Math.round(t.pct) + "% of Sonnet 5.5 on long coding tasks", text: t.band.label });
-    return el("span", { cls: "tier-badge tier-" + t.band.id + " tier-est", title: "Estimated equivalent tier: about " + Math.round(t.pct) + "% of Sonnet 5.5, placed by its local suite score against models that have a tier", text: t.band.label + "*" });
+    return el("span", { cls: "tier-badge tier-" + t.band.id + " tier-est", title: "Estimated equivalent tier: about " + Math.round(t.pct) + "% of Sonnet 5.5, placed by its local suite score against models that have a tier", text: "~" + t.band.label });
+  }
+  // Mixture of experts: fewer active parameters than total, or said so in the model list notes.
+  function isMoE(m) {
+    function n(v) { return num(String(v || "").replace(/[^0-9.]/g, "")); }
+    var all = n(m.params_b), act = n(m.active_params_b);
+    return (all != null && act != null && act < all) || /mixture of experts/i.test(m.notes || "");
   }
   function thinkingOn(t) { return /^(on|yes|true)$/i.test(t || ""); }
 
@@ -146,7 +159,8 @@
         // Missing tasks count as 0, so a partial run cannot score above a full one.
         score: tasks ? 100 * ws / 23 : null, easy: lvl("easy"), medium: lvl("medium"), hard: lvl("hard"),
         tok: tok.length ? tok.reduce(function (a, b) { return a + b; }, 0) / tok.length : null,
-        time: hasTime ? time : null, mem: mem, tasks: tasks, bad: bad, think: thinkingOn(f.thinking),
+        time: hasTime ? time : null, mem: mem, tasks: tasks, bad: bad, think: thinkingOn(f.thinking), moe: isMoE(m),
+        batch: num(f.parallel) > 1, draft: /\+\s*draft\s/i.test(m.model || ""),
         status: tasks < 10 ? "partial" : "done", byTask: byTask
       };
     });
@@ -157,11 +171,22 @@
   // Why a listed model has no run: "not installed", or "cannot run" with the reason in the model list.
   function why(m) { return (m.run_status || "").split(":")[0]; }
 
+  // Labels after the title: draft model, thinking mode, requests in flight ("batching 4").
+  function chips(r) {
+    var out = [], draft = /\+\s*draft\s+(.+)$/i.exec(r.model || "");
+    function chip(text, cls, title) { out.push(el("span", { cls: "run-chip " + cls, title: title, text: text })); }
+    if (draft) chip("draft", "chip-draft", "Speculative decoding with draft model " + draft[1]);
+    // Only what is switched on gets a label: no label for thinking off or for 1 request at a time.
+    if (thinkingOn(r.thinking)) chip("thinking", "chip-think", "Thinking on");
+    if (num(r.parallel) > 1) chip("batching " + r.parallel, "chip-batch", requests(r.parallel));
+    return out;
+  }
+
   function label(r) {
     return el("div", { cls: "rb-label", title: r.model + " · " + r.quant + " · " + r.runtime + " · thinking " + r.thinking }, [
       tierBadge(r.model), el("span", { cls: "rb-model", text: r.model }),
-      el("span", { cls: "setting", text: [r.quant, r.runtime.split(/[;(]/)[0].trim(), r.thinking ? "thinking " + r.thinking : "", requests(r.parallel), r.why || ""].filter(Boolean).join(" · ") })
-    ]);
+      el("span", { cls: "setting", text: [r.quant, r.runtime.split(/[;(]/)[0].trim(), r.why || ""].filter(Boolean).join(" · ") })
+    ].concat(chips(r)));
   }
 
   // The chart is split in two, one panel per runtime, so the same model can be compared
@@ -195,7 +220,9 @@
     var order = metric === "score" ? ["score", "speed"] : ["speed", "score"];
     var pri = METRICS[order[0]];
     var shown = visibleRuns().filter(function (r) {
-      return r[pri.key] != null && (thinkFilter === "all" || (thinkFilter === "on") === r.think);
+      function pass(f, v) { return f === "all" || (f === "on") === v; }
+      if (modelFilter && baseModel(r.model) !== modelFilter) return false;
+      return r[pri.key] != null && pass(thinkFilter, r.think) && pass(batchFilter, r.batch) && pass(draftFilter, r.draft);
     });
     function rank(rt) {
       return shown.filter(function (r) { return r.rt === rt.name; }).sort(function (a, b) { return b[pri.key] - a[pri.key]; });
@@ -209,6 +236,15 @@
       bar.appendChild(b);
     });
     var vb = document.getElementById("runs-views"); vb.textContent = ""; vb.appendChild(bar);
+    // Slot under the summary, always the same height, so the chart does not move when a filter is set.
+    var slot = document.getElementById("runs-model-filter"); slot.textContent = "";
+    if (modelFilter) {
+      var reset = el("button", { type: "button", cls: "model-reset", text: "Show all" });
+      reset.addEventListener("click", function () { modelFilter = null; drawBars(); });
+      slot.appendChild(el("span", { cls: "muted", text: "Only runs of" }));
+      slot.appendChild(el("strong", { text: modelFilter }));
+      slot.appendChild(reset);
+    } else slot.appendChild(el("span", { cls: "muted", text: "Shows all models" }));
     order.forEach(function (name, idx) {
       if (name !== view) return;
       var m = METRICS[name], max = m.max(shown);
@@ -222,11 +258,22 @@
         panel.appendChild(list);
         runs.forEach(function (r) {
           var v = r[m.key], pct = v == null ? 0 : Math.max(0, Math.min(100, 100 * v / max));
-          list.appendChild(el("div", { cls: "rb-row" }, [
+          var base = baseModel(r.model);
+          var row = el("div", { cls: "rb-row rb-click", role: "button", tabindex: "0",
+            "aria-label": (modelFilter ? "Show all models" : "Show only runs of " + base) }, [
             label(Object.assign({}, r, { runtime: "" })),
-            el("div", { cls: "rb-track" }, [el("span", { cls: "rb-bar" + (r.think ? " think-on" : ""), style: "width:" + pct.toFixed(1) + "%" })]),
+            el("div", { cls: "rb-track" }, [el("span", { cls: "rb-bar" + (r.moe ? " moe" : ""), style: "width:" + pct.toFixed(1) + "%" })]),
             el("div", { cls: "rb-value" }, [fmt(v, m.digits), el("span", { cls: "rb-unit", text: m.unit })])
-          ]));
+          ]);
+          // A click shows only this model's runs; a click while filtered shows all again.
+          function toggle() {
+            modelFilter = modelFilter ? null : base; drawBars();
+            // The filtered list is short: bring the top of the chart card back into view.
+            if (modelFilter) document.getElementById("runs-chart-h").closest("section").scrollIntoView({ block: "start", behavior: "smooth" });
+          }
+          row.addEventListener("click", toggle);
+          row.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+          list.appendChild(row);
         });
         if (!runs.length) list.appendChild(el("p", { cls: "muted", text: "No runs in " + rt.name + " yet." }));
         chart.appendChild(panel);
@@ -314,7 +361,7 @@
 
   function drawLegend() {
     var lg = document.getElementById("runs-legend"); lg.textContent = "";
-    [["rb-bar", "Thinking off"], ["rb-bar think-on", "Thinking on"]].forEach(function (x) {
+    [["rb-bar", "Dense"], ["rb-bar moe", "MoE (mixture of experts)"]].forEach(function (x) {
       lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "swatch " + x[0] }), x[1]]));
     });
     lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "swatch swatch-planned" }), "Not run yet"]));
@@ -346,7 +393,7 @@
     TIER_BANDS.forEach(function (b) {
       var list = (rows[b.id] || []).sort(function (a, c) { return c.pct - a.pct; });
       var cell = el("td", {}, list.length ? list.map(function (m) {
-        return el("span", { cls: "est-item" + (m.est ? " is-est" : "") }, [m.name + (m.est ? "*" : ""), el("span", { cls: "sub", text: (m.est ? "~" : "") + Math.round(m.pct) + "% of Sonnet 5.5 · suite " + fmt(m.score, 1) })]);
+        return el("span", { cls: "est-item" + (m.est ? " is-est" : "") }, [m.name, el("span", { cls: "sub", text: (m.est ? "~" : "") + Math.round(m.pct) + "% of Sonnet 5.5 · suite " + fmt(m.score, 1) })]);
       }) : [el("span", { cls: "muted", text: "none run yet" })]);
       body.appendChild(el("tr", {}, [el("td", {}, [el("span", { cls: "tier-badge tier-" + b.id, text: b.label })]), cell]));
     });
@@ -370,12 +417,13 @@
     }
   }
 
-  function setupThinking() {
-    var btns = document.querySelectorAll(".runs-think .tab");
+  // An All / On / Off switch above the charts; set() stores the chosen value.
+  function setupFilter(selector, set) {
+    var btns = document.querySelectorAll(selector + " .tab");
     Array.prototype.forEach.call(btns, function (b) {
       b.addEventListener("click", function () {
         Array.prototype.forEach.call(btns, function (x) { var on = x === b; x.setAttribute("aria-checked", on); x.tabIndex = on ? 0 : -1; });
-        thinkFilter = b.getAttribute("data-think"); draw();
+        set(b.getAttribute("data-value")); draw();
       });
     });
   }
@@ -389,9 +437,21 @@
       });
     });
   }
+  function setupFilters() {
+    setupFilter(".runs-think", function (v) { thinkFilter = v; });
+    setupFilter(".runs-batch", function (v) { batchFilter = v; });
+    setupFilter(".runs-draft", function (v) { draftFilter = v; });
+  }
 
   function get(url) { return fetch(url, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(url + " " + r.status); return r.text(); }); }
-  setupTabs(); setupThinking(); setupBoth();
+  // The chart controls stick under the site header while the chart card scrolls. They tuck
+  // 1px under the header, so no strip of the chart shows between the two.
+  function headerHeight() {
+    var h = document.querySelector(".site-header");
+    document.documentElement.style.setProperty("--header-h", (h ? Math.floor(h.getBoundingClientRect().height) - 1 : 0) + "px");
+  }
+  headerHeight(); window.addEventListener("resize", headerHeight); window.addEventListener("load", headerHeight);
+  setupTabs(); setupFilters(); setupBoth();
   Promise.all([get(MODELS_URL), get(RESULTS_URL).catch(function () { return ""; }), get(TIERS_URL).catch(function () { return ""; })]).then(function (t) {
     parseCSV(t[2]).forEach(function (r) {
       var p = num(r.pct_of_sonnet_5_5), k = normName(r.model);
@@ -404,15 +464,4 @@
   }).catch(function (e) {
     document.getElementById("runs-summary").textContent = "Could not load the run data (" + e.message + ").";
   });
-})();
-
-/* Keep the sticky filter row just under the top menu, whose height changes when the menu wraps on narrow screens. */
-(function () {
-  function setHeaderHeight() {
-    var h = document.querySelector(".site-header");
-    if (h) document.documentElement.style.setProperty("--header-h", h.offsetHeight + "px");
-  }
-  setHeaderHeight();
-  window.addEventListener("resize", setHeaderHeight);
-  window.addEventListener("load", setHeaderHeight);
 })();

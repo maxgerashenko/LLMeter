@@ -9,7 +9,9 @@ import csv, re, os, collections
 root = os.path.join(os.path.dirname(__file__), "..")
 W = {"q01": 1, "q02": 1, "q03": 2, "q04": 2, "q05": 2, "q06": 3, "q07": 3, "q08": 3, "q09": 3, "q10": 3}
 BANDS = [("Tier 4", 75), ("Tier 3", 55), ("Tier 2", 40), ("Tier 1", 20), ("Tier 0", 0)]
-norm = lambda n: re.sub(r"[^a-z0-9]", "", re.sub(r"\s*\([^)]*\)\s*$", "", n or "").lower())
+# A run with a draft model counts as the same model: the "+ draft ..." part of the name is dropped.
+base = lambda n: re.sub(r"\s*\+\s*draft\s.*$", "", n or "", flags=re.I)
+norm = lambda n: re.sub(r"[^a-z0-9]", "", re.sub(r"\s*\([^)]*\)\s*$", "", base(n)).lower())
 band = lambda p: next(b for b, m in BANDS if p >= m)
 
 models = {r["id"]: r["model"] for r in csv.DictReader(open(f"{root}/data/local-test-models.csv"))}
@@ -29,7 +31,7 @@ for r in csv.DictReader(open(f"{root}/data/local-runtime-results.csv")):
 best = {}
 for (d, mid, *_), tasks in runs.items():
     sc = 100 * sum(W[t] * v for t, v in tasks.items()) / 23
-    name = models.get(mid, mid)
+    name = base(models.get(mid, mid))
     if sc > best.get(name, -1): best[name] = sc
 
 anchors = sorted((s, official[norm(n)], n) for n, s in best.items() if norm(n) in official)

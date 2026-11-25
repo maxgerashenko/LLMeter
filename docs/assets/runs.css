@@ -22,7 +22,7 @@
 .rb-label .setting { margin-left: 6px; }
 .rb-track { height: 16px; border-radius: 4px; background: var(--track); overflow: hidden; }
 .rb-bar { display: block; height: 100%; border-radius: 4px; background: var(--t4); }
-.rb-bar.think-on { background: var(--t2); }
+.rb-bar.moe { background: var(--t2); }
 .rb-value { font-size: 13px; font-weight: 600; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .rb-unit { display: block; font-size: 11px; font-weight: 400; color: var(--muted); }
 .rb-row.is-planned .rb-value { font-weight: 500; color: var(--muted); }
@@ -42,7 +42,7 @@
   .rb-label .setting { display: inline; }
 }
 .swatch.rb-bar { height: 10px; background: var(--t4); }
-.swatch.rb-bar.think-on { background: var(--t2); }
+.swatch.rb-bar.moe { background: var(--t2); }
 .swatch-planned { border: 1px solid var(--line-strong); background: repeating-linear-gradient(135deg, var(--track) 0 2px, transparent 2px 4px); }
 .runs-table tr.is-planned td { color: var(--muted); }
 .runs-table tr.is-planned strong { color: var(--text); font-weight: 500; }
@@ -87,17 +87,35 @@
 .seg .tab { padding: 2px 9px; font-size: 12px; font-weight: 500; color: var(--muted); border: 1px solid var(--line-strong); border-radius: 999px; background: none; }
 .seg .tab:hover { color: var(--text); }
 .seg .tab[aria-checked="true"] { background: var(--track); color: var(--text); font-weight: 600; border-color: var(--muted); }
-.runs-settings { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 16px; margin-left: auto; }
+.runs-settings { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 6px 16px; margin-left: auto; }
 .runs-settings .priority-switch { margin: 0 0 8px; }
 .rb-label .tier-badge { min-width: 52px; padding: 2px 8px; font-size: 12px; margin-right: 8px; vertical-align: 1px; }
-.tier-none { background: transparent; color: var(--muted); border: 1px solid var(--border, currentColor); font-weight: 500; }
-/* Sticky filter row: stays under the top menu while the chart card is on screen, released when the card ends. */
-.runs-top { position: sticky; top: var(--header-h, 56px); z-index: 5; background: var(--surface); padding: 8px 0 0; margin-top: -8px; border-bottom: 1px solid var(--line); box-shadow: 0 6px 6px -6px color-mix(in srgb, var(--text) 18%, transparent); }
+.tier-none { background: transparent; color: var(--muted); border: 1px solid var(--line-strong); font-weight: 500; }
 
-/* Estimated equivalent tier: same colour as the tier, dashed outline and a star. */
-.tier-badge.tier-est { outline: 1px dashed currentColor; outline-offset: 1px; }
+/* Labels after a run's title: draft, thinking, batching N. */
+.run-chip { display: inline-block; margin-left: 6px; padding: 1px 7px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: 11.5px; line-height: 1.5; color: var(--muted); vertical-align: 1px; }
+.run-chip.chip-draft, .run-chip.chip-think, .run-chip.chip-batch { color: var(--text); }
+
+/* A run row is a button: it filters the chart to that model's runs. */
+.rb-row.rb-click { cursor: pointer; border-radius: 6px; padding: 3px 8px; margin: 0 -8px; }
+.rb-row.rb-click:hover { background: color-mix(in srgb, var(--text) 7%, transparent); }
+.rb-row.rb-click:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.model-filter { display: flex; justify-content: flex-end; align-items: center; gap: 6px; min-height: 26px; margin: 4px 0 0; font-size: 12.5px; }
+.model-reset { font: inherit; font-weight: 600; line-height: 1.2; padding: 3px 10px; margin-left: 2px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--surface); color: var(--text); cursor: pointer; }
+.model-reset:hover { background: var(--track); }
+/* Keep a card that is scrolled into view clear of the sticky site header. */
+main .card { scroll-margin-top: 112px; }
+/* Filter line and chart controls: stick under the site header while the chart card is on screen. */
+.runs-sticky { position: sticky; top: var(--header-h, 97px); z-index: 5; margin: 0 -20px 8px; padding: 4px 20px 0; background: var(--surface); border-bottom: 1px solid var(--line); }
+/* Sticky block: view tabs and the model filter slot on the first line, Priority and the filters on the second. */
+.runs-first { display: flex; align-items: center; justify-content: space-between; gap: 6px 12px; flex-wrap: wrap; margin: 0 0 6px; }
+.runs-top > .priority-switch { margin: 0 0 8px; }
+.runs-sticky .model-filter { margin: 0 0 0 auto; }
+
 .est-table td { vertical-align: top; white-space: normal; }
 .est-item { display: block; margin: 0 0 8px 0; }
 .est-item .sub { display: block; }
 .est-item.is-est { font-style: italic; }
 .task-table th .tier-badge { margin-top: 4px; }
+/* When the filters wrap under Priority, start them at the left edge too. */
+@media (max-width: 1000px) { .runs-settings { margin-left: 0; } }
