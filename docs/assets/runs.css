@@ -87,7 +87,7 @@
 .seg .tab { padding: 2px 9px; font-size: 12px; font-weight: 500; color: var(--muted); border: 1px solid var(--line-strong); border-radius: 999px; background: none; }
 .seg .tab:hover { color: var(--text); }
 .seg .tab[aria-checked="true"] { background: var(--track); color: var(--text); font-weight: 600; border-color: var(--muted); }
-.runs-settings { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 16px; margin-left: auto; }
+.runs-settings { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 6px 16px; margin-left: auto; }
 .runs-settings .priority-switch { margin: 0 0 8px; }
 .rb-label .tier-badge { min-width: 52px; padding: 2px 8px; font-size: 12px; margin-right: 8px; vertical-align: 1px; }
 .tier-none { background: transparent; color: var(--muted); border: 1px solid var(--line-strong); font-weight: 500; }
@@ -107,12 +107,15 @@
 main .card { scroll-margin-top: 112px; }
 /* Filter line and chart controls: stick under the site header while the chart card is on screen. */
 .runs-sticky { position: sticky; top: var(--header-h, 97px); z-index: 5; margin: 0 -20px 8px; padding: 4px 20px 0; background: var(--surface); border-bottom: 1px solid var(--line); }
-.runs-sticky .model-filter { margin: 0 0 6px; }
+/* Sticky block: view tabs and the model filter slot on the first line, Priority and the filters on the second. */
+.runs-first { display: flex; align-items: center; justify-content: space-between; gap: 6px 12px; flex-wrap: wrap; margin: 0 0 6px; }
+.runs-top > .priority-switch { margin: 0 0 8px; }
+.runs-sticky .model-filter { margin: 0 0 0 auto; }
 
-/* Estimated equivalent tier: same colour as the tier, dashed outline and a star. */
-.tier-badge.tier-est { outline: 1px dashed currentColor; outline-offset: 1px; }
 .est-table td { vertical-align: top; white-space: normal; }
 .est-item { display: block; margin: 0 0 8px 0; }
 .est-item .sub { display: block; }
 .est-item.is-est { font-style: italic; }
 .task-table th .tier-badge { margin-top: 4px; }
+/* When the filters wrap under Priority, start them at the left edge too. */
+@media (max-width: 1000px) { .runs-settings { margin-left: 0; } }

@@ -1,6 +1,6 @@
 # Estimated equivalent tiers for local models
 
-Some local models run on the Runs page are not in the long-coding data (`data/long-coding-tasks-2026-11-17.csv`), so they have no official tier. Each gets an **estimated equivalent tier**, shown as `Tier N*` ("*estimated equivalent tier"). Estimated values have a dashed outline on the site.
+Some local models run on the Runs page are not in the long-coding data (`data/long-coding-tasks-2026-11-17.csv`), so they have no official tier. Each gets an **estimated equivalent tier**, written as `Tier N*` ("*estimated equivalent tier") in this article and in the data file. On the site it is a hollow badge labelled `~Tier N`.
 
 ## Table (data as of 2026-11-24 runs)
 
