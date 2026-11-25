@@ -31,7 +31,7 @@
   ];
   var DEFAULT_HW = "MacBook Pro M5 Pro, 64 GB";
   var metric = "speed";
-  var thinkFilter = "all"; // all | on | off: which runs the charts show (default: all)
+  var thinkFilter = "all", bothFilter = false; // all | on | off: which runs the charts show (default: all)
   var view = "speed"; // which chart is open; the priority one first
   var state = { runs: [], planned: [] };
 
@@ -149,11 +149,22 @@
   // Two charts, the priority metric first and the other second. Rows are ordered by the
   // priority metric in both, so they line up across the charts. One scale per chart, shared
   // by its runtime panels so bar lengths compare across runtimes.
+  // "Both runtimes" filter: only models that have a run in every runtime (LM Studio and TensorFold).
+  function onBoth() {
+    var seen = {};
+    state.runs.forEach(function (r) { (seen[r.id] = seen[r.id] || {})[r.rt] = 1; });
+    return function (id) { return RUNTIMES.every(function (rt) { return seen[id] && seen[id][rt.name]; }); };
+  }
+  function visibleRuns() {
+    if (!bothFilter) return state.runs;
+    var ok = onBoth();
+    return state.runs.filter(function (r) { return ok(r.id); });
+  }
   function drawBars() {
     var box = document.getElementById("runs-bars"); box.textContent = "";
     var order = metric === "score" ? ["score", "speed"] : ["speed", "score"];
     var pri = METRICS[order[0]];
-    var shown = state.runs.filter(function (r) {
+    var shown = visibleRuns().filter(function (r) {
       return r[pri.key] != null && (thinkFilter === "all" || (thinkFilter === "on") === r.think);
     });
     function rank(rt) {
@@ -194,7 +205,7 @@
     });
     // Last section: planned models with no run in any runtime.
     var ranAny = {}; state.runs.forEach(function (r) { ranAny[r.id] = 1; });
-    var todo = state.planned.filter(function (m) { return !ranAny[m.id]; });
+    var todo = bothFilter ? [] : state.planned.filter(function (m) { return !ranAny[m.id]; });
     if (todo.length) {
       var tp = el("div", { cls: "rb-panel", role: "group", "aria-label": "Not run yet" }, [el("h3", { cls: "rb-title", text: "Not run yet" })]);
       var tl = el("div", { cls: "rbars" }); tp.appendChild(tl);
@@ -213,7 +224,7 @@
   function td(text, cls) { return el("td", { cls: cls || "", text: text }); }
   function drawTable() {
     var body = document.getElementById("runs-rows"); body.textContent = "";
-    var runs = state.runs.slice().sort(function (a, b) { return (b.score || 0) - (a.score || 0); });
+    var runs = visibleRuns().slice().sort(function (a, b) { return (b.score || 0) - (a.score || 0); });
     runs.forEach(function (r) {
       body.appendChild(el("tr", {}, [
         el("td", { cls: "model-cell" }, [el("strong", { text: r.model }), el("span", { cls: "sub", text: r.id + (r.mem != null ? " · peak " + fmt(r.mem, 1) + " GB" : "") })]),
@@ -227,7 +238,7 @@
       ]));
     });
     var ran = {}; state.runs.forEach(function (r) { ran[r.id] = 1; });
-    state.planned.filter(function (m) { return !ran[m.id]; }).forEach(function (m) {
+    state.planned.filter(function (m) { return !bothFilter && !ran[m.id]; }).forEach(function (m) {
       var rt = ["LM Studio"]; if (/^(installed|loads)/.test(m.tensorfold || "")) rt.push("TensorFold");
       body.appendChild(el("tr", { cls: "is-planned" }, [
         el("td", { cls: "model-cell" }, [el("strong", { text: m.model }), el("span", { cls: "sub", text: m.id + " · " + m.developer })]),
@@ -244,7 +255,7 @@
   // Result per task: one column per run (best first), one row per task.
   function drawTasks() {
     var table = document.getElementById("task-table"), card = document.getElementById("tasks-card");
-    var runs = state.runs.slice().sort(function (a, b) { return (b.score || 0) - (a.score || 0); });
+    var runs = visibleRuns().slice().sort(function (a, b) { return (b.score || 0) - (a.score || 0); });
     table.textContent = "";
     card.hidden = !runs.length;
     if (!runs.length) return;
@@ -282,11 +293,12 @@
   function summary() {
     var p = document.getElementById("runs-summary");
     var ran = {}; state.runs.forEach(function (r) { ran[r.id] = 1; });
-    var left = state.planned.filter(function (m) { return !ran[m.id]; }).length;
-    var done = state.runs.length;
+    var left = bothFilter ? 0 : state.planned.filter(function (m) { return !ran[m.id]; }).length;
+    var done = visibleRuns().length;
     p.textContent = (done
       ? done + (done === 1 ? " run" : " runs") + " of the local coding suite, best first. "
       : "No runs recorded yet. ") +
+      (bothFilter ? "Only models run on both LM Studio and TensorFold. " : "") +
       (left ? left + " planned " + (left === 1 ? "model has" : "models have") + " not been run. " : "") +
       (metric === "score" ? "Score first (0 to 100), then decoding speed in tokens per second; the second chart opens in the same score order." : "Decoding speed in tokens per second first, then score (0 to 100); the second chart opens in the same speed order.");
   }
@@ -313,13 +325,23 @@
     Array.prototype.forEach.call(btns, function (b) {
       b.addEventListener("click", function () {
         Array.prototype.forEach.call(btns, function (x) { var on = x === b; x.setAttribute("aria-checked", on); x.tabIndex = on ? 0 : -1; });
-        thinkFilter = b.getAttribute("data-think"); drawBars();
+        thinkFilter = b.getAttribute("data-think"); draw();
+      });
+    });
+  }
+
+  function setupBoth() {
+    var btns = document.querySelectorAll(".runs-both .tab");
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener("click", function () {
+        Array.prototype.forEach.call(btns, function (x) { var on = x === b; x.setAttribute("aria-checked", on); x.tabIndex = on ? 0 : -1; });
+        bothFilter = b.getAttribute("data-both") === "on"; draw();
       });
     });
   }
 
   function get(url) { return fetch(url, { cache: "no-cache" }).then(function (r) { if (!r.ok) throw new Error(url + " " + r.status); return r.text(); }); }
-  setupTabs(); setupThinking();
+  setupTabs(); setupThinking(); setupBoth();
   Promise.all([get(MODELS_URL), get(RESULTS_URL).catch(function () { return ""; }), get(TIERS_URL).catch(function () { return ""; })]).then(function (t) {
     parseCSV(t[2]).forEach(function (r) {
       var p = num(r.pct_of_sonnet_5_5), k = normName(r.model);
