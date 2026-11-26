@@ -6,9 +6,8 @@
 
   var DATA_URL = "data/long-coding-tasks-2026-11-17.csv";
   var REFERENCE = "Claude Sonnet 5.5 (Max)";
-  var EST_URL = "data/local-estimated-tiers.csv";
-  // Open models with no Artificial Analysis score that get an estimated tier from LLMeter's own local runs:
-  // name in the estimate file -> its Artificial Analysis model page, size and release.
+  // Open models with no Artificial Analysis score that get an estimated tier (data/models.csv, status "estimated") from LLMeter's own local runs:
+  // name in models.csv -> its Artificial Analysis model page and size. Add a model here to draw it on the All tab.
   var EST_MODELS = {
     "Qwen3-Coder 30B A3B Instruct": { page: "https://artificialanalysis.ai/models/qwen3-coder-30b-a3b-instruct", totalB: 30.5, activeB: 3.3 }
   };
@@ -65,11 +64,16 @@
     return v == null || r == null || r === 0 ? null : v / r * 100;
   }
 
+  // The band edges and each model's own tier come from data/models.csv (LLMeterModels). For the default
+  // "Long coding" basis a model's tier is exactly the one in that file; another basis re-draws the same bands
+  // on a different share, so only the edges are shared.
   function tierFor(m, pct) {
     if (m.model === REFERENCE) return TIERS[0];
     if (pct === undefined) pct = m.pct;
     if (pct == null) return null;
-    for (var i = 1; i < TIERS.length; i++) if (pct >= TIERS[i].min) return TIERS[i];
+    var own = LLMeterModels.tierOf(m.model);
+    if (own && pct === m.pct) return TIERS.filter(function (t) { return t.id === own.id; })[0] || null;
+    for (var i = 1; i < TIERS.length; i++) if (pct >= LLMeterModels.BANDS[i].min) return TIERS[i];
     return null;
   }
 
@@ -306,7 +310,7 @@
   })();
 
   function getText(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }); }
-  Promise.all([getText(DATA_URL), getText(EST_URL).catch(function () { return ""; })])
+  Promise.all([getText(DATA_URL), LLMeterModels.load()])
     .then(function (texts) {
       var text = texts[0];
       var models = parseCSV(text).map(function (r) {
@@ -333,10 +337,10 @@
         };
       });
       // Estimated rows: only for the models listed in EST_MODELS, never over a real score.
-      parseCSV(texts[1] || "model\n").forEach(function (r) {
-        var info = EST_MODELS[r.model], pct = num(r.estimated_pct_of_sonnet_5_5);
-        if (!info || pct == null || models.some(function (m) { return m.model === r.model; })) return;
-        models.push({ model: r.model, open: true, est: true, pct: pct, cai: null, ii: null, tb4: null, fc2: null, lcs: null,
+      LLMeterModels.all().forEach(function (e) {
+        var info = EST_MODELS[e.name];
+        if (!info || !e.estimated || e.pct == null || models.some(function (m) { return m.model === e.name; })) return;
+        models.push({ model: e.name, open: true, est: true, pct: e.pct, cai: null, ii: null, tb4: null, fc2: null, lcs: null,
           totalB: info.totalB, actives: [info.activeB], disk4: null, disk4Build: "", disk4Src: "", diskNat: null, diskNatFmt: "", diskNatSrc: "", diskNote: "",
           sources: info.page, read: "" });
       });
