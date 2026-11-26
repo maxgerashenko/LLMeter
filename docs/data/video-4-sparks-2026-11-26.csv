@@ -1,0 +1,25 @@
+category,model,nodes,engine,metric,value,unit,condition,video_seconds,source,note
+generation,Qwen 34B BF16 (as spoken; 'whole thing is like 8 GB' as spoken),4,"vLLM (spark-vllm-docker), tensor parallel",tok_s,51,tok/s,"50 Gb/s link (cable capped at QSFP28), llama-benchy",274,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=274s,
+prefill,Qwen 34B BF16 (as spoken; 'whole thing is like 8 GB' as spoken),4,"vLLM (spark-vllm-docker), tensor parallel",pp2048_tok_s,6367,tok/s,"50 Gb/s link, prompt processing at 2,048 tokens",283,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=283s,
+generation,Qwen 34B BF16 (as spoken; 'whole thing is like 8 GB' as spoken),4,"vLLM (spark-vllm-docker), tensor parallel",vs_50g_link,+7,%,100 Gb/s per interface vs 50 Gb/s; Max calls it margin of error,718,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=718s,
+prefill,Qwen 34B BF16 (as spoken; 'whole thing is like 8 GB' as spoken),4,"vLLM (spark-vllm-docker), tensor parallel",vs_50g_link,-19,%,100 Gb/s per interface vs 50 Gb/s; unexpected regression,710,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=710s,
+generation,Qwen 34B BF16 (as spoken; 'whole thing is like 8 GB' as spoken),1,"vLLM (spark-vllm-docker), tensor parallel",tok_s,23,tok/s,"one Spark, 100 Gb/s setup",742,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=742s,
+generation,Qwen 34B BF16 (as spoken; 'whole thing is like 8 GB' as spoken),2,"vLLM (spark-vllm-docker), tensor parallel",tok_s,35,tok/s,two Sparks,742,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=742s,
+prefill,Qwen 34B BF16 (as spoken; 'whole thing is like 8 GB' as spoken),2,"vLLM (spark-vllm-docker), tensor parallel",pp_tok_s,almost 8000,tok/s,two Sparks,754,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=754s,
+generation,Qwen 34B BF16 (as spoken; 'whole thing is like 8 GB' as spoken),8,"vLLM (spark-vllm-docker), tensor parallel",tok_s,61-64,tok/s,two runs read 64 and 61; only about 10 tok/s above 4 nodes,1226,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=1226s,Model too small to benefit from 8 nodes
+generation,Qwen3 VL 32B Instruct BF16 (66 GB on disk),1,"vLLM (spark-vllm-docker), tensor parallel",tok_s,3.58,tok/s,"one request, llama-benchy",983,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=983s,
+generation,Qwen3 VL 32B Instruct BF16 (66 GB on disk),2,"vLLM (spark-vllm-docker), tensor parallel",tok_s,6.14,tok/s,"one request, llama-benchy",997,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=997s,
+generation,Qwen3 VL 32B Instruct BF16 (66 GB on disk),4,"vLLM (spark-vllm-docker), tensor parallel",tok_s,11.36,tok/s,"one request, llama-benchy",1024,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=1024s,
+generation,Qwen3 VL 32B Instruct BF16 (66 GB on disk),8,"vLLM (spark-vllm-docker), tensor parallel",tok_s,16.5,tok/s,"one request, llama-benchy",1278,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=1278s,
+memory,Qwen3 VL 32B Instruct BF16 (66 GB on disk),4,"vLLM (spark-vllm-docker), tensor parallel",memory_per_node,63,GB,model is 66 GB; the rest is KV cache and context,1007,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=1007s,
+memory,Qwen3 VL 32B Instruct BF16 (66 GB on disk),8,"vLLM (spark-vllm-docker), tensor parallel",memory_per_node,109,GB,of about 120 GB available,1262,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=1262s,
+generation,"Qwen 3.5 397B-A17B (full precision, 800 GB on disk)",8,"vLLM (spark-vllm-docker), tensor parallel",tok_s,24,tok/s,one request; 112 of 119 GB used per node; about 7 min to shard plus about 3 min for CUDA graphs,1366,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=1366s,Does not fit on 4 Sparks (512 GB) or one 512 GB Mac Studio
+generation,Kimi K2 (about 600 GB),8,"vLLM (spark-vllm-docker), tensor parallel",tok_s,13.35,tok/s,one request; 115 GB used per node; about 15 min to load,1420,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=1420s,Video says it needs 8 Sparks
+latency,,2 via switch,"vLLM (spark-vllm-docker), tensor parallel",rdma_write_latency,3,us,one Spark to another through the MikroTik switch,888,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=888s,
+latency,,2 direct,"vLLM (spark-vllm-docker), tensor parallel",rdma_write_latency,2,us,two Sparks cabled directly (about 1 us less),918,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=918s,Apple clustering quoted as 4-5 us
+spec,,4,,memory_total,512,GB,4 x 128 GB,15,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=15s,
+spec,,8,,memory_total,1024,GB,"8 x 128 GB, 'terabyte of VRAM'",1318,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=1318s,
+spec,,,,switch_price,1300,usd,MikroTik 2x400G switch used for 4 Sparks,180,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=180s,
+spec,,,,nic_price,1000-1500,usd,"ConnectX-7 NIC per Spark, estimate said aloud",26,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=26s,Adds to the Spark price
+spec,,,,cable_price,185,usd,"one QSFP56 cable bought from Amazon (turned out capped at 50 Gb/s); FS Spark-labelled cables cost more, price not shown",300,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=300s,
+spec,,,,link_speed,100,Gb/s,per interface; two interfaces per 200 Gb/s port,488,https://www.youtube.com/watch?v=QJqKqxQR36Y&t=488s,
