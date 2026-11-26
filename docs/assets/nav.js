@@ -6,6 +6,7 @@
     local: [
       ["Top Tier", "./#top", "index"],
       ["All Tier", "./#all", "index"],
+      ["Fit", "fit.html", "fit"],
       ["Rack", "rack.html", "rack"],
       ["Runs", "runs.html", "runs"],
       ["Build", "research.html", "research"]
@@ -23,7 +24,7 @@
       ["Horizon", "horizon.html", "horizon"]
     ]
   };
-  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", research: "local", horizon: "research", jobs: "economy", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", ipo: "finance", economy: "economy", techniques: "research", sources: "sources" };
+  var PAGE_SECTION = { index: "local", fit: "local", rack: "local", runs: "local", research: "local", horizon: "research", jobs: "economy", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", ipo: "finance", economy: "economy", techniques: "research", sources: "sources" };
 
   // Shared "Tier by" choice (Local > Top Tier / All Tier). Default: Coding Agent Index; remembered across pages.
   var BASES = [

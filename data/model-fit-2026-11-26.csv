@@ -1,0 +1,15 @@
+model,rack_model,params_b,active_params_b,weights_gb,quant,max_context_tokens,context_basis,source,note
+Kimi K3.1 Pro,Kimi K3.1 Pro,2800,104,1508.7,UD-Q4_K_XL,262144,assumed,data/long-coding-tasks-2026-11-17.csv; data/rack-speed-2026-11-18.csv,"Size and parameters from the long-coding and rack files. No published context length in our data; 262,144 assumed (the length of most local test models)."
+GLM-5.3 (Max),GLM-5.3 (Max),753,40,467.3,Q4_K_M,262144,assumed,data/long-coding-tasks-2026-11-17.csv; data/rack-speed-2026-11-18.csv,"No published context length in our data; 262,144 assumed."
+Qwen3.8-Flash-Next,Qwen3.8-Flash-Next,180,,119.2,IQ4_NL,262144,assumed,data/long-coding-tasks-2026-11-17.csv; data/rack-speed-2026-11-18.csv,"Active parameters not in our data. No published context length; 262,144 assumed."
+Nanbeige4.3-33B,Nanbeige4.3-33B,33,33,20.8,Q4_K_M,524288,local-test-models M10,data/local-test-models.csv; data/rack-speed-2026-11-18.csv,
+Qwen3.8 27B,Qwen3.8 27B (Xhigh),27,27,16.8,Q4_K_M,262144,local-test-models M02,data/local-test-models.csv; data/rack-speed-2026-11-18.csv,
+Qwen3.6 27B,,27,27,16.3,Q4_K_M,262144,local-test-models M16D,data/local-test-models.csv,
+Qwen3.5 27B Claude 4.6 Opus Distilled,,27,27,14.1,4-bit MLX,262144,local-test-models M13,data/local-test-models.csv,
+Qwen3.5 9B,,9,9,5.6,4-bit MLX,262144,local-test-models M14,data/local-test-models.csv,
+GLM-4.6V Flash,,9,9,6.6,4-bit MLX,131072,local-test-models M15,data/local-test-models.csv,
+Nemotron 3.5 Lightning 30B A3B,,30,3,17.3,4-bit MLX,262144,local-test-models M01,data/local-test-models.csv,
+Qwen3.6 35B A3B,,35,3,20.6,Q4_K_M,262144,local-test-models M17D,data/local-test-models.csv,
+Qwen3-Coder 30B A3B Instruct,,30,3,17.3,Q4_K_M,262144,local-test-models M18,data/local-test-models.csv,
+GLM-4.7 Flash,,30,3,22,6-bit MLX,202752,local-test-models M09,data/local-test-models.csv,
+Qwen3-Next 80B A3B Instruct,,80,3,45.2,Q4_K_M,262144,local-test-models M19D,data/local-test-models.csv,

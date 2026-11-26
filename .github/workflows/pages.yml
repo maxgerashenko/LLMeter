@@ -94,6 +94,7 @@ jobs:
               `### Live preview for ${pr.head.sha.slice(0, 7)}`,
               '',
               `- [Tiers (home)](${base}/index.html)`,
+              `- [Fit](${base}/fit.html)`,
               `- [Rack](${base}/rack.html)`,
               `- [Runs](${base}/runs.html)`,
               `- [Research](${base}/techniques.html)`,
