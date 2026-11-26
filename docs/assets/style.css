@@ -139,10 +139,11 @@ th.num { text-align: right; }
 .tier-t2 { background: var(--t2); }
 .tier-t1 { background: var(--t1); }
 .tier-t0 { background: var(--t0); }
-/* Estimated equivalent tier: hollow badge in the tier colour, label "~Tier N". */
-.tier-badge.tier-est { background: transparent; box-shadow: inset 0 0 0 1.5px currentColor; }
-.tier-est.tier-t4 { color: var(--t4); } .tier-est.tier-t3 { color: var(--t3); } .tier-est.tier-t2 { color: var(--t2); }
-.tier-est.tier-t1 { color: var(--t1); } .tier-est.tier-t0 { color: var(--t0); } .tier-est.tier-max { color: var(--max); }
+/* Estimated equivalent tier: striped badge in the tier colour (same diagonal stripes as the estimated bars), label "~Tier N". */
+.tier-badge.tier-est {
+  color: #fff; text-shadow: 0 0 2px rgba(0, 0, 0, 0.55);
+  background-image: repeating-linear-gradient(135deg, transparent 0 4px, rgba(0, 0, 0, 0.26) 4px 7px);
+}
 .bar-est { background: transparent !important; box-shadow: inset 0 0 0 1.5px var(--t0); }
 .tier-bg-max { background: var(--max); }
 .tier-bg-t4 { background: var(--t4); }
