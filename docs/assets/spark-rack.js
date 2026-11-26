@@ -133,6 +133,7 @@
       var rows = SETUPS.map(function (s) { var x = onRack(t.id, s[0]); return x && x.tok != null ? { r: x, n: s[1] } : null; }).filter(Boolean);
       if (rows.length < 2) return;
       var first = rows[0].r;
+      rows.sort(function (a, b) { return b.r.tok - a.r.tok; }); // fastest first, as on the Rack All view
       var g = el("div", { class: "rk-group" }, [el("div", { class: "rk-group-head" }, [badge(t.id), el("span", { class: "rk-group-model", text: baseName(first.model) }), el("span", { class: "muted rk-group-size", text: fmtGB(first.size) + " at 4-bit" })])]);
       rows.forEach(function (x) {
         g.appendChild(barRow(el("span", { class: "rk-label rk-rack" }, [x.n + "× Spark"]), x.r, vscale));
@@ -141,7 +142,7 @@
     });
     VIDEO_GROUPS.forEach(function (grp) {
       var rows = video.filter(function (v) { return v.cat === "generation" && v.metric === "tok_s" && grp.match.test(v.model) && v.value != null; })
-        .sort(function (a, b) { return a.nodes - b.nodes; });
+        .sort(function (a, b) { return b.value - a.value; }); // fastest first, as on the Rack All view
       if (!rows.length) return;
       var g = el("div", { class: "rk-group" }, [el("div", { class: "rk-group-head" }, [el("span", { class: "rk-group-model", text: grp.label }), el("span", { class: "muted rk-group-size", text: grp.note })])]);
       rows.forEach(function (v) {
