@@ -267,8 +267,8 @@
       });
       if (cloudLegend) legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch bar-cloud" }), "Cloud"]));
       if (list.some(function (m) { return m.est; })) {
-        legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "tier-badge tier-t1 legend-badge" }, ["Tier 1"]), "Solid = factual (scored by Artificial Analysis)"]));
-        legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "tier-badge tier-t1 tier-est legend-badge" }, ["Tier 1"]), "Striped = estimated (from LLMeter's local run)"]));
+        legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "tier-badge tier-t1 legend-badge" }, ["Tier 1"]), "Official tier"]));
+        legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "tier-badge tier-t1 tier-est legend-badge" }, ["Tier 1"]), "Estimated (placed from the local run)"]));
       }
     }
     drawTop();
