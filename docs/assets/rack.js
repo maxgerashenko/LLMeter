@@ -10,6 +10,7 @@
   // Single machines that can be the minimum setup, smallest memory first; a model fits if its size plus OVERHEAD_GB (context, OS) is within memory
   var SMALL_RACKS = ["mbp-m5-pro-24", "m5-ultra-96"];
   var OVERHEAD_GB = 4;
+  var SPARK_MULTI = /^dgx-spark-\d+$/;
   var TIERS = [
     { id: "max", label: "Max" }, { id: "t4", label: "Tier 4" }, { id: "t3", label: "Tier 3" },
     { id: "t2", label: "Tier 2" }, { id: "t1", label: "Tier 1" }, { id: "t0", label: "Tier 0" }
@@ -159,7 +160,17 @@
     var groups = document.getElementById("rack-groups");
     groups.textContent = "";
     TIERS.forEach(function (t) {
-      var rows = t.id === "max" ? [ref] : racks.map(function (k) { return onRack(t.id, k.id); }).filter(Boolean);
+      // DGX Spark clusters (2, 4, 8, 16 Sparks) live on the DGX Spark tab; here each tier shows one Spark row,
+      // the smallest setup with a number, as the Mac rows do
+      var rows = t.id === "max" ? [ref] : racks.filter(function (k) { return !SPARK_MULTI.test(k.id); }).map(function (k) {
+        var r0 = onRack(t.id, k.id);
+        if (k.id === "dgx-spark" && r0 && r0.tok == null) {
+          var multi = racks.filter(function (m) { return SPARK_MULTI.test(m.id); }).sort(function (a, b) { return a.mem - b.mem; })
+            .map(function (m) { return onRack(t.id, m.id); }).filter(function (x) { return x && x.tok != null; });
+          if (multi.length) return multi[0];
+        }
+        return r0;
+      }).filter(Boolean);
       // Fastest rack first; racks with no number (doesn't fit, no run) at the bottom, in rack order
       rows = rows.map(function (r, i) { return { r: r, i: i }; })
         .sort(function (x, y) { return ((y.r.tok == null ? -1 : y.r.tok) - (x.r.tok == null ? -1 : x.r.tok)) || x.i - y.i; })
@@ -189,7 +200,7 @@
     // Rack specs
     var spec = document.getElementById("spec-rows");
     spec.textContent = "";
-    racks.forEach(function (k) {
+    racks.filter(function (k) { return !SPARK_MULTI.test(k.id); }).forEach(function (k) {
       spec.appendChild(el("tr", null, [
         el("th", { scope: "row" }, [el("a", { href: firstUrl(k.src), text: k.name })]),
         el("td", { text: k.chip }),
@@ -202,9 +213,16 @@
     });
   }
 
+  // Keep the sticky tab bar just under the site header (it tucks 1px under, so no strip of the page shows between them)
+  function headerHeight() {
+    var h = document.querySelector(".site-header");
+    document.documentElement.style.setProperty("--header-h", (h ? Math.floor(h.getBoundingClientRect().height) - 1 : 0) + "px");
+  }
+  headerHeight(); window.addEventListener("resize", headerHeight); window.addEventListener("load", headerHeight);
+
   // Tabs
   (function () {
-    var tabs = [["tab-rack", "panel-rack"], ["tab-rack-all", "panel-rack-all"]];
+    var tabs = [["tab-rack", "panel-rack"], ["tab-spark", "panel-spark"], ["tab-rack-all", "panel-rack-all"]];
     function select(id) {
       tabs.forEach(function (t) {
         var on = t[0] === id, b = document.getElementById(t[0]);
@@ -222,7 +240,7 @@
         select(next); document.getElementById(next).focus();
       });
     });
-    function fromHash() { if (location.hash === "#all") select("tab-rack-all"); }
+    function fromHash() { if (location.hash === "#all") select("tab-rack-all"); else if (location.hash === "#spark") select("tab-spark"); }
     window.addEventListener("hashchange", fromHash);
     fromHash();
   })();
