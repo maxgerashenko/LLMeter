@@ -11,8 +11,8 @@
   var TYPICAL_BYTES_30B = 262144;   // F16 KV bytes per token of a typical 30B model (64 layers x 8 KV heads x 128 x 2 x 2 bytes)
   var USABLE = 0.9, OVERHEAD = 1.1, KV_ALPHA = 0.2, KV_BASE_CTX = 2048;   // calculator constants
   var TIERS = [
-    { id: "t4", label: "Tier 4" }, { id: "t3", label: "Tier 3" }, { id: "t2", label: "Tier 2" },
-    { id: "t1", label: "Tier 1" }, { id: "t0", label: "Tier 0" }, { id: "all", label: "All" }
+    { id: "t0", label: "Tier 0" }, { id: "t1", label: "Tier 1" }, { id: "t2", label: "Tier 2" },
+    { id: "t3", label: "Tier 3" }, { id: "t4", label: "Tier 4" }, { id: "all", label: "All" }
   ];
   var state = { tier: "t2", model: null, q: "", kv: 0.5, method: "typical" };
   var data = null;
