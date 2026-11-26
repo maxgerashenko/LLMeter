@@ -204,7 +204,7 @@
 
   // Tabs
   (function () {
-    var tabs = [["tab-rack", "panel-rack"], ["tab-rack-all", "panel-rack-all"]];
+    var tabs = [["tab-rack", "panel-rack"], ["tab-spark", "panel-spark"], ["tab-rack-all", "panel-rack-all"]];
     function select(id) {
       tabs.forEach(function (t) {
         var on = t[0] === id, b = document.getElementById(t[0]);
@@ -222,7 +222,7 @@
         select(next); document.getElementById(next).focus();
       });
     });
-    function fromHash() { if (location.hash === "#all") select("tab-rack-all"); }
+    function fromHash() { if (location.hash === "#all") select("tab-rack-all"); else if (location.hash === "#spark") select("tab-spark"); }
     window.addEventListener("hashchange", fromHash);
     fromHash();
   })();

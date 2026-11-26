@@ -173,30 +173,6 @@
     });
   }
 
-  (function () {
-    var tabs = [["tab-spark", "panel-spark"], ["tab-spark-all", "panel-spark-all"]];
-    function select(id) {
-      tabs.forEach(function (t) {
-        var on = t[0] === id, b = document.getElementById(t[0]);
-        b.setAttribute("aria-selected", String(on));
-        b.tabIndex = on ? 0 : -1;
-        document.getElementById(t[1]).hidden = !on;
-      });
-    }
-    tabs.forEach(function (t, i) {
-      var b = document.getElementById(t[0]);
-      b.addEventListener("click", function () { select(t[0]); });
-      b.addEventListener("keydown", function (e) {
-        if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
-        var next = tabs[(i + 1) % tabs.length][0];
-        select(next); document.getElementById(next).focus();
-      });
-    });
-    function fromHash() { if (location.hash === "#clusters") select("tab-spark-all"); }
-    window.addEventListener("hashchange", fromHash);
-    fromHash();
-  })();
-
   Promise.all([SPEED_URL, RACKS_URL, VIDEO_URL].map(function (u) {
     return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ": " + r.status); return r.text(); });
   })).then(function (texts) {

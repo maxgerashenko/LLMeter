@@ -7,7 +7,6 @@
       ["Top Tier", "./#top", "index"],
       ["All Tier", "./#all", "index"],
       ["Rack", "rack.html", "rack"],
-      ["DGX Spark", "spark-rack.html", "spark-rack"],
       ["Runs", "runs.html", "runs"],
       ["Build", "research.html", "research"]
     ],
@@ -24,7 +23,7 @@
       ["Horizon", "horizon.html", "horizon"]
     ]
   };
-  var PAGE_SECTION = { index: "local", rack: "local", "spark-rack": "local", runs: "local", research: "local", horizon: "research", jobs: "economy", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", ipo: "finance", economy: "economy", techniques: "research", sources: "sources" };
+  var PAGE_SECTION = { index: "local", rack: "local", runs: "local", research: "local", horizon: "research", jobs: "economy", cloud: "cloud", "cloud-rack": "cloud", finance: "finance", ipo: "finance", economy: "economy", techniques: "research", sources: "sources" };
 
   // Shared "Tier by" choice (Local > Top Tier / All Tier). Default: Coding Agent Index; remembered across pages.
   var BASES = [
@@ -83,7 +82,7 @@
   var pick = null;
   function buildPick() {
     if (pick) { pick.remove(); pick = null; }
-    var isTier = page === "index", isRack = page === "rack" || page === "spark-rack", isRuns = page === "runs", isBuild = page === "research";
+    var isTier = page === "index", isRack = page === "rack", isRuns = page === "runs", isBuild = page === "research";
     if (!isTier && !isRack && !isRuns && !isBuild) return;
     pick = document.createElement("label");
     pick.className = "basis-pick";
