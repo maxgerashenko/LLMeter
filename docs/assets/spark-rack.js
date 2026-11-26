@@ -8,7 +8,7 @@
   var VIDEO_URL = "data/video-4-sparks-2026-11-26.csv";
   var ONE = "dgx-spark";
   // Setups in order of size: rack id and number of Sparks
-  var SETUPS = [["dgx-spark", 1], ["dgx-spark-2", 2], ["dgx-spark-4", 4]];
+  var SETUPS = [["dgx-spark", 1], ["dgx-spark-2", 2], ["dgx-spark-4", 4], ["dgx-spark-8", 8], ["dgx-spark-16", 16]];
   var USABLE_GB = 120, CONTEXT_FACTOR = 1.1, TRY_SIZES = [2, 4, 8, 16];
   var TIERS = [
     { id: "t4", label: "Tier 4" }, { id: "t3", label: "Tier 3" },
@@ -104,26 +104,24 @@
     var bars = document.getElementById("spark-bars"), body = document.getElementById("spark-rows");
     bars.textContent = ""; body.textContent = "";
     TIERS.forEach(function (t) {
-      var r = onRack(t.id, ONE);
-      if (!r) return;
-      var name = baseName(r.model);
-      bars.appendChild(barRow(el("span", { class: "rk-label" }, [badge(t.id), el("a", { class: "tb-model", href: r.source, text: name }), el("span", { class: "rk-cfg", text: "1× Spark" })]), r, scale));
-
-      // Smallest published setup with a number; otherwise the smallest that has room for the weights
-      var minN = null, published = false;
+      var r0 = onRack(t.id, ONE);
+      if (!r0) return;
+      var name = baseName(r0.model);
+      // Smallest setup with a number (measured or estimated); if none, show the single Spark's "doesn't fit"
+      var best = null, bestN = 1;
       SETUPS.forEach(function (s) {
         var x = onRack(t.id, s[0]);
-        if (minN == null && x && x.tok != null) { minN = s[1]; published = true; }
+        if (!best && x && x.tok != null) { best = x; bestN = s[1]; }
       });
-      if (minN == null) {
-        for (var i = 0; i < TRY_SIZES.length; i++) if (TRY_SIZES[i] * USABLE_GB >= r.size * CONTEXT_FACTOR) { minN = TRY_SIZES[i]; break; }
-      }
+      var r = best || r0;
+      bars.appendChild(barRow(el("span", { class: "rk-label" }, [badge(t.id), el("a", { class: "tb-model", href: r.source, text: name }), el("span", { class: "rk-cfg", text: bestN + "× Spark" })]), r, scale));
+      var note = !best ? "no published run" : best.status === "estimate" ? "estimate, no published run" : "";
       body.appendChild(el("tr", null, [
         el("th", { scope: "row" }, [badge(t.id)]),
-        el("td", null, [el("span", { class: "model" }, [el("span", { class: "model-link", text: name })]), el("span", { class: "rk-inline", text: fmtGB(r.size) + " at 4-bit" })]),
-        el("td", { class: "num rk-size-col" }, [fmtGB(r.size)]),
-        el("td", { class: "rk-cfg-col" }, [minN + "× DGX Spark", el("span", { class: "rk-cfg-n", text: (minN * one.mem).toLocaleString("en-US") + " GB in total" + (published ? "" : " · no published run") })]),
-        el("td", { class: "num rk-cfg-col" }, [el("a", { class: "rk-price", href: one.priceSrc, title: minN + " × $" + one.price.toLocaleString("en-US") + " (NVIDIA list price); switch, network cards and cables extra" }, [money(minN * one.price)])])
+        el("td", null, [el("span", { class: "model" }, [el("span", { class: "model-link", text: name })]), el("span", { class: "rk-inline", text: fmtGB(r0.size) + " at 4-bit" })]),
+        el("td", { class: "num rk-size-col" }, [fmtGB(r0.size)]),
+        el("td", { class: "rk-cfg-col" }, [bestN + "× DGX Spark", el("span", { class: "rk-cfg-n", text: (bestN * one.mem).toLocaleString("en-US") + " GB in total" + (note ? " · " + note : "") })]),
+        el("td", { class: "num rk-cfg-col" }, [el("a", { class: "rk-price", href: one.priceSrc, title: bestN + " × $" + one.price.toLocaleString("en-US") + " (NVIDIA list price); switch, network cards and cables extra" }, [money(bestN * one.price)])])
       ]));
     });
 
@@ -132,7 +130,7 @@
     groups.textContent = "";
     var vscale = Math.max.apply(null, video.filter(function (v) { return v.cat === "generation" && v.metric === "tok_s"; }).map(function (v) { return v.value; }).concat([scale]));
     TIERS.forEach(function (t) {
-      var rows = SETUPS.map(function (s) { var x = onRack(t.id, s[0]); return x ? { r: x, n: s[1] } : null; }).filter(Boolean);
+      var rows = SETUPS.map(function (s) { var x = onRack(t.id, s[0]); return x && x.tok != null ? { r: x, n: s[1] } : null; }).filter(Boolean);
       if (rows.length < 2) return;
       var first = rows[0].r;
       var g = el("div", { class: "rk-group" }, [el("div", { class: "rk-group-head" }, [badge(t.id), el("span", { class: "rk-group-model", text: baseName(first.model) }), el("span", { class: "muted rk-group-size", text: fmtGB(first.size) + " at 4-bit" })])]);

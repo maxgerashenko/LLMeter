@@ -53,7 +53,7 @@
     <div class="top-gap"></div>
 
     <div class="tabs" role="tablist" aria-label="Rack">
-      <button type="button" role="tab" id="tab-rack" class="tab" aria-selected="true" aria-controls="panel-rack">M5 Ultra rack</button>
+      <button type="button" role="tab" id="tab-rack" class="tab" aria-selected="true" aria-controls="panel-rack">M5 Ultra</button>
       <button type="button" role="tab" id="tab-spark" class="tab" aria-selected="false" aria-controls="panel-spark" tabindex="-1">DGX Spark 128</button>
       <button type="button" role="tab" id="tab-rack-all" class="tab" aria-selected="false" aria-controls="panel-rack-all" tabindex="-1">All</button>
     </div>
@@ -176,7 +176,7 @@
       <p><strong>Measured</strong> numbers are single-request generation speeds from public reports and two YouTube videos by Alex Ziskind (<a href="https://www.youtube.com/watch?v=QJqKqxQR36Y">8-Spark cluster</a>, and a Mac Studio M5 Ultra against two Sparks). Each links to its source or lists the time in the video. Engines and quants differ between reports, so treat differences under about 15% as noise.</p>
       <p><strong>Estimates</strong> (striped bars) scale a measured number: for dense models, by file size.</p>
       <p><strong>Clusters</strong> split each layer across Sparks (tensor parallelism in vLLM) and swap results on every token, so link latency matters: about 3 microseconds through a switch, 2 directly. The video's first 4-Spark runs were capped at 50 Gb/s by a cable; the 1/2/4/8 numbers here are from the fixed 100 Gb/s setup. The rest of a model that does not fit one Spark has no single-Spark number.</p>
-      <p><strong>Smallest Spark setup</strong> is the smallest published setup that ran the model; if none did, it is the smallest number of Sparks (2, 4, 8 or 16) with room for the weights plus about 10% for context, and the row says there is no published run. <strong>Prices</strong> are NVIDIA's US list price per Spark times the number of Sparks; switches, 200 Gb/s network cards and cables are extra (the video's switch was $1,300 and its cables cost $185 each or more).</p>
+      <p><strong>Smallest Spark setup</strong> is the smallest setup with a speed number. Kimi K3.1 Pro (1,509 GB) and GLM-5.3 (467 GB, which leaves no room for context on 4 Sparks) have no Spark run, so their numbers are estimates: the video's measured Kimi K2 speed on 8 Sparks (13.35 tokens/sec), scaled by active parameters. Treat them as rough. <strong>Prices</strong> are NVIDIA's US list price per Spark times the number of Sparks; switches, 200 Gb/s network cards and cables are extra (the video's switch was $1,300 and its cables cost $185 each or more).</p>
       <p class="muted">Data files: <a href="data/rack-speed-2026-11-18.csv">rack-speed-2026-11-18.csv</a>, <a href="data/racks-2026-11-18.csv">racks-2026-11-18.csv</a>, <a href="data/video-4-sparks-2026-11-26.csv">video-4-sparks-2026-11-26.csv</a>.</p>
     </section>
   </main>
