@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLMeter: which local AI models fit your Mac or DGX Spark</title>
+  <meta name="description" content="Pick a tier and a model: memory needed at its maximum context, and which Mac and DGX Spark setups fit it, with tokens per second measured or estimated.">
+  <!-- seo:start -->
+  <link rel="canonical" href="https://llmeter.fyi/fit.html">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#4f46e5">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="LLMeter">
+  <meta property="og:title" content="LLMeter: which local AI models fit your Mac or DGX Spark">
+  <meta property="og:description" content="Pick a tier and a model: memory needed at its maximum context, and which Mac and DGX Spark setups fit it, with tokens per second measured or estimated.">
+  <meta property="og:url" content="https://llmeter.fyi/fit.html">
+  <meta property="og:image" content="https://llmeter.fyi/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="LLMeter: measuring LLM progress on long coding tasks">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LLMeter: which local AI models fit your Mac or DGX Spark">
+  <meta name="twitter:description" content="Pick a tier and a model: memory needed at its maximum context, and which Mac and DGX Spark setups fit it, with tokens per second measured or estimated.">
+  <meta name="twitter:image" content="https://llmeter.fyi/assets/og.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"LLMeter: which local AI models fit your Mac or DGX Spark","description":"Pick a tier and a model: memory needed at its maximum context, and which Mac and DGX Spark setups fit it, with tokens per second measured or estimated.","url":"https://llmeter.fyi/fit.html","isPartOf":{"@type":"WebSite","name":"LLMeter","url":"https://llmeter.fyi/"}}</script>
+  <!-- seo:end -->
+  <script src="assets/analytics.js" defer></script>
+  <script src="assets/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/rack.css">
+  <link rel="stylesheet" href="assets/fit.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="./"><span class="brand-mark" aria-hidden="true"></span>LLMeter</a>
+      <nav class="nav">
+        <a href="./" data-section="local">Local</a>
+        <a href="cloud.html" data-section="cloud">Cloud</a>
+        <a href="economy.html#gdp" data-section="economy">Economy</a>
+        <a href="finance.html#anthropic-s1" data-section="finance">Finance</a>
+        <a href="techniques.html#speed" data-section="research">Research</a>
+        <a href="sources.html" data-section="sources" class="nav-minor">Sources</a>
+      </nav>
+    </div>
+  </header>
+  <script src="assets/nav.js"></script>
+
+  <main class="wrap">
+    <h1 class="sr-only">Which local models fit which hardware</h1>
+    <div class="top-gap"></div>
+
+    <section class="card" aria-labelledby="fit-title">
+      <div class="card-head">
+        <h2 id="fit-title">Model Fit</h2>
+        <p class="muted">Pick a tier and a model. LLMeter works out the memory it needs with the context set to the model's maximum, then lists the hardware from our data that has room for it, with generation speed in tokens per second.</p>
+      </div>
+      <div class="fit-controls">
+        <div class="fit-field">
+          <span class="fit-label" id="fit-tier-label">Tier</span>
+          <div class="fit-chips" id="fit-tiers" role="group" aria-labelledby="fit-tier-label"></div>
+        </div>
+        <div class="fit-row2">
+          <label class="fit-field fit-search"><span class="fit-label">Search model</span>
+            <input id="fit-q" type="search" placeholder="Search models, e.g. qwen, glm, 27b" autocomplete="off"></label>
+          <label class="fit-field fit-method"><span class="fit-label">KV estimate</span>
+            <select id="fit-method"><option value="typical" selected>Typical</option><option value="calc">Calculator rule</option></select></label>
+          <label class="fit-field fit-kv"><span class="fit-label">KV cache</span>
+            <select id="fit-kv"><option value="2">F16</option><option value="1">Q8</option><option value="0.5" selected>Q4</option></select></label>
+        </div>
+        <div class="fit-models" id="fit-models" role="group" aria-label="Models"></div>
+      </div>
+    </section>
+
+    <section class="card" id="fit-result" aria-live="polite"><p class="muted">Loading data…</p></section>
+
+    <section class="card prose">
+      <h2>How the memory is worked out</h2>
+      <p>The method comes from the <a href="https://github.com/alexziskind1/llm-inference-calculator">LLM Inference Calculator</a> by <a href="https://github.com/alexziskind1">Alex Ziskind</a> (MIT license, copyright 2025 Alex Ziskind). We re-implemented its rule in JavaScript, with the context length fixed at each model's maximum and single-user, token-by-token (incremental) decoding:</p>
+      <p><strong>Memory = (weights + KV cache) × 1.1.</strong> The 1.1 is the calculator's 10% allowance for fragmentation and buffers. Weights are the real file size of the build we measured (the calculator uses parameters × bytes per parameter instead). The KV cache is the memory that grows with context; its choices (F16, Q8, Q4) use the calculator's factors, and Q4 is its default.</p>
+      <p><strong>Two KV estimates.</strong> <em>Calculator rule</em> is the calculator's own: weights × 0.2 × (context ÷ 2,048) × K, with K = 2 (F16), 1 (Q8) or 0.5 (Q4). It grows linearly with context and ties the cache to the weights' size, so at 262,144 tokens it gives far more memory than real models use (over 1,500 GB of cache for a 119 GB model). <em>Typical</em>, the default, is LLMeter's own rough rule instead: a typical 30B model's F16 cache is 256 KB per token (64 layers × 8 KV heads × 128 dims × 2 × 2 bytes), scaled by the square root of the model's active size (total size when active is unknown). Real caches vary a lot with the architecture (compact attention such as MLA or hybrid layers uses far less), so treat it as an estimate, not a measurement.</p>
+      <p><strong>Fits</strong> means the total is within 90% of the machine's memory (the system keeps the rest). A cluster adds the memory of its machines. <strong>Speed</strong> is measured or estimated as on the Rack page: a number from a published run when we have one; otherwise, for dense models, the measured Qwen3.8 27B speed on the same machine scaled by file size (striped bar, “est.”). Mixture-of-experts models with no published run get no estimate. Context lengths marked “assumed” have no figure in our data (262,144 is used).</p>
+      <p class="muted">Data files: <a href="data/model-fit-2026-11-26.csv">model-fit-2026-11-26.csv</a>, <a href="data/rack-speed-2026-11-18.csv">rack-speed-2026-11-18.csv</a>, <a href="data/racks-2026-11-18.csv">racks-2026-11-18.csv</a>, <a href="data/local-estimated-tiers.csv">local-estimated-tiers.csv</a>. Calculator credit: <a href="https://github.com/alexziskind1/llm-inference-calculator/blob/main/LICENSE">MIT license</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Speeds read 2026-11-26. LLMeter is an independent project, <a href="https://github.com/maxgerashenko/LLMeter">source on GitHub</a>. Memory method adapted from the <a href="https://github.com/alexziskind1/llm-inference-calculator">LLM Inference Calculator</a> by Alex Ziskind.</p>
+    </div>
+  </footer>
+
+  <script src="assets/fit.js"></script>
+</body>
+</html>
