@@ -4,11 +4,8 @@
   "use strict";
   var DATA_URL = "data/long-coding-tasks-2026-11-17.csv";
   var REFERENCE = "Claude Sonnet 5.5 (Max)";
-  // Same tier bands (share of Sonnet 5.5's long-coding score) as assets/tiers.js
-  var TIERS = [
-    { id: "max", name: "Max" }, { id: "t4", name: "Tier 4", min: 75 }, { id: "t3", name: "Tier 3", min: 55 },
-    { id: "t2", name: "Tier 2", min: 40 }, { id: "t1", name: "Tier 1", min: 20 }, { id: "t0", name: "Tier 0", min: 0 }
-  ];
+  // Tiers come from data/models.csv (LLMeterModels), the same source as every other page.
+  var TIERS = LLMeterModels.BANDS.map(function (b) { return { id: b.id, name: b.label }; });
 
   function parseCSV(text) {
     var rows = [], row = [], f = "", q = false;
@@ -32,10 +29,9 @@
     return m ? { base: m[1], setting: m[2] } : { base: name, setting: "" };
   }
   function tierFor(m) {
-    if (m.model === REFERENCE) return TIERS[0];
-    if (!m.open || m.pct == null) return null;
-    for (var i = 1; i < TIERS.length; i++) if (m.pct >= TIERS[i].min) return TIERS[i];
-    return null;
+    if (!m.open && m.model !== REFERENCE) return null;
+    var t = LLMeterModels.tierOf(m.model);
+    return t ? { id: t.id, name: t.label, est: t.estimated } : null;
   }
   function sourceFor(m) {
     var urls = m.sources.match(/https?:\/\/[^\s;]+/g) || [];
@@ -53,11 +49,13 @@
   }
   function tag(m, t) {
     if (t && t.id === "max") return el("span", { class: "tier-badge bar-tag tier-max" }, ["Max"]);
-    if (t) return el("span", { class: "tier-badge bar-tag tier-" + t.id }, [t.name.replace("Tier ", "Tier ")]);
+    if (t && t.est) return el("span", { class: "tier-badge bar-tag tier-est tier-" + t.id, title: "Estimated equivalent tier, from LLMeter's local run: Artificial Analysis has no long-coding score for this model" }, ["~" + t.name]);
+    if (t) return el("span", { class: "tier-badge bar-tag tier-" + t.id }, [t.name]);
     return el("span", { class: "pill pill-cloud bar-tag" }, ["Cloud"]);
   }
 
-  fetch(DATA_URL).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }).then(function (text) {
+  Promise.all([fetch(DATA_URL).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }), LLMeterModels.load()]).then(function (res) {
+    var text = res[0];
     var models = parseCSV(text).map(function (r) {
       return { model: r.model, open: r.open_weights === "yes", ii: num(r.aa_intelligence_index_v5_0_1),
         pct: num(r.pct_of_sonnet_5_5), sources: r.sources || "", read: r.read };
@@ -72,7 +70,7 @@
     });
     models.forEach(function (m) {
       var t = tierFor(m), n = splitName(m.model);
-      var cls = t ? "tier-bg-" + t.id : "bar-cloud";
+      var cls = t ? "tier-bg-" + t.id + (t.est ? " bar-est" : "") : "bar-cloud";
       plot.appendChild(el("div", { class: "bar-row" + (m.model === REFERENCE ? " is-ref" : "") }, [
         el("span", { class: "bar-label" }, [tag(m, t), el("a", { href: sourceFor(m), text: n.base }), n.setting ? el("span", { class: "setting", text: n.setting }) : null]),
         el("span", { class: "bar-track" }, [

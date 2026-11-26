@@ -1,0 +1,37 @@
+name,family,developer,open_weights,pct_of_sonnet_5_5,tier_id,tier,tier_status,best_suite_score,anchor_below,anchor_above,local_test_ids,source
+Claude Fable 5.2 (Max),claudefable52,Anthropic,no,103,,,cloud_only,,,,,long-coding-tasks
+Claude Fable 5.2 (Xhigh),claudefable52,Anthropic,no,104,,,cloud_only,,,,,long-coding-tasks
+Claude Sonnet 5.5 (Max),claudesonnet55,Anthropic,no,100,max,Max,reference,,,,,long-coding-tasks
+Claude Opus 5.5 (Max),claudeopus55,Anthropic,no,101,,,cloud_only,,,,,long-coding-tasks
+Claude Haiku 5.5 (Max),claudehaiku55,Anthropic,no,64,,,cloud_only,,,,,long-coding-tasks
+Kimi K3.1 Pro,kimik31pro,Moonshot AI,yes,88,t4,Tier 4,official,,,,,long-coding-tasks
+GLM-5.3 (Max),glm53,Z.ai,yes,60,t3,Tier 3,official,,,,,long-coding-tasks
+DeepSeek V4.1 Flash 1017 (Max),deepseekv41flash1017,DeepSeek,yes,59,t3,Tier 3,official,,,,,long-coding-tasks
+MiMo-V2.6-Pro,mimov26pro,Xiaomi,yes,56,t3,Tier 3,official,,,,,long-coding-tasks
+Mistral Large 4 (High),mistrallarge4,Mistral AI,yes,38,t1,Tier 1,official,,,,,long-coding-tasks
+Step 5 Preview,step5preview,StepFun,yes,43,t2,Tier 2,official,,,,,long-coding-tasks
+Ling 3.1 Flash 1019,ling31flash1019,,yes,47,t2,Tier 2,official,,,,,long-coding-tasks
+Inkling 2 Small,inkling2small,,yes,36,t1,Tier 1,official,,,,,long-coding-tasks
+MiniMax-M3.1-Flash,minimaxm31flash,MiniMax,yes,44,t2,Tier 2,official,,,,,long-coding-tasks
+GLM-5.3-Flash,glm53flash,Z.ai,yes,48,t2,Tier 2,official,,,,,long-coding-tasks
+MiMo-V2.6-Flash,mimov26flash,Xiaomi,yes,42,t2,Tier 2,official,,,,,long-coding-tasks
+Qwen3.8-Flash-Next,qwen38flashnext,Alibaba Qwen,yes,50,t2,Tier 2,official,,,,,long-coding-tasks
+Nanbeige4.3-33B,nanbeige4333b,Nanbeige,yes,38,t1,Tier 1,official,8.7,,,M10,long-coding-tasks
+Qwen3.8 27B (Xhigh),qwen3827b,Alibaba Qwen,yes,19,t0,Tier 0,official,56.3,,,M02,long-coding-tasks
+Nemotron 3.5 Super VL,nemotron35supervl,NVIDIA,yes,6,t0,Tier 0,official,,,,,long-coding-tasks
+gpt-oss-120b (High),gptoss120b,OpenAI,yes,0,t0,Tier 0,official,,,,,long-coding-tasks
+Gemma 4 31B (Reasoning),gemma431b,Google,yes,0,t0,Tier 0,official,,,,,long-coding-tasks
+Granite 4.2 8B,granite428b,IBM,yes,0,t0,Tier 0,official,,,,,long-coding-tasks
+Gemma 4 E4B (Reasoning),gemma4e4b,Google,yes,0,t0,Tier 0,official,,,,,long-coding-tasks
+Qwen3.6 27B (Reasoning),qwen3627b,Alibaba Qwen,yes,31.06,t1,Tier 1,estimated,26.1,Nanbeige4.3 33B,Qwen3.8 27B,M16D,long-coding-tasks
+Qwen3.5 27B (Reasoning),qwen3527b,Alibaba Qwen,yes,,,,none,,,,,long-coding-tasks
+Nemotron 3.5 Lightning 30B A3B,nemotron35lightning30ba3b,NVIDIA,yes,34.78,t1,Tier 1,estimated,16.8,Nanbeige4.3 33B,Qwen3.8 27B,M01,local-test-models
+Qwen3.6 35B A3B,qwen3635ba3b,Alibaba Qwen,yes,27.72,t1,Tier 1,estimated,34.5,Nanbeige4.3 33B,Qwen3.8 27B,M07 M17D,local-test-models
+Qwen3-Coder 30B A3B Instruct,qwen3coder30ba3binstruct,Alibaba Qwen,yes,19.00,t0,Tier 0,estimated,56.6,Qwen3.8 27B,,M08 M08D M18 M18D,local-test-models
+GLM-4.7 Flash,glm47flash,Z.ai,yes,29.94,t1,Tier 1,estimated,28.9,Nanbeige4.3 33B,Qwen3.8 27B,M09,local-test-models
+Qwen3-Next 80B A3B Instruct,qwen3next80ba3binstruct,Alibaba Qwen,yes,19.00,t0,Tier 0,estimated,63.5,Qwen3.8 27B,,M11 M19D,local-test-models
+Qwen3.5 27B Claude 4.6 Opus Distilled,qwen3527bclaude46opusdistilled,Alibaba Qwen,yes,26.47,t1,Tier 1,estimated,37.6,Nanbeige4.3 33B,Qwen3.8 27B,M13,local-test-models
+Qwen3.5 9B,qwen359b,Alibaba Qwen,yes,36.61,t1,Tier 1,estimated,12.2,Nanbeige4.3 33B,Qwen3.8 27B,M14,local-test-models
+GLM-4.6V Flash,glm46vflash,Z.ai,yes,38.00,t1,Tier 1,estimated,6.2,,Nanbeige4.3 33B,M15,local-test-models
+Sage A1.5,sagea15,InternScience,yes,32.80,t1,Tier 1,estimated,21.7,Nanbeige4.3 33B,Qwen3.8 27B,M20,local-test-models
+Qwen3.8 27B iMatrix MTP,qwen3827bimatrixmtp,Alibaba Qwen,yes,38.00,t1,Tier 1,estimated,8.7,Nanbeige4.3 33B,Nanbeige4.3 33B,M21,local-test-models
