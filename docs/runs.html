@@ -125,6 +125,7 @@
               <th scope="col">Thinking</th>
               <th scope="col">Hardware</th>
               <th scope="col" class="num">Score</th>
+              <th scope="col" class="num">Tests passed</th>
               <th scope="col" class="num">Easy / Med / Hard</th>
               <th scope="col" class="num">Tok/s</th>
               <th scope="col" class="num">Time</th>
@@ -134,13 +135,13 @@
             </tr>
           </thead>
           <tbody id="runs-rows">
-            <tr><td colspan="13" class="muted">Loading data…</td></tr>
+            <tr><td colspan="14" class="muted">Loading data…</td></tr>
           </tbody>
         </table>
       </div>
       <p class="note">
         Suite: <strong>local-coding-v1</strong>, ten short Python tasks with hidden tests and partial credit (easy weight 1, medium 2, hard 3).
-        Score is the weighted share of hidden tests passed, 0 to 100. Tokens/sec is the average generation speed across the run's tasks.
+        Score is the weighted share of hidden tests passed, 0 to 100. Tests passed is the plain count of hidden tests passed out of all 276. Tokens/sec is the average generation speed across the run's tasks.
         Limits per task: 4,000 output tokens and 5 minutes with thinking off; 12,000 tokens (thinking included) and 15 minutes with thinking on. An answer cut off at a limit scores 0, so a low thinking-on score can mean the model spent its budget on thinking, not that its answer was wrong.
         Results are read from <a href="https://github.com/maxgerashenko/LLMeter/blob/main/data/local-runtime-results.csv">data/local-runtime-results.csv</a> (one row per task) and the model list from <a href="https://github.com/maxgerashenko/LLMeter/blob/main/data/local-test-models.csv">data/local-test-models.csv</a>;
         a row marked <em>planned</em>, <em>not installed</em> or <em>cannot run</em> has no numbers; the reason a model cannot run is in the model list.

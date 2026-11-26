@@ -139,12 +139,13 @@
     return order.map(function (key) {
       var rows = groups[key], f = rows[0], m = byId[f.model_id] || {};
       var w = 0, ws = 0, lv = { easy: [0, 0], medium: [0, 0], hard: [0, 0] }, tok = [], time = 0, hasTime = false, mem = null;
-      var bad = 0, seen = {}, byTask = {};
+      var bad = 0, seen = {}, byTask = {}, tp = 0, tt = 0;
       rows.forEach(function (r) {
         var id = r.task_id.toLowerCase(), wt = WEIGHTS[id], sc = num(r.score);
         if (!wt || seen[id]) return; seen[id] = 1; byTask[id] = r;
         sc = sc == null ? 0 : (sc > 1 ? sc / 100 : sc);
         w += wt; ws += wt * sc; lv[LEVEL[id]][0] += wt * sc; lv[LEVEL[id]][1] += wt;
+        tp += num(r.tests_passed) || 0; tt += num(r.tests_total) || 0;
         var t = num(r.gen_tok_per_s); if (t != null) tok.push(t);
         var s = num(r.wall_seconds); if (s != null) { time += s; hasTime = true; }
         var pm = num(r.peak_mem_gb); if (pm != null) mem = Math.max(mem || 0, pm);
@@ -157,7 +158,7 @@
         rt: f.runtime, runtime: f.runtime + (f.runtime_version ? " " + f.runtime_version : ""), thinking: f.thinking || "–",
         hardware: f.hardware || DEFAULT_HW, parallel: f.parallel, date: f.date,
         // Missing tasks count as 0, so a partial run cannot score above a full one.
-        score: tasks ? 100 * ws / 23 : null, easy: lvl("easy"), medium: lvl("medium"), hard: lvl("hard"),
+        score: tasks ? 100 * ws / 23 : null, easy: lvl("easy"), medium: lvl("medium"), hard: lvl("hard"), testsPassed: tp, testsTotal: tt,
         tok: tok.length ? tok.reduce(function (a, b) { return a + b; }, 0) / tok.length : null,
         time: hasTime ? time : null, mem: mem, tasks: tasks, bad: bad, think: thinkingOn(f.thinking), moe: isMoE(m),
         batch: num(f.parallel) > 1, draft: /\+\s*draft\s/i.test(m.model || ""),
@@ -308,6 +309,7 @@
         el("td", {}, [tierBadge(r.model)]),
         td(r.quant), td(r.runtime), td(r.thinking), td(r.hardware),
         td(fmt(r.score, 1), "num score"),
+        td(r.testsTotal ? r.testsPassed + " / " + r.testsTotal : "–", "num"),
         td([fmt(r.easy), fmt(r.medium), fmt(r.hard)].join(" / "), "num"),
         td(fmt(r.tok, 1), "num"), td(fmtTime(r.time), "num"), td(r.parallel || "–", "num"), td(r.date || "–"),
         el("td", {}, [el("span", { cls: "status status-" + (r.status === "done" && !r.bad ? "done" : "failed"),
@@ -322,11 +324,11 @@
         el("td", {}, [tierBadge(m.model)]),
         td([m.format, m.quant].filter(Boolean).join(" ")), td(rt.join(", ")),
         td(/^yes|unknown/.test(m.thinking_switch) ? "off, on" : "off"), td(DEFAULT_HW),
-        td("–", "num"), td("–", "num"), td("–", "num"), td("–", "num"), td(m.max_parallel_64gb || "–", "num"), td("–"),
+        td("–", "num"), td("–", "num"), td("–", "num"), td("–", "num"), td("–", "num"), td(m.max_parallel_64gb || "–", "num"), td("–"),
         el("td", {}, [el("span", { cls: "status status-planned", title: m.run_status || "", text: why(m) || "planned" })])
       ]));
     });
-    if (!body.children.length) body.appendChild(el("tr", {}, [el("td", { colspan: "13", cls: "muted", text: "No runs and no planned models." })]));
+    if (!body.children.length) body.appendChild(el("tr", {}, [el("td", { colspan: "14", cls: "muted", text: "No runs and no planned models." })]));
   }
 
   // Result per task: one column per run (best first), one row per task.

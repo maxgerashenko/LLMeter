@@ -239,3 +239,13 @@ date,model_id,runtime,runtime_version,thinking,parallel,context_tokens,task_id,t
 2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q08,0,12,0.0,844.9,741,11999,14.2,,5.3,,truncated,"MacBook Pro M5 Pro, 64 GB",no answer file
 2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q09,35,45,0.7778,158.1,898,2425,15.3,,5.3,,finished,"MacBook Pro M5 Pro, 64 GB",
 2026-11-24,M13,LM Studio,0.4.28+2,on,1,209715,q10,17,45,0.3778,121.5,921,1878,15.5,,5.3,,finished,"MacBook Pro M5 Pro, 64 GB",
+2026-11-25,M08D3,LM Studio,0.4.28+2,off,1,262144,q01,6,12,0.1429,4.0,370,238,59.5,,,,finished,"MacBook Pro M5 Pro, 64 GB",draft mlx-community/qwen2.5-3b-instruct
+2026-11-25,M08D3,LM Studio,0.4.28+2,off,1,262144,q02,12,15,0.7857,16.2,834,1032,63.7,,,,finished,"MacBook Pro M5 Pro, 64 GB",draft mlx-community/qwen2.5-3b-instruct
+2026-11-25,M08D3,LM Studio,0.4.28+2,off,1,262144,q03,14,18,0.6364,11.7,933,779,66.6,,,,finished,"MacBook Pro M5 Pro, 64 GB",draft mlx-community/qwen2.5-3b-instruct
+2026-11-25,M08D3,LM Studio,0.4.28+2,off,1,262144,q04,13,14,0.9091,19.9,1195,1302,65.4,,,,finished,"MacBook Pro M5 Pro, 64 GB",draft mlx-community/qwen2.5-3b-instruct
+2026-11-25,M08D3,LM Studio,0.4.28+2,off,1,262144,q05,12,12,1.0,9.0,790,567,63.0,,,,finished,"MacBook Pro M5 Pro, 64 GB",draft mlx-community/qwen2.5-3b-instruct
+2026-11-25,M08D3,LM Studio,0.4.28+2,off,1,262144,q06,44,76,0.5789,34.9,858,1933,55.4,,,,finished,"MacBook Pro M5 Pro, 64 GB",draft mlx-community/qwen2.5-3b-instruct
+2026-11-25,M08D3,LM Studio,0.4.28+2,off,1,262144,q07,7,27,0.2593,30.9,640,1585,51.3,,,,finished,"MacBook Pro M5 Pro, 64 GB",draft mlx-community/qwen2.5-3b-instruct
+2026-11-25,M08D3,LM Studio,0.4.28+2,off,1,262144,q08,9,12,0.625,6.5,710,341,52.5,,,,finished,"MacBook Pro M5 Pro, 64 GB",draft mlx-community/qwen2.5-3b-instruct
+2026-11-25,M08D3,LM Studio,0.4.28+2,off,1,262144,q09,27,45,0.6,29.8,870,1521,51.0,,,,finished,"MacBook Pro M5 Pro, 64 GB",draft mlx-community/qwen2.5-3b-instruct
+2026-11-25,M08D3,LM Studio,0.4.28+2,off,1,262144,q10,4,45,0.0889,75.7,892,3528,46.6,,,,finished,"MacBook Pro M5 Pro, 64 GB",draft mlx-community/qwen2.5-3b-instruct
