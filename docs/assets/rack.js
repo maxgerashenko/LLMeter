@@ -202,6 +202,13 @@
     });
   }
 
+  // Keep the sticky tab bar just under the site header (it tucks 1px under, so no strip of the page shows between them)
+  function headerHeight() {
+    var h = document.querySelector(".site-header");
+    document.documentElement.style.setProperty("--header-h", (h ? Math.floor(h.getBoundingClientRect().height) - 1 : 0) + "px");
+  }
+  headerHeight(); window.addEventListener("resize", headerHeight); window.addEventListener("load", headerHeight);
+
   // Tabs
   (function () {
     var tabs = [["tab-rack", "panel-rack"], ["tab-spark", "panel-spark"], ["tab-rack-all", "panel-rack-all"]];

@@ -53,3 +53,7 @@
 .rk-price-cell { color: var(--text); }
 .rk-specs { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); }
 .rk-specs h3 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+
+/* The tab bar (M5 Ultra / DGX Spark / All) sticks under the site header while the page scrolls; it tucks 1px under the header. */
+.rack-tabs { position: sticky; top: var(--header-h, 97px); z-index: 5; margin: 0 -16px 16px; padding: 4px 16px 0; background: var(--bg); }
+
