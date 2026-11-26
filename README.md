@@ -56,7 +56,7 @@ The planned layout of the repository:
 | `prompts/` | The prompts Max wrote in the chat behind an article, saved as typed, one file per article |
 | `docs/` | The public website, published with GitHub Pages |
 | `data/` | Structured data collected about models, and the results of our own local runs (`data/local-runtime-results.csv`) |
-| `scripts/` | Helper scripts. `scripts/run_local_suite.py` runs the local coding suite against one model in LM Studio or TensorFold |
+| `scripts/` | Helper scripts. `scripts/build_models.py` builds `data/models.csv`, the single list of models and tiers (see [data/models.md](data/models.md)). `scripts/run_local_suite.py` runs the local coding suite against one model in LM Studio or TensorFold |
 | `tasks/` | Frozen test suites for running local models ourselves. `tasks/local-coding-v1` is ten coding tasks with hidden tests and a grader |
 
 ## Website

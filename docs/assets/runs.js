@@ -5,13 +5,7 @@
   "use strict";
   var MODELS_URL = "data/local-test-models.csv";
   var RESULTS_URL = "data/local-runtime-results.csv";
-  var TIERS_URL = "data/long-coding-tasks-2026-11-17.csv"; // same file the Local page builds its tiers from
-  // Tier bands as on the Local page (articles/long-coding-tiers-local-models.md): share of Sonnet 5.5 on long coding tasks.
-  var TIER_BANDS = [
-    { id: "t4", label: "Tier 4", min: 75 }, { id: "t3", label: "Tier 3", min: 55 }, { id: "t2", label: "Tier 2", min: 40 },
-    { id: "t1", label: "Tier 1", min: 20 }, { id: "t0", label: "Tier 0", min: 0 }
-  ];
-  var tierByModel = {};
+  // Tiers come from data/models.csv through assets/models.js (LLMeterModels), the single source for every page.
   // Suite local-coding-v1 weights (frozen; see tasks/local-coding-v1/manifest.json).
   var WEIGHTS = { q01: 1, q02: 1, q03: 2, q04: 2, q05: 2, q06: 3, q07: 3, q08: 3, q09: 3, q10: 3 };
   var LEVEL = { q01: "easy", q02: "easy", q03: "medium", q04: "medium", q05: "medium",
@@ -75,43 +69,11 @@
     if (s < 90) return Math.round(s) + " s";
     var m = s / 60; return (m < 10 ? m.toFixed(1) : Math.round(m)) + " min";
   }
-  // A run with a draft model is the same model for tiers: the "+ draft ..." part of the name is dropped.
-  function normName(n) { return baseModel(n).replace(/\s*\([^)]*\)\s*$/, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
-  // Tier of a model by name, from its best row in the long-coding data; null when the model is not in it.
-  // A model without one gets an estimated equivalent tier from its local suite score (see estimateTiers).
-  var estByModel = {};
-  function bandOf(pct) {
-    for (var i = 0; i < TIER_BANDS.length; i++) if (pct >= TIER_BANDS[i].min) return TIER_BANDS[i];
-    return null;
-  }
+  // Tier of a model by name, from data/models.csv: official, or estimated from its local suite score
+  // (scripts/build_models.py places it between the two nearest models that have a tier); null when it has neither.
   function tierOf(name) {
-    var k = normName(name), pct = tierByModel[k];
-    if (pct != null) return { band: bandOf(pct), pct: pct, est: false };
-    if (estByModel[k] != null) return { band: bandOf(estByModel[k]), pct: estByModel[k], est: true };
-    return null;
-  }
-  // Estimated equivalent tier: take the best suite score of every model that has an official tier (the anchors),
-  // put the untiered model on that score line and read its "% of Sonnet 5.5" by straight-line interpolation
-  // between the two nearest anchors (the nearest one outside their range). Then apply the same tier bands.
-  function estimateTiers() {
-    var best = {};
-    state.runs.forEach(function (r) {
-      var k = normName(r.model);
-      if (r.score != null && (best[k] == null || r.score > best[k].score)) best[k] = { score: r.score, name: baseModel(r.model) };
-    });
-    var anchors = [];
-    Object.keys(best).forEach(function (k) { if (tierByModel[k] != null) anchors.push({ score: best[k].score, pct: tierByModel[k], name: best[k].name }); });
-    anchors.sort(function (a, b) { return a.score - b.score; });
-    estByModel = {}; state.anchors = anchors; state.estimated = [];
-    if (!anchors.length) return;
-    Object.keys(best).forEach(function (k) {
-      if (tierByModel[k] != null) return;
-      var x = best[k].score, pct, lo = null, hi = null;
-      anchors.forEach(function (a) { if (a.score <= x) lo = a; if (a.score >= x && !hi) hi = a; });
-      if (lo && hi && hi.score > lo.score) pct = lo.pct + (hi.pct - lo.pct) * (x - lo.score) / (hi.score - lo.score);
-      else pct = (lo || hi).pct;
-      estByModel[k] = pct; state.estimated.push({ name: best[k].name, score: x, pct: pct });
-    });
+    var t = LLMeterModels.tierOf(name);
+    return t ? { band: { id: t.id, label: t.label }, pct: t.pct, est: t.estimated } : null;
   }
   function tierBadge(name) {
     var t = tierOf(name);
@@ -383,14 +345,16 @@
   // Tier table with the estimated models placed in their tier next to the official ones.
   function drawTierTable() {
     var body = document.getElementById("est-rows"); if (!body) return; body.textContent = "";
-    var rows = {};
-    function add(name, pct, est, score) { var b = bandOf(pct); (rows[b.id] = rows[b.id] || []).push({ name: name, pct: pct, est: est, score: score }); }
-    Object.keys(tierByModel).forEach(function (k) {
-      var run = state.runs.filter(function (r) { return normName(r.model) === k; })[0];
-      if (run) add(run.model, tierByModel[k], false, Math.max.apply(null, state.runs.filter(function (r) { return normName(r.model) === k; }).map(function (r) { return r.score || 0; })));
+    var rows = {}, seen = {};
+    function add(name, t, score) { (rows[t.id] = rows[t.id] || []).push({ name: name, pct: t.pct, est: t.estimated, score: score }); }
+    state.runs.forEach(function (r) {
+      var f = LLMeterModels.family(r.model), t = LLMeterModels.tierOf(r.model);
+      if (seen[f] || !t || t.id === "max") return;
+      seen[f] = true;
+      var score = Math.max.apply(null, state.runs.filter(function (x) { return LLMeterModels.family(x.model) === f; }).map(function (x) { return x.score || 0; }));
+      add(t.estimated ? baseModel(r.model) : r.model, t, score);
     });
-    state.estimated.forEach(function (e) { add(e.name, e.pct, true, e.score); });
-    TIER_BANDS.forEach(function (b) {
+    LLMeterModels.BANDS.filter(function (b) { return b.id !== "max"; }).forEach(function (b) {
       var list = (rows[b.id] || []).sort(function (a, c) { return c.pct - a.pct; });
       var cell = el("td", {}, list.length ? list.map(function (m) {
         return el("span", { cls: "est-item" + (m.est ? " is-est" : "") }, [m.name, el("span", { cls: "sub", text: (m.est ? "~" : "") + Math.round(m.pct) + "% of Sonnet 5.5 · suite " + fmt(m.score, 1) })]);
@@ -452,14 +416,9 @@
   }
   headerHeight(); window.addEventListener("resize", headerHeight); window.addEventListener("load", headerHeight);
   setupTabs(); setupFilters(); setupBoth();
-  Promise.all([get(MODELS_URL), get(RESULTS_URL).catch(function () { return ""; }), get(TIERS_URL).catch(function () { return ""; })]).then(function (t) {
-    parseCSV(t[2]).forEach(function (r) {
-      var p = num(r.pct_of_sonnet_5_5), k = normName(r.model);
-      if (p != null && (tierByModel[k] == null || p > tierByModel[k])) tierByModel[k] = p;
-    });
+  Promise.all([get(MODELS_URL), get(RESULTS_URL).catch(function () { return ""; }), LLMeterModels.load()]).then(function (t) {
     state.planned = parseCSV(t[0]);
     state.runs = buildRuns(parseCSV(t[1]), state.planned);
-    estimateTiers();
     draw();
   }).catch(function (e) {
     document.getElementById("runs-summary").textContent = "Could not load the run data (" + e.message + ").";

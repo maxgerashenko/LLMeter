@@ -10,6 +10,7 @@
   // Setups in order of size: rack id and number of Sparks
   var SETUPS = [["dgx-spark", 1], ["dgx-spark-2", 2], ["dgx-spark-4", 4], ["dgx-spark-8", 8], ["dgx-spark-16", 16]];
   var USABLE_GB = 120, CONTEXT_FACTOR = 1.1, TRY_SIZES = [2, 4, 8, 16];
+  // Which tier each model is in comes from data/models.csv (LLMeterModels), not from the rack data.
   var TIERS = [
     { id: "t4", label: "Tier 4" }, { id: "t3", label: "Tier 3" },
     { id: "t2", label: "Tier 2" }, { id: "t1", label: "Tier 1" }, { id: "t0", label: "Tier 0" }
@@ -174,9 +175,9 @@
 
   Promise.all([SPEED_URL, RACKS_URL, VIDEO_URL].map(function (u) {
     return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ": " + r.status); return r.text(); });
-  })).then(function (texts) {
+  }).concat([LLMeterModels.load()])).then(function (texts) {
     var speeds = parseCSV(texts[0]).map(function (r) {
-      return { tier: r.tier, model: r.model, rack: r.rack_id, status: r.status, tok: num(r.tok_s), size: num(r.model_size_gb),
+      return { tier: (LLMeterModels.tierOf(r.model) || {}).id, model: r.model, rack: r.rack_id, status: r.status, tok: num(r.tok_s), size: num(r.model_size_gb),
         quant: r.quant, engine: r.engine, setup: r.setup, source: firstUrl(r.source), note: r.note };
     });
     var racks = parseCSV(texts[1]).map(function (r) {

@@ -20,7 +20,7 @@ Some local models run on the Runs page are not in the long-coding data (`data/lo
 
 A run with a draft model (speculative decoding) counts as a run of the same model, so the best score of a model is taken over its runs with and without a draft. On 2026-11-24 this moved Qwen3-Coder 30B A3B Instruct from 46.5 (Tier 1*) to 56.6 (Tier 0*): its best run is now the MLX build with a draft model. Three of the new models have scores that are not clean model results (GLM-4.6V Flash: server errors on 5 of 10 tasks; Qwen3.8 27B iMatrix MTP and Qwen3.6 27B: most tasks hit the time limit), so their estimates are weaker still; see "Runs of 2026-11-24" in `data/local-coding-task-set.md`.
 
-Machine-readable: `data/local-estimated-tiers.csv`. Regenerate with `python3 scripts/estimate_tiers.py` (then `scripts/sync-site-data.sh`).
+Machine-readable: the rows of `data/models.csv` with `tier_status` = `estimated`. Regenerate with `python3 scripts/build_models.py` (then `scripts/sync-site-data.sh`).
 
 ## How it is calculated
 
@@ -30,7 +30,7 @@ Machine-readable: `data/local-estimated-tiers.csv`. Regenerate with `python3 scr
 4. **Bands.** The usual tier bands apply: Tier 4 from 75%, Tier 3 from 55%, Tier 2 from 40%, Tier 1 from 20%, Tier 0 below 20%.
 5. Models not run yet get no estimate and stay "No tier".
 
-The logic lives in `docs/assets/runs.js` (`estimateTiers`) and `scripts/estimate_tiers.py`; keep them in step.
+The logic lives only in `scripts/build_models.py`; every page reads the result from `data/models.csv`.
 
 ## Limits
 
