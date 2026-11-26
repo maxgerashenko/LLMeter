@@ -193,7 +193,7 @@
     });
     groups.appendChild(el("div", { class: "legend" }, [
       el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-t2" }), "Measured"]),
-      el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-t2 rk-est" }), "Estimate"]),
+      el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-t2 rk-est" }), "Estimated"]),
       el("span", { class: "legend-item" }, [el("span", { class: "swatch rk-swatch-nofit" }), "Doesn't fit, or no published run"])
     ]));
 

@@ -88,6 +88,7 @@
     TIERS.forEach(function (t) {
       legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + t.id }), "Tier " + t.label + ": " + t.range]));
     });
+    if (items.some(function (c) { return c.est; })) legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-t1 jobs-ref-bar" }), "Estimated holding"]));
 
     // Panel 2: each tier with its holders as bars
     var det = document.getElementById("ipo-tier-detail");

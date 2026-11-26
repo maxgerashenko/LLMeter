@@ -365,6 +365,10 @@
       lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "swatch " + x[0] }), x[1]]));
     });
     lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "swatch swatch-planned" }), "Not run yet"]));
+    if (state.estimated && state.estimated.length) {
+      lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "tier-badge tier-t1 legend-badge", text: "Tier 1" }), "Official tier"]));
+      lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "tier-badge tier-t1 tier-est legend-badge", text: "Tier 1" }), "Estimated (placed from the local run)"]));
+    }
   }
 
   function summary() {
