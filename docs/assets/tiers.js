@@ -227,7 +227,7 @@
     // Tier tag in front of each bar label: the tier badge, or a "Cloud" pill for cloud-only models
     function chartTag(m, t) {
       if (m.model === REFERENCE) return el("span", { class: "tier-badge bar-tag tier-max" }, ["Max"]);
-      if (m.est && t) return el("span", { class: "tier-badge bar-tag tier-est tier-" + t.id, title: "Estimated equivalent tier, from LLMeter's local run: Artificial Analysis has no score for this model" }, ["~Tier " + t.label]);
+      if (m.est && t) return el("span", { class: "tier-badge bar-tag tier-est tier-" + t.id, title: "Estimated equivalent tier, from LLMeter's local run: Artificial Analysis has no score for this model" }, ["Tier " + t.label]);
       if (m.open && t) return el("span", { class: "tier-badge bar-tag tier-" + t.id, title: t.name }, [t.id === "max" ? "Max" : "Tier " + t.label]);
       return el("span", { class: "pill pill-cloud bar-tag" }, ["Cloud"]);
     }
@@ -261,7 +261,7 @@
       host.appendChild(plot);
       var missing = list.length - shown.length;
       var estNote = list.filter(function (m) { return m.est; }).map(function (m) {
-        return " " + m.model + " has no Artificial Analysis score; its estimated equivalent tier is ~Tier " + tierFor(m).label + " (about " + Math.round(m.pct) + "% of Sonnet 5.5 on long coding, placed from LLMeter's local run)" + (basis.id === "long" ? "." : ", so it is only drawn when Tier by is Long coding.");
+        return " " + m.model + " has no Artificial Analysis score; its estimated equivalent tier is Tier " + tierFor(m).label + " (about " + Math.round(m.pct) + "% of Sonnet 5.5 on long coding, placed from LLMeter's local run)" + (basis.id === "long" ? "." : ", so it is only drawn when Tier by is Long coding.");
       }).join("");
       document.getElementById("basis-note").textContent = basis.desc + (missing ? " " + missing + " of " + list.length + " models have no score on it and are left out." : "") + estNote;
       var legend = document.getElementById(legendId);
@@ -270,6 +270,10 @@
         legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + t.id }), t.id === "max" ? "Max" : "Tier " + t.label]));
       });
       if (cloudLegend) legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "swatch bar-cloud" }), "Cloud"]));
+      if (list.some(function (m) { return m.est; })) {
+        legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "tier-badge tier-t1 legend-badge" }, ["Tier 1"]), "Official tier"]));
+        legend.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "tier-badge tier-t1 tier-est legend-badge" }, ["Tier 1"]), "Estimated (placed from the local run)"]));
+      }
     }
     drawTop();
     renderChart("bars-all", "legend-all", models, TIERS, true, basis);

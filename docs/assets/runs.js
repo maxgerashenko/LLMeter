@@ -79,7 +79,7 @@
     var t = tierOf(name);
     if (!t) return el("span", { cls: "tier-badge tier-none", title: "Not in the long-coding data yet and not run locally, so no estimate", text: "No tier" });
     if (!t.est) return el("span", { cls: "tier-badge tier-" + t.band.id, title: t.band.label + ": " + Math.round(t.pct) + "% of Sonnet 5.5 on long coding tasks", text: t.band.label });
-    return el("span", { cls: "tier-badge tier-" + t.band.id + " tier-est", title: "Estimated equivalent tier: about " + Math.round(t.pct) + "% of Sonnet 5.5, placed by its local suite score against models that have a tier", text: "~" + t.band.label });
+    return el("span", { cls: "tier-badge tier-" + t.band.id + " tier-est", title: "Estimated equivalent tier: about " + Math.round(t.pct) + "% of Sonnet 5.5, placed by its local suite score against models that have a tier", text: t.band.label });
   }
   // Mixture of experts: fewer active parameters than total, or said so in the model list notes.
   function isMoE(m) {
@@ -329,6 +329,10 @@
       lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "swatch " + x[0] }), x[1]]));
     });
     lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "swatch swatch-planned" }), "Not run yet"]));
+    if (state.estimated && state.estimated.length) {
+      lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "tier-badge tier-t1 legend-badge", text: "Tier 1" }), "Official tier"]));
+      lg.appendChild(el("span", { cls: "legend-item" }, [el("span", { cls: "tier-badge tier-t1 tier-est legend-badge", text: "Tier 1" }), "Estimated (placed from the local run)"]));
+    }
   }
 
   function summary() {
