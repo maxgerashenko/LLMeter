@@ -6,7 +6,6 @@
   var FIT_URL = "data/model-fit-2026-11-26.csv";
   var SPEED_URL = "data/rack-speed-2026-11-18.csv";
   var RACKS_URL = "data/racks-2026-11-18.csv";
-  var EST_URL = "data/local-estimated-tiers.csv";
   var REF_MODEL = "Qwen3.8 27B (Xhigh)";   // measured on most machines; dense speeds are scaled from it by file size
   var TYPICAL_BYTES_30B = 262144;   // F16 KV bytes per token of a typical 30B model (64 layers x 8 KV heads x 128 x 2 x 2 bytes)
   var USABLE = 0.9, OVERHEAD = 1.1, KV_ALPHA = 0.2, KV_BASE_CTX = 2048;   // calculator constants
@@ -55,8 +54,8 @@
   function tierLabel(id) { var t = TIERS.filter(function (x) { return x.id === id; })[0]; return t ? t.label : id; }
   function badge(m) {
     if (!m.tier) return el("span", { class: "tier-badge fit-notier", text: "No tier" });
-    return el("span", { class: "tier-badge tier-" + m.tier + (m.tierEst ? " tier-est" : ""), title: m.tierEst ? "Estimated tier from LLMeter's local runs" : "Official tier" },
-      [(m.tierEst ? "~" : "") + tierLabel(m.tier)]);
+    return el("span", { class: "tier-badge tier-" + m.tier + (m.tierEst ? " tier-est" : ""), title: m.tierEst ? "Estimated tier, placed from LLMeter's local run" : "Official tier" },
+      [tierLabel(m.tier)]);
   }
 
   // Memory rule of the LLM Inference Calculator, incremental decoding with the KV cache on, context at the model's maximum
@@ -118,6 +117,11 @@
       });
       tiers.appendChild(b);
     });
+    var tl = document.getElementById("fit-tier-legend");
+    if (tl && !tl.firstChild) {
+      tl.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "tier-badge tier-t1 legend-badge", text: "Tier 1" }), "Official tier"]));
+      tl.appendChild(el("span", { class: "legend-item" }, [el("span", { class: "tier-badge tier-t1 tier-est legend-badge", text: "Tier 1" }), "Estimated (placed from the local run)"]));
+    }
     var list = document.getElementById("fit-models"); list.textContent = "";
     var v = visible();
     if (!v.length) list.appendChild(el("p", { class: "muted fit-none", text: "No model matches." }));
@@ -193,7 +197,7 @@
     if (bars.childNodes.length) box.appendChild(bars);
     if (bars.childNodes.length) box.appendChild(el("div", { class: "legend" }, [
       el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + tierId }), "Measured"]),
-      el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + tierId + " rk-est" }), "Striped bar = estimated (“≈ … est.”)"]),
+      el("span", { class: "legend-item" }, [el("span", { class: "swatch tier-bg-" + tierId + " rk-est" }), "Estimated (“≈ … est.”)"]),
       el("span", { class: "legend-item" }, [el("span", { class: "swatch rk-swatch-nofit" }), "Fits, no speed number"])
     ]));
     var small = noFit.filter(function (c) { return !c.noRun; });
@@ -203,24 +207,20 @@
 
   function render() { renderPicker(); renderResult(); }
 
-  Promise.all([FIT_URL, SPEED_URL, RACKS_URL, EST_URL].map(function (u) {
+  Promise.all([FIT_URL, SPEED_URL, RACKS_URL].map(function (u) {
     return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ": " + r.status); return r.text(); });
-  })).then(function (t) {
+  }).concat([window.LLMeterModels.load()])).then(function (t) {
     var speeds = parseCSV(t[1]).map(function (r) {
-      return { tier: r.tier, model: r.model, rack: r.rack_id, status: r.status, tok: num(r.tok_s), size: num(r.model_size_gb), macs: num(r.macs), source: firstUrl(r.source) };
+      return { model: r.model, rack: r.rack_id, status: r.status, tok: num(r.tok_s), size: num(r.model_size_gb), macs: num(r.macs), source: firstUrl(r.source) };
     });
     var racks = parseCSV(t[2]).map(function (r) {
       return { id: r.rack_id, name: r.name, mem: num(r.max_memory_gb), price: num(r.price_usd), priceNote: r.price_note, priceSrc: firstUrl(r.price_source) };
     });
-    var est = {};
-    parseCSV(t[3]).forEach(function (r) { var m = /Tier (\d)/.exec(r.estimated_tier); if (m) est[r.model] = "t" + m[1]; });
-    var tops = {};
-    speeds.forEach(function (r) { if (r.tier !== "max") tops[r.model] = r.tier; });
     var models = parseCSV(t[0]).map(function (r) {
-      var tier = r.rack_model ? (speeds.filter(function (s) { return s.model === r.rack_model; })[0] || {}).tier : est[r.tier_model];
+      var t = window.LLMeterModels.tierOf(r.model);
       return { model: r.model, rackModel: r.rack_model, params: num(r.params_b), active: num(r.active_params_b) || (r.active_params_b === "" ? num(r.params_b) : null),
         weights: num(r.weights_gb), quant: r.quant, ctx: num(r.max_context_tokens), ctxBasis: r.context_basis,
-        tier: tier || null, tierEst: !r.rack_model && !!tier, top: !!r.rack_model };
+        tier: t ? t.id : null, tierEst: !!(t && t.estimated), top: !!r.rack_model };
     });
     // Unknown active parameters (Qwen3.8-Flash-Next) are treated as unknown, not dense
     models.forEach(function (m) { if (m.model === "Qwen3.8-Flash-Next") m.active = null; });
