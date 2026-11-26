@@ -95,6 +95,7 @@ jobs:
               '',
               `- [Tiers (home)](${base}/index.html)`,
               `- [Rack](${base}/rack.html)`,
+              `- [DGX Spark](${base}/spark-rack.html)`,
               `- [Runs](${base}/runs.html)`,
               `- [Research](${base}/techniques.html)`,
               `- [Horizon](${base}/horizon.html)`,
